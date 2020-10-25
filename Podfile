@@ -6,16 +6,11 @@ target 'DriverApp' do
   use_frameworks!
 
   # Pods for DriverApp
-	pod 'LBTATools'
-
 	pod 'RxSwift'
-    	pod 'RxCocoa'
+  pod 'RxCocoa'
 
 	pod 'Alamofire'
 	pod 'AlamofireImage'
-
-	pod 'Realm'
-	pod 'RealmSwift'
 
 	pod 'GoogleMaps'
 	pod 'GooglePlaces'
@@ -24,8 +19,8 @@ target 'DriverApp' do
   
   pod 'NVActivityIndicatorView'
   
-  pod 'BulletinBoard'
-  
+  pod 'Firebase/Core'
   pod 'Firebase/Database'
+  pod 'Firebase/Analytics'
 
 end

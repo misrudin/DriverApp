@@ -61,7 +61,9 @@ class LiveTrackingVC: UIViewController {
        
         view.addSubview(mapView)
        
-        
+        DispatchQueue.main.async {
+            self.setupCard()
+        }
         
         mapView.frame = view.frame
         
@@ -92,43 +94,16 @@ class LiveTrackingVC: UIViewController {
        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        
+    
+    func setupCard() {
         guard let orderNo = order?.orderNumber else {
             return
         }
-        getDetailOrder(orderNo: orderNo)
-        
-    }
-    
-    func getDetailOrder(orderNo: String){
-        view.addSubview(pop)
-        self.cardViewController.view.removeFromSuperview()
-        pop.show = true
-        orderViewModel.getDetailOrder(orderNo: orderNo) {[weak self] (result) in
-            switch result {
-            case .success(let orderData):
-                DispatchQueue.main.async {
-                    self?.order = orderData
-                    self?.setupCard()
-                    self?.pop.show = false
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    self?.dismiss(animated: true, completion: nil)
-                    self?.pop.show = false
-                    print(error)
-                }
-            }
-        }
-    }
-    
-    
-    func setupCard() {
         cardViewController = CardViewController()
         cardViewController.orderData = order
+        self.cardViewController.orderNo = orderNo
+        self.cardViewController.status = !self.cardViewController.status
+        cardViewController.status = true
         self.addChild(cardViewController)
         self.view.addSubview(cardViewController.view)
         cardViewController.delegate = self
@@ -188,6 +163,16 @@ class LiveTrackingVC: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipses.bubble.fill"), style: .plain, target: self, action: #selector(onClickChatButton))
+    }
+    
+    @objc
+    func onClickChatButton(){
+        let vc = ChatViewController()
+        let navVc = UINavigationController(rootViewController: vc)
+        navVc.modalPresentationStyle = .fullScreen
+        
+        present(navVc, animated: true, completion: nil)
     }
     
     @objc func didTapBack(){
@@ -327,13 +312,30 @@ extension LiveTrackingVC: CardViewControllerDelegate {
                 self.handleResult(result: result)
             }
         case .pending:
-            print("Pending Delivery")
+            let vc = PendingNoteVc()
+            vc.orderData = order
+            let navVc = UINavigationController(rootViewController: vc)
+            
+            present(navVc, animated: true, completion: nil)
         case .done_delivery:
             self.view.addSubview(pop)
             self.pop.show = true
             let data = Delivery(order_number: orderNo, type: "end")
             self.orderViewModel.statusOrder(data: data, status: "delivery") { (result) in
-                self.handleResult(result: result)
+                switch result {
+                case .success(_):
+                    DispatchQueue.main.async {
+                        self.pop.show = false
+                        let vc = DoneViewController()
+                        let navVc = UINavigationController(rootViewController: vc)
+                        
+                        self.present(navVc, animated: true, completion: nil)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        print(error)
+                    }
+                }
             }
         case .none:
             print("Status Undefined")
@@ -346,17 +348,18 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             return
         }
         switch result {
-        case .success(let success):
+        case .success(_):
             DispatchQueue.main.async {
                 self.pop.show = false
-                print("Order Status : \(success)")
-                self.getDetailOrder(orderNo: orderNo)
+                self.cardViewController.orderNo = orderNo
+                self.cardViewController.status = !self.cardViewController.status
             }
         case .failure(let error):
             DispatchQueue.main.async {
                 self.pop.show = false
+                self.cardViewController.orderNo = orderNo
+                self.cardViewController.status = !self.cardViewController.status
                 print(error)
-                self.getDetailOrder(orderNo: orderNo)
             }
         }
     }

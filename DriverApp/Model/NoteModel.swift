@@ -49,3 +49,16 @@ struct Checkout: Decodable {
         case createdTime = "created_time"
     }
 }
+
+
+struct DataPending: Codable {
+    let id_driver: Int
+    let note: String
+    let id_order: Int
+    let id_shift_time: Int
+}
+
+struct DataCheckout {
+    let id_driver: Int
+    let note: String
+}

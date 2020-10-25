@@ -7,12 +7,6 @@
 
 import UIKit
 
-struct ChatMessage {
-    let text: String
-    let isIncoming: Bool
-    let date: Date
-}
-
 extension Date {
     static func dateFromCustomString(customString: String) -> Date {
         let dateFormater = DateFormatter()
@@ -20,35 +14,76 @@ extension Date {
         
         return dateFormater.date(from: customString) ?? Date()
     }
+    
+    static var yesterday: Date { return Date().dayBefore }
+      static var tomorrow:  Date { return Date().dayAfter }
+      var dayBefore: Date {
+          return Calendar.current.date(byAdding: .day, value: -1, to: noon)!
+      }
+      var dayAfter: Date {
+          return Calendar.current.date(byAdding: .day, value: 1, to: noon)!
+      }
+      var noon: Date {
+          return Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
+      }
+      var month: Int {
+          return Calendar.current.component(.month,  from: self)
+      }
+      var isLastDayOfMonth: Bool {
+          return dayAfter.month != month
+      }
 }
 
-class ChatViewController: UITableViewController {
+class ChatViewController: UIViewController {
     
     private let cellId = "id"
+    var chatViewModel = ChatViewModel()
        
-       let chatMessages = [
-           [
-               ChatMessage(text: "Heloo This is my first messages", isIncoming: true, date: Date.dateFromCustomString(customString: "2020/09/20")),
-               ChatMessage(text: "Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan", isIncoming: false, date: Date.dateFromCustomString(customString: "2020/09/25") ),
-           ],
-           [
-               ChatMessage(text: "Heloo This is my first messages", isIncoming: true, date: Date.dateFromCustomString(customString: "2020/09/30")),
-               ChatMessage(text: "Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan", isIncoming: false, date: Date.dateFromCustomString(customString: "2020/10/01")),
-               ChatMessage(text: "Heloo This is my first messages", isIncoming: true, date: Date.dateFromCustomString(customString: "2020/10/02")),
-           ],
-           [
-               ChatMessage(text: "Heloo This is my first messages", isIncoming: true, date: Date.dateFromCustomString(customString: "2020/10/03")),
-               ChatMessage(text: "Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan", isIncoming: false, date: Date.dateFromCustomString(customString: "2020/10/04")),
-               ChatMessage(text: "Heloo This is my first messages", isIncoming: true, date: Date.dateFromCustomString(customString: "2020/10/04")),
-           ],
-           [
-               ChatMessage(text: "Heloo This is my first messages", isIncoming: true, date: Date.dateFromCustomString(customString: "2020/10/05")),
-               ChatMessage(text: "Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan Ini adalah test untuk membuat pesan", isIncoming: false, date: Date.dateFromCustomString(customString: "2020/10/06")),
-               ChatMessage(text: "Heloo This is my first messages", isIncoming: true, date: Date.dateFromCustomString(customString: "2020/10/07")),
-           ]
-       ]
     
-//    private let inputChat=
+    var chatMessages = [[ChatMessage]]()
+    
+    lazy var inputField: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.returnKeyType = .continue
+        field.layer.cornerRadius = 5
+        field.placeholder = "Type your message here ..."
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.leftViewMode = .always
+        field.backgroundColor = UIColor.systemGray6
+        return field
+    }()
+    
+    lazy var sendButton: UIButton={
+        let btn = UIButton()
+        btn.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
+        btn.backgroundColor = .link
+        btn.tintColor = .white
+        btn.layer.cornerRadius = 5
+        btn.layer.masksToBounds = true
+        btn.addTarget(self, action: #selector(didSendMessage), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var inputChat: UIView = {
+        let v = UIView()
+        v.addSubview(inputField)
+        v.addSubview(sendButton)
+        let border = UIView()
+        v.addSubview(border)
+        border.backgroundColor = UIColor.systemGray2
+        border.anchor(top: v.topAnchor, left: v.leftAnchor, right: v.rightAnchor, height: 1)
+        v.dropShadow(color: UIColor.systemGray6, opacity: 0.5, offSet: CGSize(width: 0, height: -2), radius: 1, scale: true)
+        
+        return v
+    }()
+    
+    lazy var tableView: UITableView = {
+       let table = UITableView()
+        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
+       return table
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,10 +94,66 @@ class ChatViewController: UITableViewController {
         tableView.register(ChatCell.self, forCellReuseIdentifier: cellId)
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        tableView.delegate = self
+        tableView.dataSource = self
+        listenData()
+        view.addSubview(tableView)
+        view.addSubview(inputChat)
+        
+        inputField.delegate = self
+        
+        
+        tableView.anchor(top: view.topAnchor, left: view.leftAnchor,bottom: inputChat.topAnchor, right: view.rightAnchor)
+        inputChat.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor,height: 80)
+        inputField.anchor(top: inputChat.topAnchor, left: inputChat.leftAnchor, bottom: inputChat.bottomAnchor, right: sendButton.leftAnchor, paddingTop: 10, paddingBottom: 25, paddingLeft: 16, paddingRight: 10)
+        sendButton.anchor(top: inputChat.topAnchor, bottom: inputChat.bottomAnchor, right: inputChat.rightAnchor, paddingTop: 10, paddingBottom: 25, paddingRight: 16, width: 45)
+    }
+    
+    @objc
+    func didSendMessage(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String,
+              let chat = inputField.text else {
+            print("No user data")
+            return
+        }
+        
+        chatViewModel.sendMessage(codeDriver: codeDriver,chat: chat) {[weak self] (result) in
+            if result {
+                print("Success To send Messages")
+            }else {
+                print("Failed to send messages")
+            }
+            self?.inputField.text = ""
+        }
+    }
+    
+    
+    func listenData(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        chatViewModel.getAllMsssages(codeDriver: codeDriver) { (result) in
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.chatMessages = data
+                    self.tableView.reloadData()
+                    let indexPath = NSIndexPath(item: data.last!.count-1, section: data.count-1)
+                    self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+        
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Chat With Admin"
+        navigationItem.title = "Chat With Customer Services"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didBack))
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
@@ -76,7 +167,10 @@ class ChatViewController: UITableViewController {
         dismiss(animated: true, completion: nil)
     }
 
-       override func numberOfSections(in tableView: UITableView) -> Int {
+}
+
+extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
            return chatMessages.count
        }
        
@@ -104,14 +198,19 @@ class ChatViewController: UITableViewController {
            }
        }
        
-       override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
            if let firstIndexInMessage = chatMessages[section].first{
                let dateFormater = DateFormatter()
                dateFormater.dateFormat = "yyyy/MM/dd"
                let dateString = dateFormater.string(from: firstIndexInMessage.date)
+            
+                let dateStringYesterday = dateFormater.string(from: Date.yesterday)
+                let dateStringNow = dateFormater.string(from: Date())
+            
+                let value = dateString == dateStringNow ? "Today" : dateString == dateStringYesterday ? "Yesterday" : dateString
 
                let label = DateHeaderLabel()
-               label.text = dateString
+               label.text = value
                
                
                let containerLabel = UIView()
@@ -127,19 +226,15 @@ class ChatViewController: UITableViewController {
            return nil
        }
        
-       override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
            return 50
        }
-       
-   //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-   //        return "Section \(Date())"
-   //    }
-       
-       override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+              
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
            return chatMessages[section].count
        }
        
-       override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
            let cell = tableView.dequeueReusableCell(withIdentifier: cellId,for: indexPath) as! ChatCell
            let chatMessage = chatMessages[indexPath.section][indexPath.row]
            
@@ -147,5 +242,14 @@ class ChatViewController: UITableViewController {
            
            return cell
        }
+}
 
+
+extension ChatViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == inputField {
+            didSendMessage()
+        }
+        return true
+    }
 }

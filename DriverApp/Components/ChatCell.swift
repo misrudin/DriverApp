@@ -10,6 +10,7 @@ import UIKit
 class ChatCell: UITableViewCell {
     
     let messageLabel = UILabel()
+    let timeLabel = UILabel()
     let bubleBackgroundView = UIView()
     
     var leading: NSLayoutConstraint!
@@ -17,17 +18,19 @@ class ChatCell: UITableViewCell {
     
     var chatMessage: ChatMessage! {
         didSet{
-            bubleBackgroundView.backgroundColor = chatMessage.isIncoming ? UIColor(named: "orangeKasumi") : .white
-            messageLabel.textColor = chatMessage.isIncoming ? .white : .black
+            bubleBackgroundView.backgroundColor = chatMessage.isIncoming ? .white : UIColor(named: "orangeKasumi")
+            messageLabel.textColor = chatMessage.isIncoming ? .black : .white
+            timeLabel.textColor = chatMessage.isIncoming ? UIColor.systemGray2 : UIColor.white
             
             messageLabel.text = chatMessage.text
+            timeLabel.text = chatMessage.time
             
             if chatMessage.isIncoming {
-                leading.isActive = true
-                trailing.isActive = false
-            }else {
                 trailing.isActive = true
                 leading.isActive = false
+            }else {
+                leading.isActive = true
+                trailing.isActive = false
             }
         }
     }
@@ -40,9 +43,12 @@ class ChatCell: UITableViewCell {
         bubleBackgroundView.backgroundColor = .red
         bubleBackgroundView.layer.cornerRadius = 16
         bubleBackgroundView.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.font = UIFont.systemFont(ofSize: 10)
         addSubview(bubleBackgroundView)
         
         addSubview(messageLabel)
+        addSubview(timeLabel)
         messageLabel.numberOfLines = 0
         
         
@@ -51,13 +57,16 @@ class ChatCell: UITableViewCell {
         let constraints = [
             
             messageLabel.topAnchor.constraint(equalTo: topAnchor,constant: 16),
-            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor,constant: -32),
-            messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
+            messageLabel.bottomAnchor.constraint(equalTo: bottomAnchor,constant: -35),
+            messageLabel.widthAnchor.constraint(lessThanOrEqualToConstant: frame.size.width-50),
             
-            bubleBackgroundView.topAnchor.constraint(equalTo: messageLabel.topAnchor,constant: -16),
-            bubleBackgroundView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor,constant: -16),
-            bubleBackgroundView.bottomAnchor.constraint(equalTo: messageLabel.bottomAnchor,constant: 16),
-            bubleBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor,constant: 16),
+            bubleBackgroundView.topAnchor.constraint(equalTo: messageLabel.topAnchor,constant: -10),
+            bubleBackgroundView.leadingAnchor.constraint(equalTo: messageLabel.leadingAnchor,constant: -10),
+            bubleBackgroundView.bottomAnchor.constraint(equalTo: messageLabel.bottomAnchor,constant: 25),
+            bubleBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor,constant: 10),
+            
+            timeLabel.bottomAnchor.constraint(equalTo: bubleBackgroundView.bottomAnchor, constant: -10),
+            timeLabel.trailingAnchor.constraint(equalTo: bubleBackgroundView.trailingAnchor, constant: -10)
             
         ]
         
@@ -66,8 +75,9 @@ class ChatCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
         
         leading = messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 32)
-        
+        leading.isActive = false
         trailing = messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -32)
+        trailing.isActive = false
     }
     
     required init?(coder: NSCoder) {

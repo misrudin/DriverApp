@@ -49,6 +49,21 @@ struct NoteViewModel {
         }
     }
     
+    func pendingNote(data: DataPending, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.url)note/pending",
+                   method: .post,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+                   })
+    }
+    
     //    Parese data order
     func parseJson(data: Data) -> NotesCheckout?{
         do{

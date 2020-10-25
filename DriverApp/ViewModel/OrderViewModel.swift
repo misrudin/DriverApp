@@ -19,7 +19,6 @@ struct OrderViewModel {
     
     func getDetailOrder(orderNo: String, completion: @escaping (Result<Order,Error>)->Void){
         AF.request("\(Base.url)order/schedule/detail/\(orderNo)",headers: Base.headers).responseJSON { response in
-            debugPrint(response)
             switch response.result {
             case .success:
                 if let data = response.data {

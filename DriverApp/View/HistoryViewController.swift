@@ -11,6 +11,8 @@ class HistoryViewController: UIViewController {
     
     var orderData: [History]?
     let pop = PopUpView()
+    
+    lazy var refreshControl = UIRefreshControl()
 
     private let tableView: UITableView = {
        let table = UITableView()
@@ -32,10 +34,20 @@ class HistoryViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.rowHeight = 150
         
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
+        
+        tableView.addSubview(refreshControl)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        getDataOrder()
+    }
+    
+    @objc
+    func getDataOrder(){
         // get data detail user from local
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
@@ -60,6 +72,7 @@ class HistoryViewController: UIViewController {
                     self.orderData = order.data
                     self.tableView.reloadData()
                     self.pop.show = false
+                    self.refreshControl.endRefreshing()
                 }
             case .failure(let error):
                 print(error)
@@ -67,6 +80,7 @@ class HistoryViewController: UIViewController {
                     self.orderData = []
                     self.tableView.reloadData()
                     self.pop.show = false
+                    self.refreshControl.endRefreshing()
                 }
             }
         }
@@ -79,6 +93,17 @@ class HistoryViewController: UIViewController {
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipses.bubble.fill"), style: .plain, target: self, action: #selector(onClickChatButton))
+        navigationController?.navigationBar.tintColor = .white
+    }
+    
+    @objc
+    func onClickChatButton(){
+        let vc = ChatViewController()
+        let navVc = UINavigationController(rootViewController: vc)
+        navVc.modalPresentationStyle = .fullScreen
+        
+        present(navVc, animated: true, completion: nil)
     }
 
 }

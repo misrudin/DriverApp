@@ -31,6 +31,7 @@ struct Order: Decodable {
     let latitude: String
     let longitude: String
     let storeDetail: Store
+    let idShiftTime: Int
     
     enum CodingKeys: String, CodingKey {
         case idOrder = "id_order"
@@ -40,10 +41,9 @@ struct Order: Decodable {
         case latitude = "lat"
         case longitude = "long"
         case storeDetail = "store_detail"
+        case idShiftTime = "id_shift_time"
     }
 }
-
-
 
 
 struct Store: Decodable {

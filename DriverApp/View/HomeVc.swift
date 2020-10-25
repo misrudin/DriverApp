@@ -16,6 +16,8 @@ class HomeVc: UIViewController {
     var orderViewModel = OrderViewModel()
     var orderData: [Order]?
     
+    lazy var refreshControl = UIRefreshControl()
+    
     private let tableView: UITableView = {
        let table = UITableView()
         table.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.id)
@@ -36,22 +38,32 @@ class HomeVc: UIViewController {
         tableView.separatorStyle = .none
         tableView.rowHeight = 150
         
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
+        
+        tableView.addSubview(refreshControl)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        getDataOrder()
+    }
+    
+    @objc
+    func getDataOrder(){
         // get data detail user from local
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
-        
+        view.addSubview(pop)
+        pop.show = true
         // get data from api
         
         orderViewModel.getDataOrder(codeDriver: codeDriver)
-        view.addSubview(pop)
-        pop.show = true
     }
     
     func configureNavigationBar(){
@@ -123,6 +135,7 @@ extension HomeVc: OrderViewModelDelegate {
             self.orderData = order.data
             self.tableView.reloadData()
             self.pop.show = false
+            self.refreshControl.endRefreshing()
         }
     }
     
@@ -131,6 +144,7 @@ extension HomeVc: OrderViewModelDelegate {
             self.orderData = []
             self.tableView.reloadData()
             self.pop.show = false
+            self.refreshControl.endRefreshing()
         }
     }
 }
