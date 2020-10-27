@@ -25,6 +25,18 @@ class EditProfileVc: UIViewController {
         return image
     }()
     
+    let buttonCamera: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "camera.fill"), for: .normal)
+        button.backgroundColor = UIColor(named: "orangeKasumi")
+        button.tintColor = .white
+        button.layer.cornerRadius = 20
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
+        button.addTarget(self, action: #selector(addPhoto), for: .touchUpInside)
+        return button
+    }()
+    
     
     private let firstName: UITextField = {
         let field = UITextField()
@@ -107,7 +119,7 @@ class EditProfileVc: UIViewController {
     private let submitButton: UIButton={
         let button = UIButton()
         button.setTitle("Save Profile", for: .normal)
-        button.backgroundColor = .blue
+        button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
@@ -150,6 +162,8 @@ class EditProfileVc: UIViewController {
         view.addSubview(mobileNumber)
         view.addSubview(submitButton)
         view.addSubview(imageView)
+        view.addSubview(buttonCamera)
+        buttonCamera.bringSubviewToFront(imageView)
         
         configureLayout()
         
@@ -202,13 +216,15 @@ class EditProfileVc: UIViewController {
     
     func configureLayout(){
         imageView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 250)
-        firstName.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10,height: 50)
+        firstName.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 10, paddingRight: 10,height: 50)
         lastName.anchor(top: firstName.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10,height: 50)
         email.anchor(top: lastName.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10,height: 50)
         lableCoutryCode.anchor(top: email.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10,width: 30,height: 50)
         mobileNumber.anchor(top: email.bottomAnchor, left: lableCoutryCode.rightAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, height: 50)
         lableError.anchor(top: mobileNumber.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
         submitButton.anchor(top: lableError.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10, height: 50)
+        
+        buttonCamera.anchor(top: imageView.bottomAnchor, right: imageView.rightAnchor, paddingTop: -25, paddingRight: 16, width: 40, height: 40)
     }
     
 
@@ -227,5 +243,66 @@ class EditProfileVc: UIViewController {
         dismiss(animated: true)
     }
     
+    @objc
+    func addPhoto(){
+        presentPhotoActionSheet()
+    }
     
+    
+}
+
+
+extension EditProfileVc: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    func presentPhotoActionSheet(){
+           let actionSheet = UIAlertController(title: "Profile Picture",
+                                               message: "How would you like to select a picture?",
+                                               preferredStyle: .actionSheet)
+           
+           actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                               style: .cancel,
+                                               handler: nil))
+           actionSheet.addAction(UIAlertAction(title: "Take Photo",
+                                               style: .default,
+                                               handler: { [weak self] _ in
+                                                   
+                                                   self?.presentCamera()
+                                               }))
+           actionSheet.addAction(UIAlertAction(title: "Choose Phote",
+                                               style: .default,
+                                               handler: { [weak self] _ in
+                                                   self?.presetPhotoPicker()
+                                               }))
+           
+           present(actionSheet, animated: true)
+       }
+       
+       func presentCamera(){
+           let vc = UIImagePickerController()
+           vc.sourceType = .camera
+           vc.delegate = self
+           vc.allowsEditing = true
+           present(vc,animated: true)
+       }
+       
+       func presetPhotoPicker(){
+           let vc = UIImagePickerController()
+           vc.sourceType = .photoLibrary
+           vc.delegate = self
+           vc.allowsEditing = true
+           present(vc,animated: true)
+           
+       }
+       
+       func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+           picker.dismiss(animated: true, completion: nil)
+           guard let selectdedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
+               return
+           }
+           
+           self.imageView.image = selectdedImage
+       }
+       
+       func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+           picker.dismiss(animated: true, completion: nil)
+       }
 }

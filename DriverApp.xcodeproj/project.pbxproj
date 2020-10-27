@@ -27,7 +27,7 @@
 		B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B092543747C007BDD3A /* ChatViewModel.swift */; };
 		B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0C2543748A007BDD3A /* ChatModel.swift */; };
 		B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0F2543775B007BDD3A /* ChatCell.swift */; };
-		B34F7A722544BC2C004AB82B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B34F7A712544BC2C004AB82B /* GoogleService-Info.plist */; };
+		B33C9D3025481783000A95FE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B33C9D2F25481783000A95FE /* GoogleService-Info.plist */; };
 		B34F7A7525460932004AB82B /* PendingNoteVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7425460932004AB82B /* PendingNoteVc.swift */; };
 		B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7825461F8D004AB82B /* DoneViewController.swift */; };
 		B34F7A7D25461F9B004AB82B /* RestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7C25461F9B004AB82B /* RestViewController.swift */; };
@@ -74,7 +74,7 @@
 		B33B1B092543747C007BDD3A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B33B1B0C2543748A007BDD3A /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B33B1B0F2543775B007BDD3A /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
-		B34F7A712544BC2C004AB82B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B33C9D2F25481783000A95FE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B34F7A7425460932004AB82B /* PendingNoteVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingNoteVc.swift; sourceTree = "<group>"; };
 		B34F7A7825461F8D004AB82B /* DoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneViewController.swift; sourceTree = "<group>"; };
 		B34F7A7C25461F9B004AB82B /* RestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestViewController.swift; sourceTree = "<group>"; };
@@ -198,7 +198,7 @@
 		B36E09722536E11800F1B421 /* DriverApp */ = {
 			isa = PBXGroup;
 			children = (
-				B34F7A712544BC2C004AB82B /* GoogleService-Info.plist */,
+				B33C9D2F25481783000A95FE /* GoogleService-Info.plist */,
 				B31AF18425393DD400D693D3 /* Networking */,
 				B32A388F25383674000EFBB6 /* Components */,
 				B36E09A0253723CF00F1B421 /* Utils */,
@@ -291,6 +291,7 @@
 				B36E096E2536E11800F1B421 /* Resources */,
 				86989D76F60592E1B0DF6BDB /* [CP] Embed Pods Frameworks */,
 				13AE4779360C0B8986A1F7AF /* [CP] Copy Pods Resources */,
+				B35599C22547DF100095CE76 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -346,7 +347,7 @@
 			files = (
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
-				B34F7A722544BC2C004AB82B /* GoogleService-Info.plist in Resources */,
+				B33C9D3025481783000A95FE /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +387,26 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DriverApp/Pods-DriverApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B35599C22547DF100095CE76 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		F757A5A686BC0BD854940030 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -594,6 +615,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 8B6B66279C;
 				INFOPLIST_FILE = DriverApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -614,6 +636,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 8B6B66279C;
 				INFOPLIST_FILE = DriverApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

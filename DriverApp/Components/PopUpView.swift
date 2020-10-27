@@ -21,7 +21,12 @@ class PopUpView: UIView {
         }
     }
     
-    let indicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), type: .ballPulseSync, color: .red, padding: 5)
+    let indicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0,
+                                                          width: 50,
+                                                          height: 50),
+                                            type: .ballPulseSync,
+                                            color: .red,
+                                            padding: 5)
     
     let lableDetail: UILabel = {
         let l = UILabel()
@@ -49,7 +54,8 @@ class PopUpView: UIView {
     @objc
     fileprivate func animateOut(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
+//            self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
+            self.container.transform = CGAffineTransform(translationX: 0, y: -10)
             self.alpha = 0
             self.indicator.stopAnimating()
         }) { (complete) in
@@ -62,7 +68,8 @@ class PopUpView: UIView {
     @objc
     fileprivate func animateIn(){
         self.indicator.startAnimating()
-        self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
+//        self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
+        self.container.transform = CGAffineTransform(translationX: 0, y: 10)
         self.alpha = 0
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             self.container.transform = .identity

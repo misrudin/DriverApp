@@ -155,6 +155,7 @@ class NotesVc: UIViewController {
         pendingButton.anchor(top: containerButton.topAnchor, bottom: containerButton.bottomAnchor, right: containerButton.rightAnchor,width: view.frame.size.width/2)
         
         tableView.anchor(top: containerButton.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        tableView.separatorStyle = .none
     }
     
     
@@ -194,8 +195,9 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: NoteCell.id, for: indexPath) as! NoteCell
         
-    
+        
         cell.labelNote.text = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
+        cell.labelTime.text = display == "CHECKOUT" ? "\(checkoutData[indexPath.row].createdDate), \(checkoutData[indexPath.row].createdTime)" : "\(pendingData[indexPath.row].createdDate), \(pendingData[indexPath.row].createdTime)"
         
         return cell
         

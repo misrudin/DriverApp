@@ -93,6 +93,7 @@ class CardViewController: UIViewController {
     let storeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir", size: 18)
+        label.numberOfLines = 0
         
         return label
     }()
@@ -109,6 +110,7 @@ class CardViewController: UIViewController {
     let destinationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont(name: "Avenir", size: 18)
+        label.numberOfLines = 0
         
         return label
     }()

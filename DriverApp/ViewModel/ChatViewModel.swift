@@ -71,7 +71,7 @@ struct ChatViewModel {
         let dateStringNow = dateFormater.string(from: dateNow)
         
         let dateFormatString = DateFormatter()
-        dateFormatString.dateFormat = "yyyy-MM-dd, HH:mm:ss"
+        dateFormatString.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
         let dateString = dateFormatString.string(from: dateNow)
         
@@ -94,7 +94,7 @@ struct ChatViewModel {
             "chatContent" : chatdData.chatContent,
             "chatDate" : chatdData.chatDate,
             "chatTime" : chatdData.chatTime,
-            "sendBy" : chatdData.sendBy
+            "sendBy" : Int(chatdData.sendBy)!
         ]
         //push data
         database.child(urlFirebase).childByAutoId().setValue(chatDataDict) { (error, _) in

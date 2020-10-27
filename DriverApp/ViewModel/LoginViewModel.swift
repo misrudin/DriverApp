@@ -24,6 +24,7 @@ struct LoginViewModel {
         if let jsonData = try? encoder.encode(userLogin) {
             if let jsonString = String(data: jsonData, encoding: .utf8){
                 let crypted = try! AES256.encrypt(input: jsonString, passphrase: Base.paswordEncKey)
+                print(crypted)
                 let dataToPost: [String:String] = [
                     "data" : crypted
                 ]

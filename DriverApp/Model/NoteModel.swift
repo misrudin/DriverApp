@@ -17,9 +17,16 @@ struct NotesPending: Codable {
 
 struct Pending: Codable {
     let note: String
+    let idNote: Int
+    let createdDate: String
+    let createdTime: String
+    
     
     enum CodingKeys: String, CodingKey {
         case note = "note"
+        case idNote = "id_note"
+        case createdDate = "created_date"
+        case createdTime = "created_time"
     }
 }
 
