@@ -16,8 +16,7 @@ class DayOffViewController: UIViewController {
         let label = UILabel()
         label.text = months[Calendar.current.component(.month, from: Date())-1]
         label.textColor = UIColor.black
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 20,weight: .bold)
         return label
     }()
     
@@ -26,9 +25,25 @@ class DayOffViewController: UIViewController {
     var xOffset:CGFloat = 10
 
     
+    lazy var subTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Shift on this date"
+        label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 16,weight: .medium)
+        return label
+    }()
+    
+    lazy var dateLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Minggu, 12 okt 2020"
+        label.textColor = UIColor.lightGray
+        label.font = UIFont.systemFont(ofSize: 14,weight: .regular)
+        return label
+    }()
+    
     let contrainerView: UIView = {
         let view=UIView()
-        view.backgroundColor = UIColor.lightGray
+        view.backgroundColor = UIColor.white
         view.layer.cornerRadius = 5
         return view
     }()
@@ -47,6 +62,8 @@ class DayOffViewController: UIViewController {
         scView.showsHorizontalScrollIndicator = false
         scView.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10,height: 100)
         view.addSubview(contrainerView)
+        contrainerView.addSubview(dateLabel)
+        contrainerView.addSubview(subTitleLabel)
         scView.translatesAutoresizingMaskIntoConstraints = false
         let daysInMounth = Date().daysInMonth()
         
@@ -96,7 +113,7 @@ class DayOffViewController: UIViewController {
         scView.contentSize = CGSize(width: xOffset, height: scView.frame.height)
         scView.contentInset = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 6)
 
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "bgKasumi")
         configureNavigationBar()
         configureLayout()
     }
@@ -106,15 +123,18 @@ class DayOffViewController: UIViewController {
         guard let tanggal = sender.ourCustomValue else {
             return
         }
-        print(tanggal)
+        let date = Date.dayStringFromStringDate(customDate: tanggal as! String)
+        dateLabel.text = date
     }
     
    
     
     func configureLayout(){
-        titleLabel.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16)
-        contrainerView.anchor(top: scView.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 100, paddingLeft: 16, paddingRight: 16)
+        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        contrainerView.anchor(top: scView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
         contrainerView.dropShadow(color: UIColor.blue, opacity: 1, offSet: CGSize(width: 5, height: 5), radius: 5, scale: false)
+        subTitleLabel.anchor(top: contrainerView.topAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
+        dateLabel.anchor(top: subTitleLabel.bottomAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
     }
     
 
@@ -178,6 +198,21 @@ extension Date {
         
         return dayString
     }
+    
+    static func dayStringFromStringDate(customDate: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "EE, dd MMM Y"
+        
+        let date = dateFormatter.date(from: customDate)
+        let dayString = dateFor.string(from: date!)
+        
+        
+        return dayString
+    }
+    
+    
     
     static func dateStringFrom(customDate: Int) -> String {
         let year = Calendar.current.component(.year, from: Date())

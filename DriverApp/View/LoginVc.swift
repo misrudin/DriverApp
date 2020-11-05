@@ -15,11 +15,9 @@ class LoginVc: UIViewController {
     
     private let labelTitleLogin: UILabel = {
        let label = UILabel()
-        label.text = "USMH DRIVER"
-        label.font = UIFont.systemFont(ofSize: 25, weight: .bold)
-        label.textColor = .red
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Welcome to Usmh Driver"
+        label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
+        label.textColor = UIColor.systemGray
         return label
     }()
     
@@ -91,6 +89,10 @@ class LoginVc: UIViewController {
     
     private let stakView : UIStackView = {
        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.distribution  = .equalSpacing
+        stack.alignment = .center
+        stack.spacing   = 16.0
         
         return stack
     }()
@@ -100,12 +102,20 @@ class LoginVc: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        view.addSubview(labelTitleLogin)
-        view.addSubview(codeDriver)
-        view.addSubview(password)
-        view.addSubview(lableError)
-        view.addSubview(loginButton)
-        view.addSubview(forgetPasswordButton)
+//        view.addSubview(labelTitleLogin)
+//        view.addSubview(codeDriver)
+//        view.addSubview(password)
+//        view.addSubview(lableError)
+//        view.addSubview(loginButton)
+//        view.addSubview(forgetPasswordButton)
+        
+        view.addSubview(stakView)
+        stakView.addArrangedSubview(labelTitleLogin)
+        stakView.addArrangedSubview(codeDriver)
+        stakView.addArrangedSubview(password)
+        stakView.addArrangedSubview(lableError)
+        stakView.addArrangedSubview(loginButton)
+        stakView.addArrangedSubview(forgetPasswordButton)
         
         
         codeDriver.delegate = self
@@ -119,38 +129,19 @@ class LoginVc: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        NSLayoutConstraint.activate([
         
-            labelTitleLogin.topAnchor.constraint(equalTo: view.topAnchor,constant: view.frame.width/2),
-            labelTitleLogin.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            labelTitleLogin.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            labelTitleLogin.heightAnchor.constraint(equalToConstant: 30),
-            
-            codeDriver.topAnchor.constraint(equalTo: labelTitleLogin.bottomAnchor,constant: 40),
-            codeDriver.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            codeDriver.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            codeDriver.heightAnchor.constraint(equalToConstant: 50),
-            
-            password.topAnchor.constraint(equalTo: codeDriver.bottomAnchor,constant: 20),
-            password.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            password.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            password.heightAnchor.constraint(equalToConstant: 50),
-            
-            lableError.topAnchor.constraint(equalTo: password.bottomAnchor,constant: 20),
-            lableError.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            lableError.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            
-            loginButton.topAnchor.constraint(equalTo: lableError.bottomAnchor,constant: 40),
-            loginButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            loginButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            loginButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            forgetPasswordButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor,constant: 20),
-            forgetPasswordButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            forgetPasswordButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            forgetPasswordButton.heightAnchor.constraint(equalToConstant: 50),
+        stakView.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 16, paddingRight: 16)
         
-        ])
+        stakView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stakView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        
+        labelTitleLogin.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor,height: 40)
+        
+        codeDriver.anchor(top: labelTitleLogin.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 40, height: 50)
+        password.anchor(top: codeDriver.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10, height: 50)
+        
+        loginButton.anchor(top: password.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20, height: 50)
+        
     }
 }
 
