@@ -20,7 +20,6 @@
 		B32944CE254205330040E90C /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32944CD254205330040E90C /* NoteCell.swift */; };
 		B32944D1254213520040E90C /* EditProfileVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32944D0254213520040E90C /* EditProfileVc.swift */; };
 		B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A388625383207000EFBB6 /* HistoryViewController.swift */; };
-		B32A388D2538322C000EFBB6 /* DayOffViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A388C2538322C000EFBB6 /* DayOffViewController.swift */; };
 		B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */; };
 		B32A389525386C2E000EFBB6 /* AesEverywhere in Frameworks */ = {isa = PBXBuildFile; productRef = B32A389425386C2E000EFBB6 /* AesEverywhere */; };
 		B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0025434D73007BDD3A /* PopUpView.swift */; };
@@ -51,6 +50,10 @@
 		B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E099A25371D7000F1B421 /* HomeVc.swift */; };
 		B36E09A2253723E700F1B421 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09A1253723E700F1B421 /* Protocols.swift */; };
 		B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09AC25372F3000F1B421 /* MenuOption.swift */; };
+		B3DE97982555364400A30892 /* DayOffVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97972555364400A30892 /* DayOffVc.swift */; };
+		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
+		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
+		B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97A22555611B00A30892 /* ShiftCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,7 +72,6 @@
 		B32944CD254205330040E90C /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		B32944D0254213520040E90C /* EditProfileVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVc.swift; sourceTree = "<group>"; };
 		B32A388625383207000EFBB6 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
-		B32A388C2538322C000EFBB6 /* DayOffViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewController.swift; sourceTree = "<group>"; };
 		B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		B33B1B0025434D73007BDD3A /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		B33B1B052543746E007BDD3A /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,10 @@
 		B36E099A25371D7000F1B421 /* HomeVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVc.swift; sourceTree = "<group>"; };
 		B36E09A1253723E700F1B421 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		B36E09AC25372F3000F1B421 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
+		B3DE97972555364400A30892 /* DayOffVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffVc.swift; sourceTree = "<group>"; };
+		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
+		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
+		B3DE97A22555611B00A30892 /* ShiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -140,6 +146,7 @@
 				B33B1B0025434D73007BDD3A /* PopUpView.swift */,
 				B33B1B0F2543775B007BDD3A /* ChatCell.swift */,
 				B328BB9A2550168C00FACA03 /* ActionCell.swift */,
+				B3DE97A22555611B00A30892 /* ShiftCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -220,6 +227,7 @@
 		B36E098A2536E47100F1B421 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B3DE97962555360000A30892 /* DayOffScheduling */,
 				B34F7A7725461F6D004AB82B /* Status */,
 				B33B1B042543744F007BDD3A /* Chatting */,
 				B3544F2D253D894800B6A001 /* Notes */,
@@ -228,7 +236,6 @@
 				B36E09922536E6CC00F1B421 /* MainVc.swift */,
 				B36E099A25371D7000F1B421 /* HomeVc.swift */,
 				B32A388625383207000EFBB6 /* HistoryViewController.swift */,
-				B32A388C2538322C000EFBB6 /* DayOffViewController.swift */,
 				B31AF18D2539761800D693D3 /* ForgetViewController.swift */,
 				B354B120253B8B3E00B5798B /* LiveTrackingVC.swift */,
 			);
@@ -246,6 +253,7 @@
 				B35253C4253C309600AF71DF /* MapsModel.swift */,
 				B32944C92541F8710040E90C /* NoteModel.swift */,
 				B33B1B0C2543748A007BDD3A /* ChatModel.swift */,
+				B3DE979F2555379300A30892 /* DayOffModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -259,6 +267,7 @@
 				B35598E52541ED2300866C10 /* OrderViewModel.swift */,
 				B32944C62541EFED0040E90C /* NoteViewModel.swift */,
 				B33B1B092543747C007BDD3A /* ChatViewModel.swift */,
+				B3DE979C255536EC00A30892 /* DayOffViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -270,6 +279,14 @@
 				B354B10D253B586000B5798B /* Helpers.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		B3DE97962555360000A30892 /* DayOffScheduling */ = {
+			isa = PBXGroup;
+			children = (
+				B3DE97972555364400A30892 /* DayOffVc.swift */,
+			);
+			path = DayOffScheduling;
 			sourceTree = "<group>";
 		};
 		F4DF3A4E1BE601397296818F /* Pods */ = {
@@ -451,8 +468,10 @@
 				B35253C5253C309600AF71DF /* MapsModel.swift in Sources */,
 				B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */,
 				B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */,
+				B3DE97982555364400A30892 /* DayOffVc.swift in Sources */,
 				B3544F26253D572700B6A001 /* CardViewController.swift in Sources */,
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
+				B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */,
 				B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */,
 				B31AF1912539836600D693D3 /* Base.swift in Sources */,
 				B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */,
@@ -468,11 +487,12 @@
 				B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */,
 				B31AF18625393DF800D693D3 /* LoginViewModel.swift in Sources */,
 				B36E09762536E11800F1B421 /* SceneDelegate.swift in Sources */,
+				B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */,
+				B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */,
 				B3544F1F253D3E0C00B6A001 /* ChangePasswordVC.swift in Sources */,
 				B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */,
 				B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */,
 				B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */,
-				B32A388D2538322C000EFBB6 /* DayOffViewController.swift in Sources */,
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
 				B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */,
 				B354B11B253B7B3600B5798B /* OrderModel.swift in Sources */,

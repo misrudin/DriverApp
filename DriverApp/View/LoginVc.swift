@@ -102,13 +102,6 @@ class LoginVc: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-//        view.addSubview(labelTitleLogin)
-//        view.addSubview(codeDriver)
-//        view.addSubview(password)
-//        view.addSubview(lableError)
-//        view.addSubview(loginButton)
-//        view.addSubview(forgetPasswordButton)
-        
         view.addSubview(stakView)
         stakView.addArrangedSubview(labelTitleLogin)
         stakView.addArrangedSubview(codeDriver)

@@ -34,7 +34,7 @@ class MainVc: UIViewController {
         historyVc.title = "History"
         let notesVc = UINavigationController(rootViewController: NotesVc())
         notesVc.title = "Notes"
-        let dayOffVc = UINavigationController(rootViewController: DayOffViewController())
+        let dayOffVc = UINavigationController(rootViewController: DayOffVc())
         dayOffVc.title = "Day Off"
         let profileVc = ProfileViewController()
         profileVc.title = "My Account"
