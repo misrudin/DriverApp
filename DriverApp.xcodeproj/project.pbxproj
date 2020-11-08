@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8BD3326DC147B1D714B128FD /* Pods_DriverApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E61644620818F519AC47ACC /* Pods_DriverApp.framework */; };
+		B308DB5F255794B30088D741 /* PlanVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B308DB5E255794B30088D741 /* PlanVc.swift */; };
 		B31AF18625393DF800D693D3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF18525393DF800D693D3 /* LoginViewModel.swift */; };
 		B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1892539424C00D693D3 /* LoginModel.swift */; };
 		B31AF18E2539761800D693D3 /* ForgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF18D2539761800D693D3 /* ForgetViewController.swift */; };
@@ -60,6 +61,7 @@
 		0E61644620818F519AC47ACC /* Pods_DriverApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriverApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A4C52454D4418B9A15E04F1 /* Pods-DriverApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverApp.debug.xcconfig"; path = "Target Support Files/Pods-DriverApp/Pods-DriverApp.debug.xcconfig"; sourceTree = "<group>"; };
 		8E68BE407A0A52209DEF8018 /* Pods-DriverApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverApp.release.xcconfig"; path = "Target Support Files/Pods-DriverApp/Pods-DriverApp.release.xcconfig"; sourceTree = "<group>"; };
+		B308DB5E255794B30088D741 /* PlanVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanVc.swift; sourceTree = "<group>"; };
 		B31AF18525393DF800D693D3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B31AF1892539424C00D693D3 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		B31AF18D2539761800D693D3 /* ForgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetViewController.swift; sourceTree = "<group>"; };
@@ -285,6 +287,7 @@
 			isa = PBXGroup;
 			children = (
 				B3DE97972555364400A30892 /* DayOffVc.swift */,
+				B308DB5E255794B30088D741 /* PlanVc.swift */,
 			);
 			path = DayOffScheduling;
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				B354B121253B8B3E00B5798B /* LiveTrackingVC.swift in Sources */,
 				B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */,
 				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
+				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
 				B32944CA2541F8710040E90C /* NoteModel.swift in Sources */,
 				B35253C8253C30A900AF71DF /* MapsViewModel.swift in Sources */,
 				B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */,

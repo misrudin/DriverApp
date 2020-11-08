@@ -128,6 +128,8 @@ class LoginVc: UIViewController {
         stakView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         stakView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         
+//        lableError.left
+        
         labelTitleLogin.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor,height: 40)
         
         codeDriver.anchor(top: labelTitleLogin.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 40, height: 50)

@@ -66,7 +66,7 @@ class ChangePasswordVC: UIViewController {
     private let submitButton: UIButton={
         let loginButton = UIButton()
         loginButton.setTitle("Submit New Password", for: .normal)
-        loginButton.backgroundColor = .blue
+        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 5
         loginButton.layer.masksToBounds = true
@@ -75,16 +75,6 @@ class ChangePasswordVC: UIViewController {
         return loginButton
     }()
     
-    private let lableError: UILabel = {
-       let label = UILabel()
-        label.text = "Username or Password Wrong"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .red
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.isHidden = true
-        return label
-    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,7 +82,6 @@ class ChangePasswordVC: UIViewController {
         view.addSubview(oldPassword)
         view.addSubview(newPassword)
         view.addSubview(confirmPassword)
-        view.addSubview(lableError)
         view.addSubview(submitButton)
         
         configureLayout()
@@ -134,11 +123,9 @@ class ChangePasswordVC: UIViewController {
                     DispatchQueue.main.async {
 
                         if data.status != 200 {
-                            self?.lableError.isHidden = false
-                            self?.lableError.text = data.message
+                            Helpers().showAlert(view: self!, message: data.message)
                             self?.pop.show = false
                         }else{
-                            self?.lableError.isHidden = true
                             self?.dismiss(animated: true, completion: nil)
                             self?.pop.show = false
                         }
@@ -150,16 +137,18 @@ class ChangePasswordVC: UIViewController {
                 }
                 
             }
+        }else {
+            Helpers().showAlert(view: self, message: "New password not match !")
         }
         
     }
     
     
+    
     func configureLayout(){
-        oldPassword.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: view.frame.width/3, paddingLeft: 10, paddingRight: 10, height: 50)
+        oldPassword.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10, height: 50)
         newPassword.anchor(top: oldPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, height: 50)
         confirmPassword.anchor(top: newPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, height: 50)
-        lableError.anchor(top: confirmPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, height: 50)
-        submitButton.anchor(top: lableError.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingRight: 10, height: 50)
+        submitButton.anchor(top: confirmPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10, height: 50)
     }
 }

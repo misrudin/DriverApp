@@ -203,5 +203,38 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
         
     }
     
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print(indexPath.row)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action1 = UIContextualAction(
+               style: .normal,
+               title: "Edit",
+               handler: { (action, view, completion) in
+                   completion(true)
+           })
+        let action2 = UIContextualAction(
+            style: .normal,
+               title: "Delete",
+               handler: { (action, view, completion) in
+                   completion(true)
+           })
+
+           action1.image = UIImage(systemName: "person")
+           action1.backgroundColor = UIColor(named: "yellowKasumi")
+           action2.image = UIImage(systemName: "person")
+           action2.backgroundColor = UIColor.systemRed
+           let configuration = UISwipeActionsConfiguration(actions: [action2,action1])
+           configuration.performsFirstActionWithFullSwipe = false
+           return configuration
+    }
+    
     
 }

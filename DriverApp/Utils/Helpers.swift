@@ -83,3 +83,12 @@ extension UIView {
 }
 
 
+struct Helpers {
+    func showAlert(view: UIViewController,message:String){
+        let alert = UIAlertController(title: "Woopss !", message: message, preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: nil))
+
+        view.present(alert, animated: true)
+    }
+}

@@ -41,6 +41,7 @@ class DayOffVc: UIViewController {
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
+        button.addTarget(self, action: #selector(setPlanClick), for: .touchUpInside)
         return button
     }()
     
@@ -80,7 +81,14 @@ class DayOffVc: UIViewController {
     }()
     
     
-    
+    @objc
+    func setPlanClick(){
+        let vc = PlanVc()
+        let navVc = UINavigationController(rootViewController: vc)
+        navVc.modalPresentationStyle = .fullScreen
+        
+        present(navVc, animated: true, completion: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()

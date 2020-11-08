@@ -60,15 +60,20 @@ struct ProfileViewModel {
                    })
     }
     
-    func updateFoto(data: String, codeDriver: String, completion: @escaping (Result<FotoData,Error>)-> Void){
-        let data = Foto(data: data, code_driver: codeDriver)
+    func updateFoto(data: String, codeDriver: String, completion: @escaping (Result<Bool,Error>)-> Void){
+        let data = Foto(photo: data, code_driver: codeDriver)
         
         AF.request("\(Base.url)livetracking/driver/edit/photo",
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
                     
-                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
                     
         })
     }

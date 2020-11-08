@@ -15,7 +15,7 @@ class NoteCell: UITableViewCell {
        let lable = UILabel()
         lable.font = .systemFont(ofSize: 16)
         lable.textColor = .black
-        lable.numberOfLines = 0
+        lable.numberOfLines = 2
         return lable
     }()
     

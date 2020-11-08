@@ -63,7 +63,7 @@ struct ResultData: Codable {
 
 
 struct Foto: Codable {
-    let data: String
+    let photo: String
     let code_driver: String
 }
 
