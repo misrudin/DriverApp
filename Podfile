@@ -7,7 +7,7 @@ target 'DriverApp' do
 
   # Pods for DriverApp
 	pod 'RxSwift'
-  pod 'RxCocoa'
+  	pod 'RxCocoa'
 
 	pod 'Alamofire'
 	pod 'AlamofireImage'
@@ -17,12 +17,12 @@ target 'DriverApp' do
 
 	pod 'SwiftyJSON'
   
-  pod 'NVActivityIndicatorView'
+  	pod 'NVActivityIndicatorView'
   
-  pod 'Firebase/Core'
-  pod 'Firebase/Database'
-  pod 'Firebase/Analytics'
-  pod 'Firebase/Crashlytics'
+  	pod 'Firebase/Core'
+  	pod 'Firebase/Database'
+  	pod 'Firebase/Analytics'
+  	pod 'Firebase/Crashlytics'
 
 end
 
