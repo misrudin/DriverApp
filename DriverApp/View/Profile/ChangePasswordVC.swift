@@ -94,7 +94,6 @@ class ChangePasswordVC: UIViewController {
     
     func configureNavigationBar(){
         navigationItem.title = "Change Password"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didBack))
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -126,7 +125,7 @@ class ChangePasswordVC: UIViewController {
                             Helpers().showAlert(view: self!, message: data.message)
                             self?.pop.show = false
                         }else{
-                            self?.dismiss(animated: true, completion: nil)
+                            self?.navigationController?.popViewController(animated: true)
                             self?.pop.show = false
                         }
                     }

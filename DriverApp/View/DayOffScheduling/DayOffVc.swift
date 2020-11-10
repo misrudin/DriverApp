@@ -84,10 +84,8 @@ class DayOffVc: UIViewController {
     @objc
     func setPlanClick(){
         let vc = PlanVc()
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        
-        present(navVc, animated: true, completion: nil)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     override func viewDidLoad() {
@@ -291,10 +289,8 @@ class DayOffVc: UIViewController {
     @objc
     func onClickChatButton(){
         let vc = ChatViewController()
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        
-        present(navVc, animated: true, completion: nil)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }

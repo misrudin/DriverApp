@@ -69,3 +69,14 @@ struct DataCheckout {
     let id_driver: Int
     let note: String
 }
+
+
+struct DataEditPending:Codable {
+    let id_note: Int
+    let note: String
+}
+
+struct DataEditCheckout:Codable {
+    let id_note_driver_chcekout: Int
+    let note: String
+}

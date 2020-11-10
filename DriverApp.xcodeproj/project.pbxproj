@@ -12,7 +12,6 @@
 		B31AF18625393DF800D693D3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF18525393DF800D693D3 /* LoginViewModel.swift */; };
 		B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1892539424C00D693D3 /* LoginModel.swift */; };
 		B31AF18E2539761800D693D3 /* ForgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF18D2539761800D693D3 /* ForgetViewController.swift */; };
-		B31AF1912539836600D693D3 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1902539836600D693D3 /* Base.swift */; };
 		B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A52539F6FD00D693D3 /* UserModel.swift */; };
 		B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */; };
 		B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B328BB9A2550168C00FACA03 /* ActionCell.swift */; };
@@ -28,12 +27,18 @@
 		B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B092543747C007BDD3A /* ChatViewModel.swift */; };
 		B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0C2543748A007BDD3A /* ChatModel.swift */; };
 		B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0F2543775B007BDD3A /* ChatCell.swift */; };
-		B33C9D3025481783000A95FE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B33C9D2F25481783000A95FE /* GoogleService-Info.plist */; };
 		B34F7A7525460932004AB82B /* PendingNoteVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7425460932004AB82B /* PendingNoteVc.swift */; };
 		B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7825461F8D004AB82B /* DoneViewController.swift */; };
 		B34F7A7D25461F9B004AB82B /* RestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7C25461F9B004AB82B /* RestViewController.swift */; };
 		B35253C5253C309600AF71DF /* MapsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35253C4253C309600AF71DF /* MapsModel.swift */; };
 		B35253C8253C30A900AF71DF /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35253C7253C30A900AF71DF /* MapsViewModel.swift */; };
+		B3530923255A536F00B68347 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3530922255A536F00B68347 /* Base.swift */; };
+		B3530928255A55DC00B68347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3530927255A55DC00B68347 /* GoogleService-Info.plist */; };
+		B353093F255A62B700B68347 /* LandingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B353093E255A62B700B68347 /* LandingPageView.swift */; };
+		B3530946255A631700B68347 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3530945255A631700B68347 /* RegisterView.swift */; };
+		B353094A255A632F00B68347 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3530949255A632F00B68347 /* LoginView.swift */; };
+		B353094E255A76DF00B68347 /* EditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B353094D255A76DF00B68347 /* EditNoteView.swift */; };
+		B3530951255A898F00B68347 /* PreviewNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3530950255A898F00B68347 /* PreviewNoteView.swift */; };
 		B3544F1F253D3E0C00B6A001 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3544F1E253D3E0C00B6A001 /* ChangePasswordVC.swift */; };
 		B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3544F22253D3ECD00B6A001 /* ProfileViewController.swift */; };
 		B3544F26253D572700B6A001 /* CardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3544F25253D572700B6A001 /* CardViewController.swift */; };
@@ -46,7 +51,6 @@
 		B36E09762536E11800F1B421 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09752536E11800F1B421 /* SceneDelegate.swift */; };
 		B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B36E097C2536E11B00F1B421 /* Assets.xcassets */; };
 		B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B36E097E2536E11B00F1B421 /* LaunchScreen.storyboard */; };
-		B36E098E2536E4C000F1B421 /* LoginVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E098D2536E4C000F1B421 /* LoginVc.swift */; };
 		B36E09932536E6CC00F1B421 /* MainVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09922536E6CC00F1B421 /* MainVc.swift */; };
 		B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E099A25371D7000F1B421 /* HomeVc.swift */; };
 		B36E09A2253723E700F1B421 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09A1253723E700F1B421 /* Protocols.swift */; };
@@ -65,7 +69,6 @@
 		B31AF18525393DF800D693D3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B31AF1892539424C00D693D3 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		B31AF18D2539761800D693D3 /* ForgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetViewController.swift; sourceTree = "<group>"; };
-		B31AF1902539836600D693D3 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		B31AF1A52539F6FD00D693D3 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		B328BB9A2550168C00FACA03 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
@@ -80,12 +83,18 @@
 		B33B1B092543747C007BDD3A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B33B1B0C2543748A007BDD3A /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B33B1B0F2543775B007BDD3A /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
-		B33C9D2F25481783000A95FE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B34F7A7425460932004AB82B /* PendingNoteVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingNoteVc.swift; sourceTree = "<group>"; };
 		B34F7A7825461F8D004AB82B /* DoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneViewController.swift; sourceTree = "<group>"; };
 		B34F7A7C25461F9B004AB82B /* RestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestViewController.swift; sourceTree = "<group>"; };
 		B35253C4253C309600AF71DF /* MapsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsModel.swift; sourceTree = "<group>"; };
 		B35253C7253C30A900AF71DF /* MapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
+		B3530922255A536F00B68347 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
+		B3530927255A55DC00B68347 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B353093E255A62B700B68347 /* LandingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageView.swift; sourceTree = "<group>"; };
+		B3530945255A631700B68347 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		B3530949255A632F00B68347 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		B353094D255A76DF00B68347 /* EditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNoteView.swift; sourceTree = "<group>"; };
+		B3530950255A898F00B68347 /* PreviewNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewNoteView.swift; sourceTree = "<group>"; };
 		B3544F1E253D3E0C00B6A001 /* ChangePasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
 		B3544F22253D3ECD00B6A001 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B3544F25253D572700B6A001 /* CardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewController.swift; sourceTree = "<group>"; };
@@ -100,7 +109,6 @@
 		B36E097C2536E11B00F1B421 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B36E097F2536E11B00F1B421 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B36E09812536E11B00F1B421 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B36E098D2536E4C000F1B421 /* LoginVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVc.swift; sourceTree = "<group>"; };
 		B36E09922536E6CC00F1B421 /* MainVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVc.swift; sourceTree = "<group>"; };
 		B36E099A25371D7000F1B421 /* HomeVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVc.swift; sourceTree = "<group>"; };
 		B36E09A1253723E700F1B421 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -130,13 +138,6 @@
 				0E61644620818F519AC47ACC /* Pods_DriverApp.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		B31AF18425393DD400D693D3 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Networking;
 			sourceTree = "<group>";
 		};
 		B32A388F25383674000EFBB6 /* Components */ = {
@@ -170,6 +171,38 @@
 			path = Status;
 			sourceTree = "<group>";
 		};
+		B3530938255A61A600B68347 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				B353093E255A62B700B68347 /* LandingPageView.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		B3530942255A62EB00B68347 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B3530949255A632F00B68347 /* LoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		B3530943255A62F100B68347 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				B3530945255A631700B68347 /* RegisterView.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		B3530944255A62F900B68347 /* ForgetPassword */ = {
+			isa = PBXGroup;
+			children = (
+				B31AF18D2539761800D693D3 /* ForgetViewController.swift */,
+			);
+			path = ForgetPassword;
+			sourceTree = "<group>";
+		};
 		B3544F1D253D3DE100B6A001 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -185,6 +218,8 @@
 			children = (
 				B3544F30253D899B00B6A001 /* NotesVC.swift */,
 				B34F7A7425460932004AB82B /* PendingNoteVc.swift */,
+				B353094D255A76DF00B68347 /* EditNoteView.swift */,
+				B3530950255A898F00B68347 /* PreviewNoteView.swift */,
 			);
 			path = Notes;
 			sourceTree = "<group>";
@@ -210,8 +245,7 @@
 		B36E09722536E11800F1B421 /* DriverApp */ = {
 			isa = PBXGroup;
 			children = (
-				B33C9D2F25481783000A95FE /* GoogleService-Info.plist */,
-				B31AF18425393DD400D693D3 /* Networking */,
+				B3530927255A55DC00B68347 /* GoogleService-Info.plist */,
 				B32A388F25383674000EFBB6 /* Components */,
 				B36E09A0253723CF00F1B421 /* Utils */,
 				B36E098C2536E48300F1B421 /* ViewModel */,
@@ -229,16 +263,18 @@
 		B36E098A2536E47100F1B421 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B3530944255A62F900B68347 /* ForgetPassword */,
+				B3530943255A62F100B68347 /* Register */,
+				B3530942255A62EB00B68347 /* Login */,
+				B3530938255A61A600B68347 /* Base */,
 				B3DE97962555360000A30892 /* DayOffScheduling */,
 				B34F7A7725461F6D004AB82B /* Status */,
 				B33B1B042543744F007BDD3A /* Chatting */,
 				B3544F2D253D894800B6A001 /* Notes */,
 				B3544F1D253D3DE100B6A001 /* Profile */,
-				B36E098D2536E4C000F1B421 /* LoginVc.swift */,
 				B36E09922536E6CC00F1B421 /* MainVc.swift */,
 				B36E099A25371D7000F1B421 /* HomeVc.swift */,
 				B32A388625383207000EFBB6 /* HistoryViewController.swift */,
-				B31AF18D2539761800D693D3 /* ForgetViewController.swift */,
 				B354B120253B8B3E00B5798B /* LiveTrackingVC.swift */,
 			);
 			path = View;
@@ -249,13 +285,13 @@
 			children = (
 				B36E09AC25372F3000F1B421 /* MenuOption.swift */,
 				B31AF1892539424C00D693D3 /* LoginModel.swift */,
-				B31AF1902539836600D693D3 /* Base.swift */,
 				B31AF1A52539F6FD00D693D3 /* UserModel.swift */,
 				B354B11A253B7B3600B5798B /* OrderModel.swift */,
 				B35253C4253C309600AF71DF /* MapsModel.swift */,
 				B32944C92541F8710040E90C /* NoteModel.swift */,
 				B33B1B0C2543748A007BDD3A /* ChatModel.swift */,
 				B3DE979F2555379300A30892 /* DayOffModel.swift */,
+				B3530922255A536F00B68347 /* Base.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -370,7 +406,7 @@
 			files = (
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
-				B33C9D3025481783000A95FE /* GoogleService-Info.plist in Resources */,
+				B3530928255A55DC00B68347 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -464,6 +500,7 @@
 				B36E09742536E11800F1B421 /* AppDelegate.swift in Sources */,
 				B354B10E253B586000B5798B /* Helpers.swift in Sources */,
 				B32944C72541EFED0040E90C /* NoteViewModel.swift in Sources */,
+				B353094A255A632F00B68347 /* LoginView.swift in Sources */,
 				B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */,
 				B36E09A2253723E700F1B421 /* Protocols.swift in Sources */,
 				B36E09932536E6CC00F1B421 /* MainVc.swift in Sources */,
@@ -476,25 +513,27 @@
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
 				B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */,
 				B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */,
-				B31AF1912539836600D693D3 /* Base.swift in Sources */,
 				B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */,
-				B36E098E2536E4C000F1B421 /* LoginVc.swift in Sources */,
 				B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */,
 				B32944CE254205330040E90C /* NoteCell.swift in Sources */,
 				B354B121253B8B3E00B5798B /* LiveTrackingVC.swift in Sources */,
 				B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */,
 				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
+				B3530923255A536F00B68347 /* Base.swift in Sources */,
 				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
 				B32944CA2541F8710040E90C /* NoteModel.swift in Sources */,
 				B35253C8253C30A900AF71DF /* MapsViewModel.swift in Sources */,
 				B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */,
 				B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */,
+				B353093F255A62B700B68347 /* LandingPageView.swift in Sources */,
 				B31AF18625393DF800D693D3 /* LoginViewModel.swift in Sources */,
 				B36E09762536E11800F1B421 /* SceneDelegate.swift in Sources */,
 				B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */,
 				B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */,
 				B3544F1F253D3E0C00B6A001 /* ChangePasswordVC.swift in Sources */,
 				B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */,
+				B3530951255A898F00B68347 /* PreviewNoteView.swift in Sources */,
+				B3530946255A631700B68347 /* RegisterView.swift in Sources */,
 				B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */,
 				B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */,
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
@@ -502,6 +541,7 @@
 				B354B11B253B7B3600B5798B /* OrderModel.swift in Sources */,
 				B32944D1254213520040E90C /* EditProfileVc.swift in Sources */,
 				B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */,
+				B353094E255A76DF00B68347 /* EditNoteView.swift in Sources */,
 				B31AF18E2539761800D693D3 /* ForgetViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

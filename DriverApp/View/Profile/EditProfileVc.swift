@@ -244,9 +244,8 @@ class EditProfileVc: UIViewController {
             switch result{
             case .success(let response):
                 DispatchQueue.main.async {
-                    print(response)
                     self?.pop.show = false
-                    self?.dismiss(animated: true, completion: nil)
+                    self?.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -274,13 +273,13 @@ class EditProfileVc: UIViewController {
 
     func configureNavigationBar(){
         navigationItem.title = "Edit Profile"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didBack))
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
+        
     }
     
     @objc func didBack(){

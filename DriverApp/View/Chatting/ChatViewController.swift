@@ -153,18 +153,13 @@ class ChatViewController: UIViewController {
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Chat With Customer Services"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didBack))
+        navigationItem.title = "Customer Service"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
-    }
-    
-    @objc func didBack(){
-        dismiss(animated: true, completion: nil)
     }
 
 }

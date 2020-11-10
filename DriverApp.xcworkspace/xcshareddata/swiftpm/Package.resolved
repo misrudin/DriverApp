@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AesEverywhere",
+        "repositoryURL": "https://github.com/mervick/aes-everywhere-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "bf0fd6386e292715278491a2efc1c931403455eb",
+          "version": "1.2.0"
+        }
+      },
+      {
+        "package": "Cryptor",
+        "repositoryURL": "https://github.com/IBM-Swift/BlueCryptor.git",
+        "state": {
+          "branch": null,
+          "revision": "6e83ae419817e7272f2f80a7a005a26df366dd8e",
+          "version": "1.0.31"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

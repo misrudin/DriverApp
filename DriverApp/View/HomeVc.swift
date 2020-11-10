@@ -80,10 +80,8 @@ class HomeVc: UIViewController {
     @objc
     func onClickChatButton(){
         let vc = ChatViewController()
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        
-        present(navVc, animated: true, completion: nil)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
@@ -119,9 +117,8 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
             
             let vc = LiveTrackingVC()
             vc.order = order
-            let navVc = UINavigationController(rootViewController: vc)
-            navVc.modalPresentationStyle = .fullScreen
-            present(navVc, animated: true, completion: nil)  
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
             
         }
     }

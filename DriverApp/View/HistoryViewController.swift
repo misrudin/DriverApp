@@ -100,10 +100,8 @@ class HistoryViewController: UIViewController {
     @objc
     func onClickChatButton(){
         let vc = ChatViewController()
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        
-        present(navVc, animated: true, completion: nil)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 
 }

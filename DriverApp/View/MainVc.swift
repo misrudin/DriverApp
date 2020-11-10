@@ -15,7 +15,6 @@ class MainVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-      
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -36,7 +35,7 @@ class MainVc: UIViewController {
         notesVc.title = "Notes"
         let dayOffVc = UINavigationController(rootViewController: DayOffVc())
         dayOffVc.title = "Day Off"
-        let profileVc = ProfileViewController()
+        let profileVc = UINavigationController(rootViewController: ProfileViewController())
         profileVc.title = "My Account"
         
         let images = ["house.fill","clock.fill","square.and.pencil","pause.rectangle.fill","person.circle.fill"]
@@ -58,7 +57,7 @@ class MainVc: UIViewController {
     
     
     func cekUser() {
-        let vc = LoginVc()
+        let vc = LoginView()
         vc.modalPresentationStyle = .fullScreen
         if UserDefaults.standard.value(forKey: "userData") != nil {
             vc.dismiss(animated: true, completion: nil)

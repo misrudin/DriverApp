@@ -64,6 +64,87 @@ struct NoteViewModel {
                    })
     }
     
+    
+    
+    //MARK - delete pending note
+    func deletePendingNote(id: Int, completion: @escaping (Result<Bool,Error>)-> Void){
+        let dataToPost:[String:Int] = ["id_note":id]
+
+        AF.request("\(Base.url)note/driver/pending",
+                   method: .patch,
+                   parameters: dataToPost,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case.failure(let error):
+                       print(error)
+                        completion(.failure(error))
+                    }
+
+                   })
+    }
+    
+    //    MARK - delete pending note
+    func deleteCheckoutNote(id: Int, completion: @escaping (Result<Bool,Error>)-> Void){
+        let dataToPost:[String:Int] = ["id_note_driver_chcekout":id]
+
+        AF.request("\(Base.url)note/driver/checkout",
+                   method: .patch,
+                   parameters: dataToPost,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case.failure(let error):
+                       print(error)
+                        completion(.failure(error))
+                    }
+
+                   })
+    }
+    
+    
+    //MARK - Edit Note Pending
+    func editNotePending(id: Int, note: String, completion: @escaping (Result<Bool,Error>)-> Void){
+        let dataToPost = DataEditPending(id_note: id, note: note)
+        AF.request("\(Base.url)note/pending",
+                   method: .patch,
+                   parameters: dataToPost,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case.failure(let error):
+                       print(error)
+                        completion(.failure(error))
+                    }
+
+                   })
+    }
+    
+    //MARK - Edit Note Checkout
+    func editNoteCheckout(id: Int, note: String, completion: @escaping (Result<Bool,Error>)-> Void){
+        let dataToPost = DataEditCheckout(id_note_driver_chcekout: id, note: note)
+        AF.request("\(Base.url)note/checkout",
+                   method: .patch,
+                   parameters: dataToPost,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case.failure(let error):
+                       print(error)
+                        completion(.failure(error))
+                    }
+
+                   })
+    }
+    
     //    Parese data order
     func parseJson(data: Data) -> NotesCheckout?{
         do{

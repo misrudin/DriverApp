@@ -83,22 +83,13 @@ class NotesVc: UIViewController {
         self.codeDriver = codeDriver
         // get data from api
         
-        view.addSubview(pop)
-        pop.show = true
-        
-        noteViewModel.getDataNoteCheckout(codeDriver: codeDriver) { (result) in
-            switch result {
-            case .success(let dataCheckout):
-                DispatchQueue.main.async {
-                    self.checkoutData = dataCheckout.data
-                    self.tableView.reloadData()
-                    self.pop.show = false
-                }
-            case .failure(let error):
-                print(error)
-                self.pop.show = false
-            }
+        if display == "CHECKOUT" {
+            didTapCheckout()
+        }else {
+            didTapPending()
         }
+        
+
     }
     
     @objc
@@ -173,10 +164,8 @@ class NotesVc: UIViewController {
     @objc
     func onClickChatButton(){
         let vc = ChatViewController()
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        
-        present(navVc, animated: true, completion: nil)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     
@@ -213,25 +202,59 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action1 = UIContextualAction(
+        
+        let note = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
+        let id:Int = display == "CHECKOUT" ? checkoutData[indexPath.row].idNote : pendingData[indexPath.row].idNote
+        
+        let editAction = UIContextualAction(
                style: .normal,
                title: "Edit",
-               handler: { (action, view, completion) in
+               handler: {[weak self] (action, view, completion) in
                    completion(true)
+                let vc =  EditNoteView()
+                vc.id = id
+                vc.note = note
+                vc.type = self?.display
+                vc.hidesBottomBarWhenPushed = true
+                self?.navigationController?.pushViewController(vc, animated: true)
+                
            })
-        let action2 = UIContextualAction(
+        let deleteAction = UIContextualAction(
             style: .normal,
                title: "Delete",
-               handler: { (action, view, completion) in
+            handler: {[weak self](action, view, completion) in
                    completion(true)
+                if self?.display == "CHECKOUT" {
+                    self?.noteViewModel.deleteCheckoutNote(id: id) {[weak self] (response) in
+                        switch response {
+                        case .success(_):
+                            self?.checkoutData.remove(at: indexPath.row)
+                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                }else {
+                    self?.noteViewModel.deletePendingNote(id: id) {[weak self] (response) in
+                        switch response {
+                        case .success(_):
+                            self?.pendingData.remove(at: indexPath.row)
+                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        case .failure(let error):
+                            print(error)
+                        }
+                    }
+                }
            })
 
-           action1.image = UIImage(systemName: "person")
-           action1.backgroundColor = UIColor(named: "yellowKasumi")
-           action2.image = UIImage(systemName: "person")
-           action2.backgroundColor = UIColor.systemRed
-           let configuration = UISwipeActionsConfiguration(actions: [action2,action1])
+        editAction.image = UIImage(systemName: "pencil")
+        editAction.backgroundColor = UIColor(named: "yellowKasumi")
+        deleteAction.image = UIImage(systemName: "trash.fill")
+        deleteAction.backgroundColor = UIColor.systemRed
+           let configuration = UISwipeActionsConfiguration(actions: [deleteAction,editAction])
            configuration.performsFirstActionWithFullSwipe = false
            return configuration
     }

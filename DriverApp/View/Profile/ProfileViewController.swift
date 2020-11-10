@@ -91,6 +91,25 @@ class ProfileViewController: UIViewController {
         
         profileVM.delegate = self
         configureLayout()
+        configureNavigationBar()
+    }
+    
+    func configureNavigationBar(){
+        navigationItem.title = "My Profile"
+        navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.barStyle = .black
+        navigationController?.navigationBar.tintColor = .white
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipses.bubble.fill"), style: .plain, target: self, action: #selector(onClickChatButton))
+    }
+    
+    @objc
+    func onClickChatButton(){
+        let vc = ChatViewController()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -115,19 +134,15 @@ class ProfileViewController: UIViewController {
     func didTapEditProfile(){
         let vc = EditProfileVc()
         vc.dataDriver = user
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        
-        present(navVc, animated: true, completion: nil)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func didTapPassword(){
         let vc = ChangePasswordVC()
         vc.codeDriver = code
-        let navVc = UINavigationController(rootViewController: vc)
-        navVc.modalPresentationStyle = .fullScreen
-        
-        present(navVc, animated: true, completion: nil)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc func didTapLogout(){
@@ -149,7 +164,7 @@ class ProfileViewController: UIViewController {
     
     
     func configureLayout(){
-        imageView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: view.frame.height/3)
+        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: view.frame.height/3)
         
         containerView.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16, height: 15+25+10+10+10)
         

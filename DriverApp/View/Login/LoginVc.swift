@@ -27,7 +27,6 @@ class LoginVc: UIViewController {
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .red
         label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.isHidden = true
         return label
     }()
@@ -44,7 +43,6 @@ class LoginVc: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
-        field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
     
@@ -60,7 +58,6 @@ class LoginVc: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
-        field.translatesAutoresizingMaskIntoConstraints = false
         field.isSecureTextEntry = true
         return field
     }()
@@ -73,7 +70,6 @@ class LoginVc: UIViewController {
         loginButton.layer.cornerRadius = 5
         loginButton.layer.masksToBounds = true
         loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
         return loginButton
     }()
     
