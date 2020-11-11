@@ -92,3 +92,77 @@ struct Helpers {
         view.present(alert, animated: true)
     }
 }
+
+extension Date {
+
+    func daysInMonth(_ monthNumber: Int? = nil, _ year: Int? = nil) -> Int {
+        var dateComponents = DateComponents()
+        dateComponents.year = year ?? Calendar.current.component(.year,  from: self)
+        dateComponents.month = monthNumber ?? Calendar.current.component(.month,  from: self)
+        if
+            let d = Calendar.current.date(from: dateComponents),
+            let interval = Calendar.current.dateInterval(of: .month, for: d),
+            let days = Calendar.current.dateComponents([.day], from: interval.start, to: interval.end).day
+        { return days } else { return -1 }
+    }
+    
+    static func dayNameFromCustomDate(customDate: Int, year:Int? = nil, month: Int? = nil) -> String {
+        let year = year ?? Calendar.current.component(.year, from: Date())
+        let month = month ?? Calendar.current.component(.month, from: Date())
+        let dateNow = customDate < 10 ? "\(year)-\(month)-\(0)\(customDate)" : "\(year)-\(month)-\(customDate)"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "EE"
+        
+        let date = dateFormatter.date(from: dateNow)
+        let dayString = dateFor.string(from: date!)
+        
+        
+        return dayString
+    }
+    
+    static func dayStringFromStringDate(customDate: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "EE, dd MMM Y"
+        
+        let date = dateFormatter.date(from: customDate)
+        let dayString = dateFor.string(from: date!)
+        
+        
+        return dayString
+    }
+    
+    
+    static func dateStringFrom(customDate: Int) -> String {
+        let year = Calendar.current.component(.year, from: Date())
+        let month = Calendar.current.component(.month, from: Date())
+        let dateNow = customDate < 10 ? "\(year)-\(month)-\(0)\(customDate)" : "\(year)-\(month)-\(customDate)"
+        
+        return dateNow
+    }
+    
+    static func dateStringNextMonthFrom(customDate: Int, year: Int, month: Int) -> String {
+        let dateNow = customDate < 10 ? "\(year)-\(month)-\(0)\(customDate)" : "\(year)-\(month)-\(customDate)"
+        
+        return dateNow
+    }
+    
+    
+    static func monthNumber()->Int{
+        return Calendar.current.component(.month, from: Date())
+    }
+    
+    static func yearNumber()->Int{
+        return Calendar.current.component(.year, from: Date())
+    }
+}
+
+
+class CustomTap: UITapGestureRecognizer {
+    var ourCustomValue: Any?
+    var day: String?
+    var index: Int?
+}

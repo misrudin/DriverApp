@@ -242,7 +242,7 @@ class EditProfileVc: UIViewController {
         
         profileVm.updateProfile(data: data) {[weak self] (result) in
             switch result{
-            case .success(let response):
+            case .success(_):
                 DispatchQueue.main.async {
                     self?.pop.show = false
                     self?.navigationController?.popViewController(animated: true)

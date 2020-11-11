@@ -23,6 +23,14 @@ struct DayOfParent: Decodable {
     }
 }
 
+struct DayOfPlan: Decodable {
+    let dayOfStatus: DayOffStatus
+    
+    enum CodingKeys: String, CodingKey {
+        case dayOfStatus = "day_off_status_plan"
+    }
+}
+
 struct DayOffStatus: Decodable {
     let week1: DayOfWeek
     let week2: DayOfWeek
@@ -58,3 +66,19 @@ struct DayOfWeek:Decodable {
         case Sat = "Saturday"
     }
 }
+
+struct DayOffPostDay {
+    var Sunday: Any?
+    var Monday: Any?
+    var Tuesday: Any?
+    var Wednesday: Any?
+    var Thursday: Any?
+    var Friday: Any?
+    var Saturday: Any?
+}
+
+struct DayOffPost {
+    let id_driver: Int
+    let day_off_status_plan: [String: DayOffPostDay]
+}
+
