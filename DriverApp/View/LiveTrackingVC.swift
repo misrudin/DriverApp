@@ -50,6 +50,11 @@ class LiveTrackingVC: UIViewController {
 
         return mapView
     }()
+    
+    
+    //origin
+    var origin: Origin?
+    var destination: Destination?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -72,26 +77,35 @@ class LiveTrackingVC: UIViewController {
         mapsViewModel.delegate = self
         
         
-        guard let originLat = order?.latitude,
-              let originLng = order?.longitude,
-              let destinationLat = order?.storeDetail.latitude,
-              let destinationLng = order?.storeDetail.longitude else {
+        guard let orderDestinationLat = order?.latitude,
+              let orderDestinationLng = order?.longitude,
+              let storeDestinationLat = order?.storeDetail.latitude,
+              let storeDestinationLng = order?.storeDetail.longitude,
+              let statusOrder = order?.statusTracking else {
             return
         }
         
+        if statusOrder == "wait for pickup" || statusOrder == "on pickup process" {
+            destination = Destination(latitude: CLLocationDegrees(storeDestinationLat)!, longitude: CLLocationDegrees(storeDestinationLng)!)
+        } else {
+            destination = Destination(latitude: CLLocationDegrees(orderDestinationLat)!, longitude: CLLocationDegrees(orderDestinationLng)!)
+        }
         
-        
-        let origin = Origin(latitude: CLLocationDegrees(originLat)!, longitude: CLLocationDegrees(originLng)!)
-        let destination = Destination(latitude: CLLocationDegrees(destinationLat)!, longitude: CLLocationDegrees(destinationLng)!)
-        
-        let direction: DirectionData = DirectionData(origin: origin, destination: destination)
-        
-        mapsViewModel.drawDirection(direction: direction)
+//        guard let origin = origin, let destination = destination else {
+//            return
+//        }
+//        let direction: DirectionData = DirectionData(origin: origin, destination: destination)
+//
+//        DispatchQueue.main.async {
+//            self.mapsViewModel.drawDirection(direction: direction)
+//        }
 
-//        getCurrentPosition()
-        originMarker.map = mapView
+        getCurrentPosition()
+//        originMarker.map = mapView
         
-       
+        
+        //cek status order
+ 
     }
     
     
@@ -149,7 +163,6 @@ class LiveTrackingVC: UIViewController {
     
     func getCurrentPosition(){
         manager = CLLocationManager()
-        manager?.allowsBackgroundLocationUpdates = true
         manager?.requestWhenInUseAuthorization()
         manager?.startUpdatingLocation()
         manager?.delegate = self
@@ -157,7 +170,6 @@ class LiveTrackingVC: UIViewController {
     
     
     func configureNavigationBar(){
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didTapBack))
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
@@ -171,10 +183,6 @@ class LiveTrackingVC: UIViewController {
         let vc = ChatViewController()
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc func didTapBack(){
-        dismiss(animated: true, completion: nil)
     }
 }
 
@@ -205,7 +213,19 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             
             CATransaction.begin()
             CATransaction.setAnimationDuration(2.0)
-            originMarker.position = coordinate
+//            originMarker.position = coordinate
+            origin = Origin(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            
+            guard let origin = origin, let destination = destination else {
+                return
+            }
+            
+            let direction: DirectionData = DirectionData(origin: origin, destination: destination)
+            
+        
+            self.mapsViewModel.drawDirection(direction: direction)
+            
+            
             CATransaction.commit()
             
             updateMapLocation(lattitude: coordinate.latitude, longitude: coordinate.longitude)

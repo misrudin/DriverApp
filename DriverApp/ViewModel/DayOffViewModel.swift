@@ -16,7 +16,7 @@ struct DayOffViewModel {
             switch response.result {
             case .success:
                 if let data = response.data {
-                    if let safeData = decodeSData(data: data) {
+                    if let safeData = decodeData(data: data) {
                         completion(.success(safeData))
                     }else{
                         completion(.failure(DataError.failedToFetch))
@@ -28,11 +28,31 @@ struct DayOffViewModel {
         }
     }
     
-    func setPlanDayOff(data: [String: Any]){
+    
+    //MARK - GET PLAN NEXT MONTH
+    func getDataPlanDayOff(idDriver: String, completion: @escaping (Result<DayOfPlan,Error>)->Void){
+        AF.request("\(Base.url)livetracking/driver/plan/dayoff/\(idDriver)",headers: Base.headers).responseData { response in
+            
+            switch response.result {
+            case .success:
+                if let data = response.data {
+                    if let safeData = decodePlanData(data: data) {
+                        completion(.success(safeData))
+                    }else{
+                        completion(.failure(DataError.failedToFetch))
+                    }
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func setPlanDayOff(data: [String: Any],idDriver: Int, completion: @escaping (Result<Bool,Error>)-> Void){
         
         
         let parameters:[String: Any] = [
-            "id_driver" : 19,
+            "id_driver" : idDriver,
             "day_off_status_plan": data
         ]
         
@@ -44,19 +64,19 @@ struct DayOffViewModel {
                    parameters: parameters,
                    encoding: JSONEncoding.default, headers: Base.headers).response(completionHandler: {(response) in
                     debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
             })
     }
     
-    
-    private func encode( value: DayOffPost) -> Data {
-         return withUnsafePointer(to:value) { p in
-             Data(bytes: p, count: MemoryLayout.size(ofValue:value))
-         }
-     }
      
     
     
-    private func decodeSData(data: Data)-> DayOffStatus? {
+    private func decodeData(data: Data)-> DayOffStatus? {
         do{
             let decodedData = try JSONDecoder().decode(DayOffModel.self, from: data)
             return decodedData.data.dayOfStatus
@@ -67,43 +87,21 @@ struct DayOffViewModel {
         
     }
     
-    public enum DataError: Error{
-            case failedToFetch
-    }
-    
-    
-    func decodeDataPlan(data: Data)-> DayOffStatus? {
+    private func decodePlanData(data: Data)-> DayOfPlan? {
         do{
-            let decodedData = try JSONDecoder().decode(DayOfPlan.self, from: data)
-            return decodedData.dayOfStatus
+            let decodedData = try JSONDecoder().decode(DayOffPlanModel.self, from: data)
+            return decodedData.data
         }catch{
             print(error)
             return nil
         }
         
     }
-}
-
-
-extension Dictionary {
-    func percentEncoded() -> Data? {
-        return map { key, value in
-            let escapedKey = "\(key)".addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? ""
-            let escapedValue = "\(value)".addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) ?? ""
-            return escapedKey + "=" + escapedValue
-        }
-        .joined(separator: "&")
-        .data(using: .utf8)
+    
+    public enum DataError: Error{
+            case failedToFetch
     }
 }
 
-extension CharacterSet {
-    static let urlQueryValueAllowed: CharacterSet = {
-        let generalDelimitersToEncode = ":#[]@" // does not include "?" or "/" due to RFC 3986 - Section 3.4
-        let subDelimitersToEncode = "!$&'()*+,;="
 
-        var allowed = CharacterSet.urlQueryAllowed
-        allowed.remove(charactersIn: "\(generalDelimitersToEncode)\(subDelimitersToEncode)")
-        return allowed
-    }()
-}
+

@@ -15,6 +15,14 @@ struct DayOffModel: Decodable {
     }
 }
 
+struct DayOffPlanModel: Decodable {
+    let data: DayOfPlan
+    
+    enum CodingKeys: String, CodingKey {
+        case data = "data"
+    }
+}
+
 struct DayOfParent: Decodable {
     let dayOfStatus: DayOffStatus
     
@@ -24,10 +32,12 @@ struct DayOfParent: Decodable {
 }
 
 struct DayOfPlan: Decodable {
-    let dayOfStatus: DayOffStatus
+    let dayOfStatus: DayOffStatus?
+    let workingStatus: String
     
     enum CodingKeys: String, CodingKey {
         case dayOfStatus = "day_off_status_plan"
+        case workingStatus = "working_status"
     }
 }
 

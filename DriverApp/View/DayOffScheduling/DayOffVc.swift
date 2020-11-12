@@ -114,7 +114,14 @@ class DayOffVc: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        dayOfVm.getDataDayOff(idDriver: "19") { (success) in
+        
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let idDriver = userData["idDriver"] as? Int else {
+            print("No user data")
+            return
+        }
+        
+        dayOfVm.getDataDayOff(idDriver: String(idDriver)) { (success) in
             switch success {
             case .success(let data):
                 print(data)
@@ -244,7 +251,7 @@ class DayOffVc: UIViewController {
             }
         }
         
-        if listShift == nil {
+        if listShift == nil && listShift?.count == 0 {
             tableView.isHidden = true
             dayOffLable.isHidden = false
         }else{
@@ -388,7 +395,7 @@ extension DayOffVc {
                 if let dayName = labelDay.text {
                     switch dayName {
                     case "Sun":
-                        if dataDayOff.week1.Sun != nil {
+                        if dataDayOff.week1.Sun != nil && dataDayOff.week1.Sun?.count != 0 {
                             let array:[Int]? = dataDayOff.week1.Sun ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -401,7 +408,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Mon":
-                        if dataDayOff.week1.Mon != nil {
+                        if dataDayOff.week1.Mon != nil  && dataDayOff.week1.Mon?.count != 0 {
                             let array:[Int]? = dataDayOff.week1.Mon ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -414,7 +421,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Tue":
-                        if dataDayOff.week1.Tue != nil {
+                        if dataDayOff.week1.Tue != nil  && dataDayOff.week1.Tue?.count != 0 {
                             let array:[Int]? = dataDayOff.week1.Tue ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -427,7 +434,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Wed":
-                        if dataDayOff.week1.Wed != nil {
+                        if dataDayOff.week1.Wed != nil  && dataDayOff.week1.Wed?.count != 0 {
                             let array:[Int]? = dataDayOff.week1.Wed ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -440,7 +447,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Thu":
-                        if dataDayOff.week1.Thu != nil {
+                        if dataDayOff.week1.Thu != nil  && dataDayOff.week1.Thu?.count != 0 {
                             let array:[Int]? = dataDayOff.week1.Thu ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -453,7 +460,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Fri":
-                        if dataDayOff.week1.Fri != nil {
+                        if dataDayOff.week1.Fri != nil  && dataDayOff.week1.Fri?.count != 0 {
                             let array:[Int]? = dataDayOff.week1.Fri ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -466,7 +473,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     default:
-                        if dataDayOff.week1.Sat != nil {
+                        if dataDayOff.week1.Sat != nil  && dataDayOff.week1.Sat?.count != 0 {
                             let array:[Int]? = dataDayOff.week1.Sat ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -486,7 +493,7 @@ extension DayOffVc {
                 if let dayName = labelDay.text {
                     switch dayName {
                     case "Sun":
-                        if dataDayOff.week2.Sun != nil {
+                        if dataDayOff.week2.Sun != nil && dataDayOff.week2.Sun?.count != 0 {
                             let array:[Int]? = dataDayOff.week2.Sun ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -499,7 +506,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Mon":
-                        if dataDayOff.week2.Mon != nil {
+                        if dataDayOff.week2.Mon != nil  && dataDayOff.week2.Mon?.count != 0 {
                             let array:[Int]? = dataDayOff.week2.Mon ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -512,7 +519,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Tue":
-                        if dataDayOff.week2.Tue != nil {
+                        if dataDayOff.week2.Tue != nil  && dataDayOff.week2.Tue?.count != 0 {
                             let array:[Int]? = dataDayOff.week2.Tue ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -525,7 +532,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Wed":
-                        if dataDayOff.week2.Wed != nil {
+                        if dataDayOff.week2.Wed != nil  && dataDayOff.week2.Wed?.count != 0 {
                             let array:[Int]? = dataDayOff.week2.Wed ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -538,7 +545,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Thu":
-                        if dataDayOff.week2.Thu != nil {
+                        if dataDayOff.week2.Thu != nil  && dataDayOff.week2.Thu?.count != 0 {
                             let array:[Int]? = dataDayOff.week2.Thu ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -550,9 +557,9 @@ extension DayOffVc {
                             labelDate.textColor = .white
                             labelDesc.textColor = .white
                         }
-                    case "Sat":
-                        if dataDayOff.week2.Sat != nil {
-                            let array:[Int]? = dataDayOff.week2.Sat ?? nil
+                    case "Fri":
+                        if dataDayOff.week2.Fri != nil  && dataDayOff.week2.Fri?.count != 0 {
+                            let array:[Int]? = dataDayOff.week2.Fri ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
@@ -564,8 +571,8 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     default:
-                        if dataDayOff.week2.Fri != nil {
-                            let array:[Int]? = dataDayOff.week2.Fri ?? nil
+                        if dataDayOff.week2.Sat != nil  && dataDayOff.week2.Sat?.count != 0 {
+                            let array:[Int]? = dataDayOff.week2.Sat ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
@@ -584,7 +591,7 @@ extension DayOffVc {
                 if let dayName = labelDay.text {
                     switch dayName {
                     case "Sun":
-                        if dataDayOff.week3.Sun != nil {
+                        if dataDayOff.week3.Sun != nil && dataDayOff.week3.Sun?.count != 0 {
                             let array:[Int]? = dataDayOff.week3.Sun ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -597,7 +604,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Mon":
-                        if dataDayOff.week3.Mon != nil {
+                        if dataDayOff.week3.Mon != nil  && dataDayOff.week3.Mon?.count != 0 {
                             let array:[Int]? = dataDayOff.week3.Mon ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -610,7 +617,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Tue":
-                        if dataDayOff.week3.Tue != nil {
+                        if dataDayOff.week3.Tue != nil  && dataDayOff.week3.Tue?.count != 0 {
                             let array:[Int]? = dataDayOff.week3.Tue ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -623,7 +630,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Wed":
-                        if dataDayOff.week3.Wed != nil {
+                        if dataDayOff.week3.Wed != nil  && dataDayOff.week3.Wed?.count != 0 {
                             let array:[Int]? = dataDayOff.week3.Wed ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -636,7 +643,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Thu":
-                        if dataDayOff.week3.Thu != nil {
+                        if dataDayOff.week3.Thu != nil  && dataDayOff.week3.Thu?.count != 0 {
                             let array:[Int]? = dataDayOff.week3.Thu ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -648,9 +655,9 @@ extension DayOffVc {
                             labelDate.textColor = .white
                             labelDesc.textColor = .white
                         }
-                    case "Sat":
-                        if dataDayOff.week3.Sat != nil {
-                            let array:[Int]? = dataDayOff.week3.Sat ?? nil
+                    case "Fri":
+                        if dataDayOff.week3.Fri != nil  && dataDayOff.week3.Fri?.count != 0 {
+                            let array:[Int]? = dataDayOff.week3.Fri ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
@@ -662,8 +669,8 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     default:
-                        if dataDayOff.week3.Fri != nil {
-                            let array:[Int]? = dataDayOff.week3.Fri ?? nil
+                        if dataDayOff.week3.Sat != nil  && dataDayOff.week3.Sat?.count != 0 {
+                            let array:[Int]? = dataDayOff.week3.Sat ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
@@ -682,7 +689,7 @@ extension DayOffVc {
                 if let dayName = labelDay.text {
                     switch dayName {
                     case "Sun":
-                        if dataDayOff.week4.Sun != nil {
+                        if dataDayOff.week4.Sun != nil && dataDayOff.week4.Sun?.count != 0 {
                             let array:[Int]? = dataDayOff.week4.Sun ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -695,7 +702,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Mon":
-                        if dataDayOff.week4.Mon != nil {
+                        if dataDayOff.week4.Mon != nil  && dataDayOff.week4.Mon?.count != 0 {
                             let array:[Int]? = dataDayOff.week4.Mon ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -708,7 +715,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Tue":
-                        if dataDayOff.week4.Tue != nil {
+                        if dataDayOff.week4.Tue != nil  && dataDayOff.week4.Tue?.count != 0 {
                             let array:[Int]? = dataDayOff.week4.Tue ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -721,7 +728,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Wed":
-                        if dataDayOff.week4.Wed != nil {
+                        if dataDayOff.week4.Wed != nil  && dataDayOff.week4.Wed?.count != 0 {
                             let array:[Int]? = dataDayOff.week4.Wed ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -734,7 +741,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Thu":
-                        if dataDayOff.week4.Thu != nil {
+                        if dataDayOff.week4.Thu != nil  && dataDayOff.week4.Thu?.count != 0 {
                             let array:[Int]? = dataDayOff.week4.Thu ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -746,9 +753,9 @@ extension DayOffVc {
                             labelDate.textColor = .white
                             labelDesc.textColor = .white
                         }
-                    case "Sat":
-                        if dataDayOff.week4.Sat != nil {
-                            let array:[Int]? = dataDayOff.week4.Sat ?? nil
+                    case "Fri":
+                        if dataDayOff.week4.Fri != nil  && dataDayOff.week4.Fri?.count != 0 {
+                            let array:[Int]? = dataDayOff.week4.Fri ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
@@ -760,8 +767,8 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     default:
-                        if dataDayOff.week4.Fri != nil {
-                            let array:[Int]? = dataDayOff.week4.Fri ?? nil
+                        if dataDayOff.week4.Sat != nil  && dataDayOff.week4.Sat?.count != 0 {
+                            let array:[Int]? = dataDayOff.week4.Sat ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
@@ -780,7 +787,7 @@ extension DayOffVc {
                 if let dayName = labelDay.text {
                     switch dayName {
                     case "Sun":
-                        if dataDayOff.week5.Sun != nil {
+                        if dataDayOff.week5.Sun != nil && dataDayOff.week5.Sun?.count != 0 {
                             let array:[Int]? = dataDayOff.week5.Sun ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -793,7 +800,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Mon":
-                        if dataDayOff.week5.Mon != nil {
+                        if dataDayOff.week5.Mon != nil  && dataDayOff.week5.Mon?.count != 0 {
                             let array:[Int]? = dataDayOff.week5.Mon ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -806,7 +813,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Tue":
-                        if dataDayOff.week5.Tue != nil {
+                        if dataDayOff.week5.Tue != nil  && dataDayOff.week5.Tue?.count != 0 {
                             let array:[Int]? = dataDayOff.week5.Tue ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -819,7 +826,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Wed":
-                        if dataDayOff.week5.Wed != nil {
+                        if dataDayOff.week5.Wed != nil  && dataDayOff.week5.Wed?.count != 0 {
                             let array:[Int]? = dataDayOff.week5.Wed ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -832,7 +839,7 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     case "Thu":
-                        if dataDayOff.week5.Thu != nil {
+                        if dataDayOff.week5.Thu != nil  && dataDayOff.week5.Thu?.count != 0 {
                             let array:[Int]? = dataDayOff.week5.Thu ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
@@ -844,9 +851,9 @@ extension DayOffVc {
                             labelDate.textColor = .white
                             labelDesc.textColor = .white
                         }
-                    case "Sat":
-                        if dataDayOff.week5.Sat != nil {
-                            let array:[Int]? = dataDayOff.week5.Sat ?? nil
+                    case "Fri":
+                        if dataDayOff.week5.Fri != nil  && dataDayOff.week5.Fri?.count != 0 {
+                            let array:[Int]? = dataDayOff.week5.Fri ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
@@ -858,8 +865,8 @@ extension DayOffVc {
                             labelDesc.textColor = .white
                         }
                     default:
-                        if dataDayOff.week5.Fri != nil {
-                            let array:[Int]? = dataDayOff.week5.Fri ?? nil
+                        if dataDayOff.week5.Sat != nil  && dataDayOff.week5.Sat?.count != 0 {
+                            let array:[Int]? = dataDayOff.week5.Sat ?? nil
                             labelDesc.text = "\(array!.count) Shift"
                             button.backgroundColor = UIColor(named: "yellowKasumi")
                             labelDate.textColor = .black
