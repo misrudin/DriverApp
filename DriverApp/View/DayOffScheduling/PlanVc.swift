@@ -137,7 +137,7 @@ class PlanVc: UIViewController {
         button.layer.cornerRadius = 5
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
-//        button.addTarget(self, action: #selector(setPlanClick), for: .touchUpInside)
+        button.addTarget(self, action: #selector(setWorkClick), for: .touchUpInside)
         return button
     }()
     
@@ -257,12 +257,146 @@ class PlanVc: UIViewController {
         navigationController?.navigationBar.tintColor = .white
     }
     
+    @objc func setWorkClick(){
+        switch setWorkButton.title(for: .normal) {
+        case "Set Work Day":
+            listShift = [45,46,47,48]
+        default:
+            listShift = nil
+        }
+        
+        if listShift == nil {
+            tableView.isHidden = true
+            dayOffLable.isHidden = false
+            setWorkButton.setTitle("Set Work Day", for: .normal)
+        }else{
+            tableView.isHidden = false
+            dayOffLable.isHidden = true
+            tableView.reloadData()
+            setWorkButton.setTitle("Set To DayOff", for: .normal)
+        }
+    }
+    
     @objc func btnTouch(sender: CustomTap){
-        guard let tanggal = sender.ourCustomValue else {
+        guard let tanggal = sender.ourCustomValue, let day = sender.day, let index = sender.index else {
             return
         }
         let date = Date.dayStringFromStringDate(customDate: tanggal as! String)
         dateLabel.text = date
+        
+        let week1 = index <= 7
+        let week2 = index > 7 && index <= 14
+        let week3 = index > 14 && index <= 21
+        let week4 = index > 21 && index <= 28
+        let week5 = index > 28
+        
+        if week1 {
+            let dataWeek = dayOffPlan["1"] as! [String: Any]
+            switch day {
+            case "Sun":
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        if week2 {
+            let dataWeek = dayOffPlan["2"] as! [String: Any]
+            switch day {
+            case "Sun":
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        if week3 {
+            let dataWeek = dayOffPlan["3"] as! [String: Any]
+            switch day {
+            case "Sun":
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        if week4 {
+            let dataWeek = dayOffPlan["4"] as! [String: Any]
+            switch day {
+            case "Sun":
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        
+        if week5 {
+            let dataWeek = dayOffPlan["5"] as! [String: Any]
+            switch day {
+            case "Sun":
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        
+        if listShift == nil {
+            tableView.isHidden = true
+            dayOffLable.isHidden = false
+            setWorkButton.setTitle("Set Work Day", for: .normal)
+        }else{
+            tableView.isHidden = false
+            dayOffLable.isHidden = true
+            tableView.reloadData()
+            setWorkButton.setTitle("Set To DayOff", for: .normal)
+        }
         
     }
 }
@@ -323,6 +457,8 @@ extension PlanVc {
             
             let customTap = CustomTap(target: self, action: #selector(btnTouch(sender:)))
             customTap.ourCustomValue = Date.dateStringNextMonthFrom(customDate: i, year: year, month: month)
+            customTap.day = Date.dayNameFromCustomDate(customDate: i, year: year, month: month)
+            customTap.index = i
             button.addGestureRecognizer(customTap)
             
             container.frame = CGRect(x: xOffset, y: CGFloat(buttonPadding), width: 80, height: 80)
