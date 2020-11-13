@@ -56,6 +56,8 @@
 		B36E09A2253723E700F1B421 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09A1253723E700F1B421 /* Protocols.swift */; };
 		B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09AC25372F3000F1B421 /* MenuOption.swift */; };
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
+		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
+		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
 		B3DE97982555364400A30892 /* DayOffVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97972555364400A30892 /* DayOffVc.swift */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
@@ -113,6 +115,8 @@
 		B36E09A1253723E700F1B421 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		B36E09AC25372F3000F1B421 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
+		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
+		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
 		B3DE97972555364400A30892 /* DayOffVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffVc.swift; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
@@ -294,6 +298,7 @@
 				B33B1B0C2543748A007BDD3A /* ChatModel.swift */,
 				B3DE979F2555379300A30892 /* DayOffModel.swift */,
 				B3530922255A536F00B68347 /* Base.swift */,
+				B38C1B10255E6B360078EE83 /* InOutModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -309,6 +314,7 @@
 				B33B1B092543747C007BDD3A /* ChatViewModel.swift */,
 				B3DE979C255536EC00A30892 /* DayOffViewModel.swift */,
 				B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */,
+				B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -504,6 +510,7 @@
 				B354B10E253B586000B5798B /* Helpers.swift in Sources */,
 				B32944C72541EFED0040E90C /* NoteViewModel.swift in Sources */,
 				B353094A255A632F00B68347 /* LoginView.swift in Sources */,
+				B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */,
 				B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */,
 				B36E09A2253723E700F1B421 /* Protocols.swift in Sources */,
 				B36E09932536E6CC00F1B421 /* MainVc.swift in Sources */,
@@ -541,6 +548,7 @@
 				B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */,
 				B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */,
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
+				B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */,
 				B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */,
 				B354B11B253B7B3600B5798B /* OrderModel.swift in Sources */,
 				B32944D1254213520040E90C /* EditProfileVc.swift in Sources */,

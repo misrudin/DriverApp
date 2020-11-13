@@ -8,9 +8,37 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import FirebaseDatabase
 
 struct ProfileViewModel {
     var delegate: ProfileViewModelDelegate?
+    private let database = Database.database().reference()
+    
+    func cekStatusDriver(codeDriver:String, completion: @escaping (Result<UserStatus, Error>)-> Void){
+        let date = Date()
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "yyyy-MM-dd"
+        
+        let dateNow: String = dateFormater.string(from: date)
+        let urlFirebase = "monitoring/\(dateNow)/\(codeDriver)"
+        
+        database.child(urlFirebase).observe(.value) { (snapshot) in
+            guard let data = snapshot.value as? [String: String] else{
+                            completion(.failure(DataError.failedToFetch))
+                            return
+                        }
+            
+            let checkinTime = data["checkin_time"]
+            let restTime = data["rest_time"]
+            let workTime = data["work_time"]
+            let checkoutTime = data["checkout_time"]
+            let userStatus: UserStatus = UserStatus(checkinTime: checkinTime,
+                                                    checkoutTime: checkoutTime,
+                                                    restTime: restTime,
+                                                    workTime: workTime)
+            completion(.success(userStatus))
+        }
+    }
     
     func getDetailUser(with codeDriver: String)->Void{
         AF.request("\(Base.url)livetracking/driver/dashboard/detail/\(codeDriver)",headers: Base.headers).response { response in
@@ -105,7 +133,7 @@ struct ProfileViewModel {
         }
     }
     
-    public enum DataError: Error{
+    enum DataError: Error{
         case failedToFetch
     }
     

@@ -17,11 +17,14 @@ class ProfileViewController: UIViewController {
         return spin
     }()
     
-    let actions:[[String:String]] = [["label":"Edit Profile","icon":"person"],
-                                     ["label":"Change Password","icon":"person"],
-                                     ["label":"Checkout","icon":"person"],
-                                     ["label":"Rest","icon":"person"],
-                                     ["label":"Logout","icon":"person"]]
+//    var actions:[[String:String]] = [["label":"Edit Profile","icon":"person"],
+//                                     ["label":"Change Password","icon":"person"],
+//                                     ["label":"Checkout","icon":"person"],
+//                                     ["label":"Rest","icon":"person"],
+//                                     ["label":"Logout","icon":"person"]]
+    
+    var actions:[[String:String]] = [["label":"Edit Profile","icon":"person"],
+                                     ["label":"Change Password","icon":"person"]]
     
     var profileVM = ProfileViewModel()
     var code: String = ""
@@ -74,31 +77,50 @@ class ProfileViewController: UIViewController {
     }()
     
     
-    let scrollView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.isScrollEnabled = true
-        
-        return sv
-    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "bgKasumi")
         
-        view.addSubview(scrollView)
-        scrollView.addSubview(containerView)
+        view.addSubview(containerView)
         
-        scrollView.addSubview(imageView)
+        view.addSubview(imageView)
         tableView.delegate = self
         tableView.dataSource = self
-        scrollView.addSubview(tableView)
-        
-        scrollView.contentSize = CGSize(width: view.frame.width, height: view.frame.height)
+        view.addSubview(tableView)
         
         profileVM.delegate = self
         configureLayout()
         configureNavigationBar()
+        listenStatusDriver()
+    }
+    
+    func listenStatusDriver(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        profileVM.cekStatusDriver(codeDriver: codeDriver) { (res) in
+            switch res {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    if data.checkinTime != nil && data.checkoutTime == nil {
+                        self.actions.append(["label":"Checkout","icon":"person"])
+                    }
+                    
+                    if data.restTime == nil && data.workTime == nil {
+                        self.actions.append(["label":"Rest","icon":"person"])
+                    }
+                    self.actions.append(["label":"Logout","icon":"person"])
+                    self.tableView.reloadData()
+                }
+                
+            case .failure(let err):
+                print(err)
+            }
+        }
     }
     
     func configureNavigationBar(){
@@ -160,7 +182,7 @@ class ProfileViewController: UIViewController {
         confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         confirmationAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {[weak self] (_) in
             UserDefaults.standard.removeObject(forKey: "userData")
-            self?.dismiss(animated: false, completion: nil)
+            self?.dismiss(animated: true, completion: nil)
         }))
         
         present(confirmationAlert, animated: true, completion: nil)
@@ -181,8 +203,6 @@ class ProfileViewController: UIViewController {
         lableEmail.anchor(top: lableName.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
         
         tableView.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 10)
-        
-        scrollView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
     }
     
 }

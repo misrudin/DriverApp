@@ -46,6 +46,9 @@ class LiveTrackingVC: UIViewController {
     var order:Order? = nil
     var mapsViewModel = MapsViewModel()
     var orderViewModel = OrderViewModel()
+    var inOutVm = InOutViewModel()
+    
+    var isCheckin: Bool = false
     
     private var manager: CLLocationManager?
     
@@ -108,10 +111,42 @@ class LiveTrackingVC: UIViewController {
 
         getCurrentPosition()
 //        originMarker.map = mapView
-        
-        
-        //cek status order
+
  
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        cekStatusDriver()
+    }
+    
+    private func cekStatusDriver(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let idDriver = userData["idDriver"] as? Int else {
+            print("No user data")
+            return
+        }
+        spiner.show(in: view)
+        
+        inOutVm.cekStatusDriver(idDriver: idDriver) { (res) in
+            switch res {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    if response.isCheckin == true {
+                        self.isCheckin = true
+                    }
+                }
+                print(response)
+            case .failure(let err):
+                self.spiner.dismiss()
+                print(err.localizedDescription)
+                self.isCheckin = false
+            }
+        }
+        
     }
     
     
@@ -322,10 +357,31 @@ extension LiveTrackingVC: CardViewControllerDelegate {
                 self.handleResult(result: result)
             }
         case .done_pickup:
+            guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                  let idDriver = userData["idDriver"] as? Int, let lat = origin?.latitude, let long = origin?.longitude else {
+                print("No user data")
+                return
+            }
             spiner.show(in: view)
-            let data = Delivery(order_number: orderNo, type: "end")
-            self.orderViewModel.statusOrder(data: data, status: "pickup") { (result) in
-                self.handleResult(result: result)
+            
+            if self.isCheckin == false {
+                print("belum cekin")
+                self.inOutVm.checkinDriver(with: idDriver, lat: String(lat), long: String(long)) { (res) in
+                    switch res {
+                    case .success(let oke):
+                        DispatchQueue.main.async {
+                            if oke == true {
+                                self.donePickupOrder()
+                            }
+                        }
+                    case .failure(let err):
+                        print(err)
+                        Helpers().showAlert(view: self, message: "Something when wrong !")
+                    }
+                }
+            }else {
+                print("Sudah cekin")
+                donePickupOrder()
             }
         case .start_delivery:
             spiner.show(in: view)
@@ -364,7 +420,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
     }
     
     
-    func handleResult(result: Result<Bool, Error>){
+    private func handleResult(result: Result<Bool, Error>){
         guard let orderNo = order?.orderNumber else {
             return
         }
@@ -384,25 +440,15 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             }
         }
     }
+    
+    private func donePickupOrder(){
+        guard let orderNo = order?.orderNumber else {
+            return
+        }
+        let data = Delivery(order_number: orderNo, type: "end")
+        self.orderViewModel.statusOrder(data: data, status: "pickup") { (result) in
+            self.handleResult(result: result)
+        }
+    }
 }
 
-
-//        visualEffectView = UIVisualEffectView()
-//        visualEffectView.frame = self.view.frame
-//        self.view.addSubview(visualEffectView)
-
-//        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleCardTap(recognzier:)))
-//        cardViewController.handleArea.addGestureRecognizer(tapGestureRecognizer)
-
-
-//            let blurAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
-//                switch state {
-//                case .expanded:
-//                    self.visualEffectView.effect = UIBlurEffect(style: .dark)
-//                case .collapsed:
-//                    self.visualEffectView.effect = nil
-//                }
-//            }
-//
-//            blurAnimator.startAnimation()
-//            runningAnimations.append(blurAnimator)

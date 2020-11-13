@@ -39,3 +39,10 @@ struct User: Codable {
 struct UserDetail: Decodable {
     let data: [User]
 }
+
+
+//MARK - forget password
+struct ForgetPasswordData: Codable {
+    let email: String
+    let url: String
+}

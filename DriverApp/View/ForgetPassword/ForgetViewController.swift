@@ -65,32 +65,24 @@ class ForgetViewController: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Code Driver"
+        field.placeholder = "Email"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
+        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         field.keyboardType = .emailAddress
+        field.text = "misrudinz@gmail.com"
         return field
     }()
     
     private let loginButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Sign In", for: .normal)
+        loginButton.setTitle("Submit", for: .normal)
         loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 5
         loginButton.layer.masksToBounds = true
         loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
         return loginButton
-    }()
-
-    
-    
-    private let stakView : UIStackView = {
-       let stack = UIStackView()
-        stack.axis = .vertical
-        
-        return stack
     }()
    
     
@@ -107,7 +99,7 @@ class ForgetViewController: UIViewController {
         
         codeDriver.delegate = self
         
-        
+        configureNavigationBar()
         loginButton.addTarget(self, action: #selector(didLoginTap), for: .touchUpInside)
     }
     
@@ -124,6 +116,30 @@ class ForgetViewController: UIViewController {
 //MARK- function
 
 extension ForgetViewController{
+    
+    func configureNavigationBar(){
+        navigationItem.title = "Forget Password"
+        navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.barStyle = .black
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didBack))
+        navigationController?.navigationBar.tintColor = .white
+    }
+    
+    @objc
+    func didBack(){
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func showMessageToUser(){
+        let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+            self?.dismiss(animated: true, completion: nil)
+        }
+        Helpers().showAlert(view: self, message: "Please check your email !", customTitle: "Success", customAction1: action)
+    }
+    
     @objc func didLoginTap(){
         codeDriver.resignFirstResponder()
         
@@ -133,8 +149,22 @@ extension ForgetViewController{
             return
         }
         
-        
-        print(email)
+        spiner.show(in: view)
+        forgotVm.forgotPassword(email: email) { (res) in
+            switch res {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    self.showMessageToUser()
+                }
+            case .failure(_):
+                let action = UIAlertAction(title: "Try again", style: .default) {[weak self] (_) in
+                    self?.codeDriver.becomeFirstResponder()
+                }
+                Helpers().showAlert(view: self, message: "Email not found !",customAction1: action)
+                self.spiner.dismiss()
+            }
+        }
         
     }
 }

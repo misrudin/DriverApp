@@ -82,3 +82,11 @@ struct DataProfile: Codable {
     let country_code: String
     let email: String
 }
+
+
+struct UserStatus: Codable {
+    let checkinTime: String?
+    let checkoutTime: String?
+    let restTime: String?
+    let workTime: String?
+}

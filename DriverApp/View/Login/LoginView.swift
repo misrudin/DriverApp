@@ -78,7 +78,8 @@ class LoginView: UIViewController {
         field.placeholder = "Code Driver"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
+        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        field.text = "20080019"
         return field
     }()
 
@@ -91,8 +92,9 @@ class LoginView: UIViewController {
         field.placeholder = "Password"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
+        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         field.isSecureTextEntry = true
+        field.text = "admin"
         return field
     }()
     
@@ -105,15 +107,6 @@ class LoginView: UIViewController {
         loginButton.layer.masksToBounds = true
         loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
         return loginButton
-    }()
-
-    
-    
-    private let stakView : UIStackView = {
-       let stack = UIStackView()
-        stack.axis = .vertical
-        
-        return stack
     }()
    
     
