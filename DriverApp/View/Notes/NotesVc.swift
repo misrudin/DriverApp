@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class NotesVc: UIViewController {
     
     var noteViewModel = NoteViewModel()
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     var pendingData: [Pending] = []
     var checkoutData: [Checkout] = []
@@ -94,8 +100,7 @@ class NotesVc: UIViewController {
     
     @objc
     func didTapCheckout(){
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         noteViewModel.getDataNoteCheckout(codeDriver: codeDriver) { (result) in
             self.display = "CHECKOUT"
             switch result {
@@ -103,14 +108,14 @@ class NotesVc: UIViewController {
                 DispatchQueue.main.async {
                     self.checkoutData = dataCheckout.data
                     self.tableView.reloadData()
-                    self.pop.show = false
+                    self.spiner.dismiss()
                 }
             case .failure(let error):
                 print(error)
                 DispatchQueue.main.async {
                     self.checkoutData = []
                     self.tableView.reloadData()
-                    self.pop.show = false
+                    self.spiner.dismiss()
                 }
             }
         }
@@ -118,8 +123,7 @@ class NotesVc: UIViewController {
     
     @objc
     func didTapPending(){
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         noteViewModel.getDataNotePending(codeDriver: codeDriver) { (result) in
             self.display = "PENDING"
             switch result {
@@ -127,14 +131,14 @@ class NotesVc: UIViewController {
                 DispatchQueue.main.async {
                     self.pendingData = dataPending.data
                     self.tableView.reloadData()
-                    self.pop.show = false
+                    self.spiner.dismiss()
                 }
             case .failure(let error):
                 print(error)
                 DispatchQueue.main.async {
                     self.pendingData = []
                     self.tableView.reloadData()
-                    self.pop.show = false
+                    self.spiner.dismiss()
                 }
             }
         }

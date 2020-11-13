@@ -8,11 +8,17 @@
 import UIKit
 import GoogleMaps
 import CoreLocation
+import JGProgressHUD
 
 class LiveTrackingVC: UIViewController {
     
 //    loading
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
 //    card
     
@@ -310,22 +316,19 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         }
         switch type {
         case .start_pickup:
-            self.view.addSubview(pop)
-            self.pop.show = true
+            spiner.show(in: view)
             let data = Delivery(order_number: orderNo, type: "start")
             self.orderViewModel.statusOrder(data: data, status: "pickup") { (result) in
                 self.handleResult(result: result)
             }
         case .done_pickup:
-            self.view.addSubview(pop)
-            self.pop.show = true
+            spiner.show(in: view)
             let data = Delivery(order_number: orderNo, type: "end")
             self.orderViewModel.statusOrder(data: data, status: "pickup") { (result) in
                 self.handleResult(result: result)
             }
         case .start_delivery:
-            self.view.addSubview(pop)
-            self.pop.show = true
+            spiner.show(in: view)
             let data = Delivery(order_number: orderNo, type: "start")
             self.orderViewModel.statusOrder(data: data, status: "delivery") { (result) in
                 self.handleResult(result: result)
@@ -337,14 +340,13 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             
             present(navVc, animated: true, completion: nil)
         case .done_delivery:
-            self.view.addSubview(pop)
-            self.pop.show = true
+            spiner.show(in: view)
             let data = Delivery(order_number: orderNo, type: "end")
             self.orderViewModel.statusOrder(data: data, status: "delivery") { (result) in
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
-                        self.pop.show = false
+                        self.spiner.dismiss()
                         let vc = DoneViewController()
                         let navVc = UINavigationController(rootViewController: vc)
                         
@@ -369,13 +371,13 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         switch result {
         case .success(_):
             DispatchQueue.main.async {
-                self.pop.show = false
+                self.spiner.dismiss()
                 self.cardViewController.orderNo = orderNo
                 self.cardViewController.status = !self.cardViewController.status
             }
         case .failure(let error):
             DispatchQueue.main.async {
-                self.pop.show = false
+                self.spiner.dismiss()
                 self.cardViewController.orderNo = orderNo
                 self.cardViewController.status = !self.cardViewController.status
                 print(error)

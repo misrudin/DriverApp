@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class PendingNoteVc: UIViewController {
     
@@ -13,7 +14,12 @@ class PendingNoteVc: UIViewController {
     
     let noteViewModel = NoteViewModel()
     
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     private let noteInput: UITextView = {
         let field = UITextView()
@@ -113,20 +119,19 @@ extension PendingNoteVc {
         }
         
         let data = DataPending(id_driver: idDriver, note: note, id_order: idOrder, id_shift_time: idShift)
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         noteViewModel.pendingNote(data: data) { (result) in
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.pop.show = false
+                    self.spiner.dismiss()
                     self.dismiss(animated: true) {
                         self.presentingController?.dismiss(animated: false)
                     }
                 }
             case .failure(let error):
                 print(error)
-                self.pop.show = false
+                self.spiner.dismiss()
             }
         }
     }

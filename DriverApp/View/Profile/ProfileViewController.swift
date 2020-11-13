@@ -7,8 +7,15 @@
 
 import UIKit
 import AlamofireImage
+import JGProgressHUD
 
 class ProfileViewController: UIViewController {
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     let actions:[[String:String]] = [["label":"Edit Profile","icon":"person"],
                                      ["label":"Change Password","icon":"person"],
@@ -128,6 +135,7 @@ class ProfileViewController: UIViewController {
         //        view.addSubview(pop)
         //        pop.show = true
         profileVM.getDetailUser(with: codeDriver)
+        spiner.show(in: view)
     }
     
     @objc
@@ -152,7 +160,7 @@ class ProfileViewController: UIViewController {
         confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         confirmationAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {[weak self] (_) in
             UserDefaults.standard.removeObject(forKey: "userData")
-            self?.dismiss(animated: true, completion: nil)
+            self?.dismiss(animated: false, completion: nil)
         }))
         
         present(confirmationAlert, animated: true, completion: nil)
@@ -183,6 +191,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: ProfileViewModelDelegate {
     func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel) {
         DispatchQueue.main.async {
+            self.spiner.dismiss()
             if let urlString = URL(string: "\(user.photoUrl)\(user.photoName)")
             {
                 self.user = user
@@ -199,6 +208,7 @@ extension ProfileViewController: ProfileViewModelDelegate {
     
     func didFailedToFetch(_ error: Error) {
         print(error)
+        spiner.dismiss()
         //        self.pop.show = false
     }
     

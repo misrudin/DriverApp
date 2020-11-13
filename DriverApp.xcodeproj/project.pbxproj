@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA090CDFC71D38419DED9B8C /* Pods_DriverApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F47CDD454A99F9044645D9EE /* Pods_DriverApp.framework */; };
 		B308DB5F255794B30088D741 /* PlanVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B308DB5E255794B30088D741 /* PlanVc.swift */; };
 		B31AF18625393DF800D693D3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF18525393DF800D693D3 /* LoginViewModel.swift */; };
 		B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1892539424C00D693D3 /* LoginModel.swift */; };
@@ -20,7 +21,7 @@
 		B32944D1254213520040E90C /* EditProfileVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32944D0254213520040E90C /* EditProfileVc.swift */; };
 		B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A388625383207000EFBB6 /* HistoryViewController.swift */; };
 		B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */; };
-		B32A389525386C2E000EFBB6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = B32A389425386C2E000EFBB6 /* SwiftPackageProductDependency */; };
+		B32A389525386C2E000EFBB6 /* AesEverywhere in Frameworks */ = {isa = PBXBuildFile; productRef = B32A389425386C2E000EFBB6 /* AesEverywhere */; };
 		B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0025434D73007BDD3A /* PopUpView.swift */; };
 		B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B052543746E007BDD3A /* ChatViewController.swift */; };
 		B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B092543747C007BDD3A /* ChatViewModel.swift */; };
@@ -54,6 +55,7 @@
 		B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E099A25371D7000F1B421 /* HomeVc.swift */; };
 		B36E09A2253723E700F1B421 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09A1253723E700F1B421 /* Protocols.swift */; };
 		B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09AC25372F3000F1B421 /* MenuOption.swift */; };
+		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
 		B3DE97982555364400A30892 /* DayOffVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97972555364400A30892 /* DayOffVc.swift */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
@@ -61,6 +63,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		099DA34B7635DDCE49EB81A0 /* Pods-DriverApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverApp.debug.xcconfig"; path = "Target Support Files/Pods-DriverApp/Pods-DriverApp.debug.xcconfig"; sourceTree = "<group>"; };
 		B308DB5E255794B30088D741 /* PlanVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanVc.swift; sourceTree = "<group>"; };
 		B31AF18525393DF800D693D3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B31AF1892539424C00D693D3 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
@@ -109,10 +112,13 @@
 		B36E099A25371D7000F1B421 /* HomeVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVc.swift; sourceTree = "<group>"; };
 		B36E09A1253723E700F1B421 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		B36E09AC25372F3000F1B421 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
+		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
 		B3DE97972555364400A30892 /* DayOffVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffVc.swift; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
 		B3DE97A22555611B00A30892 /* ShiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCell.swift; sourceTree = "<group>"; };
+		DA329FD1DCFDA22A52414B86 /* Pods-DriverApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverApp.release.xcconfig"; path = "Target Support Files/Pods-DriverApp/Pods-DriverApp.release.xcconfig"; sourceTree = "<group>"; };
+		F47CDD454A99F9044645D9EE /* Pods_DriverApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriverApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,13 +126,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B32A389525386C2E000EFBB6 /* BuildFile in Frameworks */,
+				B32A389525386C2E000EFBB6 /* AesEverywhere in Frameworks */,
+				AA090CDFC71D38419DED9B8C /* Pods_DriverApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A361EB90A9834AC3BE79860 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F47CDD454A99F9044645D9EE /* Pods_DriverApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B32A388F25383674000EFBB6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +232,7 @@
 				B36E09722536E11800F1B421 /* DriverApp */,
 				B36E09712536E11800F1B421 /* Products */,
 				F4DF3A4E1BE601397296818F /* Pods */,
+				9A361EB90A9834AC3BE79860 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -292,6 +308,7 @@
 				B32944C62541EFED0040E90C /* NoteViewModel.swift */,
 				B33B1B092543747C007BDD3A /* ChatViewModel.swift */,
 				B3DE979C255536EC00A30892 /* DayOffViewModel.swift */,
+				B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -317,6 +334,8 @@
 		F4DF3A4E1BE601397296818F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				099DA34B7635DDCE49EB81A0 /* Pods-DriverApp.debug.xcconfig */,
+				DA329FD1DCFDA22A52414B86 /* Pods-DriverApp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -328,10 +347,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B36E09842536E11B00F1B421 /* Build configuration list for PBXNativeTarget "DriverApp" */;
 			buildPhases = (
+				DDCCC9F37415637E47AE504D /* [CP] Check Pods Manifest.lock */,
 				B36E096C2536E11800F1B421 /* Sources */,
 				B36E096D2536E11800F1B421 /* Frameworks */,
 				B36E096E2536E11800F1B421 /* Resources */,
 				B35599C22547DF100095CE76 /* Run Script */,
+				DFAE8A930604A304BE407648 /* [CP] Embed Pods Frameworks */,
+				629D74A8C8B4B75A47FB8FD0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -339,7 +361,7 @@
 			);
 			name = DriverApp;
 			packageProductDependencies = (
-				B32A389425386C2E000EFBB6 /* SwiftPackageProductDependency */,
+				B32A389425386C2E000EFBB6 /* AesEverywhere */,
 			);
 			productName = DriverApp;
 			productReference = B36E09702536E11800F1B421 /* DriverApp.app */;
@@ -369,7 +391,7 @@
 			);
 			mainGroup = B36E09672536E11800F1B421;
 			packageReferences = (
-				B32A389325386C2D000EFBB6 /* RemoteSwiftPackageReference */,
+				B32A389325386C2D000EFBB6 /* XCRemoteSwiftPackageReference "aes-everywhere-swift" */,
 			);
 			productRefGroup = B36E09712536E11800F1B421 /* Products */;
 			projectDirPath = "";
@@ -394,6 +416,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		629D74A8C8B4B75A47FB8FD0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DriverApp/Pods-DriverApp-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DriverApp/Pods-DriverApp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DriverApp/Pods-DriverApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		B35599C22547DF100095CE76 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -413,6 +452,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
+		DDCCC9F37415637E47AE504D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DriverApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DFAE8A930604A304BE407648 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DriverApp/Pods-DriverApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DriverApp/Pods-DriverApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DriverApp/Pods-DriverApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -434,6 +512,7 @@
 				B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */,
 				B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */,
 				B3DE97982555364400A30892 /* DayOffVc.swift in Sources */,
+				B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */,
 				B3544F26253D572700B6A001 /* CardViewController.swift in Sources */,
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
 				B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */,
@@ -603,6 +682,7 @@
 		};
 		B36E09852536E11B00F1B421 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 099DA34B7635DDCE49EB81A0 /* Pods-DriverApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -623,6 +703,7 @@
 		};
 		B36E09862536E11B00F1B421 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DA329FD1DCFDA22A52414B86 /* Pods-DriverApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -665,7 +746,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B32A389325386C2D000EFBB6 /* RemoteSwiftPackageReference */ = {
+		B32A389325386C2D000EFBB6 /* XCRemoteSwiftPackageReference "aes-everywhere-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mervick/aes-everywhere-swift.git";
 			requirement = {
@@ -676,9 +757,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B32A389425386C2E000EFBB6 /* SwiftPackageProductDependency */ = {
+		B32A389425386C2E000EFBB6 /* AesEverywhere */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B32A389325386C2D000EFBB6 /* RemoteSwiftPackageReference */;
+			package = B32A389325386C2D000EFBB6 /* XCRemoteSwiftPackageReference "aes-everywhere-swift" */;
 			productName = AesEverywhere;
 		};
 /* End XCSwiftPackageProductDependency section */

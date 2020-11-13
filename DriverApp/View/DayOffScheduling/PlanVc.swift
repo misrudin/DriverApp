@@ -7,10 +7,16 @@
 
 import UIKit
 import FirebaseCrashlytics
+import JGProgressHUD
 
 class PlanVc: UIViewController {
     
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     var dayOfVm = DayOffViewModel()
     var dataDayOff: DayOffPost!
     var listShift: [Int]? = nil
@@ -208,14 +214,13 @@ class PlanVc: UIViewController {
             return
         }
         
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         
         dayOfVm.getDataPlanDayOff(idDriver: String(idDriver)) { (success) in
             switch success {
             case .success(let data):
                 DispatchQueue.main.async {
-                    self.pop.show = false
+                    self.spiner.dismiss()
                     switch data.workingStatus {
                     case "full time":
                         self.lableStatusDriver.text = "Full Time"
@@ -297,7 +302,7 @@ class PlanVc: UIViewController {
                 }
             case .failure(let error):
                 print(error)
-                self.pop.show = false
+                self.spiner.dismiss()
             }
         }
     }
@@ -432,16 +437,15 @@ class PlanVc: UIViewController {
             return
         }
         
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         
         dayOfVm.setPlanDayOff(data: dayOffPlan, idDriver: idDriver) { (response) in
             switch response {
             case .success(_):
-                self.pop.show = false
+                self.spiner.dismiss()
                 print("ok")
             case .failure(let err):
-                self.pop.show = false
+                self.spiner.dismiss()
                 print(err)
             }
         }
@@ -535,16 +539,15 @@ class PlanVc: UIViewController {
             return
         }
         
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         
         dayOfVm.setPlanDayOff(data: dayOffPlan, idDriver: idDriver) { (response) in
             switch response {
             case .success(_):
-                self.pop.show = false
+                self.spiner.dismiss()
                 print("ok")
             case .failure(let err):
-                self.pop.show = false
+                self.spiner.dismiss()
                 print(err)
             }
         }

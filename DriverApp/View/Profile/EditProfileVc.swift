@@ -7,12 +7,18 @@
 
 import UIKit
 import AlamofireImage
+import JGProgressHUD
 
 class EditProfileVc: UIViewController {
     
     var dataDriver: UserModel? = nil
     var profileVm = ProfileViewModel()
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     var newFoto:String?
     
     
@@ -221,8 +227,7 @@ class EditProfileVc: UIViewController {
             return
         }
         
-        view.addSubview(pop)
-        pop.show = true
+        spiner.show(in: view)
         
         let data: DataProfile = DataProfile(id_driver: iddriver, first_name: first, last_name: last, mobile_number1: mobile1, mobile_number2: mobie2, mobile_number3: mobile3, country_code: "+81", email: emailText)
         
@@ -244,13 +249,13 @@ class EditProfileVc: UIViewController {
             switch result{
             case .success(_):
                 DispatchQueue.main.async {
-                    self?.pop.show = false
+                    self?.spiner.dismiss()
                     self?.navigationController?.popViewController(animated: true)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
                     print(error)
-                    self?.pop.show = false
+                    self?.spiner.dismiss()
                 }
             }
         }

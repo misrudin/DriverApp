@@ -6,9 +6,16 @@
 //
 
 import UIKit
-import FirebaseCrashlytics
+import JGProgressHUD
 
 class DayOffVc: UIViewController {
+    
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     var dayOfVm = DayOffViewModel()
     var dataDayOff: DayOffStatus!
@@ -120,7 +127,7 @@ class DayOffVc: UIViewController {
             print("No user data")
             return
         }
-        
+        spiner.show(in: view)
         dayOfVm.getDataDayOff(idDriver: String(idDriver)) { (success) in
             switch success {
             case .success(let data):
@@ -128,9 +135,11 @@ class DayOffVc: UIViewController {
                 DispatchQueue.main.async {
                     self.dataDayOff = data
                     self.setupDisplayDayOff()
+                    self.spiner.dismiss()
                 }
             case .failure(let error):
                 print(error)
+                self.spiner.dismiss()
             }
         }
     }

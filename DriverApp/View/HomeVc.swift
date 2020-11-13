@@ -8,10 +8,16 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import JGProgressHUD
 
 class HomeVc: UIViewController {
     
-     let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     var orderViewModel = OrderViewModel()
     var orderData: [Order]?
@@ -59,8 +65,7 @@ class HomeVc: UIViewController {
             print("No user data")
             return
         }
-        view.addSubview(pop)
-        pop.show = true
+        spiner.show(in: view)
         // get data from api
         
         orderViewModel.getDataOrder(codeDriver: codeDriver)
@@ -131,7 +136,7 @@ extension HomeVc: OrderViewModelDelegate {
         DispatchQueue.main.async {
             self.orderData = order.data
             self.tableView.reloadData()
-            self.pop.show = false
+            self.spiner.dismiss()
             self.refreshControl.endRefreshing()
         }
     }
@@ -140,7 +145,7 @@ extension HomeVc: OrderViewModelDelegate {
         DispatchQueue.main.async {
             self.orderData = []
             self.tableView.reloadData()
-            self.pop.show = false
+            self.spiner.dismiss()
             self.refreshControl.endRefreshing()
         }
     }

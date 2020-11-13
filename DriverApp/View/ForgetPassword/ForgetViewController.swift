@@ -6,111 +6,148 @@
 //
 
 import UIKit
+import AesEverywhere
+import JGProgressHUD
 
 class ForgetViewController: UIViewController {
     
-    private let labelTitle: UILabel = {
+    var forgotVm = ForgotViewModel()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
+    
+    lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
+    
+    lazy var scrollView: UIScrollView = {
+            let view = UIScrollView(frame: .zero)
+            view.backgroundColor = .white
+            view.frame = self.view.bounds
+            view.contentSize = contentViewSize
+            view.autoresizingMask = .flexibleHeight
+            view.showsHorizontalScrollIndicator = true
+            view.bounces = true
+            return view
+    }()
+    
+    lazy var containerView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .white
+            view.frame.size = contentViewSize
+            return view
+    }()
+    
+    
+    private let imageView: UIImageView = {
+       let img = UIImageView()
+        img.layer.cornerRadius = 5
+        img.image = UIImage(named: "logoKasumi")
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        return img
+    }()
+    
+    private let labelTitleLogin: UILabel = {
        let label = UILabel()
-        label.text = "USMH DRIVER"
-        label.font = UIFont.systemFont(ofSize: 25, weight: .bold)
-        label.textColor = .red
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Kasumi driver management"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.textColor = UIColor.mainBlue
+        label.numberOfLines = 0
         return label
     }()
     
-    private let labelDescription: UILabel = {
-       let label = UILabel()
-        label.text = "Masukan email untuk melakukan reset password"
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .lightGray
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
-    private let emailInput: UITextField = {
+    private let codeDriver: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "Email ..."
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.placeholder = "Code Driver"
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
-        field.translatesAutoresizingMaskIntoConstraints = false
+        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
         field.keyboardType = .emailAddress
         return field
     }()
     
-    private let actionButton: UIButton={
-        let button = UIButton()
-        button.setTitle("Submit", for: .normal)
-        button.backgroundColor = .link
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
-        button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private let loginButton: UIButton={
+        let loginButton = UIButton()
+        loginButton.setTitle("Sign In", for: .normal)
+        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
+        loginButton.setTitleColor(.white, for: .normal)
+        loginButton.layer.cornerRadius = 5
+        loginButton.layer.masksToBounds = true
+        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
+        return loginButton
     }()
 
+    
+    
+    private let stakView : UIStackView = {
+       let stack = UIStackView()
+        stack.axis = .vertical
+        
+        return stack
+    }()
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        configureNavigationBar()
         
-        view.addSubview(labelTitle)
-        view.addSubview(labelDescription)
-        view.addSubview(emailInput)
-        view.addSubview(actionButton)
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        containerView.addSubview(imageView)
+        containerView.addSubview(labelTitleLogin)
+        containerView.addSubview(codeDriver)
+        containerView.addSubview(loginButton)
         
-    }
-    
-    
-    
-    
-    
-    func configureLayout(){
-        NSLayoutConstraint.activate([
+        codeDriver.delegate = self
         
-            labelTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.width/2),
-            labelTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10),
-            labelTitle.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -10),
-            
-            labelDescription.topAnchor.constraint(equalTo: labelTitle.bottomAnchor, constant: 10),
-            labelDescription.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10),
-            labelDescription.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -10),
-            
-            emailInput.topAnchor.constraint(equalTo: labelDescription.bottomAnchor, constant: 30),
-            emailInput.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10),
-            emailInput.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -10),
-            emailInput.heightAnchor.constraint(equalToConstant: 50),
-            
-            actionButton.topAnchor.constraint(equalTo: emailInput.bottomAnchor, constant: 30),
-            actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: 10),
-            actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: -10),
-            actionButton.heightAnchor.constraint(equalToConstant: 50),
-            
-        ])
+        
+        loginButton.addTarget(self, action: #selector(didLoginTap), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        configureLayout()
+        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: containerView.leftAnchor, paddingTop: 30, paddingLeft: 16, width: 100, height: 100)
+        labelTitleLogin.anchor(top: imageView.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        codeDriver.anchor(top: labelTitleLogin.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 50, paddingLeft: 16, paddingRight: 16, height: 45)
+        loginButton.anchor(top: codeDriver.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 45)
     }
-    
-    
-    func configureNavigationBar(){
-        navigationItem.title = "Forget Password"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didBack))
-    }
-    
-    @objc func didBack(){
-        dismiss(animated: true, completion: nil)
-    }
-
 }
+
+
+//MARK- function
+
+extension ForgetViewController{
+    @objc func didLoginTap(){
+        codeDriver.resignFirstResponder()
+        
+        guard let email = codeDriver.text,
+              email != ""
+              else {
+            return
+        }
+        
+        
+        print(email)
+        
+    }
+}
+
+
+//MARK - UITextField
+extension ForgetViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == codeDriver {
+            didLoginTap()
+        }
+        
+        return true
+    }
+}
+

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class EditNoteView: UIViewController {
     
@@ -13,7 +14,12 @@ class EditNoteView: UIViewController {
     var id: Int?
     var type: String?
     
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     var noteViewModel = NoteViewModel()
     
@@ -80,15 +86,14 @@ class EditNoteView: UIViewController {
             return
         }
         
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         
         noteViewModel.editNotePending(id: id, note: note) { (res) in
             switch res {
             case .success(_):
                 DispatchQueue.main.async {
                     self.navigationController?.popViewController(animated: true)
-                    self.pop.show = false
+                    self.spiner.dismiss()
                 }
             case .failure(let error):
                 print(error)
@@ -102,15 +107,14 @@ class EditNoteView: UIViewController {
             return
         }
         
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         
         noteViewModel.editNoteCheckout(id: id, note: note) { (res) in
             switch res {
             case .success(_):
                 DispatchQueue.main.async {
                     self.navigationController?.popViewController(animated: true)
-                    self.pop.show = false
+                    self.spiner.dismiss()
                 }
             case .failure(let error):
                 print(error)

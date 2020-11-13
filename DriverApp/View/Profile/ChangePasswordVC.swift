@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class ChangePasswordVC: UIViewController {
     
     var codeDriver: String = ""
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     private let oldPassword: UITextField = {
         let field = UITextField()
@@ -112,8 +118,7 @@ class ChangePasswordVC: UIViewController {
         let confirmP = confirmPassword.text, oldP != "" && newP != "" && confirmP != "" else {return}
         
         if newP == confirmP {
-            view.addSubview(pop)
-            pop.show = true
+            spiner.show(in: view)
             let data = PasswordModel(code_driver: codeDriver, old_password: oldP, password: newP)
             
             ProfileViewModel().changePassword(data: data) {[weak self] (result) in
@@ -123,16 +128,16 @@ class ChangePasswordVC: UIViewController {
 
                         if data.status != 200 {
                             Helpers().showAlert(view: self!, message: data.message)
-                            self?.pop.show = false
+                            self?.spiner.dismiss()
                         }else{
                             self?.navigationController?.popViewController(animated: true)
-                            self?.pop.show = false
+                            self?.spiner.dismiss()
                         }
                     }
                     
                 case .failure(let error):
                     print(error)
-                    self?.pop.show = false
+                    self?.spiner.dismiss()
                 }
                 
             }

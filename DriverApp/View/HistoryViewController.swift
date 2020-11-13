@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class HistoryViewController: UIViewController {
     
     var orderData: [History]?
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     lazy var refreshControl = UIRefreshControl()
 
@@ -63,15 +69,14 @@ class HistoryViewController: UIViewController {
     }
     
     func getHistory(codeDriver: String){
-        view.addSubview(pop)
-        pop.show = true
+        spiner.show(in: view)
         OrderViewModel().getDataHistoryOrder(codeDriver: codeDriver) { (result) in
             switch result {
             case .success(let order):
                 DispatchQueue.main.async {
                     self.orderData = order.data
                     self.tableView.reloadData()
-                    self.pop.show = false
+                    self.spiner.dismiss()
                     self.refreshControl.endRefreshing()
                 }
             case .failure(let error):
@@ -79,7 +84,7 @@ class HistoryViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.orderData = []
                     self.tableView.reloadData()
-                    self.pop.show = false
+                    self.spiner.dismiss()
                     self.refreshControl.endRefreshing()
                 }
             }

@@ -7,27 +7,65 @@
 
 import UIKit
 import AesEverywhere
+import JGProgressHUD
 
 class LoginView: UIViewController {
     
     var loginViewModel = LoginViewModel()
-    let pop = PopUpView()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
+    
+    lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
+    
+    lazy var scrollView: UIScrollView = {
+            let view = UIScrollView(frame: .zero)
+            view.backgroundColor = .white
+            view.frame = self.view.bounds
+            view.contentSize = contentViewSize
+            view.autoresizingMask = .flexibleHeight
+            view.showsHorizontalScrollIndicator = true
+            view.bounces = true
+            return view
+    }()
+    
+    lazy var containerView: UIView = {
+            let view = UIView()
+            view.backgroundColor = .white
+            view.frame.size = contentViewSize
+            return view
+    }()
+    
+    
+    private let imageView: UIImageView = {
+       let img = UIImageView()
+        img.layer.cornerRadius = 5
+        img.image = UIImage(named: "logoKasumi")
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        return img
+    }()
     
     private let labelTitleLogin: UILabel = {
        let label = UILabel()
-        label.text = "Welcome to Usmh Driver"
-        label.font = UIFont.systemFont(ofSize: 30, weight: .bold)
-        label.textColor = UIColor.systemGray
+        label.text = "Kasumi driver management"
+        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+        label.textColor = UIColor.mainBlue
+        label.numberOfLines = 0
         return label
     }()
     
-    private let lableError: UILabel = {
+    private let forgetPassword: UILabel = {
        let label = UILabel()
-        label.text = "Username or Password Wrong"
+        label.text = "Forgot password ?"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .red
-        label.textAlignment = .center
-        label.isHidden = true
+        label.textColor = UIColor.mainBlue
+        label.textAlignment = .right
+        label.isUserInteractionEnabled = true
         return label
     }()
     
@@ -37,27 +75,23 @@ class LoginView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
         field.placeholder = "Code Driver"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
         return field
     }()
-    
+
     private let password: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
         field.placeholder = "Password"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
         field.isSecureTextEntry = true
         return field
     }()
@@ -65,30 +99,19 @@ class LoginView: UIViewController {
     private let loginButton: UIButton={
         let loginButton = UIButton()
         loginButton.setTitle("Sign In", for: .normal)
-        loginButton.backgroundColor = .blue
+        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 5
         loginButton.layer.masksToBounds = true
         loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
         return loginButton
     }()
-    
-    private let forgetPasswordButton: UIButton={
-        let loginButton = UIButton()
-        loginButton.setTitle("Forgot Password", for: .normal)
-        loginButton.setTitleColor(.red, for: .normal)
-        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .light )
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        return loginButton
-    }()
+
     
     
     private let stakView : UIStackView = {
        let stack = UIStackView()
         stack.axis = .vertical
-        stack.distribution  = .equalSpacing
-        stack.alignment = .center
-        stack.spacing   = 16.0
         
         return stack
     }()
@@ -98,14 +121,14 @@ class LoginView: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         
-        view.addSubview(stakView)
-        stakView.addArrangedSubview(labelTitleLogin)
-        stakView.addArrangedSubview(codeDriver)
-        stakView.addArrangedSubview(password)
-        stakView.addArrangedSubview(lableError)
-        stakView.addArrangedSubview(loginButton)
-        stakView.addArrangedSubview(forgetPasswordButton)
-        
+        view.addSubview(scrollView)
+        scrollView.addSubview(containerView)
+        containerView.addSubview(imageView)
+        containerView.addSubview(labelTitleLogin)
+        containerView.addSubview(codeDriver)
+        containerView.addSubview(password)
+        containerView.addSubview(forgetPassword)
+        containerView.addSubview(loginButton)
         
         codeDriver.delegate = self
         password.delegate = self
@@ -113,26 +136,17 @@ class LoginView: UIViewController {
         
         
         loginButton.addTarget(self, action: #selector(didLoginTap), for: .touchUpInside)
-        forgetPasswordButton.addTarget(self, action: #selector(didForgetClick), for: .touchUpInside)
+        forgetPassword.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didForgetClick)))
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        stakView.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 16, paddingRight: 16)
-        
-        stakView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        stakView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        
-//        lableError.left
-        
-        labelTitleLogin.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor,height: 40)
-        
-        codeDriver.anchor(top: labelTitleLogin.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 40, height: 50)
-        password.anchor(top: codeDriver.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10, height: 50)
-        
-        loginButton.anchor(top: password.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20, height: 50)
-        
+        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: containerView.leftAnchor, paddingTop: 30, paddingLeft: 16, width: 100, height: 100)
+        labelTitleLogin.anchor(top: imageView.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        codeDriver.anchor(top: labelTitleLogin.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 50, paddingLeft: 16, paddingRight: 16, height: 45)
+        password.anchor(top: codeDriver.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 15, paddingLeft: 16, paddingRight: 16, height: 45)
+        forgetPassword.anchor(top: password.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        loginButton.anchor(top: forgetPassword.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 45)
     }
 }
 
@@ -147,10 +161,13 @@ extension LoginView{
         guard let codeDriver = codeDriver.text, let password = password.text,
               codeDriver != "" && password != ""
               else {
+            let action = UIAlertAction(title: "Oke", style: .default) { [weak self] _ in
+                self?.codeDriver.becomeFirstResponder()
+            }
+            Helpers().showAlert(view: self, message: "Please input code driver and password !", customTitle: "Hmm", customAction1: action)
             return
         }
-        view.addSubview(pop)
-        self.pop.show = true
+        spiner.show(in: view)
         loginViewModel.signIn(codeDriver: codeDriver, password: password)
     }
     
@@ -191,17 +208,18 @@ extension LoginView: LoginViewModelDelegate {
           
                 UserDefaults.standard.setValue(userData, forKey: "userData")
                 self.dismiss(animated: false, completion: nil)
-                self.pop.show = false
+                self.spiner.dismiss()
         }
     }
     
     func didFailedLogin(_ error: Error) {
-        lableError.text = "Code Driver or Password Wrong. Please try again !"
-        lableError.isHidden = false
+        let action = UIAlertAction(title: "Try again", style: .default) { [weak self] _ in
+            self?.codeDriver.becomeFirstResponder()
+        }
+        Helpers().showAlert(view: self, message: "Code driver or password wrong !", customAction1: action)
         codeDriver.text = ""
         password.text = ""
-        codeDriver.becomeFirstResponder()
-        self.pop.show = false
+        self.spiner.dismiss()
     }
     
   

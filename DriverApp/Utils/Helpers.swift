@@ -61,6 +61,10 @@ extension UIView {
 
 
 extension UIColor {
+    static func rgba(red: CGFloat,green: CGFloat, blue: CGFloat, alpha: CGFloat = 1)-> UIColor {
+        return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: alpha)
+    }
+    
     static func rgb(red: CGFloat,green: CGFloat, blue: CGFloat)-> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
@@ -177,3 +181,4 @@ class CustomTap: UITapGestureRecognizer {
     var day: String?
     var index: Int?
 }
+

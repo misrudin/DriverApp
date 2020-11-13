@@ -6,15 +6,28 @@
 //
 
 import UIKit
-import NVActivityIndicatorView
 
 class MainVc: UIViewController {
     
-    
+    private let imageView: UIImageView = {
+       let img = UIImageView()
+        img.layer.cornerRadius = 5
+        img.image = UIImage(named: "logoKasumi")
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.contentMode = .scaleAspectFit
+        return img
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        view.addSubview(imageView)
+        
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.anchor(width: view.frame.width / 4, height: view.frame.width / 4)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -60,7 +73,7 @@ class MainVc: UIViewController {
         let vc = LoginView()
         vc.modalPresentationStyle = .fullScreen
         if UserDefaults.standard.value(forKey: "userData") != nil {
-            vc.dismiss(animated: true, completion: nil)
+            vc.dismiss(animated: false, completion: nil)
             configureNavigation()
         }else {
             present(vc, animated: false, completion: nil)
