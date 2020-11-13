@@ -190,6 +190,7 @@ class LiveTrackingVC: UIViewController {
 //MARK - maps direction
 extension LiveTrackingVC: MapsViewModelDelegate {
     func didDrawDirection(_ viewModel: MapsViewModel, direction: GMSPolyline, markerOrigin: GMSMarker, markerDestination: GMSMarker, camera: GMSCameraPosition) {
+        mapView.clear()
         direction.map = mapView
         markerOrigin.map = mapView
         markerDestination.map = mapView

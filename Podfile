@@ -6,23 +6,23 @@ target 'DriverApp' do
   use_frameworks!
 
   # Pods for DriverApp
-	pod 'RxSwift'
+    pod 'RxSwift'
   	pod 'RxCocoa'
 
-	pod 'Alamofire'
-	pod 'AlamofireImage'
+    pod 'Alamofire'
+    pod 'AlamofireImage'
 
-	pod 'GoogleMaps'
-	pod 'GooglePlaces'
+    pod 'GoogleMaps'
+    pod 'GooglePlaces'
 
-	pod 'SwiftyJSON'
-  
-  	pod 'NVActivityIndicatorView'
+    pod 'SwiftyJSON'
   
   	pod 'Firebase/Core'
   	pod 'Firebase/Database'
   	pod 'Firebase/Analytics'
   	pod 'Firebase/Crashlytics'
+    
+    pod 'JGProgressHUD'
 
 end
 
