@@ -56,6 +56,8 @@
 		B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E099A25371D7000F1B421 /* HomeVc.swift */; };
 		B36E09A2253723E700F1B421 /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09A1253723E700F1B421 /* Protocols.swift */; };
 		B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09AC25372F3000F1B421 /* MenuOption.swift */; };
+		B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37431F4256219FC0010E0E4 /* PlanCell.swift */; };
+		B37431FA256265BE0010E0E4 /* VehicleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37431F9256265BE0010E0E4 /* VehicleView.swift */; };
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
@@ -116,6 +118,8 @@
 		B36E099A25371D7000F1B421 /* HomeVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVc.swift; sourceTree = "<group>"; };
 		B36E09A1253723E700F1B421 /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		B36E09AC25372F3000F1B421 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
+		B37431F4256219FC0010E0E4 /* PlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCell.swift; sourceTree = "<group>"; };
+		B37431F9256265BE0010E0E4 /* VehicleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleView.swift; sourceTree = "<group>"; };
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
@@ -158,6 +162,7 @@
 				B33B1B0F2543775B007BDD3A /* ChatCell.swift */,
 				B328BB9A2550168C00FACA03 /* ActionCell.swift */,
 				B3DE97A22555611B00A30892 /* ShiftCell.swift */,
+				B37431F4256219FC0010E0E4 /* PlanCell.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				B3530945255A631700B68347 /* RegisterView.swift */,
+				B37431F9256265BE0010E0E4 /* VehicleView.swift */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -504,6 +510,7 @@
 				B36E09742536E11800F1B421 /* AppDelegate.swift in Sources */,
 				B354B10E253B586000B5798B /* Helpers.swift in Sources */,
 				B32944C72541EFED0040E90C /* NoteViewModel.swift in Sources */,
+				B37431FA256265BE0010E0E4 /* VehicleView.swift in Sources */,
 				B353094A255A632F00B68347 /* LoginView.swift in Sources */,
 				B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */,
 				B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */,
@@ -520,6 +527,7 @@
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
 				B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */,
 				B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */,
+				B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */,
 				B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */,
 				B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */,
 				B32944CE254205330040E90C /* NoteCell.swift in Sources */,

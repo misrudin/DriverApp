@@ -196,7 +196,21 @@ class PlanVc: UIViewController {
         return table
     }()
     
-
+    //MARK:- Colection view
+    
+    fileprivate let colectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.register(PlanCell.self, forCellWithReuseIdentifier: PlanCell.id)
+        cv.backgroundColor = .white
+        cv.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        cv.showsHorizontalScrollIndicator = false
+        return cv
+    }()
+    
+    //MARK:- view did load
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(titleLabel)
@@ -205,6 +219,9 @@ class PlanVc: UIViewController {
         
         scView = UIScrollView()
         view.addSubview(scView)
+        view.addSubview(colectionView)
+        colectionView.delegate = self
+        colectionView.dataSource = self
         scView.isScrollEnabled = true
         scView.alwaysBounceHorizontal = false
         scView.showsHorizontalScrollIndicator = false
@@ -241,7 +258,7 @@ class PlanVc: UIViewController {
     }
     
     
-    
+    //MARK:- Get day off plan
     func getDataDayOffPlan(){
         
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
@@ -348,7 +365,9 @@ class PlanVc: UIViewController {
         
         lableStatusDriver.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 5, paddingLeft: 16, paddingRight: 16)
         
-        contrainerView.anchor(top: scView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
+        colectionView.anchor(top: scView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, height: 70)
+        
+        contrainerView.anchor(top: colectionView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
         contrainerView.dropShadow(color: UIColor.blue, opacity: 1, offSet: CGSize(width: 5, height: 5), radius: 5, scale: false)
         subTitleLabel.anchor(top: contrainerView.topAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
         dateLabel.anchor(top: subTitleLabel.bottomAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
@@ -1388,5 +1407,22 @@ extension PlanVc {
             scView.contentSize = CGSize(width: xOffset, height: scView.frame.height)
             scView.contentInset = UIEdgeInsets(top: 0, left: 6, bottom: 0, right: 6)
         }
+    }
+}
+
+
+//MARK:- colection view
+extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
+        cell.backgroundColor = .red
+        return cell
     }
 }
