@@ -8,6 +8,8 @@
 import UIKit
 import Alamofire
 
+
+
 extension UIView {
     func anchor(top: NSLayoutYAxisAnchor? = nil, left: NSLayoutXAxisAnchor? = nil, bottom: NSLayoutYAxisAnchor? = nil, right: NSLayoutXAxisAnchor? = nil, paddingTop: CGFloat? = 0, paddingBottom: CGFloat? = 0, paddingLeft: CGFloat? = 0, paddingRight: CGFloat? = 0, width: CGFloat? = nil, height: CGFloat? = nil){
         
@@ -106,6 +108,13 @@ struct Helpers {
 
         view.present(alert, animated: true)
     }
+    
+//    func showEmpty(view: UIView){
+//        view.addSubview(emptyImage)
+//        emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+//        emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.5, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: false)
+//    }
 }
 
 extension Date {

@@ -90,3 +90,8 @@ struct UserStatus: Codable {
     let restTime: String?
     let workTime: String?
 }
+
+
+struct CheckoutDriver: Codable {
+    let id_driver: Int
+}

@@ -135,6 +135,7 @@ struct ProfileViewModel {
     
     enum DataError: Error{
         case failedToFetch
+        case failedToCheckout
     }
     
 }

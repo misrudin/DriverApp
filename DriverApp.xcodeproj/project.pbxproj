@@ -14,6 +14,8 @@
 		B31AF18E2539761800D693D3 /* ForgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF18D2539761800D693D3 /* ForgetViewController.swift */; };
 		B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A52539F6FD00D693D3 /* UserModel.swift */; };
 		B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */; };
+		B326FF712560F0D00067C0DE /* CheckoutNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B326FF702560F0D00067C0DE /* CheckoutNoteView.swift */; };
+		B326FF7425612CF00067C0DE /* RestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B326FF7325612CF00067C0DE /* RestView.swift */; };
 		B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B328BB9A2550168C00FACA03 /* ActionCell.swift */; };
 		B32944C72541EFED0040E90C /* NoteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32944C62541EFED0040E90C /* NoteViewModel.swift */; };
 		B32944CA2541F8710040E90C /* NoteModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32944C92541F8710040E90C /* NoteModel.swift */; };
@@ -34,7 +36,6 @@
 		B35253C8253C30A900AF71DF /* MapsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35253C7253C30A900AF71DF /* MapsViewModel.swift */; };
 		B3530923255A536F00B68347 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3530922255A536F00B68347 /* Base.swift */; };
 		B3530928255A55DC00B68347 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3530927255A55DC00B68347 /* GoogleService-Info.plist */; };
-		B353093F255A62B700B68347 /* LandingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B353093E255A62B700B68347 /* LandingPageView.swift */; };
 		B3530946255A631700B68347 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3530945255A631700B68347 /* RegisterView.swift */; };
 		B353094A255A632F00B68347 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3530949255A632F00B68347 /* LoginView.swift */; };
 		B353094E255A76DF00B68347 /* EditNoteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B353094D255A76DF00B68347 /* EditNoteView.swift */; };
@@ -72,6 +73,8 @@
 		B31AF18D2539761800D693D3 /* ForgetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgetViewController.swift; sourceTree = "<group>"; };
 		B31AF1A52539F6FD00D693D3 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		B326FF702560F0D00067C0DE /* CheckoutNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutNoteView.swift; sourceTree = "<group>"; };
+		B326FF7325612CF00067C0DE /* RestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestView.swift; sourceTree = "<group>"; };
 		B328BB9A2550168C00FACA03 /* ActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionCell.swift; sourceTree = "<group>"; };
 		B32944C62541EFED0040E90C /* NoteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteViewModel.swift; sourceTree = "<group>"; };
 		B32944C92541F8710040E90C /* NoteModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteModel.swift; sourceTree = "<group>"; };
@@ -91,7 +94,6 @@
 		B35253C7253C30A900AF71DF /* MapsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewModel.swift; sourceTree = "<group>"; };
 		B3530922255A536F00B68347 /* Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
 		B3530927255A55DC00B68347 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B353093E255A62B700B68347 /* LandingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandingPageView.swift; sourceTree = "<group>"; };
 		B3530945255A631700B68347 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		B3530949255A632F00B68347 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		B353094D255A76DF00B68347 /* EditNoteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditNoteView.swift; sourceTree = "<group>"; };
@@ -173,16 +175,9 @@
 			children = (
 				B34F7A7825461F8D004AB82B /* DoneViewController.swift */,
 				B34F7A7C25461F9B004AB82B /* RestViewController.swift */,
+				B326FF7325612CF00067C0DE /* RestView.swift */,
 			);
 			path = Status;
-			sourceTree = "<group>";
-		};
-		B3530938255A61A600B68347 /* Base */ = {
-			isa = PBXGroup;
-			children = (
-				B353093E255A62B700B68347 /* LandingPageView.swift */,
-			);
-			path = Base;
 			sourceTree = "<group>";
 		};
 		B3530942255A62EB00B68347 /* Login */ = {
@@ -226,6 +221,7 @@
 				B34F7A7425460932004AB82B /* PendingNoteVc.swift */,
 				B353094D255A76DF00B68347 /* EditNoteView.swift */,
 				B3530950255A898F00B68347 /* PreviewNoteView.swift */,
+				B326FF702560F0D00067C0DE /* CheckoutNoteView.swift */,
 			);
 			path = Notes;
 			sourceTree = "<group>";
@@ -272,7 +268,6 @@
 				B3530944255A62F900B68347 /* ForgetPassword */,
 				B3530943255A62F100B68347 /* Register */,
 				B3530942255A62EB00B68347 /* Login */,
-				B3530938255A61A600B68347 /* Base */,
 				B3DE97962555360000A30892 /* DayOffScheduling */,
 				B34F7A7725461F6D004AB82B /* Status */,
 				B33B1B042543744F007BDD3A /* Chatting */,
@@ -518,6 +513,7 @@
 				B35253C5253C309600AF71DF /* MapsModel.swift in Sources */,
 				B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */,
 				B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */,
+				B326FF7425612CF00067C0DE /* RestView.swift in Sources */,
 				B3DE97982555364400A30892 /* DayOffVc.swift in Sources */,
 				B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */,
 				B3544F26253D572700B6A001 /* CardViewController.swift in Sources */,
@@ -529,6 +525,7 @@
 				B32944CE254205330040E90C /* NoteCell.swift in Sources */,
 				B354B121253B8B3E00B5798B /* LiveTrackingVC.swift in Sources */,
 				B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */,
+				B326FF712560F0D00067C0DE /* CheckoutNoteView.swift in Sources */,
 				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
 				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
@@ -536,7 +533,6 @@
 				B35253C8253C30A900AF71DF /* MapsViewModel.swift in Sources */,
 				B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */,
 				B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */,
-				B353093F255A62B700B68347 /* LandingPageView.swift in Sources */,
 				B31AF18625393DF800D693D3 /* LoginViewModel.swift in Sources */,
 				B36E09762536E11800F1B421 /* SceneDelegate.swift in Sources */,
 				B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */,

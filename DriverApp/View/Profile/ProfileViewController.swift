@@ -17,19 +17,13 @@ class ProfileViewController: UIViewController {
         return spin
     }()
     
-//    var actions:[[String:String]] = [["label":"Edit Profile","icon":"person"],
-//                                     ["label":"Change Password","icon":"person"],
-//                                     ["label":"Checkout","icon":"person"],
-//                                     ["label":"Rest","icon":"person"],
-//                                     ["label":"Logout","icon":"person"]]
-    
-    var actions:[[String:String]] = [["label":"Edit Profile","icon":"person"],
-                                     ["label":"Change Password","icon":"person"]]
-    
     var profileVM = ProfileViewModel()
+    var inoutVm = InOutViewModel()
     var code: String = ""
     var idDriver: Int? = nil
     var user: UserModel? = nil
+    
+    var checkin: Bool = false
     
     lazy var containerView: UIView = {
         let container = UIView()
@@ -38,16 +32,6 @@ class ProfileViewController: UIViewController {
         container.addSubview(lableName)
         container.addSubview(lableEmail)
         return container
-    }()
-    
-    lazy var tableView: UITableView = {
-        let table = UITableView()
-        table.separatorStyle = .none
-        table.rowHeight = 60
-        table.register(ActionCell.self, forCellReuseIdentifier: ActionCell.id)
-        table.isScrollEnabled = false
-        table.alwaysBounceVertical = false
-        return table
     }()
     
     let imageView: UIImageView = {
@@ -76,52 +60,90 @@ class ProfileViewController: UIViewController {
         return lable
     }()
     
+    func createButton(title: String, color: UIColor? = nil)-> UIView {
+        let buttonEditProfile: UIView = {
+            let view = UIView()
+            view.isUserInteractionEnabled = true
+            let label: UILabel = {
+                let lable = UILabel()
+                lable.text = title
+                if color != nil {
+                    lable.textColor = color
+                }
+                
+                return lable
+            }()
+            let image: UIImageView = {
+               let img = UIImageView()
+                img.image = UIImage(systemName: "chevron.right")
+                img.layer.masksToBounds = true
+                img.contentMode = .right
+                if color != nil {
+                    img.tintColor = color
+                }
+                return img
+            }()
+            
+            view.addSubview(label)
+            view.addSubview(image)
+            label.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: image.leftAnchor, paddingTop: 5, paddingBottom: 5, paddingLeft: 16, paddingRight: 5)
+            image.anchor(top: view.topAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 50)
+            
+            return view
+        }()
+        
+        return buttonEditProfile
+    }
+    
+    
+    lazy var containerButton: UIView = {
+       let view = UIView()
+        view.backgroundColor = .white
+        return view
+    }()
+    
+    lazy var button1 = createButton(title: "Edit Profile")
+    lazy var button2 = createButton(title: "Change Password")
+    lazy var button3 = createButton(title: "Checkout")
+    lazy var button4 = createButton(title: "Rest")
+    lazy var button5:UIButton = {
+        let b = UIButton()
+        let image = UIImage(systemName: "power")
+        b.setImage(UIImage(systemName: "power"), for: .normal)
+        b.tintColor = .red
+        b.setTitle("Logout", for: .normal)
+        b.setTitleColor(.red, for: .normal)
+        b.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        b.layer.cornerRadius = 5
+        b.layer.masksToBounds = true
+        b.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold )
+        b.centerTextAndImage(spacing: 10.0)
+        return b
+    }()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         view.backgroundColor = UIColor(named: "bgKasumi")
         
         view.addSubview(containerView)
         
         view.addSubview(imageView)
-        tableView.delegate = self
-        tableView.dataSource = self
-        view.addSubview(tableView)
+        view.addSubview(containerButton)
+        containerButton.addSubview(button1)
+        containerButton.addSubview(button2)
+        containerButton.addSubview(button3)
+        containerButton.addSubview(button4)
+        containerButton.addSubview(button5)
         
         profileVM.delegate = self
         configureLayout()
         configureNavigationBar()
-        listenStatusDriver()
     }
     
-    func listenStatusDriver(){
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
-            print("No user data")
-            return
-        }
-        profileVM.cekStatusDriver(codeDriver: codeDriver) { (res) in
-            switch res {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    if data.checkinTime != nil && data.checkoutTime == nil {
-                        self.actions.append(["label":"Checkout","icon":"person"])
-                    }
-                    
-                    if data.restTime == nil && data.workTime == nil {
-                        self.actions.append(["label":"Rest","icon":"person"])
-                    }
-                    self.actions.append(["label":"Logout","icon":"person"])
-                    self.tableView.reloadData()
-                }
-                
-            case .failure(let err):
-                print(err)
-            }
-        }
-    }
     
     func configureNavigationBar(){
         navigationItem.title = "My Profile"
@@ -153,29 +175,83 @@ class ProfileViewController: UIViewController {
         }
         code = codeDriver
         idDriver = id
-        // get data from api
-        //        view.addSubview(pop)
-        //        pop.show = true
         profileVM.getDetailUser(with: codeDriver)
         spiner.show(in: view)
+        listenStatusDriver()
     }
     
+    
+    //MARK: - Listen status driver
+    private func listenStatusDriver(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let idDriver = userData["idDriver"] as? Int, let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        inoutVm.cekStatusDriver(idDriver: idDriver) {[weak self] (result) in
+            switch result {
+            case .success(let status):
+                print(status)
+                DispatchQueue.main.async {
+                    if status.isCheckin == true && status.isCheckout == true {
+                        print("sudah out")
+                        self?.button3.isHidden = true //hide
+                        self?.button4.isHidden = true //hide
+                    }else {
+                        if status.isCheckin == true {
+                            print("baru in")
+                            self?.button3.isHidden = false //muncul
+                            self?.profileVM.cekStatusDriver(codeDriver: codeDriver) {[weak self] (res) in
+                                switch res {
+                                case .success(let data):
+                                    DispatchQueue.main.async {
+                                        if data.restTime != nil {
+                                            self?.button4.isHidden = true //hide
+                                        }else {
+                                            self?.button4.isHidden = false  //muncul
+                                        }
+                                    }
+                                case .failure(let err):
+                                    print(err)
+                                }
+                            }
+                        }else {
+                            self?.button3.isHidden = true
+                        }
+                    }
+                }
+                
+            case .failure(let err):
+                DispatchQueue.main.async {
+                    print(err)
+                }
+            }
+        }
+        
+    }
+    
+    //MARK: - Edit profile
     @objc
-    func didTapEditProfile(){
+    private func didTapEditProfile(){
         let vc = EditProfileVc()
         vc.dataDriver = user
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapPassword(){
+    //MARK: - Change password
+    @objc
+    private func didTapPassword(){
         let vc = ChangePasswordVC()
         vc.codeDriver = code
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc func didTapLogout(){
+    //MARK: - Logout
+    @objc
+    private func didTapLogout(){
         let confirmationAlert = UIAlertController(title: "Are you sure ?",
                                                   message: "Do you want to logout ?",
                                                   preferredStyle: .alert)
@@ -188,12 +264,58 @@ class ProfileViewController: UIViewController {
         present(confirmationAlert, animated: true, completion: nil)
     }
     
+    //MARK: - Checkout
+    @objc
+    private func didTapCheckout(){
+        let vc = CheckoutNoteView()
+        
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    //MARK: - Rest time
+    @objc
+    func didTapRest(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let idDriver = userData["idDriver"] as? Int else {
+            print("No user data")
+            return
+        }
+        let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
+            let data: CheckDriver = CheckDriver(id_driver: idDriver)
+            self?.spiner.show(in: (self?.view)!)
+            self?.restNow(data: data)
+        }
+        
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        Helpers().showAlert(view: self, message: "Start rest now ?", customTitle: "Are you sure", customAction1: action1, customAction2: action2)
+    }
+    
     override var preferredStatusBarStyle: UIStatusBarStyle{
         return .lightContent
     }
     
+    private func restNow(data: CheckDriver){
+        inoutVm.restTimeDriver(data: data) {[weak self] (res) in
+            switch res {
+            case .failure(let err):
+                print(err)
+                Helpers().showAlert(view: self!, message: "Something when wrong !")
+                self?.spiner.dismiss()
+            case .success(let oke):
+                DispatchQueue.main.async {
+                    if oke == true {
+                        self?.dismiss(animated: true, completion: nil)
+                    }
+                    self?.spiner.dismiss()
+                }
+            }
+        }
+    }
     
-    func configureLayout(){
+    
+    //MARK: - Configure layout
+    private func configureLayout(){
         imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: view.frame.height/3)
         
         containerView.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16, height: 15+25+10+10+10)
@@ -202,12 +324,31 @@ class ProfileViewController: UIViewController {
         
         lableEmail.anchor(top: lableName.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
         
-        tableView.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 10)
+        containerButton.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 10)
+        
+        
+        button1.anchor(top: containerButton.topAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEditProfile)))
+        
+        button2.anchor(top: button1.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPassword)))
+        
+        button3.anchor(top: button2.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCheckout)))
+        button3.isHidden = true
+        
+        button4.anchor(top: button3.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button4.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRest)))
+        button4.isHidden = true
+        
+        button5.anchor(left: containerButton.leftAnchor, bottom: containerButton.bottomAnchor, right: containerButton.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
+        button5.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLogout)))
     }
     
 }
 
 
+//MARK: - Profile view model delegate
 extension ProfileViewController: ProfileViewModelDelegate {
     func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel) {
         DispatchQueue.main.async {
@@ -235,44 +376,14 @@ extension ProfileViewController: ProfileViewModelDelegate {
     
 }
 
-extension ProfileViewController: UITableViewDelegate,UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return actions.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ActionCell.id, for: indexPath) as! ActionCell
-        
-        let action = actions[indexPath.row]
-        
-        cell.lableAction.text = action["label"]
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cell = actions[indexPath.row]
-        
-        
-        switch cell["label"] {
-        case "Edit Profile":
-            didTapEditProfile()
-            break
-        case "Change Password":
-            didTapPassword()
-            break
-        case "Checkout":
-            print("oke")
-            break
-        case "Rest":
-            print("Okeeey")
-            break
-        case "Logout":
-            didTapLogout()
-            break
-        default:
-            print("No Action")
-        }
-        
+extension UIButton {
+    func centerTextAndImage(spacing: CGFloat) {
+        let insetAmount = spacing / 2
+        let writingDirection = UIApplication.shared.userInterfaceLayoutDirection
+        let factor: CGFloat = writingDirection == .leftToRight ? 1 : -1
+
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -insetAmount*factor, bottom: 0, right: insetAmount*factor)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: insetAmount*factor, bottom: 0, right: -insetAmount*factor)
+        self.contentEdgeInsets = UIEdgeInsets(top: 0, left: insetAmount, bottom: 0, right: insetAmount)
     }
 }

@@ -11,6 +11,33 @@ import JGProgressHUD
 
 class PlanVc: UIViewController {
     
+    private let emptyImage: UIView = {
+        let view = UIView()
+        let imageView: UIImageView = {
+           let img = UIImageView()
+            img.image = UIImage(systemName: "mail.and.text.magnifyingglass")
+            img.tintColor = UIColor(named: "orangeKasumi")
+            img.clipsToBounds = true
+            img.layer.masksToBounds = true
+            img.translatesAutoresizingMaskIntoConstraints = false
+            img.contentMode = .scaleAspectFit
+            return img
+        }()
+        
+        view.addSubview(imageView)
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        view.backgroundColor = UIColor(named: "bgKasumi")
+        view.layer.cornerRadius = 120/2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        return view
+    }()
+    
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
         spin.textLabel.text = "Loading"
@@ -186,7 +213,8 @@ class PlanVc: UIViewController {
         contrainerView.addSubview(dateLabel)
         contrainerView.addSubview(subTitleLabel)
         contrainerView.addSubview(tableView)
-        contrainerView.addSubview(dayOffLable)
+//        contrainerView.addSubview(dayOffLable)
+        contrainerView.addSubview(emptyImage)
         contrainerView.addSubview(saveButton)
         contrainerView.addSubview(setWorkButton)
         scView.translatesAutoresizingMaskIntoConstraints = false
@@ -202,6 +230,14 @@ class PlanVc: UIViewController {
         
         getDataDayOffPlan()
         
+        
+    }
+    
+    //MARK: - Shadow
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: false)
+        contrainerView.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 1, height: 1), radius: 5, scale: false)
     }
     
     
@@ -323,9 +359,9 @@ class PlanVc: UIViewController {
         
         setWorkButton.anchor(top: tableView.bottomAnchor, left: saveButton.rightAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 40)
         
-        dayOffLable.translatesAutoresizingMaskIntoConstraints = false
-        dayOffLable.centerYAnchor.constraint(equalTo: contrainerView.centerYAnchor).isActive = true
-        dayOffLable.centerXAnchor.constraint(equalTo: contrainerView.centerXAnchor).isActive = true
+//        dayOffLable.translatesAutoresizingMaskIntoConstraints = false
+        emptyImage.centerYAnchor.constraint(equalTo: contrainerView.centerYAnchor).isActive = true
+        emptyImage.centerXAnchor.constraint(equalTo: contrainerView.centerXAnchor).isActive = true
     }
     
 
@@ -430,7 +466,7 @@ class PlanVc: UIViewController {
         }
         //cek week 5 cek ada berapa hari dulu
      
-//       MARK - SIMPAN DATA
+//       MARK: - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let idDriver = userData["idDriver"] as? Int else {
             print("No user data")
@@ -744,11 +780,11 @@ class PlanVc: UIViewController {
         
         if listShift == nil {
             tableView.isHidden = true
-            dayOffLable.isHidden = false
+            emptyImage.isHidden = false
             setWorkButton.setTitle("Set Work Day", for: .normal)
         }else{
             tableView.isHidden = false
-            dayOffLable.isHidden = true
+            emptyImage.isHidden = true
             tableView.reloadData()
             setWorkButton.setTitle("Set To DayOff", for: .normal)
         }

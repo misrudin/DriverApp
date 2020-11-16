@@ -12,12 +12,40 @@ import JGProgressHUD
 
 class HomeVc: UIViewController {
     
+    private let emptyImage: UIView = {
+        let view = UIView()
+        let imageView: UIImageView = {
+           let img = UIImageView()
+            img.image = UIImage(systemName: "mail.and.text.magnifyingglass")
+            img.tintColor = UIColor(named: "orangeKasumi")
+            img.clipsToBounds = true
+            img.layer.masksToBounds = true
+            img.translatesAutoresizingMaskIntoConstraints = false
+            img.contentMode = .scaleAspectFit
+            return img
+        }()
+        
+        view.addSubview(imageView)
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        view.backgroundColor = UIColor(named: "bgKasumi")
+        view.layer.cornerRadius = 120/2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        return view
+    }()
+    
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
         spin.textLabel.text = "Loading"
         
         return spin
     }()
+    
     
     var orderViewModel = OrderViewModel()
     var orderData: [Order]?
@@ -33,7 +61,6 @@ class HomeVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        orderViewModel.delegate = self
         view.backgroundColor = .white
         configureNavigationBar()
         
@@ -49,12 +76,21 @@ class HomeVc: UIViewController {
         
         tableView.addSubview(refreshControl)
         
+        view.addSubview(emptyImage)
+        emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         getDataOrder()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: false)
     }
     
     @objc
@@ -66,9 +102,30 @@ class HomeVc: UIViewController {
             return
         }
         spiner.show(in: view)
+        emptyImage.isHidden = true
         // get data from api
         
-        orderViewModel.getDataOrder(codeDriver: codeDriver)
+        orderViewModel.getDataOrder(codeDriver: codeDriver) {[weak self] (res) in
+            switch res {
+            case .failure(let err):
+                print(err)
+                DispatchQueue.main.async {
+                    self?.orderData = []
+                    self?.tableView.reloadData()
+                    self?.spiner.dismiss()
+                    self?.refreshControl.endRefreshing()
+                    self?.emptyImage.isHidden = false
+                }
+            case .success(let order):
+                DispatchQueue.main.async {
+                    self?.orderData = order.data
+                    self?.tableView.reloadData()
+                    self?.spiner.dismiss()
+                    self?.refreshControl.endRefreshing()
+                    self?.emptyImage.isHidden = true
+                }
+            }
+        }
     }
     
     func configureNavigationBar(){
@@ -128,25 +185,4 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         }
     }
     
-}
-
-
-extension HomeVc: OrderViewModelDelegate {
-    func didFetchOrder(_ viewModel: OrderViewModel, order: OrderData) {
-        DispatchQueue.main.async {
-            self.orderData = order.data
-            self.tableView.reloadData()
-            self.spiner.dismiss()
-            self.refreshControl.endRefreshing()
-        }
-    }
-    
-    func didFailedGetOrder(_ error: Error) {
-        DispatchQueue.main.async {
-            self.orderData = []
-            self.tableView.reloadData()
-            self.spiner.dismiss()
-            self.refreshControl.endRefreshing()
-        }
-    }
 }

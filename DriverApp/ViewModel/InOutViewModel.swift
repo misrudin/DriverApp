@@ -79,6 +79,71 @@ struct InOutViewModel {
             })
     }
     
+    
+    //MARK: - Checkout
+    func checkoutDriver(data: CheckDriver, completion: @escaping (Result<Bool, Error>)-> Void){
+        AF.request("\(Base.url)livetracking/driver/dashboard/checkout",
+                   method: .patch,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(ErrorDriver.failedToPost))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+        })
+    }
+    
+    //MARK: - Rest time
+    
+    func restTimeDriver(data: CheckDriver, completion: @escaping (Result<Bool, Error>)-> Void){
+        AF.request("\(Base.url)livetracking/driver/rest-time",
+                   method: .post,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(ErrorDriver.failedToPost))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+        })
+    }
+    
+    //MARK: - Work Time
+    
+    func workTimeDriver(data: CheckDriver, completion: @escaping (Result<Bool, Error>)-> Void){
+        AF.request("\(Base.url)livetracking/driver/rest-time",
+                   method: .patch,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(ErrorDriver.failedToPost))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+        })
+    }
 
 }
 

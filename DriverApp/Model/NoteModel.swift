@@ -65,7 +65,7 @@ struct DataPending: Codable {
     let id_shift_time: Int
 }
 
-struct DataCheckout {
+struct DataCheckout: Codable {
     let id_driver: Int
     let note: String
 }

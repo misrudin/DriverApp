@@ -56,11 +56,33 @@ struct NoteViewModel {
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
                     switch response.result {
                     case .success:
-                        completion(.success(true))
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else{
+                            completion(.failure(DataError.failedToSendingNote))
+                        }
                     case .failure(let error):
                         completion(.failure(error))
                     }
                     
+                   })
+    }
+    
+    func checkoutNote(data: DataCheckout, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.url)note/checkout",
+                   method: .post,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else{
+                            completion(.failure(DataError.failedToSendingNote))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
                    })
     }
     
@@ -167,8 +189,9 @@ struct NoteViewModel {
     }
     
     
-    public enum DataError: Error{
-            case failedToFetch
+    enum DataError: Error{
+        case failedToFetch
+        case failedToSendingNote
     }
     
     

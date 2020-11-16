@@ -12,18 +12,23 @@ class RegisterView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .white
+        configureNavigationBar()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func configureNavigationBar(){
+        navigationItem.title = "Sign Up"
+        navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.barStyle = .black
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(back))
+        navigationController?.navigationBar.tintColor = .white
     }
-    */
-
+    
+    @objc
+    func back(){
+        dismiss(animated: true, completion: nil)
+    }
 }

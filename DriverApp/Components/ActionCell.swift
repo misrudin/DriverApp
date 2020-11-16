@@ -13,7 +13,6 @@ class ActionCell: UITableViewCell {
 
     let lableAction: UILabel = {
        let label = UILabel()
-        label.text = "siaa"
         label.font = UIFont.systemFont(ofSize: 15,weight: .semibold)
         label.textColor = .black
         return label

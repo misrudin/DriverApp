@@ -18,7 +18,7 @@ struct OrderViewModel {
     var delegate: OrderViewModelDelegate?
     
     func getDetailOrder(orderNo: String, completion: @escaping (Result<Order,Error>)->Void){
-        AF.request("\(Base.url)order/schedule/detail/\(orderNo)",headers: Base.headers).responseJSON { response in
+        AF.request("\(Base.url)orders/schedule/detail/\(orderNo)",headers: Base.headers).responseJSON { response in
             switch response.result {
             case .success:
                 if let data = response.data {
@@ -34,24 +34,30 @@ struct OrderViewModel {
         }
     }
     
-    func getDataOrder(codeDriver: String){
-        AF.request("\(Base.url)order/schedule/driver/\(codeDriver)",headers: Base.headers).response { response in
+    func getDataOrder(codeDriver: String, completion: @escaping (Result<OrderData, Error>)-> Void){
+        AF.request("\(Base.url)orders/schedule/driver/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
-                if let data = response.data {
-                    if let orderData =  self.parseJson(data: data){
-                        delegate?.didFetchOrder(self, order: orderData)
+                if response.response?.statusCode == 200 {
+                    if let data = response.data {
+                        if let orderData =  self.parseJson(data: data){
+                            completion(.success(orderData))
+                        }else {
+                            completion(.failure(DataError.failedToParseJson))
+                        }
                     }
+                }else {
+                    completion(.failure(DataError.failedToFetch))
                 }
             case let .failure(error):
-                delegate?.didFailedGetOrder(error)
+                completion(.failure(error))
             }
         }
     }
     
     
     func getDataHistoryOrder(codeDriver: String, completion: @escaping (Result<HistoryData,Error>)->Void){
-        AF.request("\(Base.url)order/history/\(codeDriver)",headers: Base.headers).response { response in
+        AF.request("\(Base.url)orders/history/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if let data = response.data {
@@ -69,7 +75,7 @@ struct OrderViewModel {
     
     
     func statusOrder(data: Delivery, status: String, completion: @escaping (Result<Bool,Error>)-> Void){
-        AF.request("\(Base.url)order/schedule/update-status/\(status)",
+        AF.request("\(Base.url)orders/schedule/update-status/\(status)",
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
@@ -115,8 +121,9 @@ struct OrderViewModel {
         }
     }
     
-    public enum DataError: Error{
-            case failedToFetch
+    enum DataError: Error{
+        case failedToFetch
+        case failedToParseJson
     }
     
 }

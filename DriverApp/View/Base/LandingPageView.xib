@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Login2View" customModule="DriverApp" customModuleProvider="target">
+            <connections>
+                <outlet property="imageViewLogo" destination="X8j-wQ-QgF" id="Wd1-KN-oA0"/>
+                <outlet property="labelSubTitle" destination="zje-xy-xEx" id="TPh-Y1-hw4"/>
+                <outlet property="labelTitle" destination="Ry5-KV-B9w" id="JJR-VJ-6iM"/>
+                <outlet property="view" destination="q2w-md-8r0" id="GLH-qE-sBV"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view opaque="NO" contentMode="scaleToFill" id="q2w-md-8r0">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="circle.grid.hex.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="X8j-wQ-QgF">
+                    <rect key="frame" x="30" y="66" width="32" height="30"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" name="Theme"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="DOJ-uA-Nq2"/>
+                        <constraint firstAttribute="width" constant="32" id="ZD7-no-FG7"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Title" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ry5-KV-B9w">
+                    <rect key="frame" x="30" y="119" width="230" height="43"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="36"/>
+                    <nil key="textColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zje-xy-xEx">
+                    <rect key="frame" x="30" y="173" width="260" height="19.5"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Facebook to find your friends" lineBreakMode="tailTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCB-6L-0uE">
+                    <rect key="frame" x="30" y="465" width="218" height="17"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" systemColor="secondaryLabelColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xrq-pr-zAN">
+                    <rect key="frame" x="30" y="490" width="260" height="48"/>
+                    <color key="backgroundColor" name="Theme"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="aVv-G7-n5z"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Log In with Facebook">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.5"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" name="Border"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="actionFacebook:" destination="-1" eventType="touchUpInside" id="aK5-VP-fnu"/>
+                    </connections>
+                </button>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoKasumi" translatesAutoresizingMaskIntoConstraints="NO" id="eRm-Px-tDW">
+                    <rect key="frame" x="257" y="505" width="18" height="18"/>
+                    <color key="tintColor" systemColor="secondaryLabelColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="18" id="NdU-b3-aUN"/>
+                        <constraint firstAttribute="width" constant="18" id="SYT-ni-N4E"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="gcd-wP-JGk"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="xrq-pr-zAN" firstAttribute="top" secondItem="QCB-6L-0uE" secondAttribute="bottom" constant="8" id="1w7-k0-p64"/>
+                <constraint firstItem="eRm-Px-tDW" firstAttribute="centerY" secondItem="xrq-pr-zAN" secondAttribute="centerY" id="77u-oW-VZR"/>
+                <constraint firstItem="Ry5-KV-B9w" firstAttribute="leading" secondItem="q2w-md-8r0" secondAttribute="leading" constant="30" id="EZn-Sf-FgA"/>
+                <constraint firstItem="gcd-wP-JGk" firstAttribute="trailing" secondItem="Ry5-KV-B9w" secondAttribute="trailing" constant="60" id="JU6-g9-dhE"/>
+                <constraint firstItem="Ry5-KV-B9w" firstAttribute="top" secondItem="X8j-wQ-QgF" secondAttribute="bottom" constant="22" id="OL1-xj-0Ya"/>
+                <constraint firstItem="zje-xy-xEx" firstAttribute="top" secondItem="Ry5-KV-B9w" secondAttribute="bottom" constant="11" id="Rpt-K8-BsA"/>
+                <constraint firstItem="gcd-wP-JGk" firstAttribute="trailing" secondItem="zje-xy-xEx" secondAttribute="trailing" constant="30" id="SBT-Yr-wa6"/>
+                <constraint firstItem="eRm-Px-tDW" firstAttribute="trailing" secondItem="xrq-pr-zAN" secondAttribute="trailing" constant="-15" id="T43-QW-U8i"/>
+                <constraint firstItem="QCB-6L-0uE" firstAttribute="leading" secondItem="xrq-pr-zAN" secondAttribute="leading" id="W1P-x0-TWK"/>
+                <constraint firstItem="X8j-wQ-QgF" firstAttribute="top" secondItem="gcd-wP-JGk" secondAttribute="top" constant="65" id="asa-uf-Ylv"/>
+                <constraint firstItem="X8j-wQ-QgF" firstAttribute="leading" secondItem="gcd-wP-JGk" secondAttribute="leading" constant="30" id="b9C-bM-Xt1"/>
+                <constraint firstItem="xrq-pr-zAN" firstAttribute="leading" secondItem="gcd-wP-JGk" secondAttribute="leading" constant="30" id="evS-VY-cT9"/>
+                <constraint firstItem="gcd-wP-JGk" firstAttribute="trailing" secondItem="xrq-pr-zAN" secondAttribute="trailing" constant="30" id="oRP-0Y-Bf9"/>
+                <constraint firstItem="gcd-wP-JGk" firstAttribute="bottom" secondItem="xrq-pr-zAN" secondAttribute="bottom" constant="30" id="xN3-rv-wNW"/>
+                <constraint firstItem="zje-xy-xEx" firstAttribute="leading" secondItem="Ry5-KV-B9w" secondAttribute="leading" id="yGI-3d-j5f"/>
+            </constraints>
+            <point key="canvasLocation" x="140" y="153"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="circle.grid.hex.fill" catalog="system" width="128" height="112"/>
+        <image name="logoKasumi" width="64" height="64"/>
+        <namedColor name="Border">
+            <color red="0.55699998140335083" green="0.55699998140335083" blue="0.57599997520446777" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Theme">
+            <color red="0.3919999897480011" green="0.25499999523162842" blue="0.6470000147819519" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="secondaryLabelColor">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

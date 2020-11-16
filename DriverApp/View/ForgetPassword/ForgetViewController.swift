@@ -124,13 +124,7 @@ extension ForgetViewController{
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "arrow.left"), style: .plain, target: self, action: #selector(didBack))
         navigationController?.navigationBar.tintColor = .white
-    }
-    
-    @objc
-    func didBack(){
-        dismiss(animated: true, completion: nil)
     }
     
     func showMessageToUser(){

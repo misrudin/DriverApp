@@ -35,7 +35,6 @@ class LoginView: UIViewController {
     lazy var containerView: UIView = {
             let view = UIView()
             view.backgroundColor = .white
-            view.frame.size = contentViewSize
             return view
     }()
     
@@ -108,6 +107,19 @@ class LoginView: UIViewController {
         loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
         return loginButton
     }()
+    
+    private let signupButton: UIButton={
+        let loginButton = UIButton()
+        loginButton.setTitle("Sign Up", for: .normal)
+        loginButton.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
+        loginButton.setTitleColor(UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2), for: .highlighted)
+        loginButton.layer.cornerRadius = 5
+        loginButton.layer.borderWidth = 1
+        loginButton.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
+        loginButton.layer.masksToBounds = true
+        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
+        return loginButton
+    }()
    
     
     override func viewDidLoad() {
@@ -122,24 +134,49 @@ class LoginView: UIViewController {
         containerView.addSubview(password)
         containerView.addSubview(forgetPassword)
         containerView.addSubview(loginButton)
+        containerView.addSubview(signupButton)
         
         codeDriver.delegate = self
         password.delegate = self
         loginViewModel.delegate = self
         
-        
+        configureNavigationBar()
         loginButton.addTarget(self, action: #selector(didLoginTap), for: .touchUpInside)
         forgetPassword.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didForgetClick)))
+        signupButton.addTarget(self, action: #selector(register), for: .touchUpInside)
+    }
+    
+    
+    func configureNavigationBar(){
+        navigationItem.title = "Login"
+        navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationController?.navigationBar.barStyle = .black
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
+        navigationController?.navigationBar.tintColor = .white
+    }
+    
+    @objc
+    func back(){
+        dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: containerView.leftAnchor, paddingTop: 30, paddingLeft: 16, width: 100, height: 100)
+        scrollView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingBottom: 0, paddingLeft: 0, paddingRight: 0)
+        
+        containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: scrollView.leftAnchor,bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor)
+        
+        imageView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, paddingTop: 30, paddingLeft: 16, width: 100, height: 100)
         labelTitleLogin.anchor(top: imageView.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
         codeDriver.anchor(top: labelTitleLogin.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 50, paddingLeft: 16, paddingRight: 16, height: 45)
         password.anchor(top: codeDriver.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 15, paddingLeft: 16, paddingRight: 16, height: 45)
         forgetPassword.anchor(top: password.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
         loginButton.anchor(top: forgetPassword.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 45)
+        
+        signupButton.anchor(left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
     }
 }
 
@@ -165,10 +202,17 @@ extension LoginView{
     }
     
     @objc func didForgetClick(){
-        let forgetVc = UINavigationController(rootViewController: ForgetViewController())
-        forgetVc.modalPresentationStyle = .fullScreen
+        let forgetVc = ForgetViewController()
+        navigationController?.pushViewController(forgetVc, animated: true)
         
-        present(forgetVc, animated: true, completion: nil)
+
+    }
+    
+    @objc
+    func register(){
+        let vc = UINavigationController(rootViewController: RegisterView())
+                vc.modalPresentationStyle = .fullScreen
+                present(vc, animated: true, completion: nil)
     }
 
 }
