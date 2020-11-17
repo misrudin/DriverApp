@@ -109,12 +109,10 @@ struct Helpers {
         view.present(alert, animated: true)
     }
     
-//    func showEmpty(view: UIView){
-//        view.addSubview(emptyImage)
-//        emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-//        emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.5, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: false)
-//    }
+
+    func convertImageToBase64String (img: UIImage) -> String {
+        return "data:image/png;base64,\(img.jpegData(compressionQuality: 0.7)?.base64EncodedString() ?? "")"
+    }
 }
 
 extension Date {
@@ -294,5 +292,7 @@ extension UIImage {
 
             return isSameSize(newSize) ? self : scaleImage(newSize)!
         }
+    
+    
 
 }

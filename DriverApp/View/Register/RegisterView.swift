@@ -9,6 +9,24 @@ import UIKit
 
 class RegisterView: UIViewController {
     
+    var registerVm = RegisterViewModel()
+    
+    //MARK: - variable
+    let genders:[Gender] = [
+        Gender(name: "Male"),
+        Gender(name: "Female")
+    ]
+    
+    let languages:[Language] = [
+        Language(name: "JP"),
+        Language(name: "EN")
+    ]
+    
+    var vehicleY = [VehicleYear]()
+    
+    var selectedImageView: UIImageView?
+
+    
     //MARK: - Component
     lazy var lableTitleRegister: UILabel = {
         let lable = UILabel()
@@ -50,7 +68,7 @@ class RegisterView: UIViewController {
         return lable
     }()
     
-    lazy var imageView: UIImageView = {
+    lazy var profilePhotoImage: UIImageView = {
         let img = UIImageView()
         img.clipsToBounds = true
         img.layer.masksToBounds = true
@@ -75,7 +93,7 @@ class RegisterView: UIViewController {
         btn.setTitleColor(UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2), for: .highlighted)
         btn.layer.masksToBounds = true
         btn.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
-        btn.addTarget(self, action: #selector(presentPhotoActionSheetProfile), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(selectProfilePhoto), for: .touchUpInside)
         
         return btn
     }()
@@ -179,10 +197,49 @@ class RegisterView: UIViewController {
     //MARK:- Brith date
     lazy var brithDateLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Email"
+        lable.text = "Date Of Birth"
         lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         lable.textColor = UIColor.lightGray
         return lable
+    }()
+    
+    lazy var datePicker: UIDatePicker = {
+        let date = UIDatePicker()
+        date.datePickerMode = .date
+        date.addTarget(self, action: #selector(handleDatePicker), for: .valueChanged)
+        date.frame = CGRect(x: 10, y: 50, width: self.view.frame.width, height: 200)
+        date.timeZone = NSTimeZone.local
+        date.backgroundColor = .white
+            if #available(iOS 13.4, *) {
+                date.preferredDatePickerStyle = UIDatePickerStyle.wheels
+            } else {
+                // Fallback on earlier versions
+            }
+        return date
+    }()
+    
+    @objc func handleDatePicker() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: datePicker.date)
+        brithDate.text = strDate
+    }
+
+    //Toolbar done button function
+    @objc func onClickDoneButton() {
+        self.view.endEditing(true)
+    }
+    
+    lazy var toolBar: UIToolbar = {
+        let tool = UIToolbar()
+        tool.barStyle = .default
+        tool.isTranslucent = true
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(onClickDoneButton))
+        tool.setItems([space, doneButton], animated: false)
+        tool.isUserInteractionEnabled = true
+        tool.sizeToFit()
+        return tool
     }()
     
     lazy var brithDate: UITextField = {
@@ -197,6 +254,8 @@ class RegisterView: UIViewController {
         field.backgroundColor = .white
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.inputView = datePicker
+        field.inputAccessoryView = toolBar
         return field
     }()
     
@@ -207,6 +266,12 @@ class RegisterView: UIViewController {
         lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         lable.textColor = UIColor.lightGray
         return lable
+    }()
+    
+    lazy var pickerView1: UIPickerView = {
+        let pik = UIPickerView()
+        
+        return pik
     }()
     
     lazy var gender: UITextField = {
@@ -221,8 +286,12 @@ class RegisterView: UIViewController {
         field.backgroundColor = .white
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.inputView = pickerView1
+        field.inputAccessoryView = toolBar
         return field
     }()
+
+    
     
     //MARK:- Language
     lazy var languageLable: UILabel = {
@@ -231,6 +300,12 @@ class RegisterView: UIViewController {
         lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         lable.textColor = UIColor.lightGray
         return lable
+    }()
+    
+    lazy var pickerView2: UIPickerView = {
+        let pik = UIPickerView()
+        
+        return pik
     }()
     
     lazy var language: UITextField = {
@@ -245,6 +320,8 @@ class RegisterView: UIViewController {
         field.backgroundColor = .white
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.inputView = pickerView2
+        field.inputAccessoryView = toolBar
         return field
     }()
     
@@ -427,6 +504,7 @@ class RegisterView: UIViewController {
         return lable
     }()
     
+    //MARK:- vehicleDataLable
     lazy var vehicleDataLable: UILabel = {
         let lable = UILabel()
         lable.text = "VEHICLE DATA"
@@ -436,27 +514,46 @@ class RegisterView: UIViewController {
     }()
     
     
+    //MARK:- vehiclePhotoLable
     lazy var vehiclePhotoLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Photo"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        lable.text = "Vehicle Inspection Certificate Photo"
+        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
         lable.textColor = UIColor.lightGray
         return lable
     }()
     
-    lazy var imageViewVehicle: UIImageView = {
+    //MARK:- vehiclePhotoLable2
+    lazy var vehiclePhotoLable2: UILabel = {
+        let lable = UILabel()
+        lable.text = "Vehicle Photo"
+        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        lable.textColor = UIColor.lightGray
+        return lable
+    }()
+    
+    //MARK:- vehicleCertifiateImage
+    lazy var vehicleCertifiateImage: UIImageView = {
         let img = UIImageView()
-        img.clipsToBounds = true
-        img.layer.masksToBounds = true
+        img.image = UIImage(named: "cameraIcon2")
+        img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
-        img.backgroundColor = .lightGray
+        img.layer.cornerRadius = 4
+        img.isUserInteractionEnabled = true
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVCI)))
         return img
     }()
     
+    @objc
+    func selectVCI(){
+        selectedImageView = vehicleCertifiateImage
+        presentPhotoActionSheet()
+    }
     
+    //MARK:- containerSelectImage
     lazy var containerSelectImage: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 2
+        view.layer.cornerRadius = 4
         view.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         return view
     }()
@@ -494,6 +591,28 @@ class RegisterView: UIViewController {
         return lable
     }()
     
+    lazy var datePickerExpiration: UIDatePicker = {
+        let date = UIDatePicker()
+        date.datePickerMode = .date
+        date.addTarget(self, action: #selector(handleDatePickerEx), for: .valueChanged)
+        date.frame = CGRect(x: 10, y: 50, width: self.view.frame.width, height: 200)
+        date.timeZone = NSTimeZone.local
+        date.backgroundColor = .white
+            if #available(iOS 13.4, *) {
+                date.preferredDatePickerStyle = UIDatePickerStyle.wheels
+            } else {
+                // Fallback on earlier versions
+            }
+        return date
+    }()
+    
+    @objc func handleDatePickerEx() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: datePicker.date)
+        licenseExpiration.text = strDate
+    }
+    
     lazy var licenseExpiration: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
@@ -506,6 +625,8 @@ class RegisterView: UIViewController {
         field.backgroundColor = .white
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.inputView = datePickerExpiration
+        field.inputAccessoryView = toolBar
         return field
     }()
     
@@ -592,6 +713,28 @@ class RegisterView: UIViewController {
         return lable
     }()
     
+    lazy var datePickerInsurance: UIDatePicker = {
+        let date = UIDatePicker()
+        date.datePickerMode = .date
+        date.addTarget(self, action: #selector(handleDatePickerInsurance), for: .valueChanged)
+        date.frame = CGRect(x: 10, y: 50, width: self.view.frame.width, height: 200)
+        date.timeZone = NSTimeZone.local
+        date.backgroundColor = .white
+            if #available(iOS 13.4, *) {
+                date.preferredDatePickerStyle = UIDatePickerStyle.wheels
+            } else {
+                // Fallback on earlier versions
+            }
+        return date
+    }()
+    
+    @objc func handleDatePickerInsurance() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: datePicker.date)
+        insuranceExpirationDate.text = strDate
+    }
+    
     lazy var insuranceExpirationDate: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
@@ -604,6 +747,8 @@ class RegisterView: UIViewController {
         field.backgroundColor = .white
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.inputView = datePickerInsurance
+        field.inputAccessoryView = toolBar
         return field
     }()
     
@@ -688,6 +833,12 @@ class RegisterView: UIViewController {
         return lable
     }()
     
+    lazy var pickerView3: UIPickerView = {
+        let pik = UIPickerView()
+        
+        return pik
+    }()
+    
     lazy var vehicleYear: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
@@ -700,6 +851,8 @@ class RegisterView: UIViewController {
         field.backgroundColor = .white
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.inputView = pickerView3
+        field.inputAccessoryView = toolBar
         return field
     }()
     
@@ -727,6 +880,54 @@ class RegisterView: UIViewController {
         return field
     }()
     
+    //MARK:- Vehicle Inspection Exp. Date
+    lazy var vehicleInspectionExpDateLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "Vehicle Inspection Exp. Date"
+        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        lable.textColor = UIColor.lightGray
+        return lable
+    }()
+    
+    lazy var datePickerInspection: UIDatePicker = {
+        let date = UIDatePicker()
+        date.datePickerMode = .date
+        date.addTarget(self, action: #selector(handleDatePickerInspection), for: .valueChanged)
+        date.frame = CGRect(x: 10, y: 50, width: self.view.frame.width, height: 200)
+        date.timeZone = NSTimeZone.local
+        date.backgroundColor = .white
+            if #available(iOS 13.4, *) {
+                date.preferredDatePickerStyle = UIDatePickerStyle.wheels
+            } else {
+                // Fallback on earlier versions
+            }
+        return date
+    }()
+    
+    @objc func handleDatePickerInspection() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: datePicker.date)
+        insuranceExpirationDate.text = strDate
+    }
+    
+    lazy var vehicleInspectionExpDate: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.returnKeyType = .continue
+        field.layer.cornerRadius = 2
+        field.placeholder = "Insurance Expiration Date"
+        field.paddingLeft(10)
+        field.paddingRight(10)
+        field.backgroundColor = .white
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.inputView = datePickerInspection
+        field.inputAccessoryView = toolBar
+        return field
+    }()
+    
     
 //   MARK: - Next button
     private let nextButton: UIButton={
@@ -742,7 +943,76 @@ class RegisterView: UIViewController {
         return loginButton
     }()
     
+    //MARK: - Vehicle Photo
+    lazy var containerPhoto: UIStackView = {
+        let view = UIStackView()
+        view.axis = .horizontal
+//        view.backgroundColor = .red
+        view.spacing = 10
+        view.distribution = .fillEqually
+        return view
+    }()
     
+    lazy var vehicleImage1: UIImageView = {
+        let img = UIImageView()
+        img.layer.cornerRadius = 5
+        img.layer.borderWidth = 2
+        img.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
+        img.image = UIImage(named: "cameraIcon2")
+        img.clipsToBounds = false
+        img.contentMode = .scaleAspectFit
+        img.isUserInteractionEnabled = true
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVI1)))
+        return img
+    }()
+    
+    @objc
+    func selectVI1(){
+        selectedImageView = vehicleImage1
+        presentPhotoActionSheet()
+    }
+    
+    lazy var vehicleImage2: UIImageView = {
+        let img = UIImageView()
+        let camera = UIImage(named: "cameraIcon2")
+        let iconCamera = camera?.resizeImage(CGSize(width: 20, height: 20))
+        img.layer.cornerRadius = 5
+        img.layer.borderWidth = 2
+        img.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
+        img.image = camera
+        img.clipsToBounds = false
+        img.contentMode = .scaleAspectFit
+        img.isUserInteractionEnabled = true
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVI2)))
+        return img
+    }()
+    
+    @objc
+    func selectVI2(){
+        selectedImageView = vehicleImage2
+        presentPhotoActionSheet()
+    }
+    
+    lazy var vehicleImage3: UIImageView = {
+        let img = UIImageView()
+        let camera = UIImage(named: "cameraIcon2")
+        let iconCamera = camera?.resizeImage(CGSize(width: 20, height: 20))
+        img.layer.cornerRadius = 5
+        img.layer.borderWidth = 2
+        img.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
+        img.image = camera
+        img.clipsToBounds = false
+        img.contentMode = .scaleAspectFit
+        img.isUserInteractionEnabled = true
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVI3)))
+        return img
+    }()
+    
+    @objc
+    func selectVI3(){
+        selectedImageView = vehicleImage2
+        presentPhotoActionSheet()
+    }
     
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
@@ -767,8 +1037,24 @@ class RegisterView: UIViewController {
     //MARK:- lifecyle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        pickerView1.delegate = self
+        pickerView1.dataSource = self
+        
+        pickerView2.delegate = self
+        pickerView2.dataSource = self
+
+        pickerView3.delegate = self
+        pickerView3.dataSource = self
 
         
+        let format = DateFormatter()
+        format.dateFormat = "yyyy"
+        let formattedDate = format.string(from: Date())
+        
+        for i in (2000..<Int(formattedDate)!+20).reversed() {
+            vehicleY.append(VehicleYear(year: String(i)))
+        }
         
         view.backgroundColor = .white
         configureNavigationBar()
@@ -782,12 +1068,6 @@ class RegisterView: UIViewController {
     }
     
     //MARK: - FUNC
-    @objc
-    func onNext(){
-        let vc = VehicleView()
-        
-        navigationController?.pushViewController(vc, animated: true)
-    }
     
     private func configureNavigationBar(){
         navigationItem.title = "Sign Up"
@@ -819,22 +1099,22 @@ class RegisterView: UIViewController {
         stakView.addSubview(profileFoto)
         profileFoto.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10)
         
-        stakView.addSubview(imageView)
-        imageView.anchor(top: profileFoto.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 80, height: 80)
+        stakView.addSubview(profilePhotoImage)
+        profilePhotoImage.anchor(top: profileFoto.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 80, height: 80)
         
         stakView.addSubview(imgName)
-        imgName.anchor(top: imageView.topAnchor, left: imageView.rightAnchor, right: stakView.rightAnchor, paddingTop: 10, paddingLeft: 10)
+        imgName.anchor(top: profilePhotoImage.topAnchor, left: profilePhotoImage.rightAnchor, right: stakView.rightAnchor, paddingTop: 10, paddingLeft: 10)
         
         stakView.addSubview(selecImage)
-        selecImage.anchor(left: imageView.rightAnchor, bottom: imageView.bottomAnchor, paddingBottom: 10, paddingLeft: 10, height: 30)
+        selecImage.anchor(left: profilePhotoImage.rightAnchor, bottom: profilePhotoImage.bottomAnchor, paddingBottom: 10, paddingLeft: 10, height: 30)
         
         stakView.addSubview(firstNameLable)
-        firstNameLable.anchor(top: imageView.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
+        firstNameLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
         stakView.addSubview(firstName)
         firstName.anchor(top: firstNameLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 2, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(lastNameLable)
-        lastNameLable.anchor(top: imageView.bottomAnchor,left: firstNameLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
+        lastNameLable.anchor(top: profilePhotoImage.bottomAnchor,left: firstNameLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
         stakView.addSubview(lastName)
         lastName.anchor(top: lastNameLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 2,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
         
@@ -973,13 +1253,30 @@ class RegisterView: UIViewController {
             stakView.addSubview(vehicleOwnership)
             vehicleOwnership.anchor(top: vehicleOwnershipLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
             
+            stakView.addSubview(vehicleInspectionExpDateLable)
+            vehicleInspectionExpDateLable.anchor(top: vehicleOwnership.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+            stakView.addSubview(vehicleInspectionExpDate)
+            vehicleInspectionExpDate.anchor(top: vehicleInspectionExpDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            
             stakView.addSubview(vehiclePhotoLable)
-            vehiclePhotoLable.anchor(top: vehicleOwnership.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+            vehiclePhotoLable.anchor(top: vehicleInspectionExpDate.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(containerSelectImage)
             containerSelectImage.anchor(top: vehiclePhotoLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 200)
+            containerSelectImage.addSubview(vehicleCertifiateImage)
+            vehicleCertifiateImage.anchor(top: containerSelectImage.topAnchor, left: containerSelectImage.leftAnchor, bottom: containerSelectImage.bottomAnchor, right: containerSelectImage.rightAnchor)
+            
+            stakView.addSubview(vehiclePhotoLable2)
+            vehiclePhotoLable2.anchor(top: containerSelectImage.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+            stakView.addSubview(containerPhoto)
+            containerPhoto.anchor(top: vehiclePhotoLable2.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 70)
+            
+            containerPhoto.addArrangedSubview(vehicleImage1)
+            vehicleImage1.anchor(top: containerPhoto.topAnchor, bottom: containerPhoto.bottomAnchor)
+            containerPhoto.addArrangedSubview(vehicleImage2)
+            containerPhoto.addArrangedSubview(vehicleImage3)
             
             stakView.addSubview(nextButton)
-            nextButton.anchor(top: containerSelectImage.bottomAnchor, right: stakView.rightAnchor, paddingTop: 40, width: view.frame.width-32, height: 45)
+            nextButton.anchor(top: containerPhoto.bottomAnchor, right: stakView.rightAnchor, paddingTop: 40, width: view.frame.width-32, height: 45)
         }
     
     
@@ -994,7 +1291,13 @@ class RegisterView: UIViewController {
     //MARK: - EXTENSION
 
 extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    @objc func presentPhotoActionSheetProfile(){
+    @objc func selectProfilePhoto(){
+        selectedImageView = profilePhotoImage
+        presentPhotoActionSheet()
+    }
+    
+    
+    func presentPhotoActionSheet(){
         let actionSheet = UIAlertController(title: "Profile Picture",
                                             message: "How would you like to select a picture?",
                                             preferredStyle: .actionSheet)
@@ -1041,18 +1344,102 @@ extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerD
             return
         }
         
-        let base64Img = convertImageToBase64String(img: selectdedImage)
-        print(base64Img)
-        
-        self.imageView.image = selectdedImage
+        selectedImageView?.image = selectdedImage
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+}
+
+
+extension RegisterView: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
     
-    func convertImageToBase64String (img: UIImage) -> String {
-        return "data:image/png;base64,\(img.jpegData(compressionQuality: 0.7)?.base64EncodedString() ?? "")"
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView == pickerView1 {
+            return genders.count
+        }
+        else if pickerView == pickerView3 {
+            return vehicleY.count
+        }
+        else {
+            return languages.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView == pickerView1 {
+            return genders[row].name
+        }
+        else if pickerView == pickerView3 {
+            return vehicleY[row].year
+        }
+        else {
+            return languages[row].name
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView == pickerView1{
+            gender.text = genders[row].name
+        }
+        else if pickerView == pickerView3 {
+            vehicleYear.text = vehicleY[row].year
+        }
+        else {
+            language.text = languages[row].name
+        }
     }
 }
 
+
+//MARK: - NEXT
+
+extension RegisterView {
+    @objc
+    func onNext(){
+        let data: RegisterData = RegisterData(user_image: <#T##String#>,
+                                              first_name: <#T##String#>,
+                                              last_name: <#T##String#>,
+                                              date_of_birth: <#T##String#>,
+                                              postal_code: <#T##String#>,
+                                              prefectures: <#T##String#>,
+                                              municipal_district: <#T##String#>,
+                                              chome: <#T##String#>,
+                                              municipality_kana: <#T##String#>,
+                                              kana_after_address: <#T##String#>,
+                                              gender: <#T##String#>,
+                                              language: <#T##String#>,
+                                              phone_number: <#T##String#>,
+                                              email: <#T##String#>,
+                                              password: <#T##String#>,
+                                              license_number: <#T##String#>,
+                                              license_expired_date: <#T##String#>,
+                                              insurance_company: <#T##String#>,
+                                              personal_coverage: <#T##String#>,
+                                              compensation_range_object: <#T##String#>,
+                                              insurance_expired_date: <#T##String#>,
+                                              vehicle_name: <#T##String#>,
+                                              vehicle_year: <#T##String#>,
+                                              vehicle_ownership: <#T##String#>,
+                                              vehicle_certificate_exp: <#T##String#>,
+                                              vehicle_certification_photo: <#T##String#>,
+                                              vehicle_photo_1: <#T##String#>,
+                                              vehicle_photo_2: <#T##String#>,
+                                              vehicle_photo_3: <#T##String#>,
+                                              date_add: <#T##String#>)
+        registerVm.cekValidation(data: data) { (res) in
+            switch res {
+            case.failure(let err):
+                print("Error \(err)")
+            case .success(let oke):
+                if oke == true {
+                    print("Next Save")
+                }
+            }
+        }
+    }
+}
