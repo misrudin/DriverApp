@@ -34,6 +34,7 @@ extension Date {
       }
 }
 
+@available(iOS 13.0, *)
 class ChatViewController: UIViewController {
     
     private let cellId = "id"
@@ -51,14 +52,16 @@ class ChatViewController: UIViewController {
         field.placeholder = "Type your message here ..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = UIColor.systemGray6
+        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         return field
     }()
     
     lazy var sendButton: UIButton={
         let btn = UIButton()
-        btn.setImage(UIImage(systemName: "paperplane.fill"), for: .normal)
-        btn.backgroundColor = .link
+        let image = UIImage(named: "sendIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        btn.setImage(baru, for: .normal)
+        btn.backgroundColor = UIColor(named: "orangeKasumi")
         btn.tintColor = .white
         btn.layer.cornerRadius = 5
         btn.layer.masksToBounds = true
@@ -72,16 +75,15 @@ class ChatViewController: UIViewController {
         v.addSubview(sendButton)
         let border = UIView()
         v.addSubview(border)
-        border.backgroundColor = UIColor.systemGray2
+        border.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
         border.anchor(top: v.topAnchor, left: v.leftAnchor, right: v.rightAnchor, height: 1)
-        v.dropShadow(color: UIColor.systemGray6, opacity: 0.5, offSet: CGSize(width: 0, height: -2), radius: 1, scale: true)
         
         return v
     }()
     
     lazy var tableView: UITableView = {
        let table = UITableView()
-        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 15, right: 0)
+        table.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
        return table
     }()
 
@@ -103,17 +105,19 @@ class ChatViewController: UIViewController {
         inputField.delegate = self
         
         
-        tableView.anchor(top: view.topAnchor, left: view.leftAnchor,bottom: inputChat.topAnchor, right: view.rightAnchor)
-        inputChat.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor,height: 80)
-        inputField.anchor(top: inputChat.topAnchor, left: inputChat.leftAnchor, bottom: inputChat.bottomAnchor, right: sendButton.leftAnchor, paddingTop: 10, paddingBottom: 25, paddingLeft: 16, paddingRight: 10)
-        sendButton.anchor(top: inputChat.topAnchor, bottom: inputChat.bottomAnchor, right: inputChat.rightAnchor, paddingTop: 10, paddingBottom: 25, paddingRight: 16, width: 45)
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,bottom: inputChat.topAnchor, right: view.rightAnchor)
+        inputChat.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor,height: 55)
+        inputField.anchor(left: inputChat.leftAnchor, right: sendButton.leftAnchor, paddingLeft: 16, paddingRight: 10,height: 45)
+        inputField.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
+        sendButton.anchor(right: inputChat.rightAnchor, paddingRight: 16, width: 45,height: 45)
+        sendButton.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
     }
     
     @objc
     func didSendMessage(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String,
-              let chat = inputField.text else {
+              let chat = inputField.text, chat != "" else {
             print("No user data")
             return
         }
@@ -164,6 +168,7 @@ class ChatViewController: UIViewController {
 
 }
 
+@available(iOS 13.0, *)
 extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
            return chatMessages.count
@@ -240,6 +245,7 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
+@available(iOS 13.0, *)
 extension ChatViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == inputField {

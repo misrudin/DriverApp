@@ -8,13 +8,14 @@
 import UIKit
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class DayOffVc: UIViewController {
     
     private let emptyImage: UIView = {
         let view = UIView()
         let imageView: UIImageView = {
            let img = UIImageView()
-            img.image = UIImage(systemName: "mail.and.text.magnifyingglass")
+            img.image = UIImage(named: "emptyImage")
             img.tintColor = UIColor(named: "orangeKasumi")
             img.clipsToBounds = true
             img.layer.masksToBounds = true
@@ -326,13 +327,15 @@ class DayOffVc: UIViewController {
     
 
     func configureNavigationBar(){
+        let image = UIImage(named: "chatIcon")
+        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         navigationItem.title = "Day Off Driver"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipses.bubble.fill"), style: .plain, target: self, action: #selector(onClickChatButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: baru, style: .plain, target: self, action: #selector(onClickChatButton))
         navigationController?.navigationBar.tintColor = .white
     }
     
@@ -345,6 +348,7 @@ class DayOffVc: UIViewController {
 
 }
 
+@available(iOS 13.0, *)
 extension DayOffVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let data = listShift {
@@ -371,6 +375,7 @@ extension DayOffVc: UITableViewDelegate, UITableViewDataSource {
 
 
 
+@available(iOS 13.0, *)
 extension DayOffVc {
     private func setupDisplayDayOff(){
         let daysInMounth = Date().daysInMonth()

@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 enum MenuOption: Int, CustomStringConvertible {
     case Jobs
     case History

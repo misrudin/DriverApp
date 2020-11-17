@@ -9,6 +9,7 @@ import UIKit
 import AlamofireImage
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class ProfileViewController: UIViewController {
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -38,7 +39,7 @@ class ProfileViewController: UIViewController {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.image = UIImage(systemName: "person.circle")
+        image.image = UIImage(named: "personCircle")
         image.tintColor = .white
         
         return image
@@ -75,7 +76,9 @@ class ProfileViewController: UIViewController {
             }()
             let image: UIImageView = {
                let img = UIImageView()
-                img.image = UIImage(systemName: "chevron.right")
+                let imageAset = UIImage(named: "arrowRight")
+                let baru = imageAset?.resizeImage(CGSize(width: 20, height: 20))
+                img.image = baru
                 img.layer.masksToBounds = true
                 img.contentMode = .right
                 if color != nil {
@@ -108,9 +111,10 @@ class ProfileViewController: UIViewController {
     lazy var button4 = createButton(title: "Rest")
     lazy var button5:UIButton = {
         let b = UIButton()
-        let image = UIImage(systemName: "power")
-        b.setImage(UIImage(systemName: "power"), for: .normal)
-        b.tintColor = .red
+        let image = UIImage(named: "logoutIcon")
+        let baru = image?.resizeImage(CGSize(width: 15, height: 15))
+        
+        b.setImage(baru, for: .normal)
         b.setTitle("Logout", for: .normal)
         b.setTitleColor(.red, for: .normal)
         b.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
@@ -146,6 +150,8 @@ class ProfileViewController: UIViewController {
     
     
     func configureNavigationBar(){
+        let image = UIImage(named: "chatIcon")
+        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         navigationItem.title = "My Profile"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
@@ -153,7 +159,7 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipses.bubble.fill"), style: .plain, target: self, action: #selector(onClickChatButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: baru, style: .plain, target: self, action: #selector(onClickChatButton))
     }
     
     @objc
@@ -349,6 +355,7 @@ class ProfileViewController: UIViewController {
 
 
 //MARK: - Profile view model delegate
+@available(iOS 13.0, *)
 extension ProfileViewController: ProfileViewModelDelegate {
     func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel) {
         DispatchQueue.main.async {

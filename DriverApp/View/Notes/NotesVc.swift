@@ -8,13 +8,14 @@
 import UIKit
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class NotesVc: UIViewController {
     
     private let emptyImage: UIView = {
         let view = UIView()
         let imageView: UIImageView = {
            let img = UIImageView()
-            img.image = UIImage(systemName: "mail.and.text.magnifyingglass")
+            img.image = UIImage(named: "emptyImage")
             img.tintColor = UIColor(named: "orangeKasumi")
             img.clipsToBounds = true
             img.layer.masksToBounds = true
@@ -217,13 +218,15 @@ class NotesVc: UIViewController {
     
     
     func configureNavigationBar(){
+        let image = UIImage(named: "chatIcon")
+        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         navigationItem.title = "Notes"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipses.bubble.fill"), style: .plain, target: self, action: #selector(onClickChatButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: baru, style: .plain, target: self, action: #selector(onClickChatButton))
         navigationController?.navigationBar.tintColor = .white
     }
     
@@ -242,6 +245,7 @@ class NotesVc: UIViewController {
 }
 
 
+@available(iOS 13.0, *)
 extension NotesVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return display == "CHECKOUT" ? checkoutData.count : pendingData.count
@@ -316,10 +320,16 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
                 }
            })
 
-        editAction.image = UIImage(systemName: "pencil")
+        let imageEdit = UIImage(named: "editIcon")
+        let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
+        
+        let imageDelete = UIImage(named: "deleteIcon")
+        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
+        
+        editAction.image = edit
         editAction.backgroundColor = UIColor(named: "yellowKasumi")
-        deleteAction.image = UIImage(systemName: "trash.fill")
-        deleteAction.backgroundColor = UIColor.systemRed
+        deleteAction.image = delete
+        deleteAction.backgroundColor = .red
            let configuration = UISwipeActionsConfiguration(actions: [deleteAction,editAction])
            configuration.performsFirstActionWithFullSwipe = false
            return configuration

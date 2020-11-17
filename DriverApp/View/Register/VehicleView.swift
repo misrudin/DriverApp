@@ -318,30 +318,6 @@ class VehicleView: UIViewController {
         return field
     }()
     
-    ///Kana After address
-    lazy var kanaAfterAddressLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Kana After Address"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
-        return lable
-    }()
-    
-    lazy var kanaAfterAddress: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "Kana After Address"
-        field.paddingLeft(10)
-        field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
-        return field
-    }()
-    
     
 //   MARK: - Next button
     private let finishButton: UIButton={
@@ -368,7 +344,7 @@ class VehicleView: UIViewController {
         scroll.contentSize = contentViewSize
         scroll.autoresizingMask = .flexibleHeight
         scroll.showsHorizontalScrollIndicator = true
-        scroll.bounces = false
+        scroll.bounces = true
         scroll.frame = self.view.bounds
         return scroll
     }()
@@ -415,7 +391,7 @@ class VehicleView: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16,width: view.frame.width - 32, height: view.frame.height + 500)
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16,width: view.frame.width - 32, height: 55*23)
 
         stakView.addSubview(driverLicenseLable)
         driverLicenseLable.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor)

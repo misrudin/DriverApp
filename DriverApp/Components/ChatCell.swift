@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 class ChatCell: UITableViewCell {
     
     let messageLabel = UILabel()
@@ -20,7 +21,7 @@ class ChatCell: UITableViewCell {
         didSet{
             bubleBackgroundView.backgroundColor = chatMessage.isIncoming ? .white : UIColor(named: "orangeKasumi")
             messageLabel.textColor = chatMessage.isIncoming ? .black : .white
-            timeLabel.textColor = chatMessage.isIncoming ? UIColor.systemGray2 : UIColor.white
+            timeLabel.textColor = chatMessage.isIncoming ? UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2) : UIColor.white
             
             messageLabel.text = chatMessage.text
             timeLabel.text = chatMessage.time

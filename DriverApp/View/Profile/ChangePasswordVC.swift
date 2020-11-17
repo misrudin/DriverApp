@@ -25,7 +25,7 @@ class ChangePasswordVC: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "Current Password ..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -42,7 +42,7 @@ class ChangePasswordVC: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "New Password ..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -59,7 +59,7 @@ class ChangePasswordVC: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "Confirm New Password ..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always

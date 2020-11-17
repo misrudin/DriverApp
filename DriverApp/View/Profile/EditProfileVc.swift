@@ -9,6 +9,7 @@ import UIKit
 import AlamofireImage
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class EditProfileVc: UIViewController {
     
     var dataDriver: UserModel? = nil
@@ -26,17 +27,17 @@ class EditProfileVc: UIViewController {
        let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.image = UIImage(systemName: "person")
-        image.tintColor = .systemGray5
+        image.image = UIImage(named: "personCircle")
         
         return image
     }()
     
     let buttonCamera: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(systemName: "camera.fill"), for: .normal)
+        let image = UIImage(named: "cameraIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        button.setImage(baru, for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
-        button.tintColor = .white
         button.layer.cornerRadius = 20
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
@@ -52,7 +53,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "First Name"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -68,7 +69,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "Last Name"
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -83,7 +84,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "New Password ..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -98,7 +99,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "Confirm New Password ..."
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
@@ -114,7 +115,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "0000"
         field.backgroundColor = .white
         field.textAlignment = .center
@@ -127,7 +128,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "0000"
         field.backgroundColor = .white
         field.textAlignment = .center
@@ -140,7 +141,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "0000"
         field.backgroundColor = .white
         field.textAlignment = .center
@@ -300,6 +301,7 @@ class EditProfileVc: UIViewController {
 }
 
 
+@available(iOS 13.0, *)
 extension EditProfileVc: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func presentPhotoActionSheet(){
            let actionSheet = UIAlertController(title: "Profile Picture",

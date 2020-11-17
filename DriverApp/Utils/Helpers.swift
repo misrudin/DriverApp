@@ -250,3 +250,49 @@ extension UIView {
     }
     
 }
+
+//MARK: - UI IMAGE
+extension UIImage {
+    func imageResized(to size: CGSize) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
+    
+    func scaled(with scale: CGFloat) -> UIImage? {
+            // size has to be integer, otherwise it could get white lines
+            let size = CGSize(width: floor(self.size.width * scale), height: floor(self.size.height * scale))
+            UIGraphicsBeginImageContext(size)
+            draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return image
+    }
+    
+    func resizeImage(_ newSize: CGSize) -> UIImage? {
+            func isSameSize(_ newSize: CGSize) -> Bool {
+                return size == newSize
+            }
+
+            func scaleImage(_ newSize: CGSize) -> UIImage? {
+                func getScaledRect(_ newSize: CGSize) -> CGRect {
+                    let ratio   = max(newSize.width / size.width, newSize.height / size.height)
+                    let width   = size.width * ratio
+                    let height  = size.height * ratio
+                    return CGRect(x: 0, y: 0, width: width, height: height)
+                }
+
+                func _scaleImage(_ scaledRect: CGRect) -> UIImage? {
+                    UIGraphicsBeginImageContextWithOptions(scaledRect.size, false, 0.0);
+                    draw(in: scaledRect)
+                    let image = UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+                    UIGraphicsEndImageContext()
+                    return image
+                }
+                return _scaleImage(getScaledRect(newSize))
+            }
+
+            return isSameSize(newSize) ? self : scaleImage(newSize)!
+        }
+
+}

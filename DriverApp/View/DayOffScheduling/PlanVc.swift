@@ -9,13 +9,14 @@ import UIKit
 import FirebaseCrashlytics
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class PlanVc: UIViewController {
     
     private let emptyImage: UIView = {
         let view = UIView()
         let imageView: UIImageView = {
            let img = UIImageView()
-            img.image = UIImage(systemName: "mail.and.text.magnifyingglass")
+            img.image = UIImage(named: "emptyImage")
             img.tintColor = UIColor(named: "orangeKasumi")
             img.clipsToBounds = true
             img.layer.masksToBounds = true
@@ -814,6 +815,7 @@ class PlanVc: UIViewController {
 
 
 
+@available(iOS 13.0, *)
 extension PlanVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let data = listShift {
@@ -840,6 +842,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
 
 
 
+@available(iOS 13.0, *)
 extension PlanVc {
     private func setupDisplayDayOff(color: Bool? = false){
         let montnNumber = Date.monthNumber() + 1
@@ -1412,6 +1415,7 @@ extension PlanVc {
 
 
 //MARK:- colection view
+@available(iOS 13.0, *)
 extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)

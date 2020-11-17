@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 class MainVc: UIViewController {
     
     var profileVm = ProfileViewModel()
@@ -100,7 +101,10 @@ class MainVc: UIViewController {
         let profileVc = UINavigationController(rootViewController: ProfileViewController())
         profileVc.title = "My Account"
         
-        let images = ["house.fill","clock.fill","square.and.pencil","pause.rectangle.fill","person.circle.fill"]
+        let image = UIImage(named: "homeIcon")
+        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
+        
+        let images = [baru,baru,baru,baru,baru]
         
         tabBarVc.setViewControllers([homeVc,historyVc,notesVc,dayOffVc,profileVc], animated: true)
         
@@ -109,7 +113,7 @@ class MainVc: UIViewController {
         }
         
         for x in 0..<items.count {
-            items[x].image = UIImage(systemName: images[x])
+                items[x].image = images[x]
         }
         
         tabBarVc.modalPresentationStyle = .fullScreen

@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class PendingNoteVc: UIViewController {
     
     var orderData: Order?
@@ -101,6 +102,7 @@ class PendingNoteVc: UIViewController {
 }
 
 
+@available(iOS 13.0, *)
 extension PendingNoteVc {
     @objc
     func didTapCancel(){

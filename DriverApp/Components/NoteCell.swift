@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 class NoteCell: UITableViewCell {
     
     static let id = "NoteCell"
@@ -24,7 +25,7 @@ class NoteCell: UITableViewCell {
     let labelTime: UILabel = {
        let lable = UILabel()
         lable.font = .systemFont(ofSize: 14)
-        lable.textColor = UIColor.systemGray4
+        lable.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
         return lable
     }()
 
@@ -45,7 +46,7 @@ class NoteCell: UITableViewCell {
         labelNote.anchor(top: labelTime.bottomAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 8, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
         
         borderView.anchor(left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, height: 1)
-        borderView.backgroundColor = UIColor.systemGray4
+        borderView.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
     }
     
     required init?(coder: NSCoder) {

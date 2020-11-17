@@ -10,6 +10,7 @@ import GoogleMaps
 import CoreLocation
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class LiveTrackingVC: UIViewController {
     
 //    loading
@@ -211,12 +212,14 @@ class LiveTrackingVC: UIViewController {
     
     
     func configureNavigationBar(){
+        let image = UIImage(named: "chatIcon")
+        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "ellipses.bubble.fill"), style: .plain, target: self, action: #selector(onClickChatButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: baru, style: .plain, target: self, action: #selector(onClickChatButton))
     }
     
     @objc
@@ -229,6 +232,7 @@ class LiveTrackingVC: UIViewController {
 
 
 //MARK - maps direction
+@available(iOS 13.0, *)
 extension LiveTrackingVC: MapsViewModelDelegate {
     func didDrawDirection(_ viewModel: MapsViewModel, direction: GMSPolyline, markerOrigin: GMSMarker, markerDestination: GMSMarker, camera: GMSCameraPosition) {
         mapView.clear()
@@ -247,6 +251,7 @@ extension LiveTrackingVC: MapsViewModelDelegate {
 
 
 //MARK - core location
+@available(iOS 13.0, *)
 extension LiveTrackingVC: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
@@ -284,6 +289,7 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
 
 //Mark - Func animate
 
+@available(iOS 13.0, *)
 extension LiveTrackingVC {
     func animateTransitionIfNeeded (state:CardState, duration:TimeInterval) {
         if runningAnimations.isEmpty {
@@ -344,6 +350,7 @@ extension LiveTrackingVC {
 }
 
 
+@available(iOS 13.0, *)
 extension LiveTrackingVC: CardViewControllerDelegate {
     func didTapButton(_ viewModel: CardViewController, type: TypeDelivery) {
         guard let orderNo = order?.orderNumber else {

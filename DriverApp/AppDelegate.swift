@@ -10,11 +10,12 @@ import GoogleMaps
 import GooglePlaces
 import Firebase
 
+@available(iOS 13.0, *)
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
-
+    var window : UIWindow?
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -22,6 +23,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey(Base.mapsApiKey)
         GMSPlacesClient.provideAPIKey(Base.mapsApiKey)
         FirebaseApp.configure()
+        
+        if #available(iOS 13, *) {
+            // do only pure app launch stuff, not interface stuff
+            print("ios 13 bro")
+        } else {
+            self.window = UIWindow()
+            let vc = MainVc()
+            self.window!.rootViewController = vc
+            self.window!.makeKeyAndVisible()
+            self.window!.backgroundColor = .red
+        }
         
         return true
     }

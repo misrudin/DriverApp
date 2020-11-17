@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class CheckoutNoteView: UIViewController {
     
     var orderData: Order?
@@ -95,6 +96,7 @@ class CheckoutNoteView: UIViewController {
 }
 
 
+@available(iOS 13.0, *)
 extension CheckoutNoteView {
     @objc
     func didTapCancel(){

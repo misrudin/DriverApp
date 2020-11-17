@@ -6,6 +6,7 @@
 //
 
 //home protocols
+@available(iOS 13.0, *)
 protocol HomeVcDelegate {
     func handleMenuToggle(forMenu menu: MenuOption?)
 }

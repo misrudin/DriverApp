@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class EditNoteView: UIViewController {
     
     var note: String?
@@ -30,7 +31,7 @@ class EditNoteView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.systemGray5.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.layer.shadowOpacity = 0.5
         field.backgroundColor = .white
         field.dataDetectorTypes = .all
