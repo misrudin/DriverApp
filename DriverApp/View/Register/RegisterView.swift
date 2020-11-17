@@ -777,28 +777,28 @@ class RegisterView: UIViewController {
     }()
     
     //MARK: - Vehicle Type
-    lazy var vehicleTypeLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Type"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
-        return lable
-    }()
-    
-    lazy var vehicleType: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "Vehicle Type"
-        field.paddingLeft(10)
-        field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
-        return field
-    }()
+//    lazy var vehicleTypeLable: UILabel = {
+//        let lable = UILabel()
+//        lable.text = "Vehicle Type"
+//        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+//        lable.textColor = UIColor.lightGray
+//        return lable
+//    }()
+//
+//    lazy var vehicleType: UITextField = {
+//        let field = UITextField()
+//        field.autocapitalizationType = .none
+//        field.autocorrectionType = .no
+//        field.returnKeyType = .continue
+//        field.layer.cornerRadius = 2
+//        field.placeholder = "Vehicle Type"
+//        field.paddingLeft(10)
+//        field.paddingRight(10)
+//        field.backgroundColor = .white
+//        field.layer.borderWidth = 1
+//        field.layer.borderColor = UIColor.lightGray.cgColor
+//        return field
+//    }()
     
     //MARK: - Vehicle Number Plate
     lazy var vehicleNumberPlateLable: UILabel = {
@@ -908,7 +908,7 @@ class RegisterView: UIViewController {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let strDate = dateFormatter.string(from: datePicker.date)
-        insuranceExpirationDate.text = strDate
+        vehicleInspectionExpDate.text = strDate
     }
     
     lazy var vehicleInspectionExpDate: UITextField = {
@@ -1010,7 +1010,7 @@ class RegisterView: UIViewController {
     
     @objc
     func selectVI3(){
-        selectedImageView = vehicleImage2
+        selectedImageView = vehicleImage3
         presentPhotoActionSheet()
     }
     
@@ -1085,7 +1085,7 @@ class RegisterView: UIViewController {
 //        scrollView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingBottom: 0, paddingLeft: 0, paddingRight: 0)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*23))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*24))
 
         stakView.addSubview(lableTitleRegister)
         lableTitleRegister.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
@@ -1233,13 +1233,13 @@ class RegisterView: UIViewController {
             stakView.addSubview(vehicleName)
             vehicleName.anchor(top: vehicleNameLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
             
-            stakView.addSubview(vehicleTypeLable)
-            vehicleTypeLable.anchor(top: vehicleName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
-            stakView.addSubview(vehicleType)
-            vehicleType.anchor(top: vehicleTypeLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+//            stakView.addSubview(vehicleTypeLable)
+//            vehicleTypeLable.anchor(top: vehicleName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+//            stakView.addSubview(vehicleType)
+//            vehicleType.anchor(top: vehicleTypeLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
             
             stakView.addSubview(vehicleNumberPlateLable)
-            vehicleNumberPlateLable.anchor(top: vehicleType.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+            vehicleNumberPlateLable.anchor(top: vehicleName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(vehicleNumberPlate)
             vehicleNumberPlate.anchor(top: vehicleNumberPlateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
 
@@ -1402,43 +1402,89 @@ extension RegisterView {
     @objc
     func onNext(){
         
-        guard let userImgTemp = self.profilePhotoImage.image else {return}
+        guard let userImgTemp = self.profilePhotoImage.image else {
+            Helpers().showAlert(view: self, message: "Profile photo must be entered !")
+            return}
         
         guard let firstName = self.firstName.text,
               let lastName = self.lastName.text,
-        let dateOfBirth = self.brithDate.text,
-        let postalCode = self.postalCode.text,
-        let prefectures = self.prefecture.text,
-        let municipalDis = self.municipal.text,
-        let chome = self.chome.text,
-        let municKana = self.municipalityKana.text,
-        let kanaAfterAddress = self.kanaAfterAddress.text,
-        let gender = self.gender.text,
-        let language =  self.language.text,
-        let phoneNumber = self.phoneNumber.text,
-        let email = self.email.text,
-        let password = self.password.text,
-        let licenseNumber = self.licenseNumber.text,
-        let licenseExpDate = self.licenseExpiration.text,
-        let insuranceCom = self.insuranceCompany.text,
-        let personalCov = self.personalCoverage.text,
-        let comRangeObj = self.compensation.text,
-        let insuranceExpDate = self.insuranceExpirationDate.text,
-        let vName = self.vehicleName.text,
-        let vYear = self.vehicleYear.text,
-        let vOwner = self.vehicleOwnership.text,
-        let vCerExp = self.vehicleInspectionExpDate.text else {
+              let dateOfBirth = self.brithDate.text,
+              let postalCode = self.postalCode.text,
+              let prefectures = self.prefecture.text,
+              let municipalDis = self.municipal.text,
+              let chome = self.chome.text,
+              let municKana = self.municipalityKana.text,
+              let kanaAfterAddress = self.kanaAfterAddress.text,
+              let gender = self.gender.text,
+              let language =  self.language.text,
+              let phoneNumber = self.phoneNumber.text,
+              let email = self.email.text,
+              let password = self.password.text,
+              let licenseNumber = self.licenseNumber.text,
+              let licenseExpDate = self.licenseExpiration.text,
+              let insuranceCom = self.insuranceCompany.text,
+              let personalCov = self.personalCoverage.text,
+              let comRangeObj = self.compensation.text,
+              let insuranceExpDate = self.insuranceExpirationDate.text,
+              let vName = self.vehicleName.text,
+              let vYear = self.vehicleYear.text,
+              let vOwner = self.vehicleOwnership.text,
+              let vCerExp = self.vehicleInspectionExpDate.text else {
             
             print("Masih ada yang kosong")
             return
-            
         }
         
-        guard let vCerPhotoTemp = self.vehicleCertifiateImage.image else {return}
+        
+        
+        let data: RegisterDataTemp = RegisterDataTemp(first_name: firstName,
+                                                      last_name: lastName,
+                                                      date_of_birth: dateOfBirth,
+                                                      postal_code: postalCode,
+                                                      prefectures: prefectures,
+                                                      municipal_district: municipalDis,
+                                                      chome: chome,
+                                                      municipality_kana: municKana,
+                                                      kana_after_address: kanaAfterAddress,
+                                                      gender: gender,
+                                                      language: language,
+                                                      phone_number: phoneNumber,
+                                                      email: email,
+                                                      password: password,
+                                                      license_number: licenseNumber,
+                                                      license_expired_date: licenseExpDate,
+                                                      insurance_company: insuranceCom,
+                                                      personal_coverage: personalCov,
+                                                      compensation_range_object: comRangeObj,
+                                                      insurance_expired_date: insuranceExpDate,
+                                                      vehicle_name: vName,
+                                                      vehicle_year: vYear,
+                                                      vehicle_ownership: vOwner,
+                                                      vehicle_certificate_exp: vCerExp)
+        
+        registerVm.cekValidation(data: data) { (res) in
+            switch res {
+            case.failure(let err):
+                Helpers().showAlert(view: self, message: err.localizedDescription)
+                return
+            case .success(let oke):
+                if oke == true {
+                    print("Next Save")
+                }
+            }
+        }
+        
+        
+        
+        guard let vCerPhotoTemp = self.vehicleCertifiateImage.image else {
+            Helpers().showAlert(view: self, message: "Vehicle certification photo must be entered !")
+            return}
         
         guard let vPhotoTemp1 = self.vehicleImage1.image,
               let vPhotoTemp2 = self.vehicleImage2.image,
-              let vPhotoTemp3 = self.vehicleImage3.image else {return}
+              let vPhotoTemp3 = self.vehicleImage3.image else {
+            Helpers().showAlert(view: self, message: "Vehicle photo must be entered !")
+            return}
         
         let userImage = Helpers().convertImageToBase64String(img: userImgTemp)
         let vCerPhoto = Helpers().convertImageToBase64String(img: vCerPhotoTemp)
@@ -1450,46 +1496,40 @@ extension RegisterView {
         formater.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateAdd = formater.string(from: Date())
         
+        let dataToPost: RegisterData = RegisterData(user_image: userImage,
+                                                    first_name: firstName,
+                                                    last_name: lastName,
+                                                    date_of_birth: dateOfBirth,
+                                                    postal_code: postalCode,
+                                                    prefectures: prefectures,
+                                                    municipal_district: municipalDis,
+                                                    chome: chome,
+                                                    municipality_kana: municKana,
+                                                    kana_after_address: kanaAfterAddress,
+                                                    gender: gender,
+                                                    language: language,
+                                                    phone_number: phoneNumber,
+                                                    email: email,
+                                                    password: password,
+                                                    license_number: licenseNumber,
+                                                    license_expired_date: licenseExpDate,
+                                                    insurance_company: insuranceCom,
+                                                    personal_coverage: personalCov,
+                                                    compensation_range_object: comRangeObj,
+                                                    insurance_expired_date: insuranceExpDate,
+                                                    vehicle_name: vName,
+                                                    vehicle_year: vYear,
+                                                    vehicle_ownership: vOwner,
+                                                    vehicle_certificate_exp: vCerExp,
+                                                    vehicle_certification_photo: vCerPhoto,
+                                                    vehicle_photo_1: vPhoto1,
+                                                    vehicle_photo_2: vPhoto2,
+                                                    vehicle_photo_3: vPhoto3,
+                                                    date_add: dateAdd)
         
-        let data: RegisterData = RegisterData(user_image: userImage,
-                                              first_name: firstName,
-                                              last_name: lastName,
-                                              date_of_birth: dateOfBirth,
-                                              postal_code: postalCode,
-                                              prefectures: prefectures,
-                                              municipal_district: municipalDis,
-                                              chome: chome,
-                                              municipality_kana: municKana,
-                                              kana_after_address: kanaAfterAddress,
-                                              gender: gender,
-                                              language: language,
-                                              phone_number: phoneNumber,
-                                              email: email,
-                                              password: password,
-                                              license_number: licenseNumber,
-                                              license_expired_date: licenseExpDate,
-                                              insurance_company: insuranceCom,
-                                              personal_coverage: personalCov,
-                                              compensation_range_object: comRangeObj,
-                                              insurance_expired_date: insuranceExpDate,
-                                              vehicle_name: vName,
-                                              vehicle_year: vYear,
-                                              vehicle_ownership: vOwner,
-                                              vehicle_certificate_exp: vCerExp,
-                                              vehicle_certification_photo: vCerPhoto,
-                                              vehicle_photo_1: vPhoto1,
-                                              vehicle_photo_2: vPhoto2,
-                                              vehicle_photo_3: vPhoto3,
-                                              date_add: dateAdd)
-        registerVm.cekValidation(data: data) { (res) in
-            switch res {
-            case.failure(let err):
-                print("Error \(err)")
-            case .success(let oke):
-                if oke == true {
-                    print("Next Save")
-                }
-            }
+        registerVm.register(data: dataToPost) { (res) in
+            print(res)
         }
+        //MARK: - End
     }
 }
