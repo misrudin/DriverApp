@@ -1401,36 +1401,86 @@ extension RegisterView: UIPickerViewDelegate, UIPickerViewDataSource {
 extension RegisterView {
     @objc
     func onNext(){
-        let data: RegisterData = RegisterData(user_image: <#T##String#>,
-                                              first_name: <#T##String#>,
-                                              last_name: <#T##String#>,
-                                              date_of_birth: <#T##String#>,
-                                              postal_code: <#T##String#>,
-                                              prefectures: <#T##String#>,
-                                              municipal_district: <#T##String#>,
-                                              chome: <#T##String#>,
-                                              municipality_kana: <#T##String#>,
-                                              kana_after_address: <#T##String#>,
-                                              gender: <#T##String#>,
-                                              language: <#T##String#>,
-                                              phone_number: <#T##String#>,
-                                              email: <#T##String#>,
-                                              password: <#T##String#>,
-                                              license_number: <#T##String#>,
-                                              license_expired_date: <#T##String#>,
-                                              insurance_company: <#T##String#>,
-                                              personal_coverage: <#T##String#>,
-                                              compensation_range_object: <#T##String#>,
-                                              insurance_expired_date: <#T##String#>,
-                                              vehicle_name: <#T##String#>,
-                                              vehicle_year: <#T##String#>,
-                                              vehicle_ownership: <#T##String#>,
-                                              vehicle_certificate_exp: <#T##String#>,
-                                              vehicle_certification_photo: <#T##String#>,
-                                              vehicle_photo_1: <#T##String#>,
-                                              vehicle_photo_2: <#T##String#>,
-                                              vehicle_photo_3: <#T##String#>,
-                                              date_add: <#T##String#>)
+        
+        guard let userImgTemp = self.profilePhotoImage.image else {return}
+        
+        guard let firstName = self.firstName.text,
+              let lastName = self.lastName.text,
+        let dateOfBirth = self.brithDate.text,
+        let postalCode = self.postalCode.text,
+        let prefectures = self.prefecture.text,
+        let municipalDis = self.municipal.text,
+        let chome = self.chome.text,
+        let municKana = self.municipalityKana.text,
+        let kanaAfterAddress = self.kanaAfterAddress.text,
+        let gender = self.gender.text,
+        let language =  self.language.text,
+        let phoneNumber = self.phoneNumber.text,
+        let email = self.email.text,
+        let password = self.password.text,
+        let licenseNumber = self.licenseNumber.text,
+        let licenseExpDate = self.licenseExpiration.text,
+        let insuranceCom = self.insuranceCompany.text,
+        let personalCov = self.personalCoverage.text,
+        let comRangeObj = self.compensation.text,
+        let insuranceExpDate = self.insuranceExpirationDate.text,
+        let vName = self.vehicleName.text,
+        let vYear = self.vehicleYear.text,
+        let vOwner = self.vehicleOwnership.text,
+        let vCerExp = self.vehicleInspectionExpDate.text else {
+            
+            print("Masih ada yang kosong")
+            return
+            
+        }
+        
+        guard let vCerPhotoTemp = self.vehicleCertifiateImage.image else {return}
+        
+        guard let vPhotoTemp1 = self.vehicleImage1.image,
+              let vPhotoTemp2 = self.vehicleImage2.image,
+              let vPhotoTemp3 = self.vehicleImage3.image else {return}
+        
+        let userImage = Helpers().convertImageToBase64String(img: userImgTemp)
+        let vCerPhoto = Helpers().convertImageToBase64String(img: vCerPhotoTemp)
+        let vPhoto1 = Helpers().convertImageToBase64String(img: vPhotoTemp1)
+        let vPhoto2 = Helpers().convertImageToBase64String(img: vPhotoTemp2)
+        let vPhoto3 = Helpers().convertImageToBase64String(img: vPhotoTemp3)
+        
+        let formater = DateFormatter()
+        formater.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateAdd = formater.string(from: Date())
+        
+        
+        let data: RegisterData = RegisterData(user_image: userImage,
+                                              first_name: firstName,
+                                              last_name: lastName,
+                                              date_of_birth: dateOfBirth,
+                                              postal_code: postalCode,
+                                              prefectures: prefectures,
+                                              municipal_district: municipalDis,
+                                              chome: chome,
+                                              municipality_kana: municKana,
+                                              kana_after_address: kanaAfterAddress,
+                                              gender: gender,
+                                              language: language,
+                                              phone_number: phoneNumber,
+                                              email: email,
+                                              password: password,
+                                              license_number: licenseNumber,
+                                              license_expired_date: licenseExpDate,
+                                              insurance_company: insuranceCom,
+                                              personal_coverage: personalCov,
+                                              compensation_range_object: comRangeObj,
+                                              insurance_expired_date: insuranceExpDate,
+                                              vehicle_name: vName,
+                                              vehicle_year: vYear,
+                                              vehicle_ownership: vOwner,
+                                              vehicle_certificate_exp: vCerExp,
+                                              vehicle_certification_photo: vCerPhoto,
+                                              vehicle_photo_1: vPhoto1,
+                                              vehicle_photo_2: vPhoto2,
+                                              vehicle_photo_3: vPhoto3,
+                                              date_add: dateAdd)
         registerVm.cekValidation(data: data) { (res) in
             switch res {
             case.failure(let err):
