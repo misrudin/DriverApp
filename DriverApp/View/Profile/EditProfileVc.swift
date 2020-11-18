@@ -211,7 +211,7 @@ class EditProfileVc: UIViewController {
         
         guard let photoUrl = dataDriver?.photoUrl, let photoName = dataDriver?.photoName else {return}
         if let urlString = URL(string: "\(photoUrl)\(photoName)") {
-            let placeholderImage = UIImage(systemName: "person")
+            let placeholderImage = UIImage(named: "personCircle")
             self.imageView.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
         }
     }

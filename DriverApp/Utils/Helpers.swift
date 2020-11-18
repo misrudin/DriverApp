@@ -201,6 +201,14 @@ extension UITextField {
         self.rightView = paddingView
         self.rightViewMode = .always
     }
+    
+    func setRightViewIcon(icon: UIImage) {
+        let btnView = UIButton(frame: CGRect(x: CGFloat(self.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25)))
+        btnView.setImage(icon, for: .normal)
+        btnView.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        self.rightViewMode = .always
+        self.rightView = btnView
+    }
 }
 
 

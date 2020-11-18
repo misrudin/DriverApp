@@ -43,6 +43,7 @@ struct RegisterData: Codable {
     let compensation_range_object: String
     let insurance_expired_date: String
     let vehicle_name: String
+    let vehicle_number_plate: String
     let vehicle_year: String
     let vehicle_ownership: String
     let vehicle_certificate_exp: String
@@ -75,6 +76,7 @@ struct RegisterDataTemp: Codable {
     let compensation_range_object: String
     let insurance_expired_date: String
     let vehicle_name: String
+    let vehicle_number_plate: String
     let vehicle_year: String
     let vehicle_ownership: String
     let vehicle_certificate_exp: String

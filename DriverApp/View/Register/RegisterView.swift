@@ -6,8 +6,16 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class RegisterView: UIViewController {
+    
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
     
     var registerVm = RegisterViewModel()
     
@@ -39,8 +47,8 @@ class RegisterView: UIViewController {
     lazy var subTableTitleRegister: UILabel = {
         let lable = UILabel()
         lable.text = "Register as freelance driver now"
-        lable.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -56,16 +64,26 @@ class RegisterView: UIViewController {
         let lable = UILabel()
         lable.text = "ADDRESS"
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.lightGray
+        lable.textColor = UIColor(named: "orangeKasumi")
         return lable
     }()
     
-    lazy var profileFoto: UILabel = {
-        let lable = UILabel()
-        lable.text = "Profile Photo"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        lable.textColor = UIColor.lightGray
-        return lable
+    //MARK: - Profile photo
+    
+//    lazy var profileFoto: UILabel = {
+//        let lable = UILabel()
+//        lable.text = "Profile Photo"
+//        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+//        lable.textColor = UIColor.lightGray
+//        return lable
+//    }()
+    
+    lazy var profilePhotoDumy: UIImageView = {
+        let img = UIImageView()
+        img.contentMode = .scaleAspectFill
+        img.image = UIImage(named: "personCircle")
+        img.clipsToBounds = true
+        return img
     }()
     
     lazy var profilePhotoImage: UIImageView = {
@@ -74,15 +92,15 @@ class RegisterView: UIViewController {
         img.layer.masksToBounds = true
         img.contentMode = .scaleAspectFit
         img.layer.cornerRadius = 80/2
-        img.backgroundColor = .lightGray
+        img.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         return img
     }()
     
     lazy var imgName: UILabel = {
         let lable = UILabel()
-        lable.text = "Image name Lable"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        lable.textColor = UIColor.lightGray
+        lable.text = "PHOTO NOT SELECTED"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -92,7 +110,7 @@ class RegisterView: UIViewController {
         btn.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         btn.setTitleColor(UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2), for: .highlighted)
         btn.layer.masksToBounds = true
-        btn.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
+        btn.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
         btn.addTarget(self, action: #selector(selectProfilePhoto), for: .touchUpInside)
         
         return btn
@@ -102,8 +120,8 @@ class RegisterView: UIViewController {
     lazy var firstNameLable: UILabel = {
         let lable = UILabel()
         lable.text = "First Name"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -118,15 +136,16 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
     lazy var lastNameLable: UILabel = {
         let lable = UILabel()
         lable.text = "Last Name"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -141,7 +160,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -149,8 +169,8 @@ class RegisterView: UIViewController {
     lazy var emailLable: UILabel = {
         let lable = UILabel()
         lable.text = "Email"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -165,7 +185,9 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
+        field.keyboardType = .emailAddress
         return field
     }()
     
@@ -173,8 +195,8 @@ class RegisterView: UIViewController {
     lazy var passwordLable: UILabel = {
         let lable = UILabel()
         lable.text = "Password"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -186,20 +208,45 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 2
         field.placeholder = "Password"
         field.paddingLeft(10)
-        field.paddingRight(10)
+        let button = UIButton(type: .custom)
+        let image = UIImage(named: "eyeIcon1")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(passwordShow), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
+        
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.isSecureTextEntry = true
+        field.returnKeyType = .continue
         return field
     }()
+    
+    @objc func passwordShow(_ sender: UIButton){
+        let image = UIImage(named: "eyeIcon1")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        let image2 = UIImage(named: "eyeIcon2")
+        let baru2 = image2?.resizeImage(CGSize(width: 20, height: 20))
+        
+        if password.isSecureTextEntry == true {
+            password.isSecureTextEntry = false
+            sender.setImage(baru2, for: .normal)
+        }else {
+            password.isSecureTextEntry = true
+            sender.setImage(baru, for: .normal)
+        }
+    }
     
     //MARK:- Brith date
     lazy var brithDateLable: UILabel = {
         let lable = UILabel()
         lable.text = "Date Of Birth"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -248,12 +295,14 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "DD/MM/YYYY"
+        field.placeholder = "YYYY-MM-DD"
+        let image = UIImage(named: "calendarIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         field.paddingLeft(10)
-        field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = datePicker
         field.inputAccessoryView = toolBar
         return field
@@ -263,8 +312,8 @@ class RegisterView: UIViewController {
     lazy var genderLable: UILabel = {
         let lable = UILabel()
         lable.text = "Gender"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -282,10 +331,12 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 2
         field.placeholder = "Select Your Gender"
         field.paddingLeft(10)
-        field.paddingRight(10)
+        let image = UIImage(named: "arrowDownIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = pickerView1
         field.inputAccessoryView = toolBar
         return field
@@ -297,8 +348,8 @@ class RegisterView: UIViewController {
     lazy var languageLable: UILabel = {
         let lable = UILabel()
         lable.text = "Language"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -316,10 +367,12 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 2
         field.placeholder = "Select Your Language"
         field.paddingLeft(10)
-        field.paddingRight(10)
+        let image = UIImage(named: "arrowDownIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = pickerView2
         field.inputAccessoryView = toolBar
         return field
@@ -329,8 +382,8 @@ class RegisterView: UIViewController {
     lazy var phoneNumberLable: UILabel = {
         let lable = UILabel()
         lable.text = "Phone Number"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -340,12 +393,14 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "12121212"
+        field.placeholder = "123456"
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.keyboardType = .numberPad
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -354,8 +409,8 @@ class RegisterView: UIViewController {
     lazy var postalCodeLable: UILabel = {
         let lable = UILabel()
         lable.text = "Postal Code"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -370,7 +425,9 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.keyboardType = .numberPad
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -378,8 +435,8 @@ class RegisterView: UIViewController {
     lazy var prefecturesLable: UILabel = {
         let lable = UILabel()
         lable.text = "Prefectures"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -394,7 +451,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -402,8 +460,8 @@ class RegisterView: UIViewController {
     lazy var municipalLable: UILabel = {
         let lable = UILabel()
         lable.text = "Municipal District"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -418,7 +476,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -426,8 +485,8 @@ class RegisterView: UIViewController {
     lazy var chomeLable: UILabel = {
         let lable = UILabel()
         lable.text = "Chome"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -442,7 +501,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -450,8 +510,8 @@ class RegisterView: UIViewController {
     lazy var municipalityKanaLable: UILabel = {
         let lable = UILabel()
         lable.text = "Municipality Kana"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -466,7 +526,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -474,8 +535,8 @@ class RegisterView: UIViewController {
     lazy var kanaAfterAddressLable: UILabel = {
         let lable = UILabel()
         lable.text = "Kana After Address"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -490,7 +551,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -518,8 +580,8 @@ class RegisterView: UIViewController {
     lazy var vehiclePhotoLable: UILabel = {
         let lable = UILabel()
         lable.text = "Vehicle Inspection Certificate Photo"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -527,15 +589,14 @@ class RegisterView: UIViewController {
     lazy var vehiclePhotoLable2: UILabel = {
         let lable = UILabel()
         lable.text = "Vehicle Photo"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
     //MARK:- vehicleCertifiateImage
     lazy var vehicleCertifiateImage: UIImageView = {
         let img = UIImageView()
-        img.image = UIImage(named: "cameraIcon2")
         img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
         img.layer.cornerRadius = 4
@@ -554,7 +615,8 @@ class RegisterView: UIViewController {
     lazy var containerSelectImage: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 4
-        view.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        view.layer.borderWidth = 1
+        view.layer.borderColor = UIColor.black.cgColor
         return view
     }()
     
@@ -562,8 +624,8 @@ class RegisterView: UIViewController {
     lazy var licenseNumberLable: UILabel = {
         let lable = UILabel()
         lable.text = "License Number"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -578,7 +640,9 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
+        field.keyboardType = .numberPad
         return field
     }()
     
@@ -586,8 +650,8 @@ class RegisterView: UIViewController {
     lazy var licenseExpiretionDateLable: UILabel = {
         let lable = UILabel()
         lable.text = "Driver's License Expiration Date"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -609,7 +673,7 @@ class RegisterView: UIViewController {
     @objc func handleDatePickerEx() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let strDate = dateFormatter.string(from: datePicker.date)
+        let strDate = dateFormatter.string(from: datePickerExpiration.date)
         licenseExpiration.text = strDate
     }
     
@@ -621,10 +685,12 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 2
         field.placeholder = "Driver's License Expiration Date"
         field.paddingLeft(10)
-        field.paddingRight(10)
+        let image = UIImage(named: "calendarIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = datePickerExpiration
         field.inputAccessoryView = toolBar
         return field
@@ -636,8 +702,8 @@ class RegisterView: UIViewController {
     lazy var insuranceCompanyLable: UILabel = {
         let lable = UILabel()
         lable.text = "Insurance Company"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -652,7 +718,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -660,8 +727,8 @@ class RegisterView: UIViewController {
     lazy var personalCoverageLable: UILabel = {
         let lable = UILabel()
         lable.text = "Personal Coverage"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -676,7 +743,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -684,8 +752,8 @@ class RegisterView: UIViewController {
     lazy var compensationLable: UILabel = {
         let lable = UILabel()
         lable.text = "Compensation Range-Objective"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -700,7 +768,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -708,8 +777,8 @@ class RegisterView: UIViewController {
     lazy var insuranceExpirationDateLabel: UILabel = {
         let lable = UILabel()
         lable.text = "Insurance Expiration Date"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -731,7 +800,7 @@ class RegisterView: UIViewController {
     @objc func handleDatePickerInsurance() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let strDate = dateFormatter.string(from: datePicker.date)
+        let strDate = dateFormatter.string(from: datePickerInsurance.date)
         insuranceExpirationDate.text = strDate
     }
     
@@ -743,10 +812,12 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 2
         field.placeholder = "Insurance Expiration Date"
         field.paddingLeft(10)
-        field.paddingRight(10)
+        let image = UIImage(named: "calendarIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = datePickerInsurance
         field.inputAccessoryView = toolBar
         return field
@@ -756,8 +827,8 @@ class RegisterView: UIViewController {
     lazy var vehicleNameLable: UILabel = {
         let lable = UILabel()
         lable.text = "Vehicle Name"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -772,7 +843,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -796,7 +868,7 @@ class RegisterView: UIViewController {
 //        field.paddingRight(10)
 //        field.backgroundColor = .white
 //        field.layer.borderWidth = 1
-//        field.layer.borderColor = UIColor.lightGray.cgColor
+//        field.layer.borderColor = UIColor.black.cgColor
 //        return field
 //    }()
     
@@ -804,8 +876,8 @@ class RegisterView: UIViewController {
     lazy var vehicleNumberPlateLable: UILabel = {
         let lable = UILabel()
         lable.text = "Vehicle Number Plate"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -820,7 +892,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -828,8 +901,8 @@ class RegisterView: UIViewController {
     lazy var vehicleYearLable: UILabel = {
         let lable = UILabel()
         lable.text = "Vehicle Year"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -847,10 +920,12 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 2
         field.placeholder = "Vehicle Year"
         field.paddingLeft(10)
-        field.paddingRight(10)
+        let image = UIImage(named: "calendarIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = pickerView3
         field.inputAccessoryView = toolBar
         return field
@@ -860,8 +935,8 @@ class RegisterView: UIViewController {
     lazy var vehicleOwnershipLable: UILabel = {
         let lable = UILabel()
         lable.text = "Vehicle Ownership"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -876,7 +951,8 @@ class RegisterView: UIViewController {
         field.paddingRight(10)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
         return field
     }()
     
@@ -884,8 +960,8 @@ class RegisterView: UIViewController {
     lazy var vehicleInspectionExpDateLable: UILabel = {
         let lable = UILabel()
         lable.text = "Vehicle Inspection Exp. Date"
-        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-        lable.textColor = UIColor.lightGray
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
         return lable
     }()
     
@@ -907,7 +983,7 @@ class RegisterView: UIViewController {
     @objc func handleDatePickerInspection() {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let strDate = dateFormatter.string(from: datePicker.date)
+        let strDate = dateFormatter.string(from: datePickerInspection.date)
         vehicleInspectionExpDate.text = strDate
     }
     
@@ -919,10 +995,12 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 2
         field.placeholder = "Insurance Expiration Date"
         field.paddingLeft(10)
-        field.paddingRight(10)
+        let image = UIImage(named: "calendarIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = datePickerInspection
         field.inputAccessoryView = toolBar
         return field
@@ -953,13 +1031,29 @@ class RegisterView: UIViewController {
         return view
     }()
     
+    func createView()-> UIView{
+       let viewC = UIView()
+        let lable = UILabel()
+        let img = UIImageView()
+        img.image = UIImage(named: "cameraIcon2")
+        lable.text = "Upload Foto"
+        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
+        lable.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
+        lable.textAlignment = .center
+        viewC.addSubview(lable)
+        viewC.addSubview(img)
+        img.anchor(top: viewC.topAnchor, width: 30, height: 30)
+        img.centerXAnchor.constraint(equalTo: viewC.centerXAnchor).isActive = true
+        lable.anchor(top: img.bottomAnchor, left: viewC.leftAnchor, right: viewC.rightAnchor, paddingTop: 5)
+       return viewC
+    }
+    
     lazy var vehicleImage1: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 2
-        img.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
-        img.image = UIImage(named: "cameraIcon2")
+        img.layer.borderWidth = 1
         img.clipsToBounds = false
+        img.layer.borderColor = UIColor.black.cgColor
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVI1)))
@@ -974,12 +1068,9 @@ class RegisterView: UIViewController {
     
     lazy var vehicleImage2: UIImageView = {
         let img = UIImageView()
-        let camera = UIImage(named: "cameraIcon2")
-        let iconCamera = camera?.resizeImage(CGSize(width: 20, height: 20))
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 2
-        img.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
-        img.image = camera
+        img.layer.borderWidth = 1
+        img.layer.borderColor = UIColor.black.cgColor
         img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
@@ -995,12 +1086,9 @@ class RegisterView: UIViewController {
     
     lazy var vehicleImage3: UIImageView = {
         let img = UIImageView()
-        let camera = UIImage(named: "cameraIcon2")
-        let iconCamera = camera?.resizeImage(CGSize(width: 20, height: 20))
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 2
-        img.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
-        img.image = camera
+        img.layer.borderWidth = 1
+        img.layer.borderColor = UIColor.black.cgColor
         img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
@@ -1013,6 +1101,12 @@ class RegisterView: UIViewController {
         selectedImageView = vehicleImage3
         presentPhotoActionSheet()
     }
+    
+//    MARK:- dummy
+    lazy var dumyC = createView()
+    lazy var dumy1 = createView()
+    lazy var dumy2 = createView()
+    lazy var dumy3 = createView()
     
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
@@ -1085,7 +1179,7 @@ class RegisterView: UIViewController {
 //        scrollView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingBottom: 0, paddingLeft: 0, paddingRight: 0)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*24))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*25)+(200))
 
         stakView.addSubview(lableTitleRegister)
         lableTitleRegister.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
@@ -1094,13 +1188,19 @@ class RegisterView: UIViewController {
         subTableTitleRegister.anchor(top: lableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingRight: 0)
         
         stakView.addSubview(personalLabel)
-        personalLabel.anchor(top: subTableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingRight: 0)
+        personalLabel.anchor(top: subTableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingRight: 0)
         
-        stakView.addSubview(profileFoto)
-        profileFoto.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10)
+//        stakView.addSubview(profileFoto)
+//        profileFoto.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10)
         
         stakView.addSubview(profilePhotoImage)
-        profilePhotoImage.anchor(top: profileFoto.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 80, height: 80)
+        profilePhotoImage.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15, width: 80, height: 80)
+        
+        profilePhotoImage.addSubview(profilePhotoDumy)
+        profilePhotoDumy.anchor(width: 40, height: 40)
+        profilePhotoDumy.translatesAutoresizingMaskIntoConstraints = false
+        profilePhotoDumy.centerYAnchor.constraint(equalTo: profilePhotoImage.centerYAnchor).isActive = true
+        profilePhotoDumy.centerXAnchor.constraint(equalTo: profilePhotoImage.centerXAnchor).isActive = true
         
         stakView.addSubview(imgName)
         imgName.anchor(top: profilePhotoImage.topAnchor, left: profilePhotoImage.rightAnchor, right: stakView.rightAnchor, paddingTop: 10, paddingLeft: 10)
@@ -1111,76 +1211,79 @@ class RegisterView: UIViewController {
         stakView.addSubview(firstNameLable)
         firstNameLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
         stakView.addSubview(firstName)
-        firstName.anchor(top: firstNameLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 2, width: view.frame.width/2-20, height: 45)
+        firstName.anchor(top: firstNameLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(lastNameLable)
         lastNameLable.anchor(top: profilePhotoImage.bottomAnchor,left: firstNameLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
         stakView.addSubview(lastName)
-        lastName.anchor(top: lastNameLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 2,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
-        
-        stakView.addSubview(emailLable)
-        emailLable.anchor(top: firstName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
-        stakView.addSubview(email)
-        email.anchor(top: emailLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
-        
-        stakView.addSubview(passwordLable)
-        passwordLable.anchor(top: email.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
-        stakView.addSubview(password)
-        password.anchor(top: passwordLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+        lastName.anchor(top: lastNameLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(brithDateLable)
-        brithDateLable.anchor(top: password.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        brithDateLable.anchor(top: firstName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
         stakView.addSubview(brithDate)
-        brithDate.anchor(top: brithDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
-        
-        stakView.addSubview(genderLable)
-        genderLable.anchor(top: brithDate.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
-        stakView.addSubview(gender)
-        gender.anchor(top: genderLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
-        
-        stakView.addSubview(languageLable)
-        languageLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
-        stakView.addSubview(language)
-        language.anchor(top: languageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
-        
-        stakView.addSubview(phoneNumberLable)
-        phoneNumberLable.anchor(top: language.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
-        stakView.addSubview(phoneNumber)
-        phoneNumber.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+        brithDate.anchor(top: brithDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
         stakView.addSubview(addressLable)
-        addressLable.anchor(top: phoneNumber.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        addressLable.anchor(top: brithDate.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
         
+        
+        //MARK: - Addresss input
         stakView.addSubview(postalCodeLable)
         postalCodeLable.anchor(top: addressLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
         stakView.addSubview(postalCode)
-        postalCode.anchor(top: postalCodeLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 2, width: view.frame.width/2-20, height: 45)
+        postalCode.anchor(top: postalCodeLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(prefecturesLable)
         prefecturesLable.anchor(top: addressLable.bottomAnchor,left: postalCodeLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
         stakView.addSubview(prefecture)
-        prefecture.anchor(top: prefecturesLable.bottomAnchor,left: postalCode.rightAnchor, right: stakView.rightAnchor, paddingTop: 2,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
+        prefecture.anchor(top: prefecturesLable.bottomAnchor,left: postalCode.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
         
         
         stakView.addSubview(municipalLable)
         municipalLable.anchor(top: postalCode.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
         stakView.addSubview(municipal)
-        municipal.anchor(top: municipalLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 2, width: view.frame.width/2-20, height: 45)
+        municipal.anchor(top: municipalLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(chomeLable)
         chomeLable.anchor(top: prefecture.bottomAnchor,left: municipalLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
         stakView.addSubview(chome)
-        chome.anchor(top: chomeLable.bottomAnchor,left: municipal.rightAnchor, right: stakView.rightAnchor, paddingTop: 2,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
+        chome.anchor(top: chomeLable.bottomAnchor,left: municipal.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(municipalityKanaLable)
         municipalityKanaLable.anchor(top: municipal.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
         stakView.addSubview(municipalityKana)
-        municipalityKana.anchor(top: municipalityKanaLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 2, width: view.frame.width/2-20, height: 45)
+        municipalityKana.anchor(top: municipalityKanaLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(kanaAfterAddressLable)
         kanaAfterAddressLable.anchor(top: chome.bottomAnchor,left: municipalityKanaLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
         stakView.addSubview(kanaAfterAddress)
-        kanaAfterAddress.anchor(top: kanaAfterAddressLable.bottomAnchor,left: municipalityKana.rightAnchor, right: stakView.rightAnchor, paddingTop: 2,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
+        kanaAfterAddress.anchor(top: kanaAfterAddressLable.bottomAnchor,left: municipalityKana.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
+        
+        //MARK:- general information
+        stakView.addSubview(genderLable)
+        genderLable.anchor(top: kanaAfterAddress.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        stakView.addSubview(gender)
+        gender.anchor(top: genderLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+        stakView.addSubview(languageLable)
+        languageLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        stakView.addSubview(language)
+        language.anchor(top: languageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+        stakView.addSubview(phoneNumberLable)
+        phoneNumberLable.anchor(top: language.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        stakView.addSubview(phoneNumber)
+        phoneNumber.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+        stakView.addSubview(emailLable)
+        emailLable.anchor(top: phoneNumber.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        stakView.addSubview(email)
+        email.anchor(top: emailLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+        stakView.addSubview(passwordLable)
+        passwordLable.anchor(top: email.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        stakView.addSubview(password)
+        password.anchor(top: passwordLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
 
     }
     
@@ -1188,17 +1291,17 @@ class RegisterView: UIViewController {
         private func configureUiLicense(){
 
             stakView.addSubview(driverLicenseLable)
-            driverLicenseLable.anchor(top: kanaAfterAddress.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor,paddingTop: 15)
+            driverLicenseLable.anchor(top: password.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor,paddingTop: 15)
             
             stakView.addSubview(licenseNumberLable)
             licenseNumberLable.anchor(top: driverLicenseLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(licenseNumber)
-            licenseNumber.anchor(top: licenseNumberLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            licenseNumber.anchor(top: licenseNumberLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(licenseExpiretionDateLable)
             licenseExpiretionDateLable.anchor(top: licenseNumber.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(licenseExpiration)
-            licenseExpiration.anchor(top: licenseExpiretionDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            licenseExpiration.anchor(top: licenseExpiretionDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(vehicleDataLable)
             vehicleDataLable.anchor(top: licenseExpiration.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor,paddingTop: 15)
@@ -1206,69 +1309,75 @@ class RegisterView: UIViewController {
             stakView.addSubview(insuranceCompanyLable)
             insuranceCompanyLable.anchor(top: vehicleDataLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(insuranceCompany)
-            insuranceCompany.anchor(top: insuranceCompanyLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            insuranceCompany.anchor(top: insuranceCompanyLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(personalCoverageLable)
             personalCoverageLable.anchor(top: insuranceCompany.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(personalCoverage)
-            personalCoverage.anchor(top: personalCoverageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            personalCoverage.anchor(top: personalCoverageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(personalCoverageLable)
             personalCoverageLable.anchor(top: insuranceCompany.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(personalCoverage)
-            personalCoverage.anchor(top: personalCoverageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            personalCoverage.anchor(top: personalCoverageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
 
             stakView.addSubview(compensationLable)
             compensationLable.anchor(top: personalCoverage.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(compensation)
-            compensation.anchor(top: compensationLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            compensation.anchor(top: compensationLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(insuranceExpirationDateLabel)
             insuranceExpirationDateLabel.anchor(top: compensation.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(insuranceExpirationDate)
-            insuranceExpirationDate.anchor(top: insuranceExpirationDateLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            insuranceExpirationDate.anchor(top: insuranceExpirationDateLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(vehicleNameLable)
             vehicleNameLable.anchor(top: insuranceExpirationDate.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(vehicleName)
-            vehicleName.anchor(top: vehicleNameLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            vehicleName.anchor(top: vehicleNameLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
 //            stakView.addSubview(vehicleTypeLable)
 //            vehicleTypeLable.anchor(top: vehicleName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
 //            stakView.addSubview(vehicleType)
-//            vehicleType.anchor(top: vehicleTypeLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+//            vehicleType.anchor(top: vehicleTypeLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(vehicleNumberPlateLable)
             vehicleNumberPlateLable.anchor(top: vehicleName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(vehicleNumberPlate)
-            vehicleNumberPlate.anchor(top: vehicleNumberPlateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            vehicleNumberPlate.anchor(top: vehicleNumberPlateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
 
             stakView.addSubview(vehicleYearLable)
             vehicleYearLable.anchor(top: vehicleNumberPlate.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(vehicleYear)
-            vehicleYear.anchor(top: vehicleYearLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            vehicleYear.anchor(top: vehicleYearLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(vehicleOwnershipLable)
             vehicleOwnershipLable.anchor(top: vehicleYear.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(vehicleOwnership)
-            vehicleOwnership.anchor(top: vehicleOwnershipLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            vehicleOwnership.anchor(top: vehicleOwnershipLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(vehicleInspectionExpDateLable)
             vehicleInspectionExpDateLable.anchor(top: vehicleOwnership.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(vehicleInspectionExpDate)
-            vehicleInspectionExpDate.anchor(top: vehicleInspectionExpDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 45)
+            vehicleInspectionExpDate.anchor(top: vehicleInspectionExpDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
             
             stakView.addSubview(vehiclePhotoLable)
             vehiclePhotoLable.anchor(top: vehicleInspectionExpDate.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(containerSelectImage)
-            containerSelectImage.anchor(top: vehiclePhotoLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 200)
+            containerSelectImage.anchor(top: vehiclePhotoLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 150)
             containerSelectImage.addSubview(vehicleCertifiateImage)
             vehicleCertifiateImage.anchor(top: containerSelectImage.topAnchor, left: containerSelectImage.leftAnchor, bottom: containerSelectImage.bottomAnchor, right: containerSelectImage.rightAnchor)
+            
+            
+            vehicleCertifiateImage.addSubview(dumyC)
+            dumyC.anchor(width: 100, height: 50)
+            dumyC.centerYAnchor.constraint(equalTo: vehicleCertifiateImage.centerYAnchor).isActive = true
+            dumyC.centerXAnchor.constraint(equalTo: vehicleCertifiateImage.centerXAnchor).isActive = true
             
             stakView.addSubview(vehiclePhotoLable2)
             vehiclePhotoLable2.anchor(top: containerSelectImage.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
             stakView.addSubview(containerPhoto)
-            containerPhoto.anchor(top: vehiclePhotoLable2.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 2, height: 70)
+            containerPhoto.anchor(top: vehiclePhotoLable2.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 70)
             
             containerPhoto.addArrangedSubview(vehicleImage1)
             vehicleImage1.anchor(top: containerPhoto.topAnchor, bottom: containerPhoto.bottomAnchor)
@@ -1277,6 +1386,21 @@ class RegisterView: UIViewController {
             
             stakView.addSubview(nextButton)
             nextButton.anchor(top: containerPhoto.bottomAnchor, right: stakView.rightAnchor, paddingTop: 40, width: view.frame.width-32, height: 45)
+            
+            vehicleImage2.addSubview(dumy2)
+            dumy2.anchor(width: 100, height: 50)
+            dumy2.centerYAnchor.constraint(equalTo: vehicleImage2.centerYAnchor).isActive = true
+            dumy2.centerXAnchor.constraint(equalTo: vehicleImage2.centerXAnchor).isActive = true
+            
+            vehicleImage1.addSubview(dumy1)
+            dumy1.anchor(width: 100, height: 50)
+            dumy1.centerYAnchor.constraint(equalTo: vehicleImage1.centerYAnchor).isActive = true
+            dumy1.centerXAnchor.constraint(equalTo: vehicleImage1.centerXAnchor).isActive = true
+            
+            vehicleImage1.addSubview(dumy3)
+            dumy3.anchor(width: 100, height: 50)
+            dumy3.centerYAnchor.constraint(equalTo: vehicleImage3.centerYAnchor).isActive = true
+            dumy3.centerXAnchor.constraint(equalTo: vehicleImage3.centerXAnchor).isActive = true
         }
     
     
@@ -1344,7 +1468,30 @@ extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerD
             return
         }
         
+        
         selectedImageView?.image = selectdedImage
+        
+        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+            let fileName = url.lastPathComponent
+            
+            if selectedImageView == profilePhotoImage {
+                imgName.text = fileName
+            }
+        }
+        
+        if selectedImageView == profilePhotoImage {
+            profilePhotoDumy.isHidden = true
+        }else if selectedImageView == vehicleCertifiateImage {
+            dumyC.isHidden = true
+        }else if selectedImageView == vehicleImage1 {
+            dumy1.isHidden = true
+        }else if selectedImageView == vehicleImage2 {
+            dumy2.isHidden = true
+        }else if selectedImageView == vehicleImage3 {
+            dumy3.isHidden = true
+        }else {
+            print("not devined")
+        }
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
@@ -1427,6 +1574,7 @@ extension RegisterView {
               let comRangeObj = self.compensation.text,
               let insuranceExpDate = self.insuranceExpirationDate.text,
               let vName = self.vehicleName.text,
+              let vPlate = self.vehicleNumberPlate.text,
               let vYear = self.vehicleYear.text,
               let vOwner = self.vehicleOwnership.text,
               let vCerExp = self.vehicleInspectionExpDate.text else {
@@ -1458,6 +1606,7 @@ extension RegisterView {
                                                       compensation_range_object: comRangeObj,
                                                       insurance_expired_date: insuranceExpDate,
                                                       vehicle_name: vName,
+                                                      vehicle_number_plate: vPlate,
                                                       vehicle_year: vYear,
                                                       vehicle_ownership: vOwner,
                                                       vehicle_certificate_exp: vCerExp)
@@ -1518,6 +1667,7 @@ extension RegisterView {
                                                     compensation_range_object: comRangeObj,
                                                     insurance_expired_date: insuranceExpDate,
                                                     vehicle_name: vName,
+                                                    vehicle_number_plate: vPlate,
                                                     vehicle_year: vYear,
                                                     vehicle_ownership: vOwner,
                                                     vehicle_certificate_exp: vCerExp,
@@ -1526,10 +1676,35 @@ extension RegisterView {
                                                     vehicle_photo_2: vPhoto2,
                                                     vehicle_photo_3: vPhoto3,
                                                     date_add: dateAdd)
-        
-        registerVm.register(data: dataToPost) { (res) in
-            print(res)
+        let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
+            self?.register(data: dataToPost)
         }
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        Helpers().showAlert(view: self, message: "Continue to register ?",
+                            customTitle: "Are you sure ?", customAction1: action2, customAction2: action1)
         //MARK: - End
     }
+    
+    
+    func register(data: RegisterData){
+        spiner.show(in: view)
+        registerVm.register(data: data) { (res) in
+            switch res {
+            case .success(let oke):
+                DispatchQueue.main.async {
+                    if oke == true {
+                        self.spiner.dismiss()
+                        let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+                            self?.dismiss(animated: true, completion: nil)
+                        }
+                        Helpers().showAlert(view: self, message: "Please wait for approval from Kasumi", customTitle: "Register success",customAction1: action)
+                    }
+                }
+            case .failure(let error):
+                self.spiner.dismiss()
+                Helpers().showAlert(view: self, message: error.localizedDescription)
+            }
+        }
+    }
 }
+

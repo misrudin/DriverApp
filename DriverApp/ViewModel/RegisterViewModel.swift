@@ -26,35 +26,14 @@ struct RegisterViewModel {
             return
         }
         
-        if data.email == "" {
-            completion(.failure(ErrorRegister.email))
-            return
-        }
-        
-        if data.password == "" {
-            completion(.failure(ErrorRegister.password))
-            return
-        }
-        
         if data.date_of_birth == "" {
             completion(.failure(ErrorRegister.dateOfBirth))
             return
         }
         
-        if data.gender == "" {
-            completion(.failure(ErrorRegister.gender))
-            return
-        }
+
         
-        if data.language == "" {
-            completion(.failure(ErrorRegister.language))
-            return
-        }
         
-        if data.phone_number == "" {
-            completion(.failure(ErrorRegister.phoneNumber))
-            return
-        }
         
         //MARK: - Address
         
@@ -85,6 +64,36 @@ struct RegisterViewModel {
         
         if data.kana_after_address == "" {
             completion(.failure(ErrorRegister.KanaAfterAddress))
+            return
+        }
+        
+        if data.gender == "" {
+            completion(.failure(ErrorRegister.gender))
+            return
+        }
+        
+        if data.language == "" {
+            completion(.failure(ErrorRegister.language))
+            return
+        }
+        
+        if data.phone_number == "" {
+            completion(.failure(ErrorRegister.phoneNumber))
+            return
+        }
+        
+        if data.email == "" {
+            completion(.failure(ErrorRegister.email))
+            return
+        }
+        
+        if Validation().isValidEmail(data.email) != true {
+            completion(.failure(ErrorRegister.emailNotValid))
+            return
+        }
+        
+        if data.password == "" {
+            completion(.failure(ErrorRegister.password))
             return
         }
         
@@ -127,6 +136,11 @@ struct RegisterViewModel {
             return
         }
         
+        if data.vehicle_number_plate == "" {
+            completion(.failure(ErrorRegister.vehiclePlate))
+            return
+        }
+        
         if data.vehicle_year == "" {
             completion(.failure(ErrorRegister.vehicleYear))
             return
@@ -150,32 +164,33 @@ struct RegisterViewModel {
         //push data
         let urlFirebase = "registration"
         let dataToPost:[String: Any] = [
-            "user_image" : data.user_image,
+            "photo" : data.user_image,
             "first_name" : data.first_name,
             "last_name" : data.last_name,
-            "date_of_birth" : data.date_of_birth,
+            "birthday_date" : data.date_of_birth,
             "postal_code" : data.postal_code,
-            "prefectures" : data.prefectures,
+            "prefecture" : data.prefectures,
             "municipal_district" : data.municipal_district,
             "chome" : data.chome,
             "municipality_kana" : data.municipality_kana,
             "kana_after_address" : data.kana_after_address,
-            "gender" : data.gender,
-            "language" : data.language,
+            "sex" : data.gender.lowercased(),
+            "language" : data.language.lowercased(),
             "phone_number" : data.phone_number,
             "email" : data.email,
             "password" : data.password,
-            "license_number" : data.license_number,
-            "license_expired_date" : data.license_expired_date,
-            "insurance_company" : data.insurance_company,
-            "personal_coverage" : data.personal_coverage,
-            "compensation_range_object" : data.compensation_range_object,
-            "insurance_expired_date" : data.insurance_expired_date,
+            "driver_license_number" : data.license_number,
+            "driver_license_expired_date" : data.license_expired_date,
+            "insurance_company_name" : data.insurance_company,
+            "coverage_personal" : data.personal_coverage,
+            "compensation_range_objective" : data.compensation_range_object,
+            "insurance_expiration_date" : data.insurance_expired_date,
             "vehicle_name" : data.vehicle_name,
+            "vehicle_number_plate": data.vehicle_number_plate,
             "vehicle_year" : data.vehicle_year,
             "vehicle_ownership" : data.vehicle_ownership,
-            "vehicle_certificate_exp" : data.vehicle_certificate_exp,
-            "vehicle_certification_photo" : data.vehicle_certification_photo,
+            "vehicle_inspection_certificate_expiration_date" : data.vehicle_certificate_exp,
+            "vehicle_inspection_certificate_photo" : data.vehicle_certification_photo,
             "vehicle_photo_1" : data.vehicle_photo_1,
             "vehicle_photo_2" : data.vehicle_photo_2,
             "vehicle_photo_3" : data.vehicle_photo_3,
@@ -184,10 +199,10 @@ struct RegisterViewModel {
         
         database.child(urlFirebase).childByAutoId().setValue(dataToPost) { (error, _) in
             guard error == nil else {
-                completion(.failure(ErrorRegister.chome))
+                completion(.failure(ErrorRegister.failedToRegister))
                 return
             }
-            completion(.failure(ErrorRegister.failedToRegister))
+            completion(.success(true))
         }
     }
 }
@@ -223,6 +238,8 @@ enum ErrorRegister: Error {
     case vehiclePhoto2
     case vehiclePhoto3
     case failedToRegister
+    case emailNotValid
+    case vehiclePlate
 }
 
 extension ErrorRegister: LocalizedError {
@@ -376,6 +393,16 @@ extension ErrorRegister: LocalizedError {
         case .failedToRegister:
             return NSLocalizedString(
                 "Register failed !",
+                comment: ""
+            )
+        case .emailNotValid:
+            return NSLocalizedString(
+                "Please use a valid email !",
+                comment: ""
+            )
+        case .vehiclePlate:
+            return NSLocalizedString(
+                "Vehicle plate must be entered !",
                 comment: ""
             )
         }

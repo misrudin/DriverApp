@@ -363,7 +363,7 @@ extension ProfileViewController: ProfileViewModelDelegate {
             if let urlString = URL(string: "\(user.photoUrl)\(user.photoName)")
             {
                 self.user = user
-                let placeholderImage = UIImage(systemName: "person.circle")
+                let placeholderImage = UIImage(named: "personCircle")
                 
                 self.imageView.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
                 let fullName: String = "\(user.firstName) \(user.lastName)"

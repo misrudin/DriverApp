@@ -24,18 +24,17 @@ struct LoginViewModel {
         if let jsonData = try? encoder.encode(userLogin) {
             if let jsonString = String(data: jsonData, encoding: .utf8){
                 let crypted = try! AES256.encrypt(input: jsonString, passphrase: Base.paswordEncKey)
-                print(crypted)
                 let dataToPost: [String:String] = [
                     "data" : crypted
                 ]
-                AF.request("\(Base.url)livetracking/driver/login",
+                AF.request("\(Base.urlDriver)login",
                            method: .post,
                            parameters: dataToPost,
                            encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
-                            print(response)
                             switch response.result {
                             case .success:
                                 if let data = response.data {
+                                    print(data)
                                     if let userData =  self.parseJson(data: data){
                                         delegate?.didLoginSuccess(self, user: userData)
                                     }
@@ -44,16 +43,17 @@ struct LoginViewModel {
                                 delegate?.didFailedLogin(error)
                             }
                             
-                           })
+                    })
             }
         }
     }
+
     
     func parseJson(data: Data) -> User?{
         do{
             let decodedData = try JSONDecoder().decode(UserDetail.self, from: data)
-            let idDriver = decodedData.data[0].id
-            let codeDriver = decodedData.data[0].codeDriver
+            let idDriver = decodedData.data.id
+            let codeDriver = decodedData.data.codeDriver
             let user = User(id: idDriver, codeDriver: codeDriver)
             return user
         }catch{

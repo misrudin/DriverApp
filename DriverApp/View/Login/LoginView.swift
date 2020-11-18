@@ -258,6 +258,4 @@ extension LoginView: LoginViewModelDelegate {
         password.text = ""
         self.spiner.dismiss()
     }
-    
-  
 }

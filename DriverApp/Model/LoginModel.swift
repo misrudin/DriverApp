@@ -37,7 +37,11 @@ struct User: Codable {
 
 
 struct UserDetail: Decodable {
-    let data: [User]
+    let data: User
+    
+    enum CodingKeys: String, CodingKey {
+        case  data = "data"
+    }
 }
 
 
