@@ -19,6 +19,6 @@ protocol LoginViewModelDelegate {
 
 //profile protocols
 protocol ProfileViewModelDelegate {
-    func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel)
+    func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel, bio: Bio)
     func didFailedToFetch(_ error: Error)
 }

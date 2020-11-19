@@ -357,16 +357,16 @@ class ProfileViewController: UIViewController {
 //MARK: - Profile view model delegate
 @available(iOS 13.0, *)
 extension ProfileViewController: ProfileViewModelDelegate {
-    func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel) {
+    func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel, bio: Bio) {
         DispatchQueue.main.async {
             self.spiner.dismiss()
-            if let urlString = URL(string: "\(user.photoUrl)\(user.photoName)")
+            if let urlString = URL(string: "\(bio.photo_url)\(bio.photo_name)")
             {
                 self.user = user
                 let placeholderImage = UIImage(named: "personCircle")
                 
                 self.imageView.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
-                let fullName: String = "\(user.firstName) \(user.lastName)"
+                let fullName: String = "\(bio.first_name) \(bio.last_name)"
                 self.lableName.text = fullName
                 self.lableEmail.text = user.email
                 //                self.pop.show = false

@@ -8,30 +8,60 @@
 import Foundation
 
 struct UserModel: Decodable {
-    let idDriver: Int
-    let codeDriver: String
-    let firstName: String
-    let lastName: String
+    let id_driver: Int
+    let code_driver: String
+    let join_date: String
+    let join_time: String
     let email: String
-    let countryCode: String
-    let mobileNumber1: String
-    let mobileNumber2: String
-    let mobileNumber3: String
-    let photoUrl: String
-    let photoName: String
+    let working_status: String
+    let bio: String
+    let vehicle: String
 
     enum CodingKeys: String, CodingKey {
-        case idDriver = "id_driver"
-        case codeDriver = "code_driver"
-        case firstName = "first_name"
-        case lastName = "last_name"
-        case email = "email"
-        case countryCode = "country_code"
-        case mobileNumber1 = "mobile_number1"
-        case mobileNumber2 = "mobile_number2"
-        case mobileNumber3 = "mobile_number3"
-        case photoUrl = "photo_url"
-        case photoName = "photo_name"
+        case id_driver
+        case code_driver
+        case join_date
+        case join_time
+        case email
+        case working_status
+        case bio
+        case vehicle
+    }
+}
+
+struct Bio: Decodable {
+    let phone_number: String
+    let first_name: String
+    let last_name: String
+    let birthday_date: String
+    let postal_code: String
+    let prefecture: String
+    let municipal_district: String
+    let chome: String
+    let municipality_kana: String
+    let kana_after_address: String
+    let sex: String
+    let driver_license_number: String
+    let driver_license_expiration_date: String
+    let photo_url: String
+    let photo_name: String
+    
+    enum CodingKeys: String, CodingKey {
+        case phone_number
+        case first_name
+        case last_name
+        case birthday_date
+        case postal_code
+        case prefecture
+        case municipal_district
+        case chome
+        case municipality_kana
+        case kana_after_address
+        case sex
+        case driver_license_number
+        case driver_license_expiration_date
+        case photo_url
+        case photo_name
     }
 }
 

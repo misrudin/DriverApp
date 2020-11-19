@@ -13,6 +13,7 @@ import JGProgressHUD
 class EditProfileVc: UIViewController {
     
     var dataDriver: UserModel? = nil
+    var bio: Bio? = nil
     var profileVm = ProfileViewModel()
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -200,16 +201,13 @@ class EditProfileVc: UIViewController {
         
         configureLayout()
         
-        firstName.text = dataDriver?.firstName
-        lastName.text = dataDriver?.lastName
+        firstName.text = bio?.first_name
+        lastName.text = bio?.last_name
         email.text = dataDriver?.email
-        mobileNumber1.text = "\(dataDriver?.mobileNumber1 ?? "")"
-        mobileNumber2.text = "\(dataDriver?.mobileNumber2 ?? "")"
-
-        mobileNumber3.text = "\(dataDriver?.mobileNumber3 ?? "")"
+        mobileNumber1.text = "\(bio?.phone_number ?? "")"
 
         
-        guard let photoUrl = dataDriver?.photoUrl, let photoName = dataDriver?.photoName else {return}
+        guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {return}
         if let urlString = URL(string: "\(photoUrl)\(photoName)") {
             let placeholderImage = UIImage(named: "personCircle")
             self.imageView.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
@@ -218,7 +216,7 @@ class EditProfileVc: UIViewController {
     
     @objc
     func updateProfile(){
-        guard let iddriver = dataDriver?.idDriver,
+        guard let iddriver = dataDriver?.id_driver,
               let first = firstName.text,
               let last = lastName.text,
             let mobile1 = mobileNumber1.text,
@@ -234,7 +232,8 @@ class EditProfileVc: UIViewController {
         
         if let foto = newFoto {
             print("edit foto")
-            profileVm.updateFoto(data: foto, codeDriver: dataDriver!.codeDriver) { (res) in
+            profileVm.updateFoto(data: foto, codeDriver: dataDriver!.code_driver
+            ) { (res) in
                 switch res {
                 case .success(let result):
                     print(result)

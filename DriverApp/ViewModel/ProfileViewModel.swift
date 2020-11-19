@@ -9,6 +9,7 @@ import Foundation
 import Alamofire
 import SwiftyJSON
 import FirebaseDatabase
+import AesEverywhere
 
 struct ProfileViewModel {
     var delegate: ProfileViewModelDelegate?
@@ -41,14 +42,26 @@ struct ProfileViewModel {
     }
     
     func getDetailUser(with codeDriver: String)->Void{
-        AF.request("\(Base.url)livetracking/driver/dashboard/detail/\(codeDriver)",headers: Base.headers).response { response in
+        AF.request("\(Base.urlDriver)detail/\(codeDriver)",headers: Base.headers).response { response in
+            debugPrint(response)
             switch response.result {
             case .success:
-                if let data = response.data {
-                    if let userData =  self.parseJson(data: data){
-                        delegate?.didFetchUser(self, user: userData)
-                    }
+                
+                if response.response?.statusCode == 200 {
+                    if let data = response.data {
+                        guard let userData =  parseJson(data: data),
+                              let bioJson = decodeBio(data: userData.bio),
+                              let bioData = parseBio(data: bioJson) else { return }
+    //                        delegate?.didFetchUser(self, user: userData, bio: nil)
+                            
+                            
+                            print(bioData)
+                        }
+                }else {
+                    delegate?.didFailedToFetch(ErrorDriver.failedToFetch)
                 }
+                
+                
             case let .failure(error):
                 delegate?.didFailedToFetch(error)
             }
@@ -60,6 +73,16 @@ struct ProfileViewModel {
         do{
             let decodedData = try JSONDecoder().decode(DataUser.self, from: data)
             return decodedData.data
+        }catch{
+            delegate?.didFailedToFetch(error)
+            return nil
+        }
+    }
+    
+    func parseBio(data: Data) -> Bio?{
+        do{
+            let decodedData = try JSONDecoder().decode(Bio.self, from: data)
+            return decodedData
         }catch{
             delegate?.didFailedToFetch(error)
             return nil
@@ -136,6 +159,18 @@ struct ProfileViewModel {
     enum DataError: Error{
         case failedToFetch
         case failedToCheckout
+    }
+    
+    
+    func decodeBio(data: String)-> Data? {
+        do {
+            let decrypted = try AES256.decrypt(input: data, passphrase: "20110009")
+            return Data(base64Encoded: decrypted)
+        }catch {
+            return nil
+        }
+        
+        
     }
     
 }
