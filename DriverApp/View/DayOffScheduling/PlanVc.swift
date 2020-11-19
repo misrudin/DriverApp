@@ -48,6 +48,7 @@ class PlanVc: UIViewController {
     var dayOfVm = DayOffViewModel()
     var dataDayOff: DayOffPost!
     var listShift: [Int]? = nil
+    var dayOffPlanData: DayOfParent? = nil
     
     var selectedWeek: String?
     var selectedDay: String?
@@ -262,29 +263,33 @@ class PlanVc: UIViewController {
     //MARK:- Get day off plan
     func getDataDayOffPlan(){
         
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int else {
-            print("No user data")
-            return
-        }
+        guard let data = dayOffPlanData else {return}
         
-        spiner.show(in: view)
+//        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+//              let idDriver = userData["idDriver"] as? Int else {
+//            print("No user data")
+//            return
+//        }
         
-        dayOfVm.getDataPlanDayOff(idDriver: String(idDriver)) { (success) in
-            switch success {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self.spiner.dismiss()
+//        spiner.show(in: view)
+        
+//        dayOfVm.getDataPlanDayOff(idDriver: String(idDriver)) { (success) in
+//            switch success {
+//            case .success(let data):
+//                DispatchQueue.main.async {
+//                    self.spiner.dismiss()
                     switch data.workingStatus {
                     case "full time":
                         self.lableStatusDriver.text = "Full Time"
                     case "part time":
                         self.lableStatusDriver.text = "Part Time"
+                    case "freelance":
+                        self.lableStatusDriver.text = "Freelance"
                     default:
                         self.lableStatusDriver.text = data.workingStatus
                     }
                     
-                    if data.dayOfStatus == nil {
+                    if data.dayOfStatusPlan == nil {
                         self.dayOffPlan = [
                             "1": self.week1,
                             "2": self.week2,
@@ -298,11 +303,11 @@ class PlanVc: UIViewController {
                         var week3: [String: Any] = NSMutableDictionary() as! [String : Any]
                         var week4: [String: Any] = NSMutableDictionary() as! [String : Any]
                         var week5: [String: Any] = NSMutableDictionary() as! [String : Any]
-                        let dataWeek1 = data.dayOfStatus?.week1
-                        let dataWeek2 = data.dayOfStatus?.week2
-                        let dataWeek3 = data.dayOfStatus?.week3
-                        let dataWeek4 = data.dayOfStatus?.week4
-                        let dataWeek5 = data.dayOfStatus?.week5
+                        let dataWeek1 = data.dayOfStatusPlan?.week1
+                        let dataWeek2 = data.dayOfStatusPlan?.week2
+                        let dataWeek3 = data.dayOfStatusPlan?.week3
+                        let dataWeek4 = data.dayOfStatusPlan?.week4
+                        let dataWeek5 = data.dayOfStatusPlan?.week5
                         week1["Sunday"] = dataWeek1?.Sun == nil || dataWeek1?.Sun?.count == 0 ? NSNull() : dataWeek1?.Sun
                         week1["Monday"] = dataWeek1?.Mon == nil || dataWeek1?.Sun?.count == 0 ? NSNull() : dataWeek1?.Mon
                         week1["Tuesday"] = dataWeek1?.Tue == nil || dataWeek1?.Tue?.count == 0 ? NSNull() : dataWeek1?.Tue
@@ -353,12 +358,12 @@ class PlanVc: UIViewController {
                     }
                     
                     self.setupDisplayDayOff()
-                }
-            case .failure(let error):
-                print(error)
-                self.spiner.dismiss()
-            }
-        }
+//                }
+//            case .failure(let error):
+//                print(error)
+//                self.spiner.dismiss()
+//            }
+//        }
     }
     
     func configureLayout(){
@@ -403,7 +408,7 @@ class PlanVc: UIViewController {
         case "Part Time":
             partTimePlan()
         case "Freelance":
-            freelancePlan()
+            partTimePlan()
         default:
             print("Entah apa")
         }
@@ -424,8 +429,54 @@ class PlanVc: UIViewController {
         ]
 
         let filtered = newData.filter { $0.value != nil }
-        if filtered.count < 1 {
-            showAlert(text: "Minimal select 1 day to work in week 1 !")
+        
+        var week1Count = 0
+        
+        if let sunday = filtered["Sunday"] {
+            if let sun = sunday?.count {
+                week1Count += sun
+            }
+        }
+        
+        if let monday = filtered["Monday"] {
+            if let mon = monday?.count {
+                week1Count += mon
+            }
+        }
+        
+        if let tuesday = filtered["Tuesday"] {
+            if let tue = tuesday?.count {
+                week1Count += tue
+            }
+        }
+        
+        if let wednesday = filtered["Wednesday"] {
+            if let wed = wednesday?.count {
+                week1Count += wed
+            }
+        }
+        
+        if let thursday = filtered["Thursday"] {
+            if let thu = thursday?.count {
+                week1Count += thu
+            }
+        }
+        
+        if let friday = filtered["Friday"] {
+            if let fri = friday?.count {
+                week1Count += fri
+            }
+        }
+        
+        if let saturday = filtered["Saturday"] {
+            if let sat = saturday?.count {
+                week1Count += sat
+            }
+        }
+        
+        
+        if week1Count < 1 {
+            showAlert(text: "Minimal select 1 shift to work in week 1 !")
             return
         }
  
@@ -443,8 +494,51 @@ class PlanVc: UIViewController {
         ]
 
         let filtered2 = newData2.filter { $0.value != nil }
-        if filtered2.count < 1 {
-            showAlert(text: "Minimal select 1 day to work in week 2 !")
+        var week2Count = 0
+        
+        if let sunday = filtered2["Sunday"] {
+            if let sun = sunday?.count {
+                week2Count += sun
+            }
+        }
+        
+        if let monday = filtered2["Monday"] {
+            if let mon = monday?.count {
+                week2Count += mon
+            }
+        }
+        
+        if let tuesday = filtered2["Tuesday"] {
+            if let tue = tuesday?.count {
+                week2Count += tue
+            }
+        }
+        
+        if let wednesday = filtered2["Wednesday"] {
+            if let wed = wednesday?.count {
+                week2Count += wed
+            }
+        }
+        
+        if let thursday = filtered2["Thursday"] {
+            if let thu = thursday?.count {
+                week2Count += thu
+            }
+        }
+        
+        if let friday = filtered2["Friday"] {
+            if let fri = friday?.count {
+                week2Count += fri
+            }
+        }
+        
+        if let saturday = filtered2["Saturday"] {
+            if let sat = saturday?.count {
+                week2Count += sat
+            }
+        }
+        if week2Count < 1 {
+            showAlert(text: "Minimal select 1 shift to work in week 2 !")
             return
         }
         
@@ -462,8 +556,51 @@ class PlanVc: UIViewController {
         ]
 
         let filtered3 = newData3.filter { $0.value != nil }
-        if filtered3.count < 1 {
-            showAlert(text: "Minimal select 1 day to work in week 3 !")
+        var week3Count = 0
+        
+        if let sunday = filtered3["Sunday"] {
+            if let sun = sunday?.count {
+                week3Count += sun
+            }
+        }
+        
+        if let monday = filtered3["Monday"] {
+            if let mon = monday?.count {
+                week3Count += mon
+            }
+        }
+        
+        if let tuesday = filtered3["Tuesday"] {
+            if let tue = tuesday?.count {
+                week3Count += tue
+            }
+        }
+        
+        if let wednesday = filtered3["Wednesday"] {
+            if let wed = wednesday?.count {
+                week3Count += wed
+            }
+        }
+        
+        if let thursday = filtered3["Thursday"] {
+            if let thu = thursday?.count {
+                week3Count += thu
+            }
+        }
+        
+        if let friday = filtered3["Friday"] {
+            if let fri = friday?.count {
+                week3Count += fri
+            }
+        }
+        
+        if let saturday = filtered3["Saturday"] {
+            if let sat = saturday?.count {
+                week3Count += sat
+            }
+        }
+        if week3Count < 1 {
+            showAlert(text: "Minimal select 1 shift to work in week 3 !")
             return
         }
         //cek week minimal 1 work
@@ -480,22 +617,67 @@ class PlanVc: UIViewController {
         ]
 
         let filtered4 = newData4.filter { $0.value != nil }
-        if filtered4.count < 1 {
+        var week4Count = 0
+        
+        if let sunday = filtered4["Sunday"] {
+            if let sun = sunday?.count {
+                week4Count += sun
+            }
+        }
+        
+        if let monday = filtered4["Monday"] {
+            if let mon = monday?.count {
+                week4Count += mon
+            }
+        }
+        
+        if let tuesday = filtered4["Tuesday"] {
+            if let tue = tuesday?.count {
+                week4Count += tue
+            }
+        }
+        
+        if let wednesday = filtered4["Wednesday"] {
+            if let wed = wednesday?.count {
+                week4Count += wed
+            }
+        }
+        
+        if let thursday = filtered4["Thursday"] {
+            if let thu = thursday?.count {
+                week4Count += thu
+            }
+        }
+        
+        if let friday = filtered4["Friday"] {
+            if let fri = friday?.count {
+                week4Count += fri
+            }
+        }
+        
+        if let saturday = filtered4["Saturday"] {
+            if let sat = saturday?.count {
+                week4Count += sat
+            }
+        }
+        if week4Count < 1 {
             showAlert(text: "Minimal select 1 day to work in week 4 !")
             return
         }
         //cek week 5 cek ada berapa hari dulu
+        
+        print("week 4 \(week4Count) week 3 \(week3Count) week 2 \(week2Count) week 1 \(week1Count)")
      
 //       MARK: - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         
         spiner.show(in: view)
         
-        dayOfVm.setPlanDayOff(data: dayOffPlan, idDriver: idDriver) { (response) in
+        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) { (response) in
             switch response {
             case .success(_):
                 self.spiner.dismiss()
@@ -507,12 +689,9 @@ class PlanVc: UIViewController {
         }
     }
     
-    private func freelancePlan(){
-        print("Freee")
-    }
     
     private func fullTimePlan(){
-        //cek week 1 libur min max 2
+        //cek week 1 libur min max 2 // harus 20 shift
         let dataWeek1 = dayOffPlan["1"] as! [String: Any]
         
         let newData:[String: [Int]?] = [
@@ -590,14 +769,14 @@ class PlanVc: UIViewController {
      
 //       MARK - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         
         spiner.show(in: view)
         
-        dayOfVm.setPlanDayOff(data: dayOffPlan, idDriver: idDriver) { (response) in
+        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) { (response) in
             switch response {
             case .success(_):
                 self.spiner.dismiss()
@@ -620,10 +799,10 @@ class PlanVc: UIViewController {
         }
         switch setWorkButton.title(for: .normal) {
         case "Set Work Day":
-            listShift = [45,46,47,48]
+            listShift = [1,2,3,4]
             let newData:[String: Any] = dayOffPlan
             var dataSelected = newData["\(selectedWeek)"] as! [String: Any]
-            dataSelected["\(selectedDay)"] = [45,46,47,48]
+            dataSelected["\(selectedDay)"] = [1,2,3,4]
             dayOffPlan["\(selectedWeek)"] = dataSelected
         default:
             listShift = nil

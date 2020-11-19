@@ -848,29 +848,6 @@ class RegisterView: UIViewController {
         return field
     }()
     
-    //MARK: - Vehicle Type
-//    lazy var vehicleTypeLable: UILabel = {
-//        let lable = UILabel()
-//        lable.text = "Vehicle Type"
-//        lable.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
-//        lable.textColor = UIColor.lightGray
-//        return lable
-//    }()
-//
-//    lazy var vehicleType: UITextField = {
-//        let field = UITextField()
-//        field.autocapitalizationType = .none
-//        field.autocorrectionType = .no
-//        field.returnKeyType = .continue
-//        field.layer.cornerRadius = 2
-//        field.placeholder = "Vehicle Type"
-//        field.paddingLeft(10)
-//        field.paddingRight(10)
-//        field.backgroundColor = .white
-//        field.layer.borderWidth = 1
-//        field.layer.borderColor = UIColor.black.cgColor
-//        return field
-//    }()
     
     //MARK: - Vehicle Number Plate
     lazy var vehicleNumberPlateLable: UILabel = {
@@ -1176,7 +1153,6 @@ class RegisterView: UIViewController {
     
     private func configureUi(){
         view.addSubview(scrollView)
-//        scrollView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingBottom: 0, paddingLeft: 0, paddingRight: 0)
         
         scrollView.addSubview(stakView)
         stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*25)+(200))

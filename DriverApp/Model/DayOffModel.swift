@@ -25,9 +25,13 @@ struct DayOffPlanModel: Decodable {
 
 struct DayOfParent: Decodable {
     let dayOfStatus: DayOffStatus
+    let dayOfStatusPlan: DayOffStatus?
+    let workingStatus: String
     
     enum CodingKeys: String, CodingKey {
         case dayOfStatus = "day_off_status"
+        case dayOfStatusPlan = "day_off_status_plan"
+        case workingStatus = "working_status"
     }
 }
 
@@ -71,7 +75,7 @@ struct DayOfWeek:Decodable {
         case Mon = "Monday"
         case Tue = "Tuesday"
         case Wed = "Wednesday"
-        case Thu = "Thurdday"
+        case Thu = "Thursday"
         case Fri = "Friday"
         case Sat = "Saturday"
     }

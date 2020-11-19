@@ -41,21 +41,20 @@ struct ProfileViewModel {
         }
     }
     
+    //MARK: - Get detail user
     func getDetailUser(with codeDriver: String)->Void{
         AF.request("\(Base.urlDriver)detail/\(codeDriver)",headers: Base.headers).response { response in
-            debugPrint(response)
             switch response.result {
             case .success:
                 
                 if response.response?.statusCode == 200 {
                     if let data = response.data {
-                        guard let userData =  parseJson(data: data),
-                              let bioJson = decodeBio(data: userData.bio),
-                              let bioData = parseBio(data: bioJson) else { return }
-    //                        delegate?.didFetchUser(self, user: userData, bio: nil)
-                            
-                            
-                            print(bioData)
+                        guard let userData =  parseJson(data: data), let bioData = decodeBio(data: userData.bio, codeDriver: userData.code_driver), let vehicleData = decodeVehicle(data: userData.vehicle, codeDriver: userData.code_driver) else {
+                            delegate?.didFailedToFetch(ErrorDriver.failedToDecode)
+                            print("Decode Failed")
+                            return }
+                        
+                            delegate?.didFetchUser(self, user: userData, bio: bioData, vehicle: vehicleData)
                         }
                 }else {
                     delegate?.didFailedToFetch(ErrorDriver.failedToFetch)
@@ -68,26 +67,6 @@ struct ProfileViewModel {
         }
     }
     
-    //    Parese data
-    func parseJson(data: Data) -> UserModel?{
-        do{
-            let decodedData = try JSONDecoder().decode(DataUser.self, from: data)
-            return decodedData.data
-        }catch{
-            delegate?.didFailedToFetch(error)
-            return nil
-        }
-    }
-    
-    func parseBio(data: Data) -> Bio?{
-        do{
-            let decodedData = try JSONDecoder().decode(Bio.self, from: data)
-            return decodedData
-        }catch{
-            delegate?.didFailedToFetch(error)
-            return nil
-        }
-    }
     
     func changePassword(data: PasswordModel, completion: @escaping (Result<ResultData,Error>)-> Void){
         AF.request("\(Base.url)livetracking/driver/edit/password",
@@ -145,8 +124,82 @@ struct ProfileViewModel {
         })
     }
     
+    func validateEdit(data: VehicleEdit, completion: @escaping (Result<Bool, Error>)-> Void){
+        if data.insurance_company_name == "" {
+            completion(.failure(DataError.insurance_company_name))
+        }
+        
+        if data.coverage_personal == "" {
+            completion(.failure(DataError.coverage_personal))
+        }
+        
+        if data.compensation_range_objective == "" {
+            completion(.failure(DataError.compensation_range_objective))
+        }
+        
+        if data.insurance_expiration_date == "" {
+            completion(.failure(DataError.insurance_expiration_date))
+        }
+        
+        if data.vehicle_name == "" {
+            completion(.failure(DataError.vehicle_name))
+        }
+        
+        if data.vehicle_number_plate == "" {
+            completion(.failure(DataError.vehicle_number_plate))
+        }
+        
+        if data.vehicle_year == "" {
+            completion(.failure(DataError.vehicle_year))
+        }
+        
+        if data.vehicle_ownership == "" {
+            completion(.failure(DataError.vehicle_ownership))
+        }
+        
+        if data.vehicle_inspection_certificate_expiration_date == "" {
+            completion(.failure(DataError.vehicle_inspection_certificate_expiration_date))
+        }
+    }
     
-    //    Parese data
+    func editVehicleData(data: [String: Any], completion: @escaping (Result<Bool, Error>)-> Void){
+        let urlFirebase = "vehicle_update"
+        database.child(urlFirebase).childByAutoId().setValue(data) { (error, _) in
+            guard error == nil else {
+                completion(.failure(DataError.failedToEdit))
+                return
+            }
+            completion(.success(true))
+        }
+    }
+    
+    
+    //MARK:-   Decode data
+    func decodeBio(data: String, codeDriver: String)-> Bio? {
+            let decrypted = try! AES256.decrypt(input: data, passphrase: codeDriver)
+            let data = Data(decrypted.utf8)
+            let bioData = parseBio(data: data)
+            return bioData
+        }
+    
+    func decodeVehicle(data: String, codeDriver: String)-> VehicleData? {
+            let decrypted = try! AES256.decrypt(input: data, passphrase: codeDriver)
+            let data = Data(decrypted.utf8)
+            let vehicleData = parseVehicle(data: data)
+            return vehicleData
+        }
+    
+    //MARK:-    Parese data
+    func parseJson(data: Data) -> UserModel?{
+        do{
+            let decodedData = try JSONDecoder().decode(DataUser.self, from: data)
+            return decodedData.data
+        }catch{
+            delegate?.didFailedToFetch(error)
+            return nil
+        }
+    }
+    
     func parseResult(data: Data) -> ResultData?{
         do{
             let decodedData = try JSONDecoder().decode(ResultData.self, from: data)
@@ -156,21 +209,110 @@ struct ProfileViewModel {
         }
     }
     
-    enum DataError: Error{
-        case failedToFetch
-        case failedToCheckout
-    }
-    
-    
-    func decodeBio(data: String)-> Data? {
-        do {
-            let decrypted = try AES256.decrypt(input: data, passphrase: "20110009")
-            return Data(base64Encoded: decrypted)
-        }catch {
+    func parseBio(data: Data) -> Bio?{
+        do{
+            let decodedData = try JSONDecoder().decode(Bio.self, from: data)
+            return decodedData
+        }catch{
+            delegate?.didFailedToFetch(error)
             return nil
         }
-        
-        
     }
     
+    func parseVehicle(data: Data) -> VehicleData?{
+        do{
+            let decodedData = try JSONDecoder().decode(VehicleData.self, from: data)
+            return decodedData
+        }catch{
+            delegate?.didFailedToFetch(error)
+            return nil
+        }
+    }
+    
+}
+
+
+//    MARK: - enum
+enum DataError: Error{
+    case failedToFetch
+    case failedToCheckout
+    
+    case vehicle_name
+    case vehicle_number_plate
+    case vehicle_year
+    case vehicle_ownership
+    case vehicle_inspection_certificate_expiration_date
+    case insurance_company_name
+    case coverage_personal
+    case compensation_range_objective
+    case insurance_expiration_date
+    
+    case failedToEdit
+}
+
+extension DataError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .failedToFetch:
+            return NSLocalizedString(
+                "Failed to fetch data !",
+                comment: ""
+            )
+        case .failedToCheckout:
+            return NSLocalizedString(
+                "Failed to checkout !",
+                comment: ""
+            )
+        case .vehicle_name:
+            return NSLocalizedString(
+                "Vehicle name must be entered !",
+                comment: ""
+            )
+        case .vehicle_number_plate:
+            return NSLocalizedString(
+                "Vehicle number plate must be entered !",
+                comment: ""
+            )
+        case .vehicle_year:
+            return NSLocalizedString(
+                "Vehicle year must be entered !",
+                comment: ""
+            )
+        case .vehicle_ownership:
+            return NSLocalizedString(
+                "Vehicle ownership must be entered !",
+                comment: ""
+            )
+        case .vehicle_inspection_certificate_expiration_date:
+            return NSLocalizedString(
+                "Vehicle inspection certificate expiration date must be entered !",
+                comment: ""
+            )
+        case .insurance_company_name:
+            return NSLocalizedString(
+                "Insurance company name must be entered !",
+                comment: ""
+            )
+        case .coverage_personal:
+            return NSLocalizedString(
+                "Coverage personal must be entered !",
+                comment: ""
+            )
+        case .compensation_range_objective:
+            return NSLocalizedString(
+                "Compensation range must be entered !",
+                comment: ""
+            )
+        case .insurance_expiration_date:
+            return NSLocalizedString(
+                "Insurance expiration date must be entered !",
+                comment: ""
+            )
+        case .failedToEdit:
+            return NSLocalizedString(
+                "Failed to edit data !",
+                comment: ""
+            )
+        }
+    }
 }

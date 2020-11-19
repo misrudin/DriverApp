@@ -48,6 +48,7 @@ class DayOffVc: UIViewController {
     var dayOfVm = DayOffViewModel()
     var dataDayOff: DayOffStatus!
     var listShift: [Int]? = nil
+    var dayOffPlan: DayOfParent? = nil
     
     let months: [String] = ["January","February","Maret","April","Mei","Juni","July","Agustus","September","Oktober","November","Desember"]
     
@@ -119,6 +120,7 @@ class DayOffVc: UIViewController {
     @objc
     func setPlanClick(){
         let vc = PlanVc()
+        vc.dayOffPlanData = dayOffPlan
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -152,17 +154,18 @@ class DayOffVc: UIViewController {
         tableView.dataSource = self
         
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         spiner.show(in: view)
-        dayOfVm.getDataDayOff(idDriver: String(idDriver)) { (success) in
+        dayOfVm.getDataDayOff(codeDriver: codeDriver) { (success) in
             switch success {
             case .success(let data):
                 print(data)
                 DispatchQueue.main.async {
-                    self.dataDayOff = data
+                    self.dataDayOff = data.dayOfStatus
+                    self.dayOffPlan = data
                     self.setupDisplayDayOff()
                     self.spiner.dismiss()
                 }
@@ -172,6 +175,7 @@ class DayOffVc: UIViewController {
             }
         }
     }
+    
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()

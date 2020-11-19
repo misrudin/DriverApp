@@ -23,6 +23,8 @@ class ProfileViewController: UIViewController {
     var code: String = ""
     var idDriver: Int? = nil
     var user: UserModel? = nil
+    var bioData: Bio? = nil
+    var vehicleData: VehicleData? = nil
     
     var checkin: Bool = false
     
@@ -107,6 +109,7 @@ class ProfileViewController: UIViewController {
     
     lazy var button1 = createButton(title: "Edit Profile")
     lazy var button2 = createButton(title: "Change Password")
+    lazy var button6 = createButton(title: "Edit Vehicle Data")
     lazy var button3 = createButton(title: "Checkout")
     lazy var button4 = createButton(title: "Rest")
     lazy var button5:UIButton = {
@@ -142,6 +145,7 @@ class ProfileViewController: UIViewController {
         containerButton.addSubview(button3)
         containerButton.addSubview(button4)
         containerButton.addSubview(button5)
+        containerButton.addSubview(button6)
         
         profileVM.delegate = self
         configureLayout()
@@ -242,6 +246,7 @@ class ProfileViewController: UIViewController {
     private func didTapEditProfile(){
         let vc = EditProfileVc()
         vc.dataDriver = user
+        vc.bio = bioData
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -251,6 +256,16 @@ class ProfileViewController: UIViewController {
     private func didTapPassword(){
         let vc = ChangePasswordVC()
         vc.codeDriver = code
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //MARK: - Edit Vehicle
+    @objc
+    private func didTapVehicle(){
+        let vc = EditVehicleView()
+        vc.codeDriver = code
+        vc.vehicleData = vehicleData
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -339,7 +354,10 @@ class ProfileViewController: UIViewController {
         button2.anchor(top: button1.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPassword)))
         
-        button3.anchor(top: button2.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button6.anchor(top: button2.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapVehicle)))
+        
+        button3.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCheckout)))
         button3.isHidden = true
         
@@ -357,12 +375,14 @@ class ProfileViewController: UIViewController {
 //MARK: - Profile view model delegate
 @available(iOS 13.0, *)
 extension ProfileViewController: ProfileViewModelDelegate {
-    func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel, bio: Bio) {
+    func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel, bio: Bio, vehicle: VehicleData) {
         DispatchQueue.main.async {
             self.spiner.dismiss()
             if let urlString = URL(string: "\(bio.photo_url)\(bio.photo_name)")
             {
                 self.user = user
+                self.bioData = bio
+                self.vehicleData = vehicle
                 let placeholderImage = UIImage(named: "personCircle")
                 
                 self.imageView.af.setImage(withURL: urlString, placeholderImage: placeholderImage)

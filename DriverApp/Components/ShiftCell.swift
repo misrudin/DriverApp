@@ -14,11 +14,11 @@ class ShiftCell: UITableViewCell {
     var valueLabel: Int! {
         didSet {
             switch valueLabel {
-            case 45:
+            case 1:
                 labelShit.text = "Shift 1"
-            case 46:
+            case 2:
                 labelShit.text = "Shift 2"
-            case 47:
+            case 3:
                 labelShit.text = "Shift 3"
             default:
                 labelShit.text = "Shift 4"
