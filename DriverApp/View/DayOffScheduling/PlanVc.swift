@@ -200,7 +200,7 @@ class PlanVc: UIViewController {
     
     //MARK:- Colection view
     
-    fileprivate let colectionView: UICollectionView = {
+    private let colectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -224,6 +224,7 @@ class PlanVc: UIViewController {
         view.addSubview(colectionView)
         colectionView.delegate = self
         colectionView.dataSource = self
+        
         scView.isScrollEnabled = true
         scView.alwaysBounceHorizontal = false
         scView.showsHorizontalScrollIndicator = false
@@ -1597,7 +1598,7 @@ extension PlanVc {
 @available(iOS 13.0, *)
 extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/2)
+        return CGSize(width: collectionView.frame.width/3, height: collectionView.frame.width/2)
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 5
@@ -1605,7 +1606,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
-        cell.backgroundColor = .red
+        cell.backgroundColor = .brown
         return cell
     }
 }

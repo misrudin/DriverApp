@@ -31,9 +31,9 @@ class ProfileViewController: UIViewController {
     lazy var containerView: UIView = {
         let container = UIView()
         container.backgroundColor = .white
-        container.layer.cornerRadius = 10
         container.addSubview(lableName)
         container.addSubview(lableEmail)
+        container.addSubview(imageView)
         return container
     }()
     
@@ -41,8 +41,8 @@ class ProfileViewController: UIViewController {
         let image = UIImageView()
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
-        image.image = UIImage(named: "personCircle")
         image.tintColor = .white
+        image.layer.cornerRadius = 80/2
         
         return image
     }()
@@ -110,6 +110,7 @@ class ProfileViewController: UIViewController {
     lazy var button1 = createButton(title: "Edit Profile")
     lazy var button2 = createButton(title: "Change Password")
     lazy var button6 = createButton(title: "Edit Vehicle Data")
+    lazy var button7 = createButton(title: "Edit Email")
     lazy var button3 = createButton(title: "Checkout")
     lazy var button4 = createButton(title: "Rest")
     lazy var button5:UIButton = {
@@ -138,7 +139,6 @@ class ProfileViewController: UIViewController {
         
         view.addSubview(containerView)
         
-        view.addSubview(imageView)
         view.addSubview(containerButton)
         containerButton.addSubview(button1)
         containerButton.addSubview(button2)
@@ -146,6 +146,7 @@ class ProfileViewController: UIViewController {
         containerButton.addSubview(button4)
         containerButton.addSubview(button5)
         containerButton.addSubview(button6)
+        containerButton.addSubview(button7)
         
         profileVM.delegate = self
         configureLayout()
@@ -194,12 +195,12 @@ class ProfileViewController: UIViewController {
     //MARK: - Listen status driver
     private func listenStatusDriver(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int, let codeDriver = userData["codeDriver"] as? String else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         
-        inoutVm.cekStatusDriver(idDriver: idDriver) {[weak self] (result) in
+        inoutVm.cekStatusDriver(codeDriver: codeDriver) {[weak self] (result) in
             switch result {
             case .success(let status):
                 print(status)
@@ -266,6 +267,18 @@ class ProfileViewController: UIViewController {
         let vc = EditVehicleView()
         vc.codeDriver = code
         vc.vehicleData = vehicleData
+        vc.bioData = bioData
+        vc.userData = user
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //MARK: - Edit Email
+    @objc
+    private func didTapEmail(){
+        let vc = EditEmail()
+        vc.codeDriver = code
+        vc.driverEmail = user!.email
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -298,12 +311,12 @@ class ProfileViewController: UIViewController {
     @objc
     func didTapRest(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
-            let data: CheckDriver = CheckDriver(id_driver: idDriver)
+            let data: CheckDriver = CheckDriver(code_driver: codeDriver)
             self?.spiner.show(in: (self?.view)!)
             self?.restNow(data: data)
         }
@@ -337,15 +350,17 @@ class ProfileViewController: UIViewController {
     
     //MARK: - Configure layout
     private func configureLayout(){
-        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: view.frame.height/3)
         
-        containerView.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16, height: 15+25+10+10+10)
+        containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 100)
         
-        lableName.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
+        lableName.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, right: imageView.rightAnchor, paddingTop: 25, paddingLeft: 16, paddingRight: 10)
         
-        lableEmail.anchor(top: lableName.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
+        lableEmail.anchor(top: lableName.bottomAnchor, left: containerView.leftAnchor, right: imageView.leftAnchor, paddingTop: 5, paddingLeft: 16, paddingRight: 10)
         
-        containerButton.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 10)
+        imageView.anchor(right: containerView.rightAnchor, paddingRight: 16, width: 80, height: 80)
+        imageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
+        
+        containerButton.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 20)
         
         
         button1.anchor(top: containerButton.topAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
@@ -357,7 +372,10 @@ class ProfileViewController: UIViewController {
         button6.anchor(top: button2.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapVehicle)))
         
-        button3.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button7.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button7.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEmail)))
+        
+        button3.anchor(top: button7.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCheckout)))
         button3.isHidden = true
         

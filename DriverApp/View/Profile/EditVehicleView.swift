@@ -18,7 +18,9 @@ class EditVehicleView: UIViewController {
         return spin
     }()
     
-    var vehicleData: VehicleData? = nil
+    var userData: UserModel? = nil
+    var vehicleData: VehicleData?
+    var bioData: Bio? = nil
     var codeDriver: String?
     
     var profileVm = ProfileViewModel()
@@ -47,6 +49,9 @@ class EditVehicleView: UIViewController {
     }()
     
     //MARK:- Vehicle Data
+    
+    //MARK:- Personal Coverage
+    
     //MARK:- Insurance Company
     lazy var insuranceCompanyLable: UILabel = {
         let lable = UILabel()
@@ -515,6 +520,7 @@ class EditVehicleView: UIViewController {
         configureUi()
     }
     
+    //MARK: - configure input
     private func configureInputValue(){
         guard let insuranceCompanyName = vehicleData?.insurance_company_name,
               let prsonalCov = vehicleData?.coverage_personal,
@@ -722,7 +728,8 @@ func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMe
     }
     
     
-    selectedImageView?.image = selectdedImage
+    let hasil = Helpers().resizeImageUpload(image: selectdedImage)
+    selectedImageView?.image = hasil
     
     
      if selectedImageView == vehicleCertifiateImage {
@@ -764,6 +771,7 @@ extension EditVehicleView: UIPickerViewDelegate, UIPickerViewDataSource {
 
 extension EditVehicleView {
     @objc func editClick(){
+        spiner.show(in: view)
         guard let insuranceCom = self.insuranceCompany.text,
               let personalCov = self.personalCoverage.text,
               let comRangeObj = self.compensation.text,
@@ -772,7 +780,11 @@ extension EditVehicleView {
               let vPlate = self.vehicleNumberPlate.text,
               let vYear = self.vehicleYear.text,
               let vOwner = self.vehicleOwnership.text,
-              let vCerExp = self.vehicleInspectionExpDate.text, let codeDriver = codeDriver else {
+              let vCerExp = self.vehicleInspectionExpDate.text,
+              let codeDriver = codeDriver,
+              let firstName = bioData?.first_name,
+              let lastName = bioData?.last_name,
+              let email = userData?.email else {
             
             print("Masih ada yang kosong")
             return
@@ -787,7 +799,8 @@ extension EditVehicleView {
                                             insurance_company_name: insuranceCom,
                                             coverage_personal: personalCov,
                                             compensation_range_objective: comRangeObj,
-                                            insurance_expiration_date: insuranceExpDate)
+                                            insurance_expiration_date: insuranceExpDate,
+                                            first_name: firstName,last_name: lastName,email: email)
         
         
         profileVm.validateEdit(data: data) { (res) in
@@ -806,11 +819,14 @@ extension EditVehicleView {
             Helpers().showAlert(view: self, message: "Vehicle certification photo must be entered !")
             return}
         
+        
         guard let vPhotoTemp1 = self.vehicleImage1.image,
               let vPhotoTemp2 = self.vehicleImage2.image,
-              let vPhotoTemp3 = self.vehicleImage3.image else {
+              let vPhotoTemp3 = self.vehicleImage3.image
+              else {
             Helpers().showAlert(view: self, message: "Vehicle photo must be entered !")
             return}
+        
         
         let vCerPhoto = Helpers().convertImageToBase64String(img: vCerPhotoTemp)
         let vPhoto1 = Helpers().convertImageToBase64String(img: vPhotoTemp1)
@@ -822,7 +838,7 @@ extension EditVehicleView {
         let dateAdd = formater.string(from: Date())
         
         let dataToPost: [String:Any] = [
-            "code_drver": codeDriver,
+            "code_driver": codeDriver,
             "vehicle_name": vName,
             "vehicle_number_plate": vPlate,
             "vehicle_year": vYear,
@@ -837,9 +853,12 @@ extension EditVehicleView {
             "vehicle_photo1": vPhoto1,
             "vehicle_photo2": vPhoto2,
             "vehicle_photo3": vPhoto3,
+            "first_name": firstName,
+            "last_name": lastName,
+            "email": email
         ]
         
-        
+        spiner.dismiss()
         let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
             self?.submitEdit(data: dataToPost)
         }

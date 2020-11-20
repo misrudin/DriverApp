@@ -113,6 +113,47 @@ struct Helpers {
     func convertImageToBase64String (img: UIImage) -> String {
         return "data:image/png;base64,\(img.jpegData(compressionQuality: 0.7)?.base64EncodedString() ?? "")"
     }
+    
+    
+    func resizeImageUpload(image: UIImage) -> UIImage {
+        var actualHeight: Float = Float(image.size.height)
+        var actualWidth: Float = Float(image.size.width)
+        let maxHeight: Float = 1000.0
+        let maxWidth: Float = 1000.0
+        var imgRatio: Float = actualWidth / actualHeight
+        let maxRatio: Float = maxWidth / maxHeight
+        let compressionQuality: Float = 0.2
+        //50 percent compression
+
+        if actualHeight > maxHeight || actualWidth > maxWidth {
+            if imgRatio < maxRatio {
+                //adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            }
+            else if imgRatio > maxRatio {
+                //adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            }
+            else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+
+        let rect = CGRect(x: 0.0, y: 0.0, width: CGFloat(actualWidth), height: CGFloat(actualHeight))
+        UIGraphicsBeginImageContext(rect.size)
+        image.draw(in: rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        let imageData = img!.jpegData(compressionQuality: CGFloat(compressionQuality))
+        print(imageData)
+        UIGraphicsEndImageContext()
+        return UIImage(data: imageData!)!
+    }
+    
 }
 
 extension Date {
@@ -301,6 +342,61 @@ extension UIImage {
             return isSameSize(newSize) ? self : scaleImage(newSize)!
         }
     
-    
+//    MARK: - Resize
+        func resized(withPercentage percentage: CGFloat, isOpaque: Bool = true) -> UIImage? {
+            let canvas = CGSize(width: size.width * percentage, height: size.height * percentage)
+            let format = imageRendererFormat
+            format.opaque = isOpaque
+            return UIGraphicsImageRenderer(size: canvas, format: format).image {
+                _ in draw(in: CGRect(origin: .zero, size: canvas))
+            }
+        }
 
+//    MARK: - Compress
+        func compress(to kb: Int, allowedMargin: CGFloat = 0.2) -> Data {
+            let bytes = kb * 1024
+            var compression: CGFloat = 1.0
+            let step: CGFloat = 0.05
+            var holderImage = self
+            var complete = false
+            while(!complete) {
+                if let data = holderImage.jpegData(compressionQuality: 1.0) {
+                    let ratio = data.count / bytes
+                    if data.count < Int(CGFloat(bytes) * (1 + allowedMargin)) {
+                        complete = true
+                        return data
+                    } else {
+                        let multiplier:CGFloat = CGFloat((ratio / 5) + 1)
+                        compression -= (step * multiplier)
+                    }
+                }
+                
+                guard let newImage = holderImage.resized(withPercentage: compression) else { break }
+                holderImage = newImage
+            }
+            return Data()
+        }
+    
+    //mm
+    
+    func resizeByByte(maxByte: Int)-> Data {
+        var compressQuality: CGFloat = 1
+        var imageData = Data()
+        var imageByte = self.jpegData(compressionQuality: 1)?.count
+
+        while imageByte! > maxByte {
+            imageData = self.jpegData(compressionQuality: compressQuality)!
+            imageByte = self.jpegData(compressionQuality: compressQuality)?.count
+            compressQuality -= 0.1
+        }
+
+        if maxByte > imageByte! {
+            return imageData
+        } else {
+            return self.jpegData(compressionQuality: 1)!
+        }
+    }
+    
 }
+
+

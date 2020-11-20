@@ -66,7 +66,7 @@ struct DataPending: Codable {
 }
 
 struct DataCheckout: Codable {
-    let id_driver: Int
+    let code_driver: String
     let note: String
 }
 

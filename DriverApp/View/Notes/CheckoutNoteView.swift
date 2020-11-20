@@ -106,14 +106,14 @@ extension CheckoutNoteView {
     @objc
     func didTapSubmit(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int,
+              let codeDriver = userData["codeDriver"] as? String,
               let note = noteInput.text, note.count > 5 else {
             print("No user data")
             return
         }
         spiner.show(in: view)
-        let driver: CheckDriver = CheckDriver(id_driver: idDriver)
-        let data: DataCheckout = DataCheckout(id_driver: idDriver, note: note)
+        let driver: CheckDriver = CheckDriver(code_driver: codeDriver)
+        let data: DataCheckout = DataCheckout(code_driver: codeDriver, note: note)
         inoutVm.checkoutDriver(data: driver) {[weak self] (result) in
             switch result {
             case .success(let oke):

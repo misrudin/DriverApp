@@ -118,33 +118,41 @@ class ChangePasswordVC: UIViewController {
         let confirmP = confirmPassword.text, oldP != "" && newP != "" && confirmP != "" else {return}
         
         if newP == confirmP {
-            spiner.show(in: view)
             let data = PasswordModel(code_driver: codeDriver, old_password: oldP, password: newP)
             
-            ProfileViewModel().changePassword(data: data) {[weak self] (result) in
-                switch result {
-                case .success(let data):
-                    DispatchQueue.main.async {
-
-                        if data.status != 200 {
-                            Helpers().showAlert(view: self!, message: data.message)
-                            self?.spiner.dismiss()
-                        }else{
-                            self?.navigationController?.popViewController(animated: true)
-                            self?.spiner.dismiss()
-                        }
-                    }
-                    
-                case .failure(let error):
-                    print(error)
-                    self?.spiner.dismiss()
-                }
-                
+            
+            let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+                self.editStart(data: data)
             }
+            let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            Helpers().showAlert(view: self, message:"Continue to change password ?", customTitle: "Are Sure", customAction1: action, customAction2: action2)
         }else {
             Helpers().showAlert(view: self, message: "New password not match !")
         }
         
+    }
+    
+    private func editStart(data: PasswordModel){
+        spiner.show(in: view)
+        ProfileViewModel().changePassword(data: data) {[weak self] (result) in
+            switch result {
+            case .success(let oke):
+                DispatchQueue.main.async {
+                    self?.spiner.dismiss()
+                    if oke {
+                        let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        Helpers().showAlert(view: self!, message:"Succes edit password", customTitle: "Sucess", customAction1: action)
+                    }
+                }
+                
+            case .failure(let error):
+                Helpers().showAlert(view: self!, message: error.localizedDescription, customTitle: "Error")
+                self?.spiner.dismiss()
+            }
+            
+        }
     }
     
     

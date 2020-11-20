@@ -9,9 +9,15 @@ import UIKit
 import RxSwift
 import RxCocoa
 import JGProgressHUD
+import CoreLocation
 
 @available(iOS 13.0, *)
 class HomeVc: UIViewController {
+    
+    private var manager: CLLocationManager?
+    
+    var inOutVm = InOutViewModel()
+    var origin: Origin? = nil
     
     private let emptyImage: UIView = {
         let view = UIView()
@@ -82,10 +88,49 @@ class HomeVc: UIViewController {
         emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
+    private func getCurrentPosition(){
+        manager = CLLocationManager()
+        manager?.requestWhenInUseAuthorization()
+        manager?.startUpdatingLocation()
+        manager?.delegate = self
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        getDataOrder()
+        let formater = DateFormatter()
+        formater.dateFormat = "yyyy-MM-dd"
+        let date = Date()
+        let dateString = formater.string(from: date)
+        
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        if let session = UserDefaults.standard.value(forKey: "userSession") as? [String: Any] {
+            if session["date"] as? String != dateString {
+                print("!==")
+                let data: [String: Any] = [
+                    "code_driver": codeDriver,
+                    "date": dateString
+                ]
+                UserDefaults.standard.setValue(data, forKey: "userSession")
+                getCurrentPosition()
+            }else {
+                print("==")
+                getDataOrder()
+            }
+        }else {
+            print("tidak ada data")
+            let data: [String: Any] = [
+                "code_driver": codeDriver,
+                "date": dateString
+            ]
+            UserDefaults.standard.setValue(data, forKey: "userSession")
+            getCurrentPosition()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -94,8 +139,36 @@ class HomeVc: UIViewController {
         emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: false)
     }
     
+    private func upateLocation(){
+        print("update Location")
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String,
+              let lat = origin?.latitude,
+              let long = origin?.longitude  else {
+            print("No user data")
+            return
+        }
+        let data: CheckinData = CheckinData(code_driver: codeDriver, lat: String(lat), long: String(long))
+        spiner.show(in: view)
+        inOutVm.updateLastPosition(data: data) { (res) in
+            switch res {
+                
+            case .success(let oke):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    if oke {
+                        self.getDataOrder()
+                    }
+                }
+            case .failure(_):
+                self.spiner.dismiss()
+            }
+        }
+    }
+    
     @objc
     func getDataOrder(){
+        print("order")
         // get data detail user from local
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
@@ -190,4 +263,19 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         }
     }
     
+}
+
+
+@available(iOS 13.0, *)
+extension HomeVc: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            let coordinate = location.coordinate
+            self.origin = Origin(latitude: coordinate.latitude, longitude: coordinate.longitude)
+            print(origin)
+            self.upateLocation()
+            manager.stopUpdatingLocation()
+        }
+    }
 }

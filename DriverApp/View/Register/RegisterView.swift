@@ -1445,7 +1445,8 @@ extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerD
         }
         
         
-        selectedImageView?.image = selectdedImage
+        let hasil = Helpers().resizeImageUpload(image: selectdedImage)
+        selectedImageView?.image = hasil
         
         if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
             let fileName = url.lastPathComponent
@@ -1529,6 +1530,7 @@ extension RegisterView {
             Helpers().showAlert(view: self, message: "Profile photo must be entered !")
             return}
         
+        
         guard let firstName = self.firstName.text,
               let lastName = self.lastName.text,
               let dateOfBirth = self.brithDate.text,
@@ -1610,6 +1612,7 @@ extension RegisterView {
               let vPhotoTemp3 = self.vehicleImage3.image else {
             Helpers().showAlert(view: self, message: "Vehicle photo must be entered !")
             return}
+        
         
         let userImage = Helpers().convertImageToBase64String(img: userImgTemp)
         let vCerPhoto = Helpers().convertImageToBase64String(img: vCerPhotoTemp)

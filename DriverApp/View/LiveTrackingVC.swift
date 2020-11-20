@@ -125,13 +125,13 @@ class LiveTrackingVC: UIViewController {
     
     private func cekStatusDriver(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         spiner.show(in: view)
         
-        inOutVm.cekStatusDriver(idDriver: idDriver) { (res) in
+        inOutVm.cekStatusDriver(codeDriver: codeDriver) { (res) in
             switch res {
             case .success(let response):
                 DispatchQueue.main.async {
@@ -208,6 +208,30 @@ class LiveTrackingVC: UIViewController {
         manager?.requestWhenInUseAuthorization()
         manager?.startUpdatingLocation()
         manager?.delegate = self
+    }
+    
+    private func upateLocation(){
+        print("update Location")
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String,
+              let lat = origin?.latitude,
+              let long = origin?.longitude  else {
+            print("No user data")
+            return
+        }
+        let data: CheckinData = CheckinData(code_driver: codeDriver, lat: String(lat), long: String(long))
+        spiner.show(in: view)
+        inOutVm.updateLastPosition(data: data) { (res) in
+            switch res {
+                
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                }
+            case .failure(_):
+                self.spiner.dismiss()
+            }
+        }
     }
     
     
@@ -365,7 +389,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             }
         case .done_pickup:
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                  let idDriver = userData["idDriver"] as? Int, let lat = origin?.latitude, let long = origin?.longitude else {
+                  let codeDriver = userData["codeDriver"] as? String, let lat = origin?.latitude, let long = origin?.longitude else {
                 print("No user data")
                 return
             }
@@ -373,7 +397,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             
             if self.isCheckin == false {
                 print("belum cekin")
-                self.inOutVm.checkinDriver(with: idDriver, lat: String(lat), long: String(long)) { (res) in
+                self.inOutVm.checkinDriver(with: codeDriver, lat: String(lat), long: String(long)) { (res) in
                     switch res {
                     case .success(let oke):
                         DispatchQueue.main.async {
@@ -409,6 +433,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
+                        self.upateLocation()
                         self.spiner.dismiss()
                         let vc = DoneViewController()
                         let navVc = UINavigationController(rootViewController: vc)

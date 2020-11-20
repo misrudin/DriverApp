@@ -68,20 +68,19 @@ struct ProfileViewModel {
     }
     
     
-    func changePassword(data: PasswordModel, completion: @escaping (Result<ResultData,Error>)-> Void){
-        AF.request("\(Base.url)livetracking/driver/edit/password",
+    //MARK: - Chenge password
+    func changePassword(data: PasswordModel, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.urlDriver)edit/password",
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
-                    
-                    guard let data = response.data else {return}
-                    
+                    debugPrint(response)
                     switch response.result {
                     case .success:
-                        if let result = parseResult(data: data) {
-                            completion(.success(result))
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToFetch))
+                            completion(.failure(DataError.failedToEdit))
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -90,6 +89,7 @@ struct ProfileViewModel {
                    })
     }
     
+    //MARK: - update photo
     func updateFoto(data: String, codeDriver: String, completion: @escaping (Result<Bool,Error>)-> Void){
         let data = Foto(photo: data, code_driver: codeDriver)
         
@@ -108,8 +108,38 @@ struct ProfileViewModel {
         })
     }
     
-    func updateProfile(data: DataProfile, completion: @escaping (Result<Bool,Error>)-> Void){
-        AF.request("\(Base.url)livetracking/driver/apps/update",
+    
+    //MARK: - update bio
+    func updateProfile(data: UpdatePersonal, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.urlDriver)edit/personal",
+                   method: .patch,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    
+                    switch response.result {
+                    case .success:
+                        completion(.success(true))
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+        })
+    }
+    
+    //MARK: - Encryp bio
+    func encryptBio(data: PersonalData, codeDriver: String)-> String? {
+        let encoder = JSONEncoder()
+        if let jsonData = try? encoder.encode(data), let dataString = String(data: jsonData, encoding: .utf8) {
+            let crypted = try! AES256.encrypt(input: dataString, passphrase: codeDriver)
+            return crypted
+        }
+        return nil
+    }
+    
+    //MARK: - update email
+    
+    func updateEmail(data: UpdateEmail, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.urlDriver)edit/email",
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
@@ -125,6 +155,27 @@ struct ProfileViewModel {
     }
     
     func validateEdit(data: VehicleEdit, completion: @escaping (Result<Bool, Error>)-> Void){
+        
+        if data.first_name == "" {
+            completion(.failure(ErrorRegister.firstName))
+            return
+        }
+        
+        if data.last_name == "" {
+            completion(.failure(ErrorRegister.lastName))
+            return
+        }
+        
+        if data.email == "" {
+            completion(.failure(ErrorRegister.email))
+            return
+        }
+        
+        if Validation().isValidEmail(data.email) != true {
+            completion(.failure(ErrorRegister.emailNotValid))
+            return
+        }
+        
         if data.insurance_company_name == "" {
             completion(.failure(DataError.insurance_company_name))
         }

@@ -179,4 +179,42 @@ struct VehicleEdit: Codable {
     let coverage_personal: String
     let compensation_range_objective: String
     let insurance_expiration_date: String
+    let first_name: String
+    let last_name: String
+    let email: String
+}
+
+
+struct UpdateEmail: Codable {
+    let email: String
+    let code_driver: String
+}
+
+struct UpdatePersonal: Encodable {
+    let bio: String
+    let code_driver: String
+}
+
+struct PersonalData: Codable {
+    let first_name: String
+    let last_name: String
+    let birthday_date: String
+    let postal_code: String
+    let prefecture: String
+    let municipal_district: String
+    let chome: String
+    let municipality_kana: String
+    let kana_after_address: String
+    let sex: String
+    let driver_license_number: String
+    let driver_license_expiration_date: String
+    let photo_url: String
+    let photo_name: String
+    let photo: String?
+    let phone_number: String
+}
+
+struct UserSession:Codable {
+    let code_driver: String
+    let date: String
 }

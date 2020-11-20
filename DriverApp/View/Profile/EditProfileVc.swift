@@ -21,155 +21,160 @@ class EditProfileVc: UIViewController {
         
         return spin
     }()
-    var newFoto:String?
     
-    
-    let imageView: UIImageView = {
-       let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        image.image = UIImage(named: "personCircle")
-        
-        return image
+    //MARK: - personal data
+    lazy var personalLabel: UILabel = {
+        let lable = UILabel()
+        lable.text = "PERSONAL INFORMATION"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor(named: "orangeKasumi")
+        return lable
     }()
     
-    let buttonCamera: UIButton = {
-        let button = UIButton()
-        let image = UIImage(named: "cameraIcon")
-        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        button.setImage(baru, for: .normal)
-        button.backgroundColor = UIColor(named: "orangeKasumi")
-        button.layer.cornerRadius = 20
-        button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
-        button.addTarget(self, action: #selector(addPhoto), for: .touchUpInside)
-        return button
+    lazy var profilePhotoImage: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.layer.cornerRadius = 80/2
+        img.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        return img
+    }()
+
+    //MARK: - Name
+    lazy var firstNameLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "First Name"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
+        return lable
     }()
     
-    
-    private let firstName: UITextField = {
+    lazy var firstName: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
+        field.layer.cornerRadius = 2
         field.placeholder = "First Name"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-        field.leftViewMode = .always
+        field.paddingLeft(10)
+        field.paddingRight(10)
         field.backgroundColor = .white
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
+        field.isEnabled = false
         return field
     }()
     
+    lazy var lastNameLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "Last Name"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
+        return lable
+    }()
     
-    private let lastName: UITextField = {
+    lazy var lastName: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
+        field.layer.cornerRadius = 2
         field.placeholder = "Last Name"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-        field.leftViewMode = .always
+        field.paddingLeft(10)
+        field.paddingRight(10)
         field.backgroundColor = .white
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.black.cgColor
+        field.returnKeyType = .continue
+        field.isEnabled = false
         return field
     }()
     
-    private let newPassword: UITextField = {
+    //MARK:- Email
+    lazy var emailLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "Email"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
+        return lable
+    }()
+    
+    lazy var email: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "New Password ..."
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-        field.leftViewMode = .always
+        field.layer.cornerRadius = 2
+        field.placeholder = "Email"
+        field.paddingLeft(10)
+        field.paddingRight(10)
         field.backgroundColor = .white
-        return field
-    }()
-    
-    private let email: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.black.cgColor
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "Confirm New Password ..."
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-        field.leftViewMode = .always
-        field.backgroundColor = .white
         field.keyboardType = .emailAddress
+        field.isEnabled = false
         return field
     }()
     
-    private let mobileNumber1: UITextField = {
+    //MARK:- PhoneNumber
+    lazy var phoneNumberLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "Phone Number"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
+        return lable
+    }()
+    
+    lazy var phoneNumber: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "0000"
+        field.layer.cornerRadius = 2
+        field.placeholder = "123456"
+        field.paddingLeft(10)
+        field.paddingRight(10)
         field.backgroundColor = .white
-        field.textAlignment = .center
-        return field
-    }()
-    private let mobileNumber2: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
+        field.layer.borderWidth = 1
+        field.layer.borderColor = UIColor.black.cgColor
+        field.keyboardType = .numberPad
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "0000"
-        field.backgroundColor = .white
-        field.textAlignment = .center
-        return field
-    }()
-    private let mobileNumber3: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "0000"
-        field.backgroundColor = .white
-        field.textAlignment = .center
         return field
     }()
     
-    let mnContainer: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.spacing = 10
-        stack.distribution = .fillEqually
-        
-        return stack
-    }()
-
-
     
+    //MARK: - submit button
     private let submitButton: UIButton={
         let button = UIButton()
         button.setTitle("Save Profile", for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 2
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
         button.addTarget(self, action: #selector(updateProfile), for: .touchUpInside)
         return button
+    }()
+    
+    lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
+    
+    //MARK: - Scroll View
+    lazy var scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.contentSize = contentViewSize
+        scroll.autoresizingMask = .flexibleHeight
+        scroll.showsHorizontalScrollIndicator = true
+        scroll.bounces = true
+        scroll.frame = self.view.bounds
+        return scroll
+    }()
+    
+    lazy var stakView: UIView = {
+        let view = UIView()
+        return view
     }()
     
     private let lableCoutryCode: UILabel = {
@@ -186,93 +191,127 @@ class EditProfileVc: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         
-        view.addSubview(firstName)
-        view.addSubview(lastName)
-        view.addSubview(email)
-        view.addSubview(lableCoutryCode)
-        view.addSubview(mnContainer)
-        mnContainer.addArrangedSubview(mobileNumber1)
-        mnContainer.addArrangedSubview(mobileNumber2)
-        mnContainer.addArrangedSubview(mobileNumber3)
-        view.addSubview(submitButton)
-        view.addSubview(imageView)
-        view.addSubview(buttonCamera)
-        buttonCamera.bringSubviewToFront(imageView)
         
         configureLayout()
-        
+
         firstName.text = bio?.first_name
         lastName.text = bio?.last_name
         email.text = dataDriver?.email
-        mobileNumber1.text = "\(bio?.phone_number ?? "")"
+        phoneNumber.text = bio?.phone_number
 
         
         guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {return}
         if let urlString = URL(string: "\(photoUrl)\(photoName)") {
             let placeholderImage = UIImage(named: "personCircle")
-            self.imageView.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
+            self.profilePhotoImage.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
         }
     }
     
     @objc
     func updateProfile(){
-        guard let iddriver = dataDriver?.id_driver,
-              let first = firstName.text,
-              let last = lastName.text,
-            let mobile1 = mobileNumber1.text,
-            let mobie2 = mobileNumber2.text,
-            let mobile3 = mobileNumber3.text,
-            let emailText = email.text else {
+        guard let phoneNumber = self.phoneNumber.text,
+              let firstName = self.firstName.text,
+              let lastName = self.lastName.text,
+              let brith = bio?.birthday_date,
+              let postalCode = bio?.postal_code,
+              let pre = bio?.prefecture,
+              let municDis = bio?.municipal_district,
+              let chome = bio?.chome,
+              let municKana = bio?.municipality_kana,
+              let kanaAddres = bio?.kana_after_address,
+              let sex = bio?.sex,
+              let driverLicenseNumber = bio?.driver_license_number,
+              let driverExp = bio?.driver_license_expiration_date,
+              let driverPhotourl = bio?.photo_url,
+              let photoName = bio?.photo_name
+              else {
             return
         }
         
+        let personalData: PersonalData = PersonalData(first_name: firstName,
+                                                      last_name: lastName,
+                                                      birthday_date: brith,
+                                                      postal_code: postalCode,
+                                                      prefecture: pre,
+                                                      municipal_district: municDis,
+                                                      chome: chome,
+                                                      municipality_kana: municKana,
+                                                      kana_after_address: kanaAddres,
+                                                      sex: sex,
+                                                      driver_license_number: driverLicenseNumber,
+                                                      driver_license_expiration_date: driverExp,
+                                                      photo_url: driverPhotourl,
+                                                      photo_name: photoName,
+                                                      photo: nil,
+                                                      phone_number: phoneNumber)
+        
+        guard let bio: String = profileVm.encryptBio(data: personalData, codeDriver: dataDriver!.code_driver) else {return}
+        
+        let dataTopost: UpdatePersonal = UpdatePersonal(bio: bio, code_driver: dataDriver!.code_driver)
+        
+        let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+            self.startsubmit(data: dataTopost)
+        }
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        Helpers().showAlert(view: self, message:"Continue to edit profile ?", customTitle: "Are Sure", customAction1: action, customAction2: action2)
+    }
+    
+    
+    private func startsubmit(data: UpdatePersonal){
         spiner.show(in: view)
-        
-        let data: DataProfile = DataProfile(id_driver: iddriver, first_name: first, last_name: last, mobile_number1: mobile1, mobile_number2: mobie2, mobile_number3: mobile3, country_code: "+81", email: emailText)
-        
-        if let foto = newFoto {
-            print("edit foto")
-            profileVm.updateFoto(data: foto, codeDriver: dataDriver!.code_driver
-            ) { (res) in
-                switch res {
-                case .success(let result):
-                    print(result)
-                case .failure(let err):
-                    print(err)
+        profileVm.updateProfile(data: data) { (res) in
+            switch res {
+            case .success(let oke):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    if oke {
+                        let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+                            self.navigationController?.popViewController(animated: true)
+                        }
+                        Helpers().showAlert(view: self, message:"Succes edit profile", customTitle: "Sucess", customAction1: action)
+                    }
                 }
+            case .failure(let err):
+                Helpers().showAlert(view: self, message: err.localizedDescription, customTitle: "Error")
+                self.spiner.dismiss()
             }
         }
-        
-        
-        
-        profileVm.updateProfile(data: data) {[weak self] (result) in
-            switch result{
-            case .success(_):
-                DispatchQueue.main.async {
-                    self?.spiner.dismiss()
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    print(error)
-                    self?.spiner.dismiss()
-                }
-            }
-        }
-        
     }
     
     func configureLayout(){
-        imageView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 250)
-        firstName.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 40, paddingLeft: 10, paddingRight: 10,height: 50)
-        lastName.anchor(top: firstName.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10,height: 50)
-        email.anchor(top: lastName.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10,height: 50)
-        lableCoutryCode.anchor(top: email.bottomAnchor, left: view.leftAnchor, paddingTop: 10, paddingLeft: 10,width: 30,height: 50)
-        mnContainer.anchor(top: email.bottomAnchor, left: lableCoutryCode.rightAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, height: 50)
-
-        submitButton.anchor(top: mobileNumber1.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10, height: 50)
+        view.addSubview(scrollView)
         
-        buttonCamera.anchor(top: imageView.bottomAnchor, right: imageView.rightAnchor, paddingTop: -25, paddingRight: 16, width: 40, height: 40)
+        scrollView.addSubview(stakView)
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*9))
+        
+        stakView.addSubview(personalLabel)
+        personalLabel.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
+        
+        stakView.addSubview(profilePhotoImage)
+        profilePhotoImage.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15, width: 80, height: 80)
+        
+        stakView.addSubview(firstNameLable)
+        firstNameLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
+        stakView.addSubview(firstName)
+        firstName.anchor(top: firstNameLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
+        
+        stakView.addSubview(lastNameLable)
+        lastNameLable.anchor(top: profilePhotoImage.bottomAnchor,left: firstNameLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
+        stakView.addSubview(lastName)
+        lastName.anchor(top: lastNameLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
+        
+        stakView.addSubview(emailLable)
+        emailLable.anchor(top: firstName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        stakView.addSubview(email)
+        email.anchor(top: emailLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+        stakView.addSubview(phoneNumberLable)
+        phoneNumberLable.anchor(top: email.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        stakView.addSubview(phoneNumber)
+        phoneNumber.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+        stakView.addSubview(submitButton)
+        submitButton.anchor(top: phoneNumber.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20, height: 45)
     }
     
 
@@ -285,79 +324,5 @@ class EditProfileVc: UIViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
         
-    }
-    
-    @objc func didBack(){
-        dismiss(animated: true)
-    }
-    
-    @objc
-    func addPhoto(){
-        presentPhotoActionSheet()
-    }
-    
-    
-}
-
-
-@available(iOS 13.0, *)
-extension EditProfileVc: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
-    func presentPhotoActionSheet(){
-           let actionSheet = UIAlertController(title: "Profile Picture",
-                                               message: "How would you like to select a picture?",
-                                               preferredStyle: .actionSheet)
-           
-           actionSheet.addAction(UIAlertAction(title: "Cancel",
-                                               style: .cancel,
-                                               handler: nil))
-           actionSheet.addAction(UIAlertAction(title: "Take Photo",
-                                               style: .default,
-                                               handler: { [weak self] _ in
-                                                   
-                                                   self?.presentCamera()
-                                               }))
-           actionSheet.addAction(UIAlertAction(title: "Choose Phote",
-                                               style: .default,
-                                               handler: { [weak self] _ in
-                                                   self?.presetPhotoPicker()
-                                               }))
-           
-           present(actionSheet, animated: true)
-       }
-       
-       func presentCamera(){
-           let vc = UIImagePickerController()
-           vc.sourceType = .camera
-           vc.delegate = self
-           vc.allowsEditing = true
-           present(vc,animated: true)
-       }
-       
-       func presetPhotoPicker(){
-           let vc = UIImagePickerController()
-           vc.sourceType = .photoLibrary
-           vc.delegate = self
-           vc.allowsEditing = true
-           present(vc,animated: true)
-           
-       }
-       
-       func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-           picker.dismiss(animated: true, completion: nil)
-           guard let selectdedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
-               return
-           }
-           
-           newFoto = convertImageToBase64String(img: selectdedImage)
-        
-           self.imageView.image = selectdedImage
-       }
-       
-       func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-           picker.dismiss(animated: true, completion: nil)
-       }
-    
-    func convertImageToBase64String (img: UIImage) -> String {
-        return "data:image/png;base64,\(img.jpegData(compressionQuality: 0.7)?.base64EncodedString() ?? "")"
     }
 }

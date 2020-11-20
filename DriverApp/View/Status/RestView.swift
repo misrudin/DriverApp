@@ -44,12 +44,12 @@ class RestView: UIViewController {
     @objc
     func work(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
-            let data: CheckDriver = CheckDriver(id_driver: idDriver)
+            let data: CheckDriver = CheckDriver(code_driver: codeDriver)
             self?.spiner.show(in: (self?.view)!)
             self?.workNow(data: data)
         }

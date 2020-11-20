@@ -8,7 +8,7 @@
 import Foundation
 
 struct CheckinData: Codable {
-    let id_driver: Int
+    let code_driver: String
     let lat: String
     let long: String
 }
@@ -33,5 +33,5 @@ struct StatusInOutDriver: Decodable {
 
 
 struct CheckDriver: Codable {
-    let id_driver: Int
+    let code_driver: String
 }
