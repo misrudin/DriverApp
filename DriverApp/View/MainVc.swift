@@ -12,44 +12,13 @@ class MainVc: UIViewController {
     
     var profileVm = ProfileViewModel()
     
-    private let imageView: UIImageView = {
-       let img = UIImageView()
-        img.layer.cornerRadius = 5
-        img.image = UIImage(named: "logoKasumi")
-        img.clipsToBounds = true
-        img.layer.masksToBounds = true
-        img.translatesAutoresizingMaskIntoConstraints = false
-        img.contentMode = .scaleAspectFit
-        return img
-    }()
+    private let imageView = Reusable.makeImageView(image: UIImage(named: "logoKasumi"), contentMode: .scaleAspectFit)
     
-    private let loginButton: UIButton={
-        let loginButton = UIButton()
-        loginButton.setTitle("Sign In", for: .normal)
-        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.layer.cornerRadius = 5
-        loginButton.layer.masksToBounds = true
-        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
-        loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
-        loginButton.isHidden = true
-        return loginButton
-    }()
+    private let bg = Reusable.makeImageView(image: UIImage(named: "bgMain"), contentMode: .scaleToFill)
     
-    private let signupButton: UIButton={
-        let loginButton = UIButton()
-        loginButton.setTitle("Sign Up", for: .normal)
-        loginButton.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
-        loginButton.setTitleColor(UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2), for: .highlighted)
-        loginButton.layer.cornerRadius = 5
-        loginButton.layer.borderWidth = 1
-        loginButton.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
-        loginButton.layer.masksToBounds = true
-        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
-        loginButton.addTarget(self, action: #selector(register), for: .touchUpInside)
-        loginButton.isHidden = true
-        return loginButton
-    }()
+    private let loginButton = Reusable.makeButton(text: "Have Account? Login",font: .systemFont(ofSize: 20, weight: .regular), color: .white, background: UIColor(named: "orangeKasumi")!, rounded: 5)
+    
+    private let signupButton = Reusable.makeButton(text: "Join Us - Register",font: .systemFont(ofSize: 20, weight: .regular), color: UIColor(named: "orangeKasumi")!, background: .white, rounded: 5)
     
     @objc
     func login(){
@@ -67,10 +36,13 @@ class MainVc: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.insertSubview(bg, at: 0)
         view.addSubview(imageView)
         view.addSubview(loginButton)
         view.addSubview(signupButton)
+        
+        
+        bg.fill(toView: view)
         
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -78,6 +50,9 @@ class MainVc: UIViewController {
         signupButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
         
         loginButton.anchor(left: view.leftAnchor, bottom: signupButton.topAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
+        
+        loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
+        signupButton.addTarget(self, action: #selector(register), for: .touchUpInside)
     }
     
     override func viewDidAppear(_ animated: Bool) {

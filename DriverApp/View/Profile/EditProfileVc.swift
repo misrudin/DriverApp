@@ -21,11 +21,35 @@ class EditProfileVc: UIViewController {
         
         return spin
     }()
+    //Toolbar done button function
+    @objc func onClickDoneButton() {
+        self.view.endEditing(true)
+    }
+    
+    lazy var toolBar: UIToolbar = {
+        let tool = UIToolbar()
+        tool.barStyle = .default
+        tool.isTranslucent = true
+        let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(onClickDoneButton))
+        tool.setItems([space, doneButton], animated: false)
+        tool.isUserInteractionEnabled = true
+        tool.sizeToFit()
+        return tool
+    }()
     
     //MARK: - personal data
     lazy var personalLabel: UILabel = {
         let lable = UILabel()
         lable.text = "PERSONAL INFORMATION"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor(named: "orangeKasumi")
+        return lable
+    }()
+    
+    lazy var dLicenseLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "DRIVER LICENSE"
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -55,14 +79,8 @@ class EditProfileVc: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "First Name"
-        field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
-        field.returnKeyType = .continue
+        field.keyboardType = .default
         field.isEnabled = false
         return field
     }()
@@ -80,14 +98,8 @@ class EditProfileVc: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "Last Name"
-        field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
-        field.returnKeyType = .continue
+        field.keyboardType = .default
         field.isEnabled = false
         return field
     }()
@@ -106,14 +118,7 @@ class EditProfileVc: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "Email"
-        field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
-        field.returnKeyType = .continue
         field.keyboardType = .emailAddress
         field.isEnabled = false
         return field
@@ -127,37 +132,80 @@ class EditProfileVc: UIViewController {
         lable.textColor = UIColor.black
         return lable
     }()
+    let lableCc = Reusable.makeLabel(text: "+81", color: .black)
     
     lazy var phoneNumber: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "123456"
-        field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.keyboardType = .numberPad
-        field.returnKeyType = .continue
         return field
     }()
     
     
-    //MARK: - submit button
-    private let submitButton: UIButton={
-        let button = UIButton()
-        button.setTitle("Save Profile", for: .normal)
-        button.backgroundColor = UIColor(named: "orangeKasumi")
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 2
-        button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
-        button.addTarget(self, action: #selector(updateProfile), for: .touchUpInside)
-        return button
+    //MARK:- Driver icense number
+    lazy var licenseLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "Driver License Number"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
+        return lable
     }()
+    
+    lazy var license: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.returnKeyType = .continue
+        field.paddingRight(10)
+        field.keyboardType = .numberPad
+        return field
+    }()
+    
+    //MARK:- Driver icense Exp Date
+    lazy var expDateLable: UILabel = {
+        let lable = UILabel()
+        lable.text = "License Expiration Date"
+        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        lable.textColor = UIColor.black
+        return lable
+    }()
+    
+    lazy var datePickerExpiration: UIDatePicker = {
+        let date = UIDatePicker()
+        date.datePickerMode = .date
+        date.addTarget(self, action: #selector(handleDatePickerEx), for: .valueChanged)
+        date.frame = CGRect(x: 10, y: 50, width: self.view.frame.width, height: 200)
+        date.timeZone = NSTimeZone.local
+        date.backgroundColor = .white
+            if #available(iOS 13.4, *) {
+                date.preferredDatePickerStyle = UIDatePickerStyle.wheels
+            } else {
+                // Fallback on earlier versions
+            }
+        return date
+    }()
+    
+    @objc func handleDatePickerEx() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strDate = dateFormatter.string(from: datePickerExpiration.date)
+        expDate.text = strDate
+    }
+    
+    lazy var expDate: UITextField = {
+        let field = UITextField()
+        field.autocapitalizationType = .none
+        field.autocorrectionType = .no
+        field.returnKeyType = .continue
+        field.paddingRight(10)
+        field.inputView = datePickerExpiration
+        field.inputAccessoryView = toolBar
+        return field
+    }()
+    
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -172,8 +220,13 @@ class EditProfileVc: UIViewController {
         return scroll
     }()
     
-    lazy var stakView: UIView = {
-        let view = UIView()
+    lazy var stakView: UIStackView = {
+        let view = UIStackView()
+        view.spacing = 16
+        view.axis = .vertical
+        view.layoutIfNeeded()
+        view.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        view.isLayoutMarginsRelativeArrangement = true
         return view
     }()
     
@@ -198,6 +251,16 @@ class EditProfileVc: UIViewController {
         lastName.text = bio?.last_name
         email.text = dataDriver?.email
         phoneNumber.text = bio?.phone_number
+        license.text = bio?.driver_license_number
+        expDate.text = bio?.driver_license_expiration_date
+        let format = DateFormatter()
+        if let date =  bio?.driver_license_expiration_date {
+            guard let dateFrom = format.date(from: date) else {
+                return
+            }
+            datePickerExpiration.date = dateFrom
+        }
+        
 
         
         guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {return}
@@ -205,6 +268,32 @@ class EditProfileVc: UIViewController {
             let placeholderImage = UIImage(named: "personCircle")
             self.profilePhotoImage.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
         }
+        
+        //Subscribe to a Notification which will fire before the keyboard will show
+        subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShowOrHide))
+
+        //Subscribe to a Notification which will fire before the keyboard will hide
+        subscribeToNotification(UIResponder.keyboardWillHideNotification, selector: #selector(keyboardWillShowOrHide))
+
+        //We make a call to our keyboard handling function as soon as the view is loaded.
+        initializeHideKeyboard()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        firstName.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        lastName.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        email.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        phoneNumber.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        license.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        expDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //Unsubscribe from all our notifications
+        unsubscribeFromAllNotifications()
     }
     
     @objc
@@ -220,8 +309,8 @@ class EditProfileVc: UIViewController {
               let municKana = bio?.municipality_kana,
               let kanaAddres = bio?.kana_after_address,
               let sex = bio?.sex,
-              let driverLicenseNumber = bio?.driver_license_number,
-              let driverExp = bio?.driver_license_expiration_date,
+              let driverLicenseNumber = license.text,
+              let driverExp = expDate.text,
               let driverPhotourl = bio?.photo_url,
               let photoName = bio?.photo_name
               else {
@@ -282,7 +371,7 @@ class EditProfileVc: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*9))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor,paddingTop: 16,paddingBottom: 16, paddingLeft: 16, paddingRight: 16,  height:(55*13))
         
         stakView.addSubview(personalLabel)
         personalLabel.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
@@ -291,17 +380,17 @@ class EditProfileVc: UIViewController {
         profilePhotoImage.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15, width: 80, height: 80)
         
         stakView.addSubview(firstNameLable)
-        firstNameLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
+        firstNameLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
         stakView.addSubview(firstName)
-        firstName.anchor(top: firstNameLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
+        firstName.anchor(top: firstNameLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
         stakView.addSubview(lastNameLable)
-        lastNameLable.anchor(top: profilePhotoImage.bottomAnchor,left: firstNameLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
+        lastNameLable.anchor(top: firstName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
         stakView.addSubview(lastName)
-        lastName.anchor(top: lastNameLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
+        lastName.anchor(top: lastNameLable.bottomAnchor,left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
         stakView.addSubview(emailLable)
-        emailLable.anchor(top: firstName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        emailLable.anchor(top: lastName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
         stakView.addSubview(email)
         email.anchor(top: emailLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
@@ -310,8 +399,22 @@ class EditProfileVc: UIViewController {
         stakView.addSubview(phoneNumber)
         phoneNumber.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
-        stakView.addSubview(submitButton)
-        submitButton.anchor(top: phoneNumber.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20, height: 45)
+        stakView.addSubview(dLicenseLable)
+        dLicenseLable.anchor(top: phoneNumber.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 24)
+        
+        stakView.addSubview(licenseLable)
+        licenseLable.anchor(top: dLicenseLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16)
+        
+        stakView.addSubview(license)
+        license.anchor(top: licenseLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+        stakView.addSubview(expDateLable)
+        expDateLable.anchor(top: license.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16)
+        
+        stakView.addSubview(expDate)
+        expDate.anchor(top: expDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        
+    
     }
     
 
@@ -321,8 +424,69 @@ class EditProfileVc: UIViewController {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(updateProfile))
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
         
     }
+}
+
+
+@available(iOS 13.0, *)
+extension EditProfileVc {
+    
+    func initializeHideKeyboard(){
+        //Declare a Tap Gesture Recognizer which will trigger our dismissMyKeyboard() function
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissMyKeyboard))
+        
+        //Add this tap gesture recognizer to the parent view
+        scrollView.isUserInteractionEnabled = true
+        scrollView.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissMyKeyboard(){
+        //endEditing causes the view (or one of its embedded text fields) to resign the first responder status.
+        //In short- Dismiss the active keyboard.
+        view.endEditing(true)
+        unsubscribeFromAllNotifications()
+    }
+}
+
+
+@available(iOS 13.0, *)
+extension EditProfileVc {
+    
+    func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
+    }
+    
+    func unsubscribeFromAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShowOrHide(notification: NSNotification) {
+        // Get required info out of the notification
+        if  let userInfo = notification.userInfo, let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey], let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey], let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] {
+            
+            // Transform the keyboard's frame into our view's coordinate system
+            let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
+            
+            // Find out how much the keyboard overlaps our scroll view
+            let keyboardOverlap = scrollView.frame.maxY - endRect.origin.y
+            
+            // Set the scroll view's content inset & scroll indicator to avoid the keyboard
+            scrollView.contentInset.bottom = keyboardOverlap
+            scrollView.scrollIndicatorInsets.bottom = keyboardOverlap
+
+            
+            let duration = (durationValue as AnyObject).doubleValue
+            let options = UIView.AnimationOptions(rawValue: UInt((curveValue as AnyObject).integerValue << 16))
+            UIView.animate(withDuration: duration!, delay: 0, options: options, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+
 }

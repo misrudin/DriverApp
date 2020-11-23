@@ -8,6 +8,7 @@
 import UIKit
 import AesEverywhere
 import JGProgressHUD
+import BLTNBoard
 
 class LoginView: UIViewController {
     
@@ -27,58 +28,65 @@ class LoginView: UIViewController {
             view.frame = self.view.bounds
             view.contentSize = contentViewSize
             view.autoresizingMask = .flexibleHeight
-            view.showsHorizontalScrollIndicator = true
-            view.bounces = true
+            view.showsHorizontalScrollIndicator = false
+            view.showsVerticalScrollIndicator = false
+            view.bounces = false
             return view
     }()
     
-    lazy var containerView: UIView = {
-            let view = UIView()
-            view.backgroundColor = .white
-            return view
+    lazy var containerView: UIStackView = {
+        let view = UIStackView()
+        view.backgroundColor = UIColor(named: "orangeKasumi")
+        view.layer.cornerRadius = 10
+        view.spacing = 16
+        view.axis = .vertical
+        view.layoutIfNeeded()
+        view.layoutMargins = UIEdgeInsets(top: 50, left: 20, bottom: 50, right: 20)
+        view.isLayoutMarginsRelativeArrangement = true
+        return view
     }()
     
     
     private let imageView: UIImageView = {
        let img = UIImageView()
-        img.layer.cornerRadius = 5
-        img.image = UIImage(named: "logoKasumi")
+        img.image = UIImage(named: "bgLogin")
         img.clipsToBounds = true
         img.layer.masksToBounds = true
-        img.contentMode = .scaleAspectFit
+        img.contentMode = .scaleToFill
         return img
     }()
     
     private let labelTitleLogin: UILabel = {
        let label = UILabel()
-        label.text = "Kasumi driver management"
-        label.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
-        label.textColor = UIColor.mainBlue
-        label.numberOfLines = 0
+        label.text = "LOGIN"
+        label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        label.textColor = .white
+        label.textAlignment = .center
         return label
     }()
     
     private let forgetPassword: UILabel = {
        let label = UILabel()
-        label.text = "Forgot password ?"
+        label.text = "Forgot your password"
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = UIColor.mainBlue
+        label.textColor = .white
         label.textAlignment = .right
         label.isUserInteractionEnabled = true
         return label
     }()
+    
+    let lableCode = Reusable.makeLabel(text: "Driver Code", color: .white)
+    let lablePass = Reusable.makeLabel(text: "Password", color: .white)
     
     private let codeDriver: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.placeholder = "Code Driver"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        field.leftViewMode = .always
-        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
-        field.text = "20080019"
+        field.paddingRight(10)
+        field.text = "20110040"
+        field.textColor = .white
+        field.keyboardType = .numberPad
         return field
     }()
 
@@ -87,54 +95,33 @@ class LoginView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.placeholder = "Password"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        field.leftViewMode = .always
-        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
-        field.isSecureTextEntry = true
+        field.paddingRight(10)
         field.text = "admin"
+        field.textColor = .white
+        field.isSecureTextEntry = true
         return field
     }()
     
     private let loginButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Sign In", for: .normal)
-        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
-        loginButton.setTitleColor(.white, for: .normal)
-        loginButton.layer.cornerRadius = 5
+        loginButton.setTitle("Submit", for: .normal)
+        loginButton.backgroundColor = .white
+        loginButton.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
+        loginButton.layer.cornerRadius = 45/2
         loginButton.layer.masksToBounds = true
-        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
+        loginButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
         return loginButton
     }()
     
-//    private let signupButton: UIButton={
-//        let loginButton = UIButton()
-//        loginButton.setTitle("Sign Up", for: .normal)
-//        loginButton.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
-//        loginButton.setTitleColor(UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2), for: .highlighted)
-//        loginButton.layer.cornerRadius = 5
-//        loginButton.layer.borderWidth = 1
-//        loginButton.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
-//        loginButton.layer.masksToBounds = true
-//        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
-//        return loginButton
-//    }()
-   
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
         
         view.addSubview(scrollView)
+        view.insertSubview(imageView, at: 0)
+        
+        scrollView.addSubview(imageView)
         scrollView.addSubview(containerView)
-        containerView.addSubview(imageView)
-        containerView.addSubview(labelTitleLogin)
-        containerView.addSubview(codeDriver)
-        containerView.addSubview(password)
-        containerView.addSubview(forgetPassword)
-        containerView.addSubview(loginButton)
-//        containerView.addSubview(signupButton)
         
         codeDriver.delegate = self
         password.delegate = self
@@ -143,19 +130,16 @@ class LoginView: UIViewController {
         configureNavigationBar()
         loginButton.addTarget(self, action: #selector(didLoginTap), for: .touchUpInside)
         forgetPassword.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didForgetClick)))
-//        signupButton.addTarget(self, action: #selector(register), for: .touchUpInside)
+        
     }
     
     
     func configureNavigationBar(){
-        navigationItem.title = "Login"
-        navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationController?.navigationBar.barStyle = .black
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
-        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.tintColor = .black
+        self.navigationController!.navigationBar.setBackgroundImage(UIImage(), for: .default)
+          self.navigationController!.navigationBar.shadowImage = UIImage()
+          self.navigationController!.navigationBar.isTranslucent = true
     }
     
     @objc
@@ -163,20 +147,37 @@ class LoginView: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        containerView.dropShadow(color: .black, opacity: 0.6, offSet: CGSize(width: 3, height: -3), radius: 10, scale: true)
+        codeDriver.addBorder(toSide: .Bottom, withColor: UIColor.white.cgColor, andThickness: 1)
+        password.addBorder(toSide: .Bottom, withColor: UIColor.white.cgColor, andThickness: 1)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         scrollView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 0, paddingBottom: 0, paddingLeft: 0, paddingRight: 0)
         
-        containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: scrollView.leftAnchor,bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor)
+        imageView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0, height: 200)
         
-        imageView.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, paddingTop: 30, paddingLeft: 16, width: 100, height: 100)
-        labelTitleLogin.anchor(top: imageView.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
-        codeDriver.anchor(top: labelTitleLogin.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 50, paddingLeft: 16, paddingRight: 16, height: 45)
-        password.anchor(top: codeDriver.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 15, paddingLeft: 16, paddingRight: 16, height: 45)
-        forgetPassword.anchor(top: password.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
-        loginButton.anchor(top: forgetPassword.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 45)
+        containerView.anchor(top: imageView.bottomAnchor, left: scrollView.leftAnchor, right: view.rightAnchor,paddingTop: -40, paddingLeft: 20, paddingRight: 20)
         
-//        signupButton.anchor(left: containerView.leftAnchor, bottom: containerView.bottomAnchor, right: containerView.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
+        containerView.addArrangedSubview(labelTitleLogin)
+        containerView.addArrangedSubview(lableCode)
+        codeDriver.anchor(height: 45)
+        containerView.addArrangedSubview(codeDriver)
+        
+        containerView.addArrangedSubview(lablePass)
+        password.anchor(height: 45)
+        containerView.addArrangedSubview(password)
+        containerView.addArrangedSubview(forgetPassword)
+        let spacer = UIView()
+        spacer.anchor(height: 45)
+        containerView.addArrangedSubview(spacer)
+        loginButton.anchor(height: 45)
+        containerView.addArrangedSubview(loginButton)
+        
+    
     }
 }
 
@@ -207,13 +208,6 @@ extension LoginView{
         
 
     }
-    
-//    @objc
-//    func register(){
-//        let vc = UINavigationController(rootViewController: RegisterView())
-//                vc.modalPresentationStyle = .fullScreen
-//                present(vc, animated: true, completion: nil)
-//    }
 
 }
 
@@ -259,3 +253,5 @@ extension LoginView: LoginViewModelDelegate {
         self.spiner.dismiss()
     }
 }
+
+

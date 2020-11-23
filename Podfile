@@ -23,6 +23,8 @@ target 'DriverApp' do
   	pod 'Firebase/Crashlytics'
     
     pod 'JGProgressHUD'
+    
+    pod 'BulletinBoard'
 
 end
 

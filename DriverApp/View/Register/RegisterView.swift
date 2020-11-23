@@ -10,6 +10,8 @@ import JGProgressHUD
 
 class RegisterView: UIViewController {
     
+    var pop = PopUpView()
+    
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
         spin.textLabel.text = "Loading"
@@ -1676,7 +1678,7 @@ extension RegisterView {
                         let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
                             self?.dismiss(animated: true, completion: nil)
                         }
-                        Helpers().showAlert(view: self, message: "Please wait for approval from Kasumi", customTitle: "Register success",customAction1: action)
+                        Helpers().showAlert(view: self, message: "Registration data has been sent please wait us to verification your data. We will contact you by email.", customTitle: "Registration success",customAction1: action)
                     }
                 }
             case .failure(let error):

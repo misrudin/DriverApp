@@ -9,6 +9,7 @@ import UIKit
 import JGProgressHUD
 import AlamofireImage
 
+@available(iOS 13.0, *)
 class EditVehicleView: UIViewController {
     
     private let spiner: JGProgressHUD = {
@@ -68,11 +69,8 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Insurance Company Name"
-        field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.returnKeyType = .continue
         return field
     }()
@@ -93,11 +91,8 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Personal Coverage"
-        field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.returnKeyType = .continue
         return field
     }()
@@ -118,11 +113,8 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Compensation Range-Objective"
-        field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.returnKeyType = .continue
         return field
     }()
@@ -165,13 +157,10 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Insurance Expiration Date"
-        field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = datePickerInsurance
         field.inputAccessoryView = toolBar
         return field
@@ -193,11 +182,8 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Vehicle Name"
-        field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.returnKeyType = .continue
         return field
     }()
@@ -218,11 +204,8 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Vehicle Number Plate"
-        field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.returnKeyType = .continue
         return field
     }()
@@ -249,13 +232,10 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Vehicle Year"
-        field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = pickerView3
         field.inputAccessoryView = toolBar
         return field
@@ -277,11 +257,8 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Vehicle Ownership"
-        field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.returnKeyType = .continue
         return field
     }()
@@ -324,13 +301,10 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Insurance Expiration Date"
-        field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
         field.inputView = datePickerInspection
         field.inputAccessoryView = toolBar
         return field
@@ -373,9 +347,7 @@ class EditVehicleView: UIViewController {
     lazy var vehicleCertifiateImage: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 1
         img.clipsToBounds = false
-        img.layer.borderColor = UIColor.black.cgColor
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVCI)))
@@ -418,9 +390,7 @@ class EditVehicleView: UIViewController {
     lazy var vehicleImage1: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 1
         img.clipsToBounds = false
-        img.layer.borderColor = UIColor.black.cgColor
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVI1)))
@@ -436,8 +406,6 @@ class EditVehicleView: UIViewController {
     lazy var vehicleImage2: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 1
-        img.layer.borderColor = UIColor.black.cgColor
         img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
@@ -454,8 +422,6 @@ class EditVehicleView: UIViewController {
     lazy var vehicleImage3: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 1
-        img.layer.borderColor = UIColor.black.cgColor
         img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
@@ -513,12 +479,42 @@ class EditVehicleView: UIViewController {
         }
         
         configureInputValue()
+        
+        //Subscribe to a Notification which will fire before the keyboard will show
+        subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShowOrHide))
+
+        //Subscribe to a Notification which will fire before the keyboard will hide
+        subscribeToNotification(UIResponder.keyboardWillHideNotification, selector: #selector(keyboardWillShowOrHide))
+
+        //We make a call to our keyboard handling function as soon as the view is loaded.
+        initializeHideKeyboard()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        insuranceCompany.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        personalCoverage.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        compensation.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        insuranceExpirationDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        vehicleName.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        vehicleNumberPlate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        vehicleYear.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        vehicleOwnership.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+        vehicleInspectionExpDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         configureUi()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //Unsubscribe from all our notifications
+        unsubscribeFromAllNotifications()
+    }
+    
     
     //MARK: - configure input
     private func configureInputValue(){
@@ -580,7 +576,7 @@ class EditVehicleView: UIViewController {
     //MARK: - Ui configure
     private func configureUi(){
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*23))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*22))
         
         stakView.addSubview(insuranceCompanyLable)
         insuranceCompanyLable.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
@@ -679,6 +675,7 @@ class EditVehicleView: UIViewController {
 
 //MARK: - EXTENSION
 
+@available(iOS 13.0, *)
 extension EditVehicleView: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 func presentPhotoActionSheet(){
     let actionSheet = UIAlertController(title: "Profile Picture",
@@ -750,6 +747,7 @@ func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
 }
 }
 
+@available(iOS 13.0, *)
 extension EditVehicleView: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -769,6 +767,7 @@ extension EditVehicleView: UIPickerViewDelegate, UIPickerViewDataSource {
 }
 
 
+@available(iOS 13.0, *)
 extension EditVehicleView {
     @objc func editClick(){
         spiner.show(in: view)
@@ -887,4 +886,64 @@ extension EditVehicleView {
             }
         }
     }
+}
+
+
+@available(iOS 13.0, *)
+extension EditVehicleView {
+    
+    func initializeHideKeyboard(){
+        //Declare a Tap Gesture Recognizer which will trigger our dismissMyKeyboard() function
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissMyKeyboard))
+        
+        //Add this tap gesture recognizer to the parent view
+        scrollView.isUserInteractionEnabled = true
+        scrollView.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissMyKeyboard(){
+        //endEditing causes the view (or one of its embedded text fields) to resign the first responder status.
+        //In short- Dismiss the active keyboard.
+        view.endEditing(true)
+        unsubscribeFromAllNotifications()
+    }
+}
+
+
+@available(iOS 13.0, *)
+extension EditVehicleView {
+    
+    func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
+    }
+    
+    func unsubscribeFromAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShowOrHide(notification: NSNotification) {
+        // Get required info out of the notification
+        if  let userInfo = notification.userInfo, let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey], let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey], let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] {
+            
+            // Transform the keyboard's frame into our view's coordinate system
+            let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
+            
+            // Find out how much the keyboard overlaps our scroll view
+            let keyboardOverlap = scrollView.frame.maxY - endRect.origin.y
+            
+            // Set the scroll view's content inset & scroll indicator to avoid the keyboard
+            scrollView.contentInset.bottom = keyboardOverlap
+            scrollView.scrollIndicatorInsets.bottom = keyboardOverlap
+
+            
+            let duration = (durationValue as AnyObject).doubleValue
+            let options = UIView.AnimationOptions(rawValue: UInt((curveValue as AnyObject).integerValue << 16))
+            UIView.animate(withDuration: duration!, delay: 0, options: options, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+
 }

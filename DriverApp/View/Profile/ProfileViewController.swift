@@ -110,7 +110,7 @@ class ProfileViewController: UIViewController {
     lazy var button1 = createButton(title: "Edit Profile")
     lazy var button2 = createButton(title: "Change Password")
     lazy var button6 = createButton(title: "Edit Vehicle Data")
-    lazy var button7 = createButton(title: "Edit Email")
+//    lazy var button7 = createButton(title: "Edit Email")
     lazy var button3 = createButton(title: "Checkout")
     lazy var button4 = createButton(title: "Rest")
     lazy var button5:UIButton = {
@@ -146,7 +146,7 @@ class ProfileViewController: UIViewController {
         containerButton.addSubview(button4)
         containerButton.addSubview(button5)
         containerButton.addSubview(button6)
-        containerButton.addSubview(button7)
+//        containerButton.addSubview(button7)
         
         profileVM.delegate = self
         configureLayout()
@@ -372,10 +372,10 @@ class ProfileViewController: UIViewController {
         button6.anchor(top: button2.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapVehicle)))
         
-        button7.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
-        button7.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEmail)))
+//        button7.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+//        button7.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEmail)))
         
-        button3.anchor(top: button7.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button3.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCheckout)))
         button3.isHidden = true
         

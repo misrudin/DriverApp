@@ -20,6 +20,23 @@ class PopUpView: UIView {
         }
     }
     
+    let stackView: UIStackView = {
+        let v = UIStackView()
+        v.axis = .vertical
+        v.spacing = 16
+        v.alignment = .center
+        v.distribution = .fillEqually
+        return v
+    }()
+    
+    let imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = true
+        iv.image = UIImage(named: "successIcon")
+        return iv
+    }()
+    
     let lableDetail: UILabel = {
         let l = UILabel()
         l.text = "Loading"
@@ -28,12 +45,24 @@ class PopUpView: UIView {
         return l
     }()
     
-    let container: UIView = {
-       let v = UIView()
-        v.backgroundColor = .white
-        v.layer.cornerRadius = 10
-        return v
+    private let nextButton: UIButton={
+        let loginButton = UIButton()
+        loginButton.setTitle("Ok", for: .normal)
+        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
+        loginButton.setTitleColor(.white, for: .normal)
+        loginButton.setTitleColor(.lightGray, for: .highlighted)
+        loginButton.layer.cornerRadius = 2
+        loginButton.layer.masksToBounds = true
+        loginButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold )
+        loginButton.addTarget(self, action: #selector(onClick), for: .touchUpInside)
+        return loginButton
     }()
+    
+    
+    @objc
+    func onClick(){
+        print("oke")
+    }
     
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
@@ -46,8 +75,8 @@ class PopUpView: UIView {
     @objc
     fileprivate func animateOut(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-//            self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
-            self.container.transform = CGAffineTransform(translationX: 0, y: -10)
+//            self.stackView.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
+            self.stackView.transform = CGAffineTransform(translationX: 0, y: -10)
             self.alpha = 0
         }) { (complete) in
             if complete {
@@ -58,11 +87,11 @@ class PopUpView: UIView {
     
     @objc
     fileprivate func animateIn(){
-//        self.container.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
-        self.container.transform = CGAffineTransform(translationX: 0, y: 10)
+//        self.stackView.transform = CGAffineTransform(translationX: 0, y: -self.frame.height)
+        self.stackView.transform = CGAffineTransform(translationX: 0, y: 10)
         self.alpha = 0
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            self.container.transform = .identity
+            self.stackView.transform = .identity
             self.alpha = 1
         })
     }
@@ -71,18 +100,18 @@ class PopUpView: UIView {
         super.init(frame: frame)
         
         addSubview(visualEffectView)
-        addSubview(container)
+        addSubview(stackView)
         self.frame = UIScreen.main.bounds
         visualEffectView.frame = self.bounds
-        container.addSubview(lableDetail)
+        stackView.addSubview(lableDetail)
         
         
         // layout
-        container.anchor( left: leftAnchor, right: rightAnchor, paddingLeft: 16, paddingRight: 16, height: 170)
-        container.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        stackView.anchor( left: leftAnchor, right: rightAnchor, paddingLeft: 16, paddingRight: 16, height: 170)
+        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
 
-        lableDetail.centerYAnchor.constraint(equalTo: container.centerYAnchor).isActive = true
-        lableDetail.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
+        lableDetail.centerYAnchor.constraint(equalTo: stackView.centerYAnchor).isActive = true
+        lableDetail.centerXAnchor.constraint(equalTo: stackView.centerXAnchor).isActive = true
         
         animateIn()
     }

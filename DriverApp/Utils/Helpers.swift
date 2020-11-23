@@ -54,7 +54,7 @@ extension UIView {
             case .Left: border.frame = CGRect(x: frame.minX, y: frame.minY, width: thickness, height: frame.height); break
             case .Right: border.frame = CGRect(x: frame.maxX, y: frame.minY, width: thickness, height: frame.height); break
             case .Top: border.frame = CGRect(x: frame.minX, y: frame.minY, width: frame.width, height: thickness); break
-            case .Bottom: border.frame = CGRect(x: frame.minX, y: frame.maxY, width: frame.width, height: thickness); break
+            case .Bottom: border.frame = CGRect(x: 0, y: frame.height, width: frame.width, height: thickness); break
             }
             
             layer.addSublayer(border)
