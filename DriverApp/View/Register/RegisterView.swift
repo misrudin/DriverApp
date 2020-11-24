@@ -156,7 +156,6 @@ class RegisterView: UIViewController {
         field.rightViewMode = .always
         
         field.backgroundColor = UIColor(named: "bgInput")
-        field.isSecureTextEntry = true
         field.returnKeyType = .continue
         return field
     }()
@@ -872,6 +871,8 @@ class RegisterView: UIViewController {
 
         pickerView3.delegate = self
         pickerView3.dataSource = self
+        
+        password.isSecureTextEntry = true
 
         
         let format = DateFormatter()

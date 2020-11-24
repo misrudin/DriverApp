@@ -69,6 +69,8 @@
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
 		B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97A22555611B00A30892 /* ShiftCell.swift */; };
+		B3DFFD83256D01F700B3C2D0 /* ShiftTimeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DFFD82256D01F700B3C2D0 /* ShiftTimeModel.swift */; };
+		B3DFFD86256D02E000B3C2D0 /* ShiftTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DFFD85256D02E000B3C2D0 /* ShiftTimeViewModel.swift */; };
 		B3EC8985256B5E3C00D1618D /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8984256B5E3C00D1618D /* Reusable.swift */; };
 		B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8988256B5ECB00D1618D /* Constraint.swift */; };
 		B3EC89A0256B94AC00D1618D /* ForgotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC899F256B94AC00D1618D /* ForgotView.swift */; };
@@ -138,6 +140,8 @@
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
 		B3DE97A22555611B00A30892 /* ShiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCell.swift; sourceTree = "<group>"; };
+		B3DFFD82256D01F700B3C2D0 /* ShiftTimeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTimeModel.swift; sourceTree = "<group>"; };
+		B3DFFD85256D02E000B3C2D0 /* ShiftTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTimeViewModel.swift; sourceTree = "<group>"; };
 		B3EC8984256B5E3C00D1618D /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		B3EC8988256B5ECB00D1618D /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		B3EC898C256B62B800D1618D /* Montserrat-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-ExtraBoldItalic.ttf"; path = "../../../../../../Users/indooffice4/Downloads/Montserrat/Montserrat-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -336,6 +340,7 @@
 				B3530922255A536F00B68347 /* Base.swift */,
 				B38C1B10255E6B360078EE83 /* InOutModel.swift */,
 				B33DFEB62563A00A006AF898 /* RegisterModel.swift */,
+				B3DFFD82256D01F700B3C2D0 /* ShiftTimeModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -353,6 +358,7 @@
 				B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */,
 				B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */,
 				B33DFEB92563A01D006AF898 /* RegisterViewModel.swift */,
+				B3DFFD85256D02E000B3C2D0 /* ShiftTimeViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -588,6 +594,7 @@
 				B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */,
 				B326FF7425612CF00067C0DE /* RestView.swift in Sources */,
 				B3DE97982555364400A30892 /* DayOffVc.swift in Sources */,
+				B3DFFD83256D01F700B3C2D0 /* ShiftTimeModel.swift in Sources */,
 				B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */,
 				B3544F26253D572700B6A001 /* CardViewController.swift in Sources */,
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
@@ -622,6 +629,7 @@
 				B3530946255A631700B68347 /* RegisterView.swift in Sources */,
 				B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */,
 				B33DFEB72563A00A006AF898 /* RegisterModel.swift in Sources */,
+				B3DFFD86256D02E000B3C2D0 /* ShiftTimeViewModel.swift in Sources */,
 				B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */,
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
 				B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */,

@@ -37,31 +37,14 @@ class ProfileViewController: UIViewController {
         return container
     }()
     
-    let imageView: UIImageView = {
-        let image = UIImageView()
-        image.contentMode = .scaleAspectFill
-        image.clipsToBounds = true
-        image.tintColor = .white
-        image.layer.cornerRadius = 80/2
-        
-        return image
-    }()
     
-    let lableName: UILabel = {
-        let lable = UILabel()
-        lable.font = UIFont.systemFont(ofSize: 25,weight: .bold)
-        lable.textColor = .black
-        
-        return lable
-    }()
+    lazy var imageView = Reusable.makeImageView(contentMode: .scaleAspectFill)
     
-    let lableEmail: UILabel = {
-        let lable = UILabel()
-        lable.font = UIFont.systemFont(ofSize: 15,weight: .regular)
-        lable.textColor = .lightGray
-        
-        return lable
-    }()
+    lazy var lableName = Reusable.makeLabel(font: UIFont.systemFont(ofSize: 18,weight: .semibold))
+    
+    lazy var lableEmail = Reusable.makeLabel()
+    
+    lazy var imageEdit = Reusable.makeImageView(image: UIImage(named: "editIconGray")!, contentMode: .scaleAspectFit)
     
     func createButton(title: String, color: UIColor? = nil)-> UIView {
         let buttonEditProfile: UIView = {
@@ -107,12 +90,12 @@ class ProfileViewController: UIViewController {
         return view
     }()
     
-    lazy var button1 = createButton(title: "Edit Profile")
+    lazy var button1 = createButton(title: "Note")
     lazy var button2 = createButton(title: "Change Password")
     lazy var button6 = createButton(title: "Change Vehicle Data")
 //    lazy var button7 = createButton(title: "Edit Email")
-    lazy var button3 = createButton(title: "Checkout")
-    lazy var button4 = createButton(title: "Rest")
+//    lazy var button3 = createButton(title: "Checkout")
+//    lazy var button4 = createButton(title: "Rest")
     lazy var button5:UIButton = {
         let b = UIButton()
         let image = UIImage(named: "logoutIcon")
@@ -129,13 +112,27 @@ class ProfileViewController: UIViewController {
         return b
     }()
     
+    lazy var button3:UIButton = {
+        let b = UIButton()
+        b.setTitle("Checkout", for: .normal)
+        b.setTitleColor(.red, for: .normal)
+        b.backgroundColor = UIColor(named: "darkKasumi")
+        b.layer.cornerRadius = 5
+        b.layer.masksToBounds = true
+        b.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold )
+        return b
+    }()
+
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        
-        view.backgroundColor = UIColor(named: "bgKasumi")
+        imageView.layer.cornerRadius = 80/2
+        imageEdit.isUserInteractionEnabled = true
+        imageEdit.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEditProfile)))
+        view.backgroundColor = .white
         
         view.addSubview(containerView)
         
@@ -143,7 +140,7 @@ class ProfileViewController: UIViewController {
         containerButton.addSubview(button1)
         containerButton.addSubview(button2)
         containerButton.addSubview(button3)
-        containerButton.addSubview(button4)
+//        containerButton.addSubview(button4)
         containerButton.addSubview(button5)
         containerButton.addSubview(button6)
 //        containerButton.addSubview(button7)
@@ -155,8 +152,6 @@ class ProfileViewController: UIViewController {
     
     
     func configureNavigationBar(){
-        let image = UIImage(named: "chatIcon")
-        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         navigationItem.title = "My Profile"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
@@ -164,15 +159,9 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: baru, style: .plain, target: self, action: #selector(onClickChatButton))
+   
     }
     
-    @objc
-    func onClickChatButton(){
-        let vc = ChatViewController()
-        vc.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(vc, animated: true)
-    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -208,7 +197,7 @@ class ProfileViewController: UIViewController {
                     if status.isCheckin == true && status.isCheckout == true {
                         print("sudah out")
                         self?.button3.isHidden = true //hide
-                        self?.button4.isHidden = true //hide
+                        
                     }else {
                         if status.isCheckin == true {
                             print("baru in")
@@ -218,9 +207,9 @@ class ProfileViewController: UIViewController {
                                 case .success(let data):
                                     DispatchQueue.main.async {
                                         if data.restTime != nil {
-                                            self?.button4.isHidden = true //hide
+//                                            self?.button4.isHidden = true //hide
                                         }else {
-                                            self?.button4.isHidden = false  //muncul
+//                                            self?.button4.isHidden = false  //muncul
                                         }
                                     }
                                 case .failure(let err):
@@ -261,12 +250,19 @@ class ProfileViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    @objc func didTapNote(){
+        let vc = NotesVc()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     //MARK: - Edit Vehicle
     @objc
     private func didTapVehicle(){
         let vc = EditVehicleView()
         vc.codeDriver = code
         vc.vehicleData = vehicleData
+        vc.change = 0
         vc.bioData = bioData
         vc.userData = user
         vc.hidesBottomBarWhenPushed = true
@@ -352,19 +348,23 @@ class ProfileViewController: UIViewController {
     private func configureLayout(){
         
         containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 100)
+        containerView.addSubview(imageEdit)
         
-        lableName.anchor(top: containerView.topAnchor, left: containerView.leftAnchor, right: imageView.rightAnchor, paddingTop: 25, paddingLeft: 16, paddingRight: 10)
+        lableName.anchor(top: containerView.topAnchor, left: imageView.rightAnchor, right: imageEdit.leftAnchor, paddingTop: 25, paddingLeft: 16, paddingRight: 10)
         
-        lableEmail.anchor(top: lableName.bottomAnchor, left: containerView.leftAnchor, right: imageView.leftAnchor, paddingTop: 5, paddingLeft: 16, paddingRight: 10)
+        lableEmail.anchor(top: lableName.bottomAnchor, left: imageView.rightAnchor, right: containerView.rightAnchor, paddingTop: 5, paddingLeft: 16, paddingRight: 16)
         
-        imageView.anchor(right: containerView.rightAnchor, paddingRight: 16, width: 80, height: 80)
+        
+        imageEdit.anchor(top: containerView.topAnchor, right: containerView.rightAnchor, paddingTop: 25, paddingRight: 16, width: 20, height: 20)
+        
+        imageView.anchor(left: containerView.leftAnchor, paddingLeft: 16, width: 80, height: 80)
         imageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor).isActive = true
         
         containerButton.anchor(top: containerView.bottomAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingTop: 20)
         
         
         button1.anchor(top: containerButton.topAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
-        button1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEditProfile)))
+        button1.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapNote)))
         
         button2.anchor(top: button1.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button2.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapPassword)))
@@ -372,19 +372,14 @@ class ProfileViewController: UIViewController {
         button6.anchor(top: button2.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
         button6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapVehicle)))
         
-//        button7.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
-//        button7.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEmail)))
         
-        button3.anchor(top: button6.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
+        button3.anchor(left: containerButton.leftAnchor,bottom: button5.topAnchor, right: containerButton.rightAnchor,paddingBottom: 16, height: 16)
         button3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCheckout)))
         button3.isHidden = true
         
-        button4.anchor(top: button3.bottomAnchor, left: containerButton.leftAnchor, right: containerButton.rightAnchor, height: 50)
-        button4.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapRest)))
-        button4.isHidden = true
-        
         button5.anchor(left: containerButton.leftAnchor, bottom: containerButton.bottomAnchor, right: containerButton.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
         button5.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLogout)))
+        
     }
     
 }

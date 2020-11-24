@@ -133,6 +133,13 @@ struct TimeDetail: Decodable {
 
 
 struct Delivery: Codable {
+    let status: String
     let order_number: String
     let type: String
+}
+
+
+struct DeleteHistory: Codable {
+    let order_number: String
+    let code_driver: String
 }

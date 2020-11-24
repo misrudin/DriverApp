@@ -19,6 +19,8 @@ class EditVehicleView: UIViewController {
         return spin
     }()
     
+    var change: Int = 0
+    
     var userData: UserModel? = nil
     var vehicleData: VehicleData?
     var bioData: Bio? = nil
@@ -69,6 +71,7 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Insurance Company Name"
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
         field.returnKeyType = .continue
@@ -91,6 +94,7 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Personal Coverage"
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
         field.returnKeyType = .continue
@@ -113,6 +117,7 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Compensation Range-Objective"
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
         field.returnKeyType = .continue
@@ -159,6 +164,7 @@ class EditVehicleView: UIViewController {
         field.placeholder = "Insurance Expiration Date"
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.inputView = datePickerInsurance
@@ -184,6 +190,7 @@ class EditVehicleView: UIViewController {
         field.placeholder = "Vehicle Name"
         field.paddingRight(10)
         field.backgroundColor = .white
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.returnKeyType = .continue
         return field
     }()
@@ -204,6 +211,7 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Vehicle Number Plate"
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
         field.returnKeyType = .continue
@@ -234,6 +242,7 @@ class EditVehicleView: UIViewController {
         field.placeholder = "Vehicle Year"
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
         field.inputView = pickerView3
@@ -257,6 +266,7 @@ class EditVehicleView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
         field.placeholder = "Vehicle Ownership"
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
         field.returnKeyType = .continue
@@ -292,6 +302,8 @@ class EditVehicleView: UIViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let strDate = dateFormatter.string(from: datePickerInspection.date)
         vehicleInspectionExpDate.text = strDate
+//        change += 1
+//        cekCehange()
     }
     
     lazy var vehicleInspectionExpDate: UITextField = {
@@ -305,6 +317,7 @@ class EditVehicleView: UIViewController {
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
         field.backgroundColor = .white
+//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.inputView = datePickerInspection
         field.inputAccessoryView = toolBar
         return field
@@ -315,13 +328,14 @@ class EditVehicleView: UIViewController {
     private let nextButton: UIButton={
         let loginButton = UIButton()
         loginButton.setTitle("Save Change", for: .normal)
-        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
+        loginButton.backgroundColor = UIColor.gray
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.setTitleColor(.lightGray, for: .highlighted)
         loginButton.layer.cornerRadius = 2
         loginButton.layer.masksToBounds = true
         loginButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold )
         loginButton.addTarget(self, action: #selector(editClick), for: .touchUpInside)
+//        loginButton.isUserInteractionEnabled = false
         return loginButton
     }()
     
@@ -369,6 +383,16 @@ class EditVehicleView: UIViewController {
         view.distribution = .fillEqually
         return view
     }()
+    
+    func cekCehange(){
+        if change > 3 {
+//            nextButton.isUserInteractionEnabled = true
+            nextButton.backgroundColor = UIColor(named: "orangeKasumi")
+        }else {
+//            nextButton.isUserInteractionEnabled = false
+            nextButton.backgroundColor = UIColor.gray
+        }
+    }
     
     func createView()-> UIView{
        let viewC = UIView()
@@ -503,6 +527,7 @@ class EditVehicleView: UIViewController {
         vehicleOwnership.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
         vehicleInspectionExpDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
     }
+
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -559,6 +584,22 @@ class EditVehicleView: UIViewController {
         dumy2.isHidden = true
         vehicleImage3.af.setImage(withURL: urlPhoto3)
         dumy3.isHidden = true
+        
+    }
+    
+    
+    //Then, implement the callback function:
+    @objc func textFieldDidChange(textField: UITextField){
+        
+        guard let input = textField.text else {
+            return
+        }
+        
+        if input != "" {
+            change += 1
+        }
+        
+        cekCehange()
         
     }
     
@@ -728,6 +769,10 @@ func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMe
     let hasil = Helpers().resizeImageUpload(image: selectdedImage)
     selectedImageView?.image = hasil
     
+    change += 1
+    cekCehange()
+    
+    
     
      if selectedImageView == vehicleCertifiateImage {
         dumyC.isHidden = true
@@ -763,6 +808,8 @@ extension EditVehicleView: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         vehicleYear.text = vehicleY[row].year
+//        change += 1
+//        cekCehange()
     }
 }
 
@@ -770,6 +817,12 @@ extension EditVehicleView: UIPickerViewDelegate, UIPickerViewDataSource {
 @available(iOS 13.0, *)
 extension EditVehicleView {
     @objc func editClick(){
+        if change < 4 {
+            Helpers().showAlert(view: self, message: "Vehicle certification photo must be edit !")
+            return
+        }
+        
+        
         spiner.show(in: view)
         guard let insuranceCom = self.insuranceCompany.text,
               let personalCov = self.personalCoverage.text,

@@ -34,8 +34,10 @@ struct OrderViewModel {
         }
     }
     
+    
+//    MARK: - get data order
     func getDataOrder(codeDriver: String, completion: @escaping (Result<OrderData, Error>)-> Void){
-        AF.request("\(Base.url)orders/schedule/driver/\(codeDriver)",headers: Base.headers).response { response in
+        AF.request("\(Base.urlOrder)list/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if response.response?.statusCode == 200 {
@@ -57,7 +59,7 @@ struct OrderViewModel {
     
     
     func getDataHistoryOrder(codeDriver: String, completion: @escaping (Result<HistoryData,Error>)->Void){
-        AF.request("\(Base.url)orders/history/\(codeDriver)",headers: Base.headers).response { response in
+        AF.request("\(Base.urlOrder)history/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if let data = response.data {
@@ -74,14 +76,39 @@ struct OrderViewModel {
     }
     
     
-    func statusOrder(data: Delivery, status: String, completion: @escaping (Result<Bool,Error>)-> Void){
-        AF.request("\(Base.url)orders/schedule/update-status/\(status)",
+    //MARK: - Status order
+    func statusOrder(data: Delivery, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.urlOrder)update/status",
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
                     switch response.result {
                     case .success:
-                        completion(.success(true))
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(DataError.failedToUpdateData))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+                   })
+    }
+    
+    //MARK: - Temp Delete History order
+    func deleteOrder(data: DeleteHistory, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.urlOrder)update/history",
+                   method: .patch,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode  == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(DataError.failedToUpdateData))
+                        }
                     case .failure(let error):
                         completion(.failure(error))
                     }
@@ -124,6 +151,7 @@ struct OrderViewModel {
     enum DataError: Error{
         case failedToFetch
         case failedToParseJson
+        case failedToUpdateData
     }
     
 }

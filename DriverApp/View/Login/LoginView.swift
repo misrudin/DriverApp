@@ -21,6 +21,15 @@ class LoginView: UIViewController {
         return spin
     }()
     
+    //MARK: - Blur
+    let visualEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.3
+        return view
+    }()
+    
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
     lazy var scrollView: UIScrollView = {
@@ -116,11 +125,13 @@ class LoginView: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "bgKasumi")
-        
+        view.addSubview(visualEffectView)
         view.addSubview(scrollView)
         view.insertSubview(imageView, at: 0)
         
         scrollView.addSubview(containerView)
+        
+        visualEffectView.fill(toView: view)
         
         codeDriver.delegate = self
         password.delegate = self
@@ -150,7 +161,7 @@ class LoginView: UIViewController {
     
     func configureNavigationBar(){
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
-        navigationController?.navigationBar.tintColor = .white
+        navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.backgroundColor = .clear
         self.navigationController!.navigationBar.setBackgroundImage(UIImage(), for: .default)
           self.navigationController!.navigationBar.shadowImage = UIImage()

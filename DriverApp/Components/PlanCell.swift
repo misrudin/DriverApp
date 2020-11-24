@@ -10,26 +10,24 @@ import UIKit
 class PlanCell: UICollectionViewCell {
     static let id = "PlanCell"
     
-    let dayLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Senin"
-        lable.textColor = .black
-        lable.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        lable.textAlignment = .center
-    
-        return lable
-    }()
+    let dayLable = Reusable.makeLabel(font: UIFont.systemFont(ofSize: 15, weight: .semibold), color: .black, alignment: .center)
     
     let container: UIView = {
         let view = UIView()
-        view.backgroundColor = .red
+    
+        return view
+    }()
+    
+    let container2: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "colorGray")
         view.layer.cornerRadius = 5
+    
         return view
     }()
     
     let dateLable: UILabel = {
         let lable = UILabel()
-        lable.text = "01"
         lable.textColor = .black
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textAlignment = .center
@@ -49,25 +47,37 @@ class PlanCell: UICollectionViewCell {
     
     let borderBotom: UIView = {
         let view = UIView()
-        view.backgroundColor = .red
-        view.layer.cornerRadius = 5
+        view.backgroundColor = UIColor(named: "colorBlue")
+        view.layer.cornerRadius = 2
+        view.isHidden = true
         return view
     }()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-//        contentView.backgroundColor = .red
-        
-        contentView.addSubview(dayLable)
+
         contentView.addSubview(container)
-        container.addSubview(dateLable)
-        container.addSubview(statusLable)
-        contentView.addSubview(borderBotom)
+        container.addSubview(dayLable)
+        container.addSubview(container2)
+        container2.addSubview(dateLable)
+        container2.addSubview(statusLable)
+        container.addSubview(borderBotom)
         
-        dayLable.anchor(top: contentView.topAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor)
-        container.anchor(top: dateLable.bottomAnchor, left: contentView.leftAnchor, right: contentView.rightAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 50)
-        borderBotom.anchor(top: container.bottomAnchor, left: contentView.leftAnchor, bottom: contentView.bottomAnchor, right: contentView.rightAnchor, paddingLeft: 10, paddingRight: 10, height: 10)
+        
+        
+
+        container.anchor(top: contentView.topAnchor, left: contentView.leftAnchor, bottom: contentView.bottomAnchor, right: contentView.rightAnchor)
+        
+        dayLable.anchor(top: container.topAnchor, left: container.leftAnchor, right: container.rightAnchor)
+        
+        
+        borderBotom.anchor(left: container.leftAnchor, bottom: container.bottomAnchor, right: container.rightAnchor, height: 5)
+        
+        container2.anchor(top: dayLable.bottomAnchor, left: container.leftAnchor, bottom: borderBotom.topAnchor, right: container.rightAnchor, paddingTop: 5, paddingBottom: 5)
+        
+        dateLable.anchor(top: container2.topAnchor, left: container2.leftAnchor, right: container2.rightAnchor, paddingTop: 10)
+        statusLable.anchor(top: dateLable.bottomAnchor, left: container2.leftAnchor, right: container2.rightAnchor, paddingTop: 10)
     }
     
     required init?(coder: NSCoder) {

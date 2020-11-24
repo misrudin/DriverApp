@@ -16,7 +16,7 @@ class MainVc: UIViewController {
         let blurEffect = UIBlurEffect(style: .dark)
         let view = UIVisualEffectView(effect: blurEffect)
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.alpha = 0.7
+        view.alpha = 0.5
         return view
     }()
     
@@ -91,7 +91,7 @@ class MainVc: UIViewController {
         
         let images = [baru,baru,baru,baru,baru]
         
-        tabBarVc.setViewControllers([homeVc,historyVc,notesVc,dayOffVc,profileVc], animated: true)
+        tabBarVc.setViewControllers([homeVc,historyVc,dayOffVc], animated: true)
         
         guard let items = tabBarVc.tabBar.items else {
             return

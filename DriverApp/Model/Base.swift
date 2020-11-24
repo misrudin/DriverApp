@@ -11,6 +11,7 @@ import Alamofire
 struct Base {
     static let url: String = "https://mobileapiapp.azure-api.net/api/"
     static let urlDriver: String = "https://mobileapiapp.azure-api.net/api/driver/"
+    static let urlOrder: String = "https://mobileapiapp.azure-api.net/api/order/"
     static let headers: HTTPHeaders = [
             "token": "775db6e86a9440df9cbbd75780403eae",
             "Accept": "application/json"

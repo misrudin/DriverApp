@@ -383,8 +383,8 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         switch type {
         case .start_pickup:
             spiner.show(in: view)
-            let data = Delivery(order_number: orderNo, type: "start")
-            self.orderViewModel.statusOrder(data: data, status: "pickup") { (result) in
+            let data = Delivery(status: "pickup", order_number: orderNo, type: "start")
+            self.orderViewModel.statusOrder(data: data) { (result) in
                 self.handleResult(result: result)
             }
         case .done_pickup:
@@ -416,8 +416,8 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             }
         case .start_delivery:
             spiner.show(in: view)
-            let data = Delivery(order_number: orderNo, type: "start")
-            self.orderViewModel.statusOrder(data: data, status: "delivery") { (result) in
+            let data = Delivery(status: "delivery", order_number: orderNo, type: "start")
+            self.orderViewModel.statusOrder(data: data) { (result) in
                 self.handleResult(result: result)
             }
         case .pending:
@@ -428,8 +428,8 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             present(navVc, animated: true, completion: nil)
         case .done_delivery:
             spiner.show(in: view)
-            let data = Delivery(order_number: orderNo, type: "end")
-            self.orderViewModel.statusOrder(data: data, status: "delivery") { (result) in
+            let data = Delivery(status: "delivery", order_number: orderNo, type: "done")
+            self.orderViewModel.statusOrder(data: data) { (result) in
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
@@ -477,8 +477,8 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         guard let orderNo = order?.orderNumber else {
             return
         }
-        let data = Delivery(order_number: orderNo, type: "end")
-        self.orderViewModel.statusOrder(data: data, status: "pickup") { (result) in
+        let data = Delivery(status: "pickup", order_number: orderNo, type: "done")
+        self.orderViewModel.statusOrder(data: data) { (result) in
             self.handleResult(result: result)
         }
     }

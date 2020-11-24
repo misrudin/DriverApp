@@ -59,7 +59,6 @@ class HistoryViewController: UIViewController {
 
         
         view.backgroundColor = .white
-        configureNavigationBar()
         
         view.addSubview(tableView)
         tableView.dataSource = self
@@ -87,6 +86,7 @@ class HistoryViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         getDataOrder()
+        configureNavigationBar()
     }
     
     @objc
@@ -129,17 +129,45 @@ class HistoryViewController: UIViewController {
         }
     }
     
+
     func configureNavigationBar(){
-        let image = UIImage(named: "chatIcon")
-        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
+        let imageChat = UIImage(named: "chatIcon")
+        let imageProfile = UIImage(named: "profileIcon")
+        let imageRest = UIImage(named: "rest")
+        let chat = imageChat?.resizeImage(CGSize(width: 25, height: 25))
+        let profile = imageProfile?.resizeImage(CGSize(width: 25, height: 25))
+        let rest = imageRest?.resizeImage(CGSize(width: 25, height: 25))
+        
         navigationItem.title = "Jobs History"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: baru, style: .plain, target: self, action: #selector(onClickChatButton))
+    
+        let button1 = UIBarButtonItem(image: rest, style: .plain, target: self, action: #selector(onClickRest))
+        
+        let button2 = UIBarButtonItem(image: chat, style: .plain, target: self, action: #selector(onClickChatButton))
+        navigationItem.leftBarButtonItems = [button1,button2]
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: profile, style: .plain, target: self, action: #selector(onClickProfiile))
+
+        
         navigationController?.navigationBar.tintColor = .white
+    }
+    
+    @objc
+    func onClickRest(){
+        let vc = RestViewController()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
+    func onClickProfiile(){
+        let vc = ProfileViewController()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
