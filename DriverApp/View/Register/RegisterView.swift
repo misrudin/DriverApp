@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 
+@available(iOS 13.0, *)
 class RegisterView: UIViewController {
     
     var pop = PopUpView()
@@ -40,19 +41,12 @@ class RegisterView: UIViewController {
     //MARK: - Component
     lazy var lableTitleRegister: UILabel = {
         let lable = UILabel()
-        lable.text = "Register now"
+        lable.text = "Register as a freelance driver"
         lable.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
     }()
 
-    lazy var subTableTitleRegister: UILabel = {
-        let lable = UILabel()
-        lable.text = "Register as freelance driver now"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
     
     lazy var personalLabel: UILabel = {
         let lable = UILabel()
@@ -72,14 +66,6 @@ class RegisterView: UIViewController {
     
     //MARK: - Profile photo
     
-//    lazy var profileFoto: UILabel = {
-//        let lable = UILabel()
-//        lable.text = "Profile Photo"
-//        lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-//        lable.textColor = UIColor.lightGray
-//        return lable
-//    }()
-    
     lazy var profilePhotoDumy: UIImageView = {
         let img = UIImageView()
         img.contentMode = .scaleAspectFill
@@ -94,120 +80,69 @@ class RegisterView: UIViewController {
         img.layer.masksToBounds = true
         img.contentMode = .scaleAspectFit
         img.layer.cornerRadius = 80/2
+        img.isUserInteractionEnabled = true
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectProfilePhoto)))
         img.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         return img
     }()
+
     
-    lazy var imgName: UILabel = {
-        let lable = UILabel()
-        lable.text = "PHOTO NOT SELECTED"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    let lableColor: UIColor = .black
+    let lablefont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
+    let inputBg: UIColor = UIColor(named: "bgInput")!
     
-    lazy var selecImage: UIButton = {
-        let btn = UIButton()
-        btn.setTitle("Select Image", for: .normal)
-        btn.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
-        btn.setTitleColor(UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2), for: .highlighted)
-        btn.layer.masksToBounds = true
-        btn.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
-        btn.addTarget(self, action: #selector(selectProfilePhoto), for: .touchUpInside)
-        
-        return btn
-    }()
+    //MARK: - Lable
+    lazy var profilePhotoLable = Reusable.makeLabel(text: "Profile Photo",font: lablefont, color: lableColor, alignment: .center)
+    lazy var firstNameLable = Reusable.makeLabel(text: "First Name",font: lablefont, color: lableColor)
+    lazy var lastNameLable = Reusable.makeLabel(text: "Last Name",font: lablefont, color: lableColor)
+    lazy var emailLable = Reusable.makeLabel(text: "Email",font: lablefont, color: lableColor)
+    lazy var passwordLable = Reusable.makeLabel(text: "Password",font: lablefont, color: lableColor)
+    lazy var brithDateLable = Reusable.makeLabel(text: "Date Of Birth",font: lablefont, color: lableColor)
+    lazy var genderLable = Reusable.makeLabel(text: "Gender",font: lablefont, color: lableColor)
+    lazy var languageLable = Reusable.makeLabel(text: "Language",font: lablefont, color: lableColor)
+    lazy var phoneNumberLable = Reusable.makeLabel(text: "Phone Number",font: lablefont, color: lableColor)
+    lazy var postalCodeLable = Reusable.makeLabel(text: "Postal Code",font: lablefont, color: lableColor)
+    lazy var prefecturesLable = Reusable.makeLabel(text: "Prefectures",font: lablefont, color: lableColor)
+    lazy var municipalLable = Reusable.makeLabel(text: "Municipal District",font: lablefont, color: lableColor)
+    lazy var chomeLable = Reusable.makeLabel(text: "Chome",font: lablefont, color: lableColor)
+    lazy var municipalityKanaLable = Reusable.makeLabel(text: "Municipality Kana",font: lablefont, color: lableColor)
+    lazy var kanaAfterAddressLable = Reusable.makeLabel(text: "Kana After Address",font: lablefont, color: lableColor)
+    lazy var vehiclePhotoLable = Reusable.makeLabel(text: "Vehicle Inspection Certificate Photo",font: lablefont, color: lableColor)
+    lazy var vehiclePhotoLable2 = Reusable.makeLabel(text: "Vehicle Photo",font: lablefont, color: lableColor)
+    lazy var licenseExpiretionDateLable = Reusable.makeLabel(text: "Driver's License Expiration Date", color: lableColor)
+    lazy var insuranceCompanyLable = Reusable.makeLabel(text: "Insurance Company",font: lablefont, color: lableColor)
+    lazy var personalCoverageLable = Reusable.makeLabel(text: "Personal Coverage",font: lablefont, color: lableColor)
+    lazy var compensationLable = Reusable.makeLabel(text: "Compensation Range-Objective",font: lablefont, color: lableColor)
+    lazy var insuranceExpirationDateLabel = Reusable.makeLabel(text: "Insurance Expiration Date",font: lablefont, color: lableColor)
+    lazy var vehicleNameLable =  Reusable.makeLabel(text: "Vehicle Name",font: lablefont, color: lableColor)
+    lazy var vehicleNumberPlateLable =  Reusable.makeLabel(text: "Vehicle Number Plate",font: lablefont, color: lableColor)
+    lazy var vehicleYearLable =  Reusable.makeLabel(text: "Vehicle Year",font: lablefont, color: lableColor)
+    lazy var vehicleOwnershipLable =  Reusable.makeLabel(text: "Vehicle Ownership",font: lablefont, color: lableColor)
+    lazy var vehicleInspectionExpDateLable =  Reusable.makeLabel(text: "Vehicle Inspection Exp. Date",font: lablefont, color: lableColor)
+    lazy var licenseNumberLable = Reusable.makeLabel(text: "License Number",font: lablefont, color: lableColor)
+ 
+
     
-    //MARK: - Name
-    lazy var firstNameLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "First Name"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    //MARK: - Input Text
+    lazy var firstName = Reusable.makeInput(placeholder: "First Name", bg: inputBg, radius: 5, autoKapital: .none)
+    lazy var lastName = Reusable.makeInput(placeholder: "Last Name", bg: inputBg, radius: 5, autoKapital: .none)
     
-    lazy var firstName: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "First Name"
-        field.paddingLeft(10)
-        field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
-        field.returnKeyType = .continue
-        return field
-    }()
+    //MARK: - Input Select
     
-    lazy var lastNameLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Last Name"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    //MARK: - Input Date
     
-    lazy var lastName: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "Last Name"
-        field.paddingLeft(10)
-        field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
-        field.returnKeyType = .continue
-        return field
-    }()
+    //MARK: - Input Email
+    lazy var email = Reusable.makeInput(placeholder: "Email", keyType: .emailAddress, bg: inputBg, radius: 5, autoKapital: .none)
     
-    //MARK:- Email
-    lazy var emailLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Email"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    //MARK: - Input Number
     
-    lazy var email: UITextField = {
-        let field = UITextField()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
-        field.placeholder = "Email"
-        field.paddingLeft(10)
-        field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
-        field.returnKeyType = .continue
-        field.keyboardType = .emailAddress
-        return field
-    }()
-    
-    //MARK:- Password
-    lazy var passwordLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Password"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
-    
+    //MARK: - Input Password
     lazy var password: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Password"
         field.paddingLeft(10)
         let button = UIButton(type: .custom)
@@ -220,9 +155,7 @@ class RegisterView: UIViewController {
         field.rightView = button
         field.rightViewMode = .always
         
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.isSecureTextEntry = true
         field.returnKeyType = .continue
         return field
@@ -244,13 +177,6 @@ class RegisterView: UIViewController {
     }
     
     //MARK:- Brith date
-    lazy var brithDateLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Date Of Birth"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
     
     lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
@@ -296,28 +222,19 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "YYYY-MM-DD"
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
         field.paddingLeft(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePicker
         field.inputAccessoryView = toolBar
         return field
     }()
     
     //MARK:- Gender
-    lazy var genderLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Gender"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
     
     lazy var pickerView1: UIPickerView = {
         let pik = UIPickerView()
@@ -330,15 +247,13 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Select Your Gender"
         field.paddingLeft(10)
         let image = UIImage(named: "arrowDownIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = pickerView1
         field.inputAccessoryView = toolBar
         return field
@@ -347,13 +262,6 @@ class RegisterView: UIViewController {
     
     
     //MARK:- Language
-    lazy var languageLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Language"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
     
     lazy var pickerView2: UIPickerView = {
         let pik = UIPickerView()
@@ -366,27 +274,30 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Select Your Language"
         field.paddingLeft(10)
         let image = UIImage(named: "arrowDownIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = pickerView2
         field.inputAccessoryView = toolBar
         return field
     }()
     
     //MARK:- PhoneNumber
-    lazy var phoneNumberLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Phone Number"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
+    
+    lazy var viewCc: UIView = {
+        let v = UIView()
+        let lableCC = Reusable.makeLabel(text: "+81", font: lablefont, color: lableColor, alignment: .center)
+        v.addSubview(lableCC)
+        lableCC.translatesAutoresizingMaskIntoConstraints = false
+        lableCC.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
+        lableCC.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true
+        v.backgroundColor = inputBg
+        v.layer.cornerRadius = 5
+        return v
     }()
     
     lazy var phoneNumber: UITextField = {
@@ -394,13 +305,11 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "123456"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.keyboardType = .numberPad
         field.returnKeyType = .continue
         return field
@@ -408,152 +317,101 @@ class RegisterView: UIViewController {
     
     //MARK: - Address
     ///Postal code
-    lazy var postalCodeLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Postal Code"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
-    
+  
     lazy var postalCode: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Postal Code"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.keyboardType = .numberPad
         field.returnKeyType = .continue
         return field
     }()
     
     ///Prefectures
-    lazy var prefecturesLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Prefectures"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+ 
     
     lazy var prefecture: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Prefectures"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     /// municipal district
-    lazy var municipalLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Municipal District"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+   
     
     lazy var municipal: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Municipal District"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     ///Chome
-    lazy var chomeLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Chome"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+   
     
     lazy var chome: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Chome"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     /// Municipality Kana
-    lazy var municipalityKanaLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Municipality Kana"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var municipalityKana: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Municipality Kana"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     ///Kana After address
-    lazy var kanaAfterAddressLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Kana After Address"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
-    
     lazy var kanaAfterAddress: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Kana After Address"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
@@ -578,23 +436,7 @@ class RegisterView: UIViewController {
     }()
     
     
-    //MARK:- vehiclePhotoLable
-    lazy var vehiclePhotoLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Inspection Certificate Photo"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
-    
-    //MARK:- vehiclePhotoLable2
-    lazy var vehiclePhotoLable2: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Photo"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+  
     
     //MARK:- vehicleCertifiateImage
     lazy var vehicleCertifiateImage: UIImageView = {
@@ -616,46 +458,30 @@ class RegisterView: UIViewController {
     //MARK:- containerSelectImage
     lazy var containerSelectImage: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 4
-        view.layer.borderWidth = 1
-        view.layer.borderColor = UIColor.black.cgColor
+        view.layer.cornerRadius = 5
+        view.backgroundColor = UIColor(named: "bgInput")
         return view
     }()
     
     //MARK:- License Number
-    lazy var licenseNumberLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "License Number"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
     
     lazy var licenseNumber: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "License Number"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         field.keyboardType = .numberPad
         return field
     }()
     
     //MARK:- License Expiration Date
-    lazy var licenseExpiretionDateLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Driver's License Expiration Date"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var datePickerExpiration: UIDatePicker = {
         let date = UIDatePicker()
@@ -684,15 +510,13 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 3
         field.placeholder = "Driver's License Expiration Date"
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerExpiration
         field.inputAccessoryView = toolBar
         return field
@@ -701,88 +525,59 @@ class RegisterView: UIViewController {
     
     //MARK:- Vehicle Data
     //MARK:- Insurance Company
-    lazy var insuranceCompanyLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Insurance Company"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var insuranceCompany: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Insurance Company Name"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     //MARK:- Personal Coverage
-    lazy var personalCoverageLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Personal Coverage"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var personalCoverage: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Personal Coverage"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     //MARK:- Compensation Range-Objective
-    lazy var compensationLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Compensation Range-Objective"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
+   
     
     lazy var compensation: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Compensation Range-Objective"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     //MARK:- Insurance Expiration Date
-    lazy var insuranceExpirationDateLabel: UILabel = {
-        let lable = UILabel()
-        lable.text = "Insurance Expiration Date"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+   
     
     lazy var datePickerInsurance: UIDatePicker = {
         let date = UIDatePicker()
@@ -811,79 +606,55 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Insurance Expiration Date"
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerInsurance
         field.inputAccessoryView = toolBar
         return field
     }()
     
     //MARK: - Vehicle Name
-    lazy var vehicleNameLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Name"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var vehicleName: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Name"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     
     //MARK: - Vehicle Number Plate
-    lazy var vehicleNumberPlateLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Number Plate"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var vehicleNumberPlate: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Number Plate"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     //MARK: - Vehicle Year
-    lazy var vehicleYearLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Year"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var pickerView3: UIPickerView = {
         let pik = UIPickerView()
@@ -896,53 +667,37 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Year"
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = pickerView3
         field.inputAccessoryView = toolBar
         return field
     }()
     
     //MARK:- Vehicle Ownership
-    lazy var vehicleOwnershipLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Ownership"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var vehicleOwnership: UITextField = {
         let field = UITextField()
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Ownership"
         field.paddingLeft(10)
         field.paddingRight(10)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
     
     //MARK:- Vehicle Inspection Exp. Date
-    lazy var vehicleInspectionExpDateLable: UILabel = {
-        let lable = UILabel()
-        lable.text = "Vehicle Inspection Exp. Date"
-        lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
-        return lable
-    }()
+    
     
     lazy var datePickerInspection: UIDatePicker = {
         let date = UIDatePicker()
@@ -971,15 +726,13 @@ class RegisterView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Insurance Expiration Date"
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
         field.setRightViewIcon(icon: baru!)
-        field.backgroundColor = .white
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.black.cgColor
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerInspection
         field.inputAccessoryView = toolBar
         return field
@@ -1030,9 +783,8 @@ class RegisterView: UIViewController {
     lazy var vehicleImage1: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 1
+        img.backgroundColor = UIColor(named: "bgInput")
         img.clipsToBounds = false
-        img.layer.borderColor = UIColor.black.cgColor
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectVI1)))
@@ -1043,13 +795,13 @@ class RegisterView: UIViewController {
     func selectVI1(){
         selectedImageView = vehicleImage1
         presentPhotoActionSheet()
+        view.endEditing(true)
     }
     
     lazy var vehicleImage2: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 1
-        img.layer.borderColor = UIColor.black.cgColor
+        img.backgroundColor = UIColor(named: "bgInput")
         img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
@@ -1061,13 +813,13 @@ class RegisterView: UIViewController {
     func selectVI2(){
         selectedImageView = vehicleImage2
         presentPhotoActionSheet()
+        view.endEditing(true)
     }
     
     lazy var vehicleImage3: UIImageView = {
         let img = UIImageView()
         img.layer.cornerRadius = 5
-        img.layer.borderWidth = 1
-        img.layer.borderColor = UIColor.black.cgColor
+        img.backgroundColor = UIColor(named: "bgInput")
         img.clipsToBounds = false
         img.contentMode = .scaleAspectFit
         img.isUserInteractionEnabled = true
@@ -1079,6 +831,7 @@ class RegisterView: UIViewController {
     func selectVI3(){
         selectedImageView = vehicleImage3
         presentPhotoActionSheet()
+        view.endEditing(true)
     }
     
 //    MARK:- dummy
@@ -1131,6 +884,23 @@ class RegisterView: UIViewController {
         
         view.backgroundColor = .white
         configureNavigationBar()
+        
+        
+        //Subscribe to a Notification which will fire before the keyboard will show
+        subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShowOrHide))
+
+        //Subscribe to a Notification which will fire before the keyboard will hide
+        subscribeToNotification(UIResponder.keyboardWillHideNotification, selector: #selector(keyboardWillShowOrHide))
+
+        //We make a call to our keyboard handling function as soon as the view is loaded.
+        initializeHideKeyboard()
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        //Unsubscribe from all our notifications
+        unsubscribeFromAllNotifications()
     }
     
     
@@ -1143,13 +913,13 @@ class RegisterView: UIViewController {
     //MARK: - FUNC
     
     private func configureNavigationBar(){
-        navigationItem.title = "Sign Up"
+        navigationItem.title = "Registration"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(back))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
         navigationController?.navigationBar.tintColor = .white
     }
     
@@ -1157,22 +927,23 @@ class RegisterView: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*25)+(200))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*26))
 
         stakView.addSubview(lableTitleRegister)
         lableTitleRegister.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
         
-        stakView.addSubview(subTableTitleRegister)
-        subTableTitleRegister.anchor(top: lableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingRight: 0)
+//        stakView.addSubview(subTableTitleRegister)
+//        subTableTitleRegister.anchor(top: lableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingRight: 0)
         
         stakView.addSubview(personalLabel)
-        personalLabel.anchor(top: subTableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingRight: 0)
+        personalLabel.anchor(top: lableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingRight: 0)
         
 //        stakView.addSubview(profileFoto)
 //        profileFoto.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10)
         
         stakView.addSubview(profilePhotoImage)
-        profilePhotoImage.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15, width: 80, height: 80)
+        profilePhotoImage.anchor(top: personalLabel.bottomAnchor, paddingTop: 20, width: 80, height: 80)
+        profilePhotoImage.centerXAnchor.constraint(equalTo: stakView.centerXAnchor).isActive = true
         
         profilePhotoImage.addSubview(profilePhotoDumy)
         profilePhotoDumy.anchor(width: 40, height: 40)
@@ -1180,19 +951,22 @@ class RegisterView: UIViewController {
         profilePhotoDumy.centerYAnchor.constraint(equalTo: profilePhotoImage.centerYAnchor).isActive = true
         profilePhotoDumy.centerXAnchor.constraint(equalTo: profilePhotoImage.centerXAnchor).isActive = true
         
-        stakView.addSubview(imgName)
-        imgName.anchor(top: profilePhotoImage.topAnchor, left: profilePhotoImage.rightAnchor, right: stakView.rightAnchor, paddingTop: 10, paddingLeft: 10)
+        stakView.addSubview(profilePhotoLable)
+        profilePhotoLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10)
         
-        stakView.addSubview(selecImage)
-        selecImage.anchor(left: profilePhotoImage.rightAnchor, bottom: profilePhotoImage.bottomAnchor, paddingBottom: 10, paddingLeft: 10, height: 30)
+//        stakView.addSubview(imgName)
+//        imgName.anchor(top: profilePhotoImage.topAnchor, left: profilePhotoImage.rightAnchor, right: stakView.rightAnchor, paddingTop: 10, paddingLeft: 10)
+//
+//        stakView.addSubview(selecImage)
+//        selecImage.anchor(left: profilePhotoImage.rightAnchor, bottom: profilePhotoImage.bottomAnchor, paddingBottom: 10, paddingLeft: 10, height: 30)
         
         stakView.addSubview(firstNameLable)
-        firstNameLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15,width: view.frame.width/2-20)
+        firstNameLable.anchor(top: profilePhotoLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 20,width: view.frame.width/2-20)
         stakView.addSubview(firstName)
         firstName.anchor(top: firstNameLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
         
         stakView.addSubview(lastNameLable)
-        lastNameLable.anchor(top: profilePhotoImage.bottomAnchor,left: firstNameLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 8, width: view.frame.width/2-20)
+        lastNameLable.anchor(top: profilePhotoLable.bottomAnchor,left: firstNameLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 20,paddingLeft: 8, width: view.frame.width/2-20)
         stakView.addSubview(lastName)
         lastName.anchor(top: lastNameLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
         
@@ -1249,9 +1023,13 @@ class RegisterView: UIViewController {
         language.anchor(top: languageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
         stakView.addSubview(phoneNumberLable)
-        phoneNumberLable.anchor(top: language.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        phoneNumberLable.anchor(top: language.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 10)
+        
+        stakView.addSubview(viewCc)
+        viewCc.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 60, height: 45)
+        
         stakView.addSubview(phoneNumber)
-        phoneNumber.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        phoneNumber.anchor(top: phoneNumberLable.bottomAnchor, left: viewCc.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 10, height: 45)
         
         stakView.addSubview(emailLable)
         emailLable.anchor(top: phoneNumber.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
@@ -1375,7 +1153,7 @@ class RegisterView: UIViewController {
             dumy1.centerYAnchor.constraint(equalTo: vehicleImage1.centerYAnchor).isActive = true
             dumy1.centerXAnchor.constraint(equalTo: vehicleImage1.centerXAnchor).isActive = true
             
-            vehicleImage1.addSubview(dumy3)
+            vehicleImage3.addSubview(dumy3)
             dumy3.anchor(width: 100, height: 50)
             dumy3.centerYAnchor.constraint(equalTo: vehicleImage3.centerYAnchor).isActive = true
             dumy3.centerXAnchor.constraint(equalTo: vehicleImage3.centerXAnchor).isActive = true
@@ -1392,10 +1170,12 @@ class RegisterView: UIViewController {
 
     //MARK: - EXTENSION
 
+@available(iOS 13.0, *)
 extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     @objc func selectProfilePhoto(){
         selectedImageView = profilePhotoImage
         presentPhotoActionSheet()
+        view.endEditing(true)
     }
     
     
@@ -1440,7 +1220,6 @@ extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerD
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        print(picker)
         picker.dismiss(animated: true, completion: nil)
         guard let selectdedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
             return
@@ -1449,14 +1228,14 @@ extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerD
         
         let hasil = Helpers().resizeImageUpload(image: selectdedImage)
         selectedImageView?.image = hasil
-        
-        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
-            let fileName = url.lastPathComponent
-            
-            if selectedImageView == profilePhotoImage {
-                imgName.text = fileName
-            }
-        }
+//
+//        if let url = info[UIImagePickerController.InfoKey.imageURL] as? URL {
+//            let fileName = url.lastPathComponent
+//
+//            if selectedImageView == profilePhotoImage {
+//                imgName.text = fileName
+//            }
+//        }
         
         if selectedImageView == profilePhotoImage {
             profilePhotoDumy.isHidden = true
@@ -1474,11 +1253,15 @@ extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerD
     }
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true) {
+            self.view.endEditing(true)
+            self.vehicleInspectionExpDate.resignFirstResponder()
+        }
     }
 }
 
 
+@available(iOS 13.0, *)
 extension RegisterView: UIPickerViewDelegate, UIPickerViewDataSource {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -1524,6 +1307,7 @@ extension RegisterView: UIPickerViewDelegate, UIPickerViewDataSource {
 
 //MARK: - NEXT
 
+@available(iOS 13.0, *)
 extension RegisterView {
     @objc
     func onNext(){
@@ -1689,3 +1473,63 @@ extension RegisterView {
     }
 }
 
+
+//MARK: - Keyboard
+
+@available(iOS 13.0, *)
+extension RegisterView {
+    
+    func initializeHideKeyboard(){
+        //Declare a Tap Gesture Recognizer which will trigger our dismissMyKeyboard() function
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(dismissMyKeyboard))
+        
+        //Add this tap gesture recognizer to the parent view
+        scrollView.isUserInteractionEnabled = true
+        scrollView.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissMyKeyboard(){
+        //endEditing causes the view (or one of its embedded text fields) to resign the first responder status.
+        //In short- Dismiss the active keyboard.
+        view.endEditing(true)
+    }
+}
+
+
+@available(iOS 13.0, *)
+extension RegisterView {
+    
+    func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
+        NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
+    }
+    
+    func unsubscribeFromAllNotifications() {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func keyboardWillShowOrHide(notification: NSNotification) {
+        // Get required info out of the notification
+        if  let userInfo = notification.userInfo, let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey], let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey], let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] {
+            
+            // Transform the keyboard's frame into our view's coordinate system
+            let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
+            
+            // Find out how much the keyboard overlaps our scroll view
+            let keyboardOverlap = scrollView.frame.maxY - endRect.origin.y
+            
+            // Set the scroll view's content inset & scroll indicator to avoid the keyboard
+            scrollView.contentInset.bottom = keyboardOverlap
+            scrollView.scrollIndicatorInsets.bottom = keyboardOverlap
+
+            
+            let duration = (durationValue as AnyObject).doubleValue
+            let options = UIView.AnimationOptions(rawValue: UInt((curveValue as AnyObject).integerValue << 16))
+            UIView.animate(withDuration: duration!, delay: 0, options: options, animations: {
+                self.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+    }
+
+}

@@ -12,6 +12,14 @@ class MainVc: UIViewController {
     
     var profileVm = ProfileViewModel()
     
+    let visualEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.7
+        return view
+    }()
+    
     private let imageView = Reusable.makeImageView(image: UIImage(named: "logoKasumi"), contentMode: .scaleAspectFit)
     
     private let bg = Reusable.makeImageView(image: UIImage(named: "bgMain"), contentMode: .scaleToFill)
@@ -23,6 +31,7 @@ class MainVc: UIViewController {
     @objc
     func login(){
         let loginvc = UINavigationController(rootViewController: LoginView())
+//        let loginvc = LoginView()
         loginvc.modalPresentationStyle = .fullScreen
         present(loginvc, animated: true, completion: nil)
     }
@@ -36,12 +45,13 @@ class MainVc: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(visualEffectView)
         view.insertSubview(bg, at: 0)
         view.addSubview(imageView)
         view.addSubview(loginButton)
         view.addSubview(signupButton)
         
-        
+        visualEffectView.fill(toView: view)
         bg.fill(toView: view)
         
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true

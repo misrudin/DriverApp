@@ -220,13 +220,8 @@ class EditProfileVc: UIViewController {
         return scroll
     }()
     
-    lazy var stakView: UIStackView = {
-        let view = UIStackView()
-        view.spacing = 16
-        view.axis = .vertical
-        view.layoutIfNeeded()
-        view.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        view.isLayoutMarginsRelativeArrangement = true
+    lazy var stakView: UIView = {
+        let view = UIView()
         return view
     }()
     
@@ -244,8 +239,6 @@ class EditProfileVc: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         
-        
-        configureLayout()
 
         firstName.text = bio?.first_name
         lastName.text = bio?.last_name
@@ -288,6 +281,11 @@ class EditProfileVc: UIViewController {
         phoneNumber.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
         license.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
         expDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        configureLayout()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -450,7 +448,6 @@ extension EditProfileVc {
         //endEditing causes the view (or one of its embedded text fields) to resign the first responder status.
         //In short- Dismiss the active keyboard.
         view.endEditing(true)
-        unsubscribeFromAllNotifications()
     }
 }
 

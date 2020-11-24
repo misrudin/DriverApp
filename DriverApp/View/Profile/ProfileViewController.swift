@@ -109,7 +109,7 @@ class ProfileViewController: UIViewController {
     
     lazy var button1 = createButton(title: "Edit Profile")
     lazy var button2 = createButton(title: "Change Password")
-    lazy var button6 = createButton(title: "Edit Vehicle Data")
+    lazy var button6 = createButton(title: "Change Vehicle Data")
 //    lazy var button7 = createButton(title: "Edit Email")
     lazy var button3 = createButton(title: "Checkout")
     lazy var button4 = createButton(title: "Rest")

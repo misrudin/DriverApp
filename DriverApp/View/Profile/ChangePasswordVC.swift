@@ -125,7 +125,7 @@ class ChangePasswordVC: UIViewController {
                 self.editStart(data: data)
             }
             let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            Helpers().showAlert(view: self, message:"Continue to change password ?", customTitle: "Are Sure", customAction1: action, customAction2: action2)
+            Helpers().showAlert(view: self, message:"Continue to change password ?", customTitle: "Are you sure", customAction1: action, customAction2: action2)
         }else {
             Helpers().showAlert(view: self, message: "New password not match !")
         }
@@ -143,7 +143,7 @@ class ChangePasswordVC: UIViewController {
                         let action = UIAlertAction(title: "Oke", style: .default) { (_) in
                             self?.navigationController?.popViewController(animated: true)
                         }
-                        Helpers().showAlert(view: self!, message:"Succes edit password", customTitle: "Sucess", customAction1: action)
+                        Helpers().showAlert(view: self!, message:"Success edit password", customTitle: "Success", customAction1: action)
                     }
                 }
                 

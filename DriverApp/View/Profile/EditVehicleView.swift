@@ -877,7 +877,7 @@ extension EditVehicleView {
                         let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
                             self?.navigationController?.popViewController(animated: true)
                         }
-                        Helpers().showAlert(view: self, message: "Please wait for approval from Kasumi", customTitle: "Register success",customAction1: action)
+                        Helpers().showAlert(view: self, message: "Please wait for approval from Kasumi", customTitle: "Change vehicle data success",customAction1: action)
                     }
                 }
             case .failure(let error):
@@ -907,7 +907,6 @@ extension EditVehicleView {
         //endEditing causes the view (or one of its embedded text fields) to resign the first responder status.
         //In short- Dismiss the active keyboard.
         view.endEditing(true)
-        unsubscribeFromAllNotifications()
     }
 }
 
