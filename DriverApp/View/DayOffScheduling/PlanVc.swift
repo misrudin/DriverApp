@@ -291,17 +291,30 @@ class PlanVc: UIViewController {
     //MARK: - Show modal
     @objc
     func openModal(){
+        if selectedWeek == nil && selectedDay == nil {
+            let action = UIAlertAction(title: "Oke", style: .default, handler: nil)
+            Helpers().showAlert(view: self, message: "Plese select day !", customTitle: "Opss", customAction1: action)
+            return
+        }
+        
         var dataShifts:[CustomList] = []
         
         for item in shiftTime {
             if let dataList = listShift {
-                for d in dataList {
-                    print(d)
+                let filteredDataList = dataList.filter { $0 ==  item.id_shift_time }
+                
+                print(filteredDataList)
+                if filteredDataList.count != 0 {
+                    let data: CustomList = CustomList(id: item.id_shift_time, name: item.label_data, selected: true)
+                    dataShifts.append(data)
+                }else {
+                    let data: CustomList = CustomList(id: item.id_shift_time, name: item.label_data, selected: false)
+                    dataShifts.append(data)
                 }
+            }else {
+                let data: CustomList = CustomList(id: item.id_shift_time, name: item.label_data, selected: false)
+                dataShifts.append(data)
             }
-            
-            let data: CustomList = CustomList(id: item.id_shift_time, name: item.label_data, selected: false)
-            dataShifts.append(data)
         }
         
         slideVC.shifts = dataShifts
