@@ -12,6 +12,13 @@ import JGProgressHUD
 @available(iOS 13.0, *)
 class PlanVc: UIViewController {
     
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
+    
     private let emptyImage: UIView = {
         let view = UIView()
         let imageView: UIImageView = {
@@ -39,16 +46,16 @@ class PlanVc: UIViewController {
         return view
     }()
     
-    private let spiner: JGProgressHUD = {
-        let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
-        
-        return spin
-    }()
     var dayOfVm = DayOffViewModel()
     var dataDayOff: DayOffPost!
     var listShift: [Int]? = nil
     var dayOffPlanData: DayOfParent? = nil
+    
+    let slideVC = SelectShift()
+    
+    var shiftTimeVm = ShiftTimeViewModel()
+    
+    var shiftTime = [ShiftTime]()
     
     var selectedWeek: String?
     var selectedDay: String?
@@ -174,6 +181,20 @@ class PlanVc: UIViewController {
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
         button.addTarget(self, action: #selector(setWorkClick), for: .touchUpInside)
+        button.isHidden = false
+        return button
+    }()
+    
+    private let editButton: UIButton={
+        let button = UIButton()
+        button.setTitle("Edit", for: .normal)
+        button.backgroundColor = UIColor(named: "grayKasumi")
+        button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
+        button.layer.cornerRadius = 5
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
+        button.addTarget(self, action: #selector(openModal), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     
@@ -224,6 +245,7 @@ class PlanVc: UIViewController {
         contrainerView.addSubview(emptyImage)
         contrainerView.addSubview(saveButton)
         contrainerView.addSubview(setWorkButton)
+        contrainerView.addSubview(editButton)
         
         
         configureNavigationBar()
@@ -235,9 +257,29 @@ class PlanVc: UIViewController {
         
         
         getDataDayOffPlan()
+        getListShiftTime()
         
-        
+        slideVC.delegate = self
     }
+    
+    
+    private func getListShiftTime(){
+        spiner.show(in: view)
+        shiftTimeVm.getAllShiftTime { (res) in
+            switch res {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    self.shiftTime = data
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.spiner.dismiss()
+            }
+        }
+    }
+    
+    
     
     //MARK: - Shadow
     override func viewDidLayoutSubviews() {
@@ -246,8 +288,30 @@ class PlanVc: UIViewController {
         contrainerView.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 1, height: 1), radius: 5, scale: true)
     }
     
+    //MARK: - Show modal
+    @objc
+    func openModal(){
+        var dataShifts:[CustomList] = []
+        
+        for item in shiftTime {
+            if let dataList = listShift {
+                for d in dataList {
+                    print(d)
+                }
+            }
+            
+            let data: CustomList = CustomList(id: item.id_shift_time, name: item.label_data, selected: false)
+            dataShifts.append(data)
+        }
+        
+        slideVC.shifts = dataShifts
+        slideVC.modalPresentationStyle = .custom
+        slideVC.transitioningDelegate = self
+        self.present(slideVC, animated: true, completion: nil)
+    }
     
-    //MARK:- Get day off plan
+    
+        //MARK:- Get day off plan
     func getDataDayOffPlan(){
         
         guard let data = dayOffPlanData else {return}
@@ -255,12 +319,20 @@ class PlanVc: UIViewController {
         switch data.workingStatus {
         case "full time":
             self.lableStatusDriver.text = "Full Time"
+            editButton.isHidden = true
+            setWorkButton.isHidden = false
         case "part time":
             self.lableStatusDriver.text = "Part Time"
+            editButton.isHidden = false
+            setWorkButton.isHidden = true
         case "freelance":
             self.lableStatusDriver.text = "Freelance"
+            editButton.isHidden = false
+            setWorkButton.isHidden = true
         default:
             self.lableStatusDriver.text = data.workingStatus
+            editButton.isHidden = true
+            setWorkButton.isHidden = false
         }
         
         if data.dayOfStatusPlan == nil {
@@ -349,6 +421,8 @@ class PlanVc: UIViewController {
         saveButton.anchor(top: tableView.bottomAnchor, left: contrainerView.leftAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, width: 150, height: 40)
         
         setWorkButton.anchor(top: tableView.bottomAnchor, left: saveButton.rightAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 40)
+        
+        editButton.anchor(top: tableView.bottomAnchor, left: saveButton.rightAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 40)
         
         emptyImage.centerYAnchor.constraint(equalTo: contrainerView.centerYAnchor).isActive = true
         emptyImage.centerXAnchor.constraint(equalTo: contrainerView.centerXAnchor).isActive = true
@@ -1022,6 +1096,9 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         let color1: UIColor = .black
         let color2: UIColor = .black
         
+        let bgColor1: UIColor = UIColor(named: "colorGray")!
+        let bgColor2: UIColor = UIColor(named: "colorYellow")!
+        
         //MARK: - Week 1
         if week1 {
             let dataWeek = dayOffPlan["1"] as! [String: Any]
@@ -1029,12 +1106,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Sun":
                 if dataWeek["Sunday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1042,12 +1119,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Mon":
                 if dataWeek["Monday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Monday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1055,12 +1132,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Tue":
                 if dataWeek["Tuesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1068,12 +1145,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Wed":
                 if dataWeek["Wednesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1081,12 +1158,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Thu":
                 if dataWeek["Thursday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1094,12 +1171,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Fri":
                 if dataWeek["Friday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Friday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1107,12 +1184,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             default:
                 if dataWeek["Saturday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1128,12 +1205,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Sun":
                 if dataWeek["Sunday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1141,12 +1218,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Mon":
                 if dataWeek["Monday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Monday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1154,12 +1231,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Tue":
                 if dataWeek["Tuesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1167,12 +1244,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Wed":
                 if dataWeek["Wednesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1180,12 +1257,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Thu":
                 if dataWeek["Thursday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1193,12 +1270,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Fri":
                 if dataWeek["Friday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Friday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1206,12 +1283,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             default:
                 if dataWeek["Saturday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1226,12 +1303,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Sun":
                 if dataWeek["Sunday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1239,12 +1316,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Mon":
                 if dataWeek["Monday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Monday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1252,12 +1329,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Tue":
                 if dataWeek["Tuesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1265,12 +1342,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Wed":
                 if dataWeek["Wednesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1278,12 +1355,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Thu":
                 if dataWeek["Thursday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1291,12 +1368,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Fri":
                 if dataWeek["Friday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Friday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1304,12 +1381,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             default:
                 if dataWeek["Saturday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1324,12 +1401,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Sun":
                 if dataWeek["Sunday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1337,12 +1414,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Mon":
                 if dataWeek["Monday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Monday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1350,12 +1427,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Tue":
                 if dataWeek["Tuesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1363,12 +1440,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Wed":
                 if dataWeek["Wednesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1376,12 +1453,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Thu":
                 if dataWeek["Thursday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1389,12 +1466,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Fri":
                 if dataWeek["Friday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Friday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1402,12 +1479,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             default:
                 if dataWeek["Saturday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1422,12 +1499,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Sun":
                 if dataWeek["Sunday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1435,12 +1512,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Mon":
                 if dataWeek["Monday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Monday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1448,12 +1525,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Tue":
                 if dataWeek["Tuesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1461,12 +1538,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Wed":
                 if dataWeek["Wednesday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1474,12 +1551,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Thu":
                 if dataWeek["Thursday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1487,12 +1564,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             case "Fri":
                 if dataWeek["Friday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Friday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1500,12 +1577,12 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
             default:
                 if dataWeek["Saturday"] as? [Int] != nil {
                     let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                    cell.container2.backgroundColor = UIColor(named: "colorYellow")
+                    cell.container2.backgroundColor = bgColor1
                     cell.statusLable.text = "\(array?.count ?? 0) Shift"
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
-                    cell.container2.backgroundColor = UIColor(named: "colorGray")
+                    cell.container2.backgroundColor = bgColor2
                     cell.statusLable.text = "Day Off"
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
@@ -1526,4 +1603,64 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
 
         btnTouch(tanggal: date, day: dayName, index: i)
     }
+}
+
+@available(iOS 13.0, *)
+extension PlanVc: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        PresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+@available(iOS 13.0, *)
+extension PlanVc: SelectShiftDelegate {
+    func onSelectShift(_ vm: SelectShift, idShift: [Int]) {
+        guard let selectedWeek = selectedWeek, let selectedDay = selectedDay else {
+            return
+        }
+        listShift = idShift
+        let newData:[String: Any] = dayOffPlan
+        var dataSelected = newData["\(selectedWeek)"] as! [String: Any]
+        dataSelected["\(selectedDay)"] = idShift
+        dayOffPlan["\(selectedWeek)"] = dataSelected
+        
+        if listShift == nil {
+            tableView.isHidden = true
+            emptyImage.isHidden = false
+            setWorkButton.setTitle("Set Work Day", for: .normal)
+        }else{
+            tableView.isHidden = false
+            emptyImage.isHidden = true
+            tableView.reloadData()
+            setWorkButton.setTitle("Set To DayOff", for: .normal)
+        }
+        
+        colectionView.reloadData()
+    }
+    
+    func onDayOff(_ vm: SelectShift) {
+        guard let selectedWeek = selectedWeek, let selectedDay = selectedDay else {
+            return
+        }
+        listShift = nil
+        let newData:[String: Any] = dayOffPlan
+        var dataSelected = newData["\(selectedWeek)"] as! [String: Any]
+        dataSelected["\(selectedDay)"] = NSNull()
+        dayOffPlan["\(selectedWeek)"] = dataSelected
+        
+        if listShift == nil {
+            tableView.isHidden = true
+            emptyImage.isHidden = false
+            setWorkButton.setTitle("Set Work Day", for: .normal)
+        }else{
+            tableView.isHidden = false
+            emptyImage.isHidden = true
+            tableView.reloadData()
+            setWorkButton.setTitle("Set To DayOff", for: .normal)
+        }
+        
+        colectionView.reloadData()
+    }
+    
+    
 }

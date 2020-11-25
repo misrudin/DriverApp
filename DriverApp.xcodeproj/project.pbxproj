@@ -65,6 +65,10 @@
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
+		B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D58D256E00DE0056D867 /* SelectShift.swift */; };
+		B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D58E256E00DE0056D867 /* SelectShift.xib */; };
+		B3B9D593256E07260056D867 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D592256E07260056D867 /* PresentationController.swift */; };
+		B3B9D596256E107A0056D867 /* ShiftTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D595256E107A0056D867 /* ShiftTimeCell.swift */; };
 		B3DE97982555364400A30892 /* DayOffVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97972555364400A30892 /* DayOffVc.swift */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
@@ -136,6 +140,10 @@
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
+		B3B9D58D256E00DE0056D867 /* SelectShift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectShift.swift; sourceTree = "<group>"; };
+		B3B9D58E256E00DE0056D867 /* SelectShift.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectShift.xib; sourceTree = "<group>"; };
+		B3B9D592256E07260056D867 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
+		B3B9D595256E107A0056D867 /* ShiftTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTimeCell.swift; sourceTree = "<group>"; };
 		B3DE97972555364400A30892 /* DayOffVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffVc.swift; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
@@ -191,6 +199,7 @@
 		B32A388F25383674000EFBB6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B3B9D58C256E00C20056D867 /* Shift */,
 				B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */,
 				B3544F25253D572700B6A001 /* CardViewController.swift */,
 				B32944CD254205330040E90C /* NoteCell.swift */,
@@ -199,6 +208,7 @@
 				B328BB9A2550168C00FACA03 /* ActionCell.swift */,
 				B3DE97A22555611B00A30892 /* ShiftCell.swift */,
 				B37431F4256219FC0010E0E4 /* PlanCell.swift */,
+				B3B9D592256E07260056D867 /* PresentationController.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -375,6 +385,16 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		B3B9D58C256E00C20056D867 /* Shift */ = {
+			isa = PBXGroup;
+			children = (
+				B3B9D58D256E00DE0056D867 /* SelectShift.swift */,
+				B3B9D58E256E00DE0056D867 /* SelectShift.xib */,
+				B3B9D595256E107A0056D867 /* ShiftTimeCell.swift */,
+			);
+			path = Shift;
+			sourceTree = "<group>";
+		};
 		B3DE97962555360000A30892 /* DayOffScheduling */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,6 +507,7 @@
 			files = (
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
+				B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */,
 				B3530928255A55DC00B68347 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -600,7 +621,9 @@
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
 				B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */,
 				B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */,
+				B3B9D593256E07260056D867 /* PresentationController.swift in Sources */,
 				B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */,
+				B3B9D596256E107A0056D867 /* ShiftTimeCell.swift in Sources */,
 				B3EC89A0256B94AC00D1618D /* ForgotView.swift in Sources */,
 				B32407FB25677A6D00BFF72D /* EditEmail.swift in Sources */,
 				B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */,
@@ -633,6 +656,7 @@
 				B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */,
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
 				B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */,
+				B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */,
 				B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */,
 				B354B11B253B7B3600B5798B /* OrderModel.swift in Sources */,
 				B32944D1254213520040E90C /* EditProfileVc.swift in Sources */,
