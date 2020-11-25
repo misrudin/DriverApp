@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ForgotView" customModule="DriverApp" customModuleProvider="target">
+            <connections>
+                <outlet property="email" destination="Fou-Vb-5t7" id="TZP-7l-UzT"/>
+                <outlet property="line" destination="i5M-Pr-FkT" id="s86-Vq-HPe"/>
+                <outlet property="subTitlw" destination="XfP-FX-fFU" id="wND-KB-fpr"/>
+                <outlet property="submit" destination="EOU-j5-ryb" id="m5I-Uk-swO"/>
+                <outlet property="titleLable" destination="fIk-my-Gx9" id="GBn-OG-TJE"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="283"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a4c-fn-4gb">
+                    <rect key="frame" x="156" y="16" width="103" height="5"/>
+                    <color key="backgroundColor" name="grayKasumi2"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="5" id="3km-lE-u3q"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="5" id="uHM-ML-vVK"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot your password ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fIk-my-Gx9">
+                    <rect key="frame" x="16" y="37" width="382" height="26.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                    <color key="textColor" name="darkKasumi"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter your email address and we will share a link to create a new password" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XfP-FX-fFU">
+                    <rect key="frame" x="16" y="68.5" width="382" height="38.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" name="grayKasumi2"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Fou-Vb-5t7">
+                    <rect key="frame" x="16" y="137" width="382" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="fwK-qV-uzr"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EOU-j5-ryb">
+                    <rect key="frame" x="16" y="202" width="382" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="Dnz-yd-nIT"/>
+                    </constraints>
+                    <state key="normal" title="Submit"/>
+                </button>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="Fou-Vb-5t7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="6ll-zF-QOs"/>
+                <constraint firstItem="EOU-j5-ryb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="IE4-bp-mlv"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="XfP-FX-fFU" secondAttribute="trailing" constant="16" id="IuF-5C-vva"/>
+                <constraint firstItem="Fou-Vb-5t7" firstAttribute="top" secondItem="XfP-FX-fFU" secondAttribute="bottom" constant="30" id="Jb8-7J-kH2"/>
+                <constraint firstItem="XfP-FX-fFU" firstAttribute="top" secondItem="fIk-my-Gx9" secondAttribute="bottom" constant="5" id="PG1-4m-yzq"/>
+                <constraint firstItem="a4c-fn-4gb" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="R1G-FK-Zbc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="EOU-j5-ryb" secondAttribute="trailing" constant="16" id="VJD-aH-88h"/>
+                <constraint firstItem="a4c-fn-4gb" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="16" id="VKp-F8-dAH"/>
+                <constraint firstItem="XfP-FX-fFU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="VUb-QL-tOn"/>
+                <constraint firstItem="fIk-my-Gx9" firstAttribute="top" secondItem="a4c-fn-4gb" secondAttribute="bottom" constant="16" id="f1i-Hv-ErZ"/>
+                <constraint firstItem="fIk-my-Gx9" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="n7D-Ot-vTm"/>
+                <constraint firstItem="EOU-j5-ryb" firstAttribute="top" secondItem="Fou-Vb-5t7" secondAttribute="bottom" constant="20" id="sDh-Vj-mTs"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fIk-my-Gx9" secondAttribute="trailing" constant="16" id="vMj-rx-zXr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Fou-Vb-5t7" secondAttribute="trailing" constant="16" id="wby-6V-rbg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="95.652173913043484" y="249.44196428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <namedColor name="darkKasumi">
+            <color red="0.23499999940395355" green="0.23499999940395355" blue="0.23499999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grayKasumi2">
+            <color red="0.63099998235702515" green="0.63099998235702515" blue="0.63099998235702515" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

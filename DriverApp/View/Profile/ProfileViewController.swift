@@ -303,45 +303,7 @@ class ProfileViewController: UIViewController {
     }
     
     
-    //MARK: - Rest time
-    @objc
-    func didTapRest(){
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
-            print("No user data")
-            return
-        }
-        let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
-            let data: CheckDriver = CheckDriver(code_driver: codeDriver)
-            self?.spiner.show(in: (self?.view)!)
-            self?.restNow(data: data)
-        }
-        
-        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        Helpers().showAlert(view: self, message: "Start rest now ?", customTitle: "Are you sure", customAction1: action1, customAction2: action2)
-    }
-    
-    override var preferredStatusBarStyle: UIStatusBarStyle{
-        return .lightContent
-    }
-    
-    private func restNow(data: CheckDriver){
-        inoutVm.restTimeDriver(data: data) {[weak self] (res) in
-            switch res {
-            case .failure(let err):
-                print(err)
-                Helpers().showAlert(view: self!, message: "Something when wrong !")
-                self?.spiner.dismiss()
-            case .success(let oke):
-                DispatchQueue.main.async {
-                    if oke == true {
-                        self?.dismiss(animated: true, completion: nil)
-                    }
-                    self?.spiner.dismiss()
-                }
-            }
-        }
-    }
+
     
     
     //MARK: - Configure layout

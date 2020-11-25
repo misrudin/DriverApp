@@ -69,6 +69,8 @@
 		B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D58E256E00DE0056D867 /* SelectShift.xib */; };
 		B3B9D593256E07260056D867 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D592256E07260056D867 /* PresentationController.swift */; };
 		B3B9D596256E107A0056D867 /* ShiftTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D595256E107A0056D867 /* ShiftTimeCell.swift */; };
+		B3B9D59B256E41910056D867 /* ForgotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D599256E41910056D867 /* ForgotView.swift */; };
+		B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D59A256E41910056D867 /* ForgotView.xib */; };
 		B3DE97982555364400A30892 /* DayOffVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97972555364400A30892 /* DayOffVc.swift */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
@@ -77,7 +79,6 @@
 		B3DFFD86256D02E000B3C2D0 /* ShiftTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DFFD85256D02E000B3C2D0 /* ShiftTimeViewModel.swift */; };
 		B3EC8985256B5E3C00D1618D /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8984256B5E3C00D1618D /* Reusable.swift */; };
 		B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8988256B5ECB00D1618D /* Constraint.swift */; };
-		B3EC89A0256B94AC00D1618D /* ForgotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC899F256B94AC00D1618D /* ForgotView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -144,6 +145,8 @@
 		B3B9D58E256E00DE0056D867 /* SelectShift.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectShift.xib; sourceTree = "<group>"; };
 		B3B9D592256E07260056D867 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
 		B3B9D595256E107A0056D867 /* ShiftTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTimeCell.swift; sourceTree = "<group>"; };
+		B3B9D599256E41910056D867 /* ForgotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotView.swift; sourceTree = "<group>"; };
+		B3B9D59A256E41910056D867 /* ForgotView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgotView.xib; sourceTree = "<group>"; };
 		B3DE97972555364400A30892 /* DayOffVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffVc.swift; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
@@ -170,7 +173,6 @@
 		B3EC899B256B62B800D1618D /* Montserrat-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Light.ttf"; path = "../../../../../../Users/indooffice4/Downloads/Montserrat/Montserrat-Light.ttf"; sourceTree = "<group>"; };
 		B3EC899C256B62B800D1618D /* Montserrat-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-SemiBoldItalic.ttf"; path = "../../../../../../Users/indooffice4/Downloads/Montserrat/Montserrat-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
 		B3EC899D256B62B800D1618D /* Montserrat-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Montserrat-Thin.ttf"; path = "../../../../../../Users/indooffice4/Downloads/Montserrat/Montserrat-Thin.ttf"; sourceTree = "<group>"; };
-		B3EC899F256B94AC00D1618D /* ForgotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotView.swift; sourceTree = "<group>"; };
 		DA329FD1DCFDA22A52414B86 /* Pods-DriverApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverApp.release.xcconfig"; path = "Target Support Files/Pods-DriverApp/Pods-DriverApp.release.xcconfig"; sourceTree = "<group>"; };
 		F47CDD454A99F9044645D9EE /* Pods_DriverApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriverApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -251,7 +253,8 @@
 			isa = PBXGroup;
 			children = (
 				B31AF18D2539761800D693D3 /* ForgetViewController.swift */,
-				B3EC899F256B94AC00D1618D /* ForgotView.swift */,
+				B3B9D599256E41910056D867 /* ForgotView.swift */,
+				B3B9D59A256E41910056D867 /* ForgotView.xib */,
 			);
 			path = ForgetPassword;
 			sourceTree = "<group>";
@@ -505,6 +508,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
 				B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */,
@@ -624,7 +628,6 @@
 				B3B9D593256E07260056D867 /* PresentationController.swift in Sources */,
 				B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */,
 				B3B9D596256E107A0056D867 /* ShiftTimeCell.swift in Sources */,
-				B3EC89A0256B94AC00D1618D /* ForgotView.swift in Sources */,
 				B32407FB25677A6D00BFF72D /* EditEmail.swift in Sources */,
 				B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */,
 				B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */,
@@ -637,6 +640,7 @@
 				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
 				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
+				B3B9D59B256E41910056D867 /* ForgotView.swift in Sources */,
 				B32944CA2541F8710040E90C /* NoteModel.swift in Sources */,
 				B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */,
 				B35253C8253C30A900AF71DF /* MapsViewModel.swift in Sources */,

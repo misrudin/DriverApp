@@ -6,8 +6,18 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class RestViewController: UIViewController {
+    
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
+        
+        return spin
+    }()
+    
+    var inoutVm = InOutViewModel()
     
     let container: UIView = {
         let v = UIView()
@@ -24,11 +34,54 @@ class RestViewController: UIViewController {
     @objc func switchValueDidChange(sender:UISwitch!)
     {
         if (sender.isOn == true){
-            print("on")
+            on()
         }
         else{
-            print("off")
+            off()
         }
+    }
+    
+    private func on(){
+        let action1 = UIAlertAction(title: "Start", style: .default) {[weak self] (_) in
+            self?.start()
+        }
+        
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        Helpers().showAlert(view: self, message: "Start rest now ?", customTitle: "Sure", customAction1: action1, customAction2: action2)
+    }
+    
+    private func start(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        let data: CheckDriver = CheckDriver(code_driver: codeDriver)
+        restNow(data: data)
+    }
+    
+    private func restNow(data: CheckDriver){
+        spiner.show(in: view)
+        inoutVm.restTimeDriver(data: data) {[weak self] (res) in
+            switch res {
+            case .failure(let err):
+                print(err)
+                Helpers().showAlert(view: self!, message: "Something when wrong !")
+                self?.spiner.dismiss()
+            case .success(let oke):
+                DispatchQueue.main.async {
+                    if oke == true {
+                        self?.dismiss(animated: true, completion: nil)
+                    }
+                    self?.spiner.dismiss()
+                }
+            }
+        }
+    }
+    
+    private func off(){
+        print("off")
     }
     
     lazy var imageRest: UIImageView = {

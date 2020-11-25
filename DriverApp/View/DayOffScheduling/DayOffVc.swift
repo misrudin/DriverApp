@@ -49,6 +49,8 @@ class DayOffVc: UIViewController {
     var listShift: [Int]? = nil
     var dayOffPlan: DayOfParent? = nil
     
+    var profileVm = ProfileViewModel()
+    
     
     var dayOff:[String: Any]!
     
@@ -381,7 +383,34 @@ class DayOffVc: UIViewController {
         let button1 = UIBarButtonItem(image: rest, style: .plain, target: self, action: #selector(onClickRest))
         
         let button2 = UIBarButtonItem(image: chat, style: .plain, target: self, action: #selector(onClickChatButton))
+        
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
         navigationItem.leftBarButtonItems = [button1,button2]
+        
+        profileVm.cekStatusDriver(codeDriver: codeDriver) { (res) in
+            switch res {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    if data.checkinTime != nil {
+                        if data.workTime != nil {
+                            self.navigationItem.leftBarButtonItems = [button2]
+                        }else {
+                            self.navigationItem.leftBarButtonItems = [button1, button2]
+                        }
+                    }else {
+                        self.navigationItem.leftBarButtonItems = [button2]
+                    }
+                }
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.navigationItem.leftBarButtonItems = [button1,button2]
+                }
+            }
+        }
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: profile, style: .plain, target: self, action: #selector(onClickProfiile))
 

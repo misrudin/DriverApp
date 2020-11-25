@@ -12,7 +12,7 @@ struct ForgotViewModel {
     func forgotPassword(email: String, completion: @escaping (Result<Bool, Error>)-> Void){
         let dataToPost: ForgetPasswordData = ForgetPasswordData(email: email, url: Base.baseUrlResetPassword)
         
-        AF.request("\(Base.url)livetracking/driver/email/reset-password",
+        AF.request("\(Base.urlDriver)forgot/password",
                    method: .post,
                    parameters: dataToPost,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in

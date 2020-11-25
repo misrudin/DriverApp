@@ -235,11 +235,19 @@ extension LoginView{
         loginViewModel.signIn(codeDriver: codeDriver, password: password)
     }
     
-    @objc func didForgetClick(){
-        let forgetVc = ForgetViewController()
-        navigationController?.pushViewController(forgetVc, animated: true)
-        
-
+//    @objc func didForgetClick(){
+//        let forgetVc = ForgetViewController()
+//        navigationController?.pushViewController(forgetVc, animated: true)
+//
+//    }
+    
+    //MARK: - Show modal
+    @objc
+    func didForgetClick(){
+        let slideVC = ForgotView()
+        slideVC.modalPresentationStyle = .custom
+        slideVC.transitioningDelegate = self
+        self.present(slideVC, animated: true, completion: nil)
     }
 
 }
@@ -349,4 +357,11 @@ extension LoginView {
         }
     }
 
+}
+
+@available(iOS 13.0, *)
+extension LoginView: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        PresentationController(presentedViewController: presented, presenting: presenting)
+    }
 }

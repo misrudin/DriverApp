@@ -2,75 +2,116 @@
 //  ForgotView.swift
 //  DriverApp
 //
-//  Created by Indo Office4 on 23/11/20.
+//  Created by Indo Office4 on 25/11/20.
 //
 
 import UIKit
-
-protocol ForgotViewDelegate {
-    func didSendEmail(_ viewContorler: ForgotView, message: String?)
-}
+import JGProgressHUD
 
 class ForgotView: UIViewController {
     
-    var delegate: ForgotViewDelegate?
+    var hasSetPointOrigin = false
+    var pointOrigin: CGPoint?
     
-    let handleArea: UIView = {
-        let viewArea = UIView()
-        viewArea.backgroundColor = .white
-        return viewArea
-    }()
-    
-    let lineView: UIView = {
-        let line = UIView()
-        line.backgroundColor = .lightGray
-        line.layer.cornerRadius = 3
-        return line
-    }()
-    
-    
-    let orderButton: UIButton={
-        let button = UIButton()
-        button.setTitle("", for: .normal)
-        button.backgroundColor = UIColor(named: "orangeKasumi")
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
-        button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
-        return button
-    }()
-    
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "PickUp Store"
-        label.textColor = .lightGray
-        label.font = UIFont(name: "Avenir", size: 16)
+    var forgotVm = ForgotViewModel()
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading"
         
-        
-        return label
+        return spin
     }()
-    
+
+    @IBOutlet var line: UIView!
+    @IBOutlet weak var titleLable: UILabel!
+    @IBOutlet weak var subTitlw: UILabel!
+    @IBOutlet weak var email: UITextField!
+    @IBOutlet weak var submit: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
+        view.addGestureRecognizer(panGesture)
         
-        view.addSubview(handleArea)
-        handleArea.addSubview(lineView)
-        
-        view.backgroundColor = .white
-        configureLayout()
-       
+        email.becomeFirstResponder()
         
     }
     
-    
-    func configureLayout(){
-        handleArea.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 40)
-        lineView.anchor(width: 70, height: 6)
-        lineView.centerYAnchor.constraint(equalTo: handleArea.centerYAnchor).isActive = true
-        lineView.centerXAnchor.constraint(equalTo: handleArea.centerXAnchor).isActive = true
-        
+    override func viewDidLayoutSubviews() {
+        if !hasSetPointOrigin {
+            hasSetPointOrigin = true
+            pointOrigin = self.view.frame.origin
+        }
+        styleElement()
     }
     
+    @objc func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: view)
+        
+        guard translation.y >= 0 else { return }
+        
+        view.frame.origin = CGPoint(x: 0, y: self.pointOrigin!.y + translation.y)
+        
+        if sender.state == .ended {
+            let dragVelocity = sender.velocity(in: view)
+            if dragVelocity.y >= 1300 {
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.3) {
+                    self.view.frame.origin = self.pointOrigin ?? CGPoint(x: 0, y: 400)
+                }
+            }
+        }
+    }
+    
+    private func styleElement(){
+        line.layer.cornerRadius = 2
+        
+        email.layer.cornerRadius = 5
+        email.layer.borderWidth = 1
+        email.layer.borderColor = UIColor(named: "darkKasumi")?.cgColor
+        email.keyboardType = .emailAddress
+        email.autocorrectionType = .no
+        email.autocapitalizationType = .none
+        
+        submit.backgroundColor = UIColor(named: "orangeKasumi")
+        submit.setTitleColor(.white, for: .normal)
+        submit.layer.cornerRadius = 5
+        submit.addTarget(self, action: #selector(didSubmit), for: .touchUpInside)
+    }
+    
+    @objc
+    func didSubmit(){
+        email.resignFirstResponder()
+        guard let email = email.text,
+              email != ""
+              else {
+            return
+        }
+        spiner.show(in: view)
+        forgotVm.forgotPassword(email: email) { (res) in
+            switch res {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    self.showMessageToUser()
+                }
+            case .failure(_):
+                let action = UIAlertAction(title: "Try again", style: .default) {[weak self] (_) in
+                    self?.email.becomeFirstResponder()
+                }
+                Helpers().showAlert(view: self, message: "Email not found !",customAction1: action)
+                self.spiner.dismiss()
+            }
+        }
+    }
+    
+    private func showMessageToUser(){
+        let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+            self?.dismiss(animated: true, completion: nil)
+        }
+        Helpers().showAlert(view: self, message: "Please check your email !", customTitle: "Success", customAction1: action)
+    }
+
+
+
 }
