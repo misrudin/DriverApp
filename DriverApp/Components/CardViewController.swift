@@ -17,6 +17,7 @@ enum TypeDelivery {
     case start_delivery
     case pending
     case done_delivery
+    case scan
     case none
 }
 
@@ -24,7 +25,9 @@ class CardViewController: UIViewController {
     
     var delegate: CardViewControllerDelegate?
     
-    var orderData:Order? = nil
+    var orderVm = OrderViewModel()
+    
+    var orderData:NewOrderData? = nil
     var titleButton: String = ""
     var orderNo: String?
     
@@ -130,26 +133,29 @@ class CardViewController: UIViewController {
         
         view.backgroundColor = .white
         configureLayout()
-        guard
-            let origin = orderData?.storeDetail.storeName,
-            let destination = orderData?.addressUser else {
+        guard let orderNo = orderData?.order_number,
+              let user = orderData?.user_info,
+              let order = orderData?.order_detail,
+              let orderDetail = orderVm.decryptOrderDetail(data: order, OrderNo: orderNo),
+              let userInfo = orderVm.decryptUserInfo(data: user, OrderNo: orderNo) else {
             return
         }
         
-        self.storeLabel.text = origin
-        self.destinationLabel.text = destination
+        self.storeLabel.text = orderDetail.pickup_destination[0].pickup_store_name
+        self.destinationLabel.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
         
     }
     
     @objc
     func didTap(){
-        guard let statusTracking = orderData?.statusTracking else {
+        guard let statusTracking = orderData?.status_tracking else {
             return
         }
         if statusTracking == "wait for pickup" {
             delegate?.didTapButton(self, type: .start_pickup)
         }else if statusTracking == "on pickup process" {
             delegate?.didTapButton(self, type: .done_pickup)
+//            delegate?.didTapButton(self, type: .scan)
         }else if statusTracking == "waiting delivery" || statusTracking == "" {
             delegate?.didTapButton(self, type: .start_delivery)
         }else if statusTracking == "on delivery" {
@@ -188,18 +194,18 @@ class CardViewController: UIViewController {
         self.orderButton.anchor(top: self.handleArea.bottomAnchor, left: self.view.leftAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 40)
     }
     
-    func getDetailOrder(orderNo: String){
+    private func getDetailOrder(orderNo: String){
         OrderViewModel().getDetailOrder(orderNo: orderNo) {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
-                    let statusTracking = data.statusTracking
+                    let statusTracking = data.status_tracking
                     
-                    self?.orderData = data
                     if statusTracking == "wait for pickup" || statusTracking == "" {
                         self?.titleButton = "Pickup Order (\(orderNo))"
                         self?.setupDefaultButton()
                     }else if statusTracking == "on pickup process" {
+//                        self?.titleButton = "Scan Stuff"
                         self?.titleButton = "Done Pickup (\(orderNo))"
                         self?.setupDefaultButton()
                     }else if statusTracking == "waiting delivery" {

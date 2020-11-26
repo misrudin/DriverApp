@@ -59,10 +59,14 @@ struct Checkout: Decodable {
 
 
 struct DataPending: Codable {
-    let id_driver: Int
+    let code_driver: String
     let note: String
-    let id_order: Int
-    let id_shift_time: Int
+    let meta_data: MetaData
+}
+
+struct MetaData: Codable {
+    let order_number: String
+    let id_shift_time: String
 }
 
 struct DataCheckout: Codable {

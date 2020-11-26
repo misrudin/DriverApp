@@ -62,6 +62,10 @@
 		B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09AC25372F3000F1B421 /* MenuOption.swift */; };
 		B36F8CB52564BB7700B0D209 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36F8CB42564BB7700B0D209 /* Validation.swift */; };
 		B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37431F4256219FC0010E0E4 /* PlanCell.swift */; };
+		B384A3DE256F624900D237CC /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3DC256F624900D237CC /* OrderCell.swift */; };
+		B384A3DF256F624900D237CC /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B384A3DD256F624900D237CC /* OrderCell.xib */; };
+		B384A3E4256F9C2000D237CC /* ListScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3E3256F9C2000D237CC /* ListScanView.swift */; };
+		B384A3E7256F9C6700D237CC /* InputCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3E6256F9C6700D237CC /* InputCode.swift */; };
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
@@ -138,6 +142,10 @@
 		B36E09AC25372F3000F1B421 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		B36F8CB42564BB7700B0D209 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		B37431F4256219FC0010E0E4 /* PlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCell.swift; sourceTree = "<group>"; };
+		B384A3DC256F624900D237CC /* OrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
+		B384A3DD256F624900D237CC /* OrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
+		B384A3E3256F9C2000D237CC /* ListScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScanView.swift; sourceTree = "<group>"; };
+		B384A3E6256F9C6700D237CC /* InputCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCode.swift; sourceTree = "<group>"; };
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
@@ -201,6 +209,7 @@
 		B32A388F25383674000EFBB6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B384A3DB256F622400D237CC /* Order */,
 				B3B9D58C256E00C20056D867 /* Shift */,
 				B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */,
 				B3544F25253D572700B6A001 /* CardViewController.swift */,
@@ -323,6 +332,7 @@
 		B36E098A2536E47100F1B421 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B384A3E2256F9BF300D237CC /* ScanStuff */,
 				B3530944255A62F900B68347 /* ForgetPassword */,
 				B3530943255A62F100B68347 /* Register */,
 				B3530942255A62EB00B68347 /* Login */,
@@ -386,6 +396,24 @@
 				B3EC8988256B5ECB00D1618D /* Constraint.swift */,
 			);
 			path = Utils;
+			sourceTree = "<group>";
+		};
+		B384A3DB256F622400D237CC /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				B384A3DC256F624900D237CC /* OrderCell.swift */,
+				B384A3DD256F624900D237CC /* OrderCell.xib */,
+			);
+			path = Order;
+			sourceTree = "<group>";
+		};
+		B384A3E2256F9BF300D237CC /* ScanStuff */ = {
+			isa = PBXGroup;
+			children = (
+				B384A3E3256F9C2000D237CC /* ListScanView.swift */,
+				B384A3E6256F9C6700D237CC /* InputCode.swift */,
+			);
+			path = ScanStuff;
 			sourceTree = "<group>";
 		};
 		B3B9D58C256E00C20056D867 /* Shift */ = {
@@ -510,6 +538,7 @@
 			files = (
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
+				B384A3DF256F624900D237CC /* OrderCell.xib in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
 				B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */,
 				B3530928255A55DC00B68347 /* GoogleService-Info.plist in Resources */,
@@ -636,6 +665,7 @@
 				B354B121253B8B3E00B5798B /* LiveTrackingVC.swift in Sources */,
 				B33DFEBA2563A01D006AF898 /* RegisterViewModel.swift in Sources */,
 				B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */,
+				B384A3DE256F624900D237CC /* OrderCell.swift in Sources */,
 				B326FF712560F0D00067C0DE /* CheckoutNoteView.swift in Sources */,
 				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
@@ -653,6 +683,7 @@
 				B3544F1F253D3E0C00B6A001 /* ChangePasswordVC.swift in Sources */,
 				B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */,
 				B3530951255A898F00B68347 /* PreviewNoteView.swift in Sources */,
+				B384A3E4256F9C2000D237CC /* ListScanView.swift in Sources */,
 				B3530946255A631700B68347 /* RegisterView.swift in Sources */,
 				B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */,
 				B33DFEB72563A00A006AF898 /* RegisterModel.swift in Sources */,
@@ -661,6 +692,7 @@
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
 				B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */,
 				B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */,
+				B384A3E7256F9C6700D237CC /* InputCode.swift in Sources */,
 				B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */,
 				B354B11B253B7B3600B5798B /* OrderModel.swift in Sources */,
 				B32944D1254213520040E90C /* EditProfileVc.swift in Sources */,

@@ -233,6 +233,7 @@ struct ProfileViewModel {
             return bioData
         }
     
+    
     func decodeVehicle(data: String, codeDriver: String)-> VehicleData? {
             let decrypted = try! AES256.decrypt(input: data, passphrase: codeDriver)
             let data = Data(decrypted.utf8)

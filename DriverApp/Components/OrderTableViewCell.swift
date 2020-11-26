@@ -10,13 +10,25 @@ import UIKit
 @available(iOS 13.0, *)
 class OrderTableViewCell: UITableViewCell {
     
+    var orderVm = OrderViewModel()
+    
     static let id = "OrderTableViewCell"
+    
+    var orderData: NewOrderData! {
+        didSet {
+            guard let orderDetail = orderVm.decryptOrderDetail(data: orderData.order_detail, OrderNo: orderData.order_number),
+                  let userInfo = orderVm.decryptUserInfo(data: orderData.user_info, OrderNo: orderData.order_number) else {
+                return
+            }
+            
+            
+        }
+    }
     
     lazy var containerView: UIView = {
         let container = UIView()
         container.backgroundColor = UIColor(named: "grayKasumi")
         container.layer.cornerRadius = 5
-//        container.addSubview(backgroundV)
         container.addSubview(labelOrder)
         container.addSubview(imagePin)
         container.addSubview(labelAdres)

@@ -44,7 +44,7 @@ class LiveTrackingVC: UIViewController {
     
 //    order
     
-    var order:Order? = nil
+    var order:NewOrderData? = nil
     var mapsViewModel = MapsViewModel()
     var orderViewModel = OrderViewModel()
     var inOutVm = InOutViewModel()
@@ -86,14 +86,21 @@ class LiveTrackingVC: UIViewController {
         
         mapsViewModel.delegate = self
         
-        
-        guard let orderDestinationLat = order?.latitude,
-              let orderDestinationLng = order?.longitude,
-              let storeDestinationLat = order?.storeDetail.latitude,
-              let storeDestinationLng = order?.storeDetail.longitude,
-              let statusOrder = order?.statusTracking else {
+        guard let orderDetailString = order?.order_detail,
+              let userInfoString = order?.user_info,
+              let orderNo = order?.order_number,
+              let userDetail = orderViewModel.decryptUserInfo(data: userInfoString, OrderNo: orderNo),
+              let orderDetail = orderViewModel.decryptOrderDetail(data: orderDetailString, OrderNo: orderNo),
+              let statusOrder = order?.status_tracking else {
+            
             return
         }
+        
+        let orderDestinationLat = orderDetail.delivery_destination.lat
+        let orderDestinationLng =  orderDetail.delivery_destination.long
+        let storeDestinationLat = orderDetail.pickup_destination[0].lat
+        let storeDestinationLng = orderDetail.pickup_destination[0].long
+      
         
         if statusOrder == "wait for pickup" || statusOrder == "on pickup process" {
             destination = Destination(latitude: CLLocationDegrees(storeDestinationLat)!, longitude: CLLocationDegrees(storeDestinationLng)!)
@@ -140,7 +147,6 @@ class LiveTrackingVC: UIViewController {
                         self.isCheckin = true
                     }
                 }
-                print(response)
             case .failure(let err):
                 self.spiner.dismiss()
                 print(err.localizedDescription)
@@ -152,7 +158,7 @@ class LiveTrackingVC: UIViewController {
     
     
     func setupCard() {
-        guard let orderNo = order?.orderNumber else {
+        guard let orderNo = order?.order_number else {
             return
         }
         cardViewController = CardViewController()
@@ -377,7 +383,7 @@ extension LiveTrackingVC {
 @available(iOS 13.0, *)
 extension LiveTrackingVC: CardViewControllerDelegate {
     func didTapButton(_ viewModel: CardViewController, type: TypeDelivery) {
-        guard let orderNo = order?.orderNumber else {
+        guard let orderNo = order?.order_number else {
             return
         }
         switch type {
@@ -448,12 +454,15 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             }
         case .none:
             print("Status Undefined")
+        case .scan:
+            let vc = ListScanView()
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     
     private func handleResult(result: Result<Bool, Error>){
-        guard let orderNo = order?.orderNumber else {
+        guard let orderNo = order?.order_number else {
             return
         }
         switch result {
@@ -474,7 +483,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
     }
     
     private func donePickupOrder(){
-        guard let orderNo = order?.orderNumber else {
+        guard let orderNo = order?.order_number else {
             return
         }
         let data = Delivery(status: "pickup", order_number: orderNo, type: "done")

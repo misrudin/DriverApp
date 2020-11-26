@@ -1054,7 +1054,7 @@ class PlanVc: UIViewController {
 }
 
 
-
+//MARK: - table view
 
 @available(iOS 13.0, *)
 extension PlanVc: UITableViewDelegate, UITableViewDataSource {
@@ -1068,7 +1068,9 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ShiftCell.id,for: indexPath) as! ShiftCell
         if let data = listShift {
-            cell.valueLabel = data[indexPath.row]
+            let filtered = shiftTime.filter({$0.id_shift_time == data[indexPath.row]})
+            cell.shiftTime = filtered[0]
+            print(filtered)
         }
         return cell
     }

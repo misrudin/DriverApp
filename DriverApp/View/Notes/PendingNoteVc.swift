@@ -11,7 +11,7 @@ import JGProgressHUD
 @available(iOS 13.0, *)
 class PendingNoteVc: UIViewController {
     
-    var orderData: Order?
+    var orderData: NewOrderData?
     
     let noteViewModel = NoteViewModel()
     
@@ -112,15 +112,16 @@ extension PendingNoteVc {
     @objc
     func didTapSubmit(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let idDriver = userData["idDriver"] as? Int,
-              let idOrder = orderData?.idOrder,
-              let note = noteInput.text,
-              let idShift = orderData?.idShiftTime, note.count > 5 else {
+              let codeDriver = userData["codeDriver"] as? String,
+              let orderNo = orderData?.order_number,
+              let idShiftTime = orderData?.id_shift_time,
+              let note = noteInput.text, note.count > 5 else {
             print("No user data")
             return
         }
         
-        let data = DataPending(id_driver: idDriver, note: note, id_order: idOrder, id_shift_time: idShift)
+        let metaData = MetaData(order_number: orderNo, id_shift_time: String(idShiftTime))
+        let data = DataPending(code_driver: codeDriver, note: note, meta_data: metaData)
         spiner.show(in: view)
         noteViewModel.pendingNote(data: data) { (result) in
             switch result {

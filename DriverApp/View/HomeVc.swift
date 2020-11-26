@@ -57,27 +57,29 @@ class HomeVc: UIViewController {
     
     
     var orderViewModel = OrderViewModel()
-    var orderData: [Order]?
+    var orderData: [NewOrderData]?
     
     lazy var refreshControl = UIRefreshControl()
     
     private let tableView: UITableView = {
        let table = UITableView()
-        table.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.id)
+        table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
+        table.backgroundColor = UIColor(named: "grayKasumi")
+        table.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         return table
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .white
         
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.frame=view.bounds
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor)
         tableView.separatorStyle = .none
-        tableView.rowHeight = 150
+        tableView.estimatedRowHeight = 150
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
@@ -185,7 +187,7 @@ class HomeVc: UIViewController {
         orderViewModel.getDataOrder(codeDriver: codeDriver) {[weak self] (res) in
             switch res {
             case .failure(let err):
-                print(err)
+                print(err.localizedDescription)
                 DispatchQueue.main.async {
                     self?.orderData = []
                     self?.tableView.reloadData()
@@ -195,7 +197,7 @@ class HomeVc: UIViewController {
                 }
             case .success(let order):
                 DispatchQueue.main.async {
-                    self?.orderData = order.data
+                    self?.orderData = order
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
@@ -281,6 +283,8 @@ class HomeVc: UIViewController {
 }
 
 
+
+//MARK: - TABLE VIEW ORDER
 @available(iOS 13.0, *)
 extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
@@ -293,11 +297,10 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: OrderTableViewCell.id, for: indexPath) as! OrderTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: OrderCell.id, for: indexPath) as! OrderCell
         
-        if let orderData = orderData {
-            cell.labelOrder.text = "Order Number: \(orderData[indexPath.row].orderNumber)"
-            cell.labelAdresDetail.text = "\(orderData[indexPath.row].addressUser)"
+        if let order = orderData {
+            cell.orderData = order[indexPath.row]
         }
         
         
@@ -306,7 +309,6 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // munculkan halaman maps untuk live tracking wkwkw edan bos
         tableView.deselectRow(at: indexPath, animated: true)
         if let orderData = orderData {
             let order = orderData[indexPath.row]

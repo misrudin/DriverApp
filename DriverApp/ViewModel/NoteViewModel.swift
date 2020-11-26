@@ -12,9 +12,9 @@ import Alamofire
 
 
 struct NoteViewModel {
-    
+    //MARK: - GET DATA NOTE CHECKOUT DRIVER
     func getDataNoteCheckout(codeDriver: String, completion: @escaping (Result<NotesCheckout,Error>)-> Void){
-        AF.request("\(Base.url)note/driver/checkout/\(codeDriver)/1/10",headers: Base.headers).response { response in
+        AF.request("\(Base.urlDriver)detail/note/checkout/\(codeDriver)/1/10",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if let data = response.data {
@@ -32,8 +32,9 @@ struct NoteViewModel {
     }
     
     
+    //MARK: GET DATA NOTE PENDING DRIVER
     func getDataNotePending(codeDriver: String, completion: @escaping (Result<NotesPending,Error>)->Void){
-        AF.request("\(Base.url)note/driver/pending/\(codeDriver)/1/10",headers: Base.headers).response { response in
+        AF.request("\(Base.urlDriver)detail​/note​/pending​/\(codeDriver)/1/10",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if let data = response.data {
@@ -49,8 +50,10 @@ struct NoteViewModel {
         }
     }
     
+    
+    //MARK: - SEND PENDING NOTE
     func pendingNote(data: DataPending, completion: @escaping (Result<Bool,Error>)-> Void){
-        AF.request("\(Base.url)note/pending",
+        AF.request("\(Base.urlDriver)note/pending",
                    method: .post,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
@@ -68,8 +71,10 @@ struct NoteViewModel {
                    })
     }
     
+    
+    //MARK: - SEND CHECKOUT NOTE
     func checkoutNote(data: DataCheckout, completion: @escaping (Result<Bool,Error>)-> Void){
-        AF.request("\(Base.url)note/checkout",
+        AF.request("\(Base.urlDriver)note/checkout",
                    method: .post,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
@@ -88,58 +93,44 @@ struct NoteViewModel {
     
     
     
-    //MARK - delete pending note
-    func deletePendingNote(id: Int, completion: @escaping (Result<Bool,Error>)-> Void){
+    //MARK: - TEMP DELETE NOTE
+    func deleteNote(id: Int, completion: @escaping (Result<Bool,Error>)-> Void){
         let dataToPost:[String:Int] = ["id_note":id]
-
-        AF.request("\(Base.url)note/driver/pending",
-                   method: .patch,
+        
+        AF.request("\(Base.urlDriver)note/delete",
+                   method: .delete,
                    parameters: dataToPost,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
                     debugPrint(response)
                     switch response.result {
                     case .success:
-                        completion(.success(true))
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        } else {
+                            completion(.failure(DataError.failedToDeleteNote))
+                        }
                     case.failure(let error):
-                       print(error)
                         completion(.failure(error))
                     }
-
-                   })
-    }
-    
-    //    MARK - delete pending note
-    func deleteCheckoutNote(id: Int, completion: @escaping (Result<Bool,Error>)-> Void){
-        let dataToPost:[String:Int] = ["id_note_driver_chcekout":id]
-
-        AF.request("\(Base.url)note/driver/checkout",
-                   method: .patch,
-                   parameters: dataToPost,
-                   encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
-                    debugPrint(response)
-                    switch response.result {
-                    case .success:
-                        completion(.success(true))
-                    case.failure(let error):
-                       print(error)
-                        completion(.failure(error))
-                    }
-
+                    
                    })
     }
     
     
-    //MARK - Edit Note Pending
+    //MARK: - EDIT PENDING NOTE
     func editNotePending(id: Int, note: String, completion: @escaping (Result<Bool,Error>)-> Void){
         let dataToPost = DataEditPending(id_note: id, note: note)
-        AF.request("\(Base.url)note/pending",
+        AF.request("\(Base.urlDriver)note/pending",
                    method: .patch,
                    parameters: dataToPost,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
-                    debugPrint(response)
                     switch response.result {
                     case .success:
-                        completion(.success(true))
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(DataError.failedToSendingNote))
+                        }
                     case.failure(let error):
                        print(error)
                         completion(.failure(error))
@@ -148,17 +139,20 @@ struct NoteViewModel {
                    })
     }
     
-    //MARK - Edit Note Checkout
+    //MARK: - EDIT CHECKOUT NOTE
     func editNoteCheckout(id: Int, note: String, completion: @escaping (Result<Bool,Error>)-> Void){
         let dataToPost = DataEditCheckout(id_note_driver_chcekout: id, note: note)
-        AF.request("\(Base.url)note/checkout",
+        AF.request("\(Base.urlDriver)note/checkout",
                    method: .patch,
                    parameters: dataToPost,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
-                    debugPrint(response)
                     switch response.result {
                     case .success:
-                        completion(.success(true))
+                        if response.response?.statusCode == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(DataError.failedToSendingNote))
+                        }
                     case.failure(let error):
                        print(error)
                         completion(.failure(error))
@@ -167,7 +161,8 @@ struct NoteViewModel {
                    })
     }
     
-    //    Parese data order
+    //MARK: - PARSE DATA
+    // PARSE NOTE CHECKOUT
     func parseJson(data: Data) -> NotesCheckout?{
         do{
             let decodedData = try JSONDecoder().decode(NotesCheckout.self, from: data)
@@ -178,7 +173,7 @@ struct NoteViewModel {
         }
     }
     
-    //    Parese data history
+    //   PARSE NOTE PENDING
     func parseHistory(data: Data) -> NotesPending?{
         do{
             let decodedData = try JSONDecoder().decode(NotesPending.self, from: data)
@@ -188,10 +183,11 @@ struct NoteViewModel {
         }
     }
     
-    
+    //MARK: - ENUM - ERROR
     enum DataError: Error{
         case failedToFetch
         case failedToSendingNote
+        case failedToDeleteNote
     }
     
     

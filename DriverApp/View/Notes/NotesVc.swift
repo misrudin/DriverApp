@@ -282,25 +282,25 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
             handler: {[weak self](action, view, completion) in
                    completion(true)
                 if self?.display == "CHECKOUT" {
-                    self?.noteViewModel.deleteCheckoutNote(id: id) {[weak self] (response) in
+                    self?.noteViewModel.deleteNote(id: id, completion: { (response) in
                         switch response {
                         case .success(_):
                             self?.checkoutData.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        case .failure(let error):
-                            print(error)
+                        case .failure(_):
+                            Helpers().showAlert(view: self!, message: "Failed to delete note !")
                         }
-                    }
+                    })
                 }else {
-                    self?.noteViewModel.deletePendingNote(id: id) {[weak self] (response) in
+                    self?.noteViewModel.deleteNote(id: id, completion: {[weak self] (response) in
                         switch response {
                         case .success(_):
                             self?.pendingData.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        case .failure(let error):
-                            print(error)
+                        case .failure(_):
+                            Helpers().showAlert(view: self!, message: "Failed to delete note !")
                         }
-                    }
+                    })
                 }
            })
 

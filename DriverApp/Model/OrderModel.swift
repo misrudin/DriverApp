@@ -15,14 +15,6 @@ struct OrderData: Decodable {
     }
 }
 
-struct OrderDetail: Decodable {
-    let data: Order
-    
-    enum CodingKeys: String, CodingKey {
-        case data = "data"
-    }
-}
-
 struct Order: Decodable {
     let idOrder: Int
     let orderNumber: String
@@ -142,4 +134,128 @@ struct Delivery: Codable {
 struct DeleteHistory: Codable {
     let order_number: String
     let code_driver: String
+}
+
+
+//MARK: - NEW API MODELS
+
+//Parent
+struct NewOrder: Decodable {
+    let data: [NewOrderData]
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
+}
+
+struct OrderDetail: Decodable {
+    let data: NewOrderData
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
+}
+
+//before decript
+struct NewOrderData: Decodable {
+    let user_info: String
+    let order_detail: String
+    let status_tracking: String
+    let order_number: String
+    let code_driver: String
+    let active_date: String
+    let id_order: Int
+    let id_shift_time: Int
+//    let distance: Double
+    
+    enum CodingKeys: String, CodingKey {
+        case user_info
+        case order_detail
+        case status_tracking
+        case order_number
+        case code_driver
+        case active_date
+        case id_order
+        case id_shift_time
+//        case distance
+    }
+}
+
+
+//user info decript
+struct NewUserInfo: Decodable {
+    let first_name: String
+    let last_name: String
+    let postal_code: String
+    let prefecture: String
+    let chome: String
+    let kana_after_address: String
+    let address: String
+    let phone_number: String
+    
+    enum CodingKeys: String, CodingKey {
+        case first_name
+        case last_name
+        case postal_code
+        case prefecture
+        case chome
+        case kana_after_address
+        case address
+        case phone_number
+    }
+}
+
+
+//order detail decript
+struct NewOrderDetail: Decodable {
+    let delivery_destination: DeliveryDestination
+    let pickup_destination: [PickupDestination]
+    
+    enum CodingKeys: String, CodingKey {
+        case delivery_destination
+        case pickup_destination
+    }
+}
+
+
+//delivery destination
+struct DeliveryDestination: Decodable {
+    let lat: String
+    let long: String
+    
+    enum CodingKeys: String, CodingKey {
+        case lat
+        case long
+    }
+}
+
+
+//pickup destination
+struct PickupDestination: Decodable {
+    let pickup_store_name: String
+    let lat: String
+    let long: String
+    let pickup_item: [PickupItem]
+    
+    enum CodingKeys: String, CodingKey {
+        case pickup_store_name
+        case lat
+        case long
+        case pickup_item
+    }
+}
+
+
+
+// item pickup
+struct PickupItem: Decodable {
+    let item_name: String
+    let qty: String
+    let qr_code_raw: String
+    
+    enum CodingKeys: String, CodingKey {
+        case item_name
+        case qty
+        case qr_code_raw
+    }
 }

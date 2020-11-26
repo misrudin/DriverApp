@@ -49,6 +49,10 @@ class DayOffVc: UIViewController {
     var listShift: [Int]? = nil
     var dayOffPlan: DayOfParent? = nil
     
+    var shiftTimeVm = ShiftTimeViewModel()
+    
+    var shiftTime = [ShiftTime]()
+    
     var profileVm = ProfileViewModel()
     
     
@@ -149,7 +153,24 @@ class DayOffVc: UIViewController {
         configureNavigationBar()
         
         getData()
+        getListShiftTime()
         
+    }
+    
+    private func getListShiftTime(){
+        spiner.show(in: view)
+        shiftTimeVm.getAllShiftTime { (res) in
+            switch res {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    self.shiftTime = data
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.spiner.dismiss()
+            }
+        }
     }
     
     private func getData(){
@@ -247,92 +268,92 @@ class DayOffVc: UIViewController {
         if week1 {
             switch day {
             case "Sun":
-                listShift = dataDayOff.week1.Sun
+                listShift = dataDayOff != nil ? dataDayOff.week1.Sun : nil
             case "Mon":
-                listShift = dataDayOff.week1.Mon
+                listShift = dataDayOff != nil ? dataDayOff.week1.Mon : nil
             case "Tue":
-                listShift = dataDayOff.week1.Tue
+                listShift = dataDayOff != nil ? dataDayOff.week1.Tue : nil
             case "Wed":
-                listShift = dataDayOff.week1.Wed
+                listShift = dataDayOff != nil ? dataDayOff.week1.Wed : nil
             case "Thu":
-                listShift = dataDayOff.week1.Thu
+                listShift = dataDayOff != nil ? dataDayOff.week1.Thu : nil
             case "Fri":
-                listShift = dataDayOff.week1.Fri
+                listShift = dataDayOff != nil ? dataDayOff.week1.Fri : nil
             default:
-                listShift = dataDayOff.week1.Sat
+                listShift = dataDayOff != nil ? dataDayOff.week1.Sat : nil
             }
         }
         if week2 {
             switch day {
             case "Sun":
-                listShift = dataDayOff.week2.Sun
+                listShift = dataDayOff != nil ? dataDayOff.week2.Sun : nil
             case "Mon":
-                listShift = dataDayOff.week2.Mon
+                listShift = dataDayOff != nil ? dataDayOff.week2.Mon : nil
             case "Tue":
-                listShift = dataDayOff.week2.Tue
+                listShift = dataDayOff != nil ? dataDayOff.week2.Tue : nil
             case "Wed":
-                listShift = dataDayOff.week2.Wed
+                listShift = dataDayOff != nil ? dataDayOff.week2.Wed : nil
             case "Thu":
-                listShift = dataDayOff.week2.Thu
+                listShift = dataDayOff != nil ? dataDayOff.week2.Thu : nil
             case "Fri":
-                listShift = dataDayOff.week2.Fri
+                listShift = dataDayOff != nil ? dataDayOff.week2.Fri : nil
             default:
-                listShift = dataDayOff.week2.Sat
+                listShift = dataDayOff != nil ? dataDayOff.week2.Sat : nil
             }
         }
         if week3 {
             switch day {
             case "Sun":
-                listShift = dataDayOff.week3.Sun
+                listShift = dataDayOff != nil ? dataDayOff.week3.Sun : nil
             case "Mon":
-                listShift = dataDayOff.week3.Mon
+                listShift = dataDayOff != nil ? dataDayOff.week3.Mon : nil
             case "Tue":
-                listShift = dataDayOff.week3.Tue
+                listShift = dataDayOff != nil ? dataDayOff.week3.Tue : nil
             case "Wed":
-                listShift = dataDayOff.week3.Wed
+                listShift = dataDayOff != nil ? dataDayOff.week3.Wed : nil
             case "Thu":
-                listShift = dataDayOff.week3.Thu
+                listShift = dataDayOff != nil ? dataDayOff.week3.Thu : nil
             case "Fri":
-                listShift = dataDayOff.week3.Fri
+                listShift = dataDayOff != nil ? dataDayOff.week3.Fri : nil
             default:
-                listShift = dataDayOff.week3.Sat
+                listShift = dataDayOff != nil ? dataDayOff.week3.Sat : nil
             }
         }
         if week4 {
             switch day {
             case "Sun":
-                listShift = dataDayOff.week4.Sun
+                listShift = dataDayOff != nil ? dataDayOff.week4.Sun : nil
             case "Mon":
-                listShift = dataDayOff.week4.Mon
+                listShift = dataDayOff != nil ? dataDayOff.week4.Mon : nil
             case "Tue":
-                listShift = dataDayOff.week4.Tue
+                listShift = dataDayOff != nil ? dataDayOff.week4.Tue : nil
             case "Wed":
-                listShift = dataDayOff.week4.Wed
+                listShift = dataDayOff != nil ? dataDayOff.week4.Wed : nil
             case "Thu":
-                listShift = dataDayOff.week4.Thu
+                listShift = dataDayOff != nil ? dataDayOff.week4.Thu : nil
             case "Fri":
-                listShift = dataDayOff.week4.Fri
+                listShift = dataDayOff != nil ? dataDayOff.week4.Fri : nil
             default:
-                listShift = dataDayOff.week4.Sat
+                listShift = dataDayOff != nil ? dataDayOff.week4.Sat : nil
             }
         }
         
         if week5 {
             switch day {
             case "Sun":
-                listShift = dataDayOff.week5.Sun
+                listShift = dataDayOff != nil ? dataDayOff.week5.Sun : nil
             case "Mon":
-                listShift = dataDayOff.week5.Mon
+                listShift = dataDayOff != nil ? dataDayOff.week5.Mon : nil
             case "Tue":
-                listShift = dataDayOff.week5.Tue
+                listShift = dataDayOff != nil ? dataDayOff.week5.Tue : nil
             case "Wed":
-                listShift = dataDayOff.week5.Wed
+                listShift = dataDayOff != nil ? dataDayOff.week5.Wed : nil
             case "Thu":
-                listShift = dataDayOff.week5.Thu
+                listShift = dataDayOff != nil ? dataDayOff.week5.Thu : nil
             case "Fri":
-                listShift = dataDayOff.week5.Fri
+                listShift = dataDayOff != nil ? dataDayOff.week5.Fri : nil
             default:
-                listShift = dataDayOff.week5.Sat
+                listShift = dataDayOff != nil ? dataDayOff.week5.Sat : nil
             }
         }
         
@@ -459,7 +480,8 @@ extension DayOffVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ShiftCell.id,for: indexPath) as! ShiftCell
         if let data = listShift {
-            cell.valueLabel = data[indexPath.row]
+            let filtered = shiftTime.filter({$0.id_shift_time == data[indexPath.row]})
+            cell.shiftTime = filtered[0]
         }
         return cell
     }

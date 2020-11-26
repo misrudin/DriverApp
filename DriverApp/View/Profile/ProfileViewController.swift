@@ -115,7 +115,7 @@ class ProfileViewController: UIViewController {
     lazy var button3:UIButton = {
         let b = UIButton()
         b.setTitle("Checkout", for: .normal)
-        b.setTitleColor(.red, for: .normal)
+        b.setTitleColor(.white, for: .normal)
         b.backgroundColor = UIColor(named: "darkKasumi")
         b.layer.cornerRadius = 5
         b.layer.masksToBounds = true
@@ -335,7 +335,7 @@ class ProfileViewController: UIViewController {
         button6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapVehicle)))
         
         
-        button3.anchor(left: containerButton.leftAnchor,bottom: button5.topAnchor, right: containerButton.rightAnchor,paddingBottom: 16, height: 16)
+        button3.anchor(left: containerButton.leftAnchor,bottom: button5.topAnchor, right: containerButton.rightAnchor,paddingBottom: 16,paddingLeft: 16,paddingRight: 16, height: 45)
         button3.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapCheckout)))
         button3.isHidden = true
         
