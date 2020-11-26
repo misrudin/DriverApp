@@ -247,7 +247,7 @@ class HomeVc: UIViewController {
                 }
             case .failure(_):
                 DispatchQueue.main.async {
-                    self.navigationItem.leftBarButtonItems = [button1,button2]
+                    self.navigationItem.leftBarButtonItems = [button2]
                 }
             }
         }

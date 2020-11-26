@@ -168,21 +168,26 @@ class DayOffVc: UIViewController {
                     self.dayOffPlan = data
                     self.spiner.dismiss()
                     self.colectionViewDayoff.reloadData()
-                    let date = Date()
-                    let dateFor = DateFormatter()
-                    dateFor.dateFormat = "dd"
-                    
-                    let dateToday = dateFor.string(from: date)
-                    let dateInt: Int = Int(dateToday)!
-                    let index: IndexPath = IndexPath(item: dateInt-1, section: 0)
-                    self.colectionViewDayoff.scrollToItem(at: index, at: .left, animated: true)
+                    self.scrollToDate()
                 }
             case .failure(let error):
                 print(error)
                 self.spiner.dismiss()
                 self.colectionViewDayoff.reloadData()
+                self.scrollToDate()
             }
         }
+    }
+    
+    private func scrollToDate(){
+        let date = Date()
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "dd"
+        
+        let dateToday = dateFor.string(from: date)
+        let dateInt: Int = Int(dateToday)!
+        let index: IndexPath = IndexPath(item: dateInt-1, section: 0)
+        colectionViewDayoff.scrollToItem(at: index, at: .left, animated: true)
     }
     
 
@@ -407,7 +412,7 @@ class DayOffVc: UIViewController {
                 }
             case .failure(_):
                 DispatchQueue.main.async {
-                    self.navigationItem.leftBarButtonItems = [button1,button2]
+                    self.navigationItem.leftBarButtonItems = [button2]
                 }
             }
         }

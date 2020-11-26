@@ -91,7 +91,7 @@ class LoginView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
-        field.text = "20110040"
+        field.text = "20110060"
         field.textColor = .white
         field.keyboardType = .numberPad
         return field
