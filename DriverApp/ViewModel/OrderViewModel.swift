@@ -19,8 +19,9 @@ struct OrderViewModel {
     var delegate: OrderViewModelDelegate?
     
 //    MARK: - GET DATA ORDER BY CODE DRIVER
-    func getDataOrder(codeDriver: String, completion: @escaping (Result<[NewOrderData], Error>)-> Void){
+    func getDataOrder(codeDriver: String, completion: @escaping (Result<[OrderListDate], Error>)-> Void){
         AF.request("\(Base.urlOrder)list/\(codeDriver)",headers: Base.headers).response { response in
+            debugPrint(response)
             switch response.result {
             case .success:
                 if response.response?.statusCode == 200 {
@@ -120,9 +121,57 @@ struct OrderViewModel {
                    })
     }
     
+    
+    //MARK: - SCANED DATA
+    //MARK: - CEK STATUS SCANDED ITEM
+    func cekStatusItems(data: Scan, completion: @escaping (Result<[Scanned], Error>)-> Void) {
+        AF.request("\(Base.urlOrder)scanned",
+                   method: .post,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode  == 200 {
+                            if let data = response.data {
+                                if let scanData = parseScanData(data) {
+                                    completion(.success(scanData))
+                                }else {
+                                    completion(.failure(DataError.failedToParseJson))
+                                }
+                            }
+                        }else {
+                            completion(.failure(DataError.failedToFetch))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+                   })
+    }
+    //MARK: - CHANGE STATUS SCANED DATA
+    func changeStatusItems(data: Scan, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.urlOrder)scanned",
+                   method: .patch,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode  == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(DataError.failedToUpdateData))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+                   })
+    }
+    
+    
     //MARK: - Parse Data Order
     //    Parese data order
-    private func parseDataOrder(_ data: Data) -> [NewOrderData]?{
+    private func parseDataOrder(_ data: Data) -> [OrderListDate]?{
         do{
             let decodedData = try JSONDecoder().decode(NewOrder.self, from: data)
             return decodedData.data
@@ -168,6 +217,17 @@ struct OrderViewModel {
         do{
             let decodedData = try JSONDecoder().decode(NewOrderDetail.self, from: data)
             return decodedData
+        }catch{
+            print(error)
+            return nil
+        }
+    }
+    
+    // Parse scaned data
+    private func parseScanData(_ data: Data) -> [Scanned]? {
+        do{
+            let decodedData = try JSONDecoder().decode(ScanedData.self, from: data)
+            return decodedData.data
         }catch{
             print(error)
             return nil

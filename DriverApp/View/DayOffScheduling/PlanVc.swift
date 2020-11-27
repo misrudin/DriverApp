@@ -127,19 +127,9 @@ class PlanVc: UIViewController {
     
     lazy var lableStatusDriver: UILabel = {
         let label = UILabel()
-        label.text = "Full Time"
         label.textColor = UIColor.lightGray
         label.font = UIFont.systemFont(ofSize: 15,weight: .regular)
         label.textAlignment = .center
-        return label
-    }()
-    
-    lazy var dayOffLable: UILabel = {
-        let label = UILabel()
-        label.text = "Day Off"
-        label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 30,weight: .bold)
-        label.isHidden = true
         return label
     }()
 
@@ -335,6 +325,8 @@ class PlanVc: UIViewController {
                 "5": self.week5,
             ]
             return}
+        
+        print(data.workingStatus)
         
         switch data.workingStatus {
         case "full time":
@@ -1070,7 +1062,6 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
         if let data = listShift {
             let filtered = shiftTime.filter({$0.id_shift_time == data[indexPath.row]})
             cell.shiftTime = filtered[0]
-            print(filtered)
         }
         return cell
     }

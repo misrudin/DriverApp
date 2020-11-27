@@ -62,6 +62,8 @@
 		B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09AC25372F3000F1B421 /* MenuOption.swift */; };
 		B36F8CB52564BB7700B0D209 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36F8CB42564BB7700B0D209 /* Validation.swift */; };
 		B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37431F4256219FC0010E0E4 /* PlanCell.swift */; };
+		B37BF2D52570B4DA00421DEB /* ScanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37BF2D32570B4DA00421DEB /* ScanCell.swift */; };
+		B37BF2D62570B4DA00421DEB /* ScanCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B37BF2D42570B4DA00421DEB /* ScanCell.xib */; };
 		B384A3DE256F624900D237CC /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3DC256F624900D237CC /* OrderCell.swift */; };
 		B384A3DF256F624900D237CC /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B384A3DD256F624900D237CC /* OrderCell.xib */; };
 		B384A3E4256F9C2000D237CC /* ListScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3E3256F9C2000D237CC /* ListScanView.swift */; };
@@ -142,6 +144,8 @@
 		B36E09AC25372F3000F1B421 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		B36F8CB42564BB7700B0D209 /* Validation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		B37431F4256219FC0010E0E4 /* PlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCell.swift; sourceTree = "<group>"; };
+		B37BF2D32570B4DA00421DEB /* ScanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCell.swift; sourceTree = "<group>"; };
+		B37BF2D42570B4DA00421DEB /* ScanCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScanCell.xib; sourceTree = "<group>"; };
 		B384A3DC256F624900D237CC /* OrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
 		B384A3DD256F624900D237CC /* OrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
 		B384A3E3256F9C2000D237CC /* ListScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScanView.swift; sourceTree = "<group>"; };
@@ -209,6 +213,7 @@
 		B32A388F25383674000EFBB6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B37BF2CE2570B49700421DEB /* Scan */,
 				B384A3DB256F622400D237CC /* Order */,
 				B3B9D58C256E00C20056D867 /* Shift */,
 				B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */,
@@ -398,6 +403,15 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		B37BF2CE2570B49700421DEB /* Scan */ = {
+			isa = PBXGroup;
+			children = (
+				B37BF2D32570B4DA00421DEB /* ScanCell.swift */,
+				B37BF2D42570B4DA00421DEB /* ScanCell.xib */,
+			);
+			path = Scan;
+			sourceTree = "<group>";
+		};
 		B384A3DB256F622400D237CC /* Order */ = {
 			isa = PBXGroup;
 			children = (
@@ -539,6 +553,7 @@
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B384A3DF256F624900D237CC /* OrderCell.xib in Resources */,
+				B37BF2D62570B4DA00421DEB /* ScanCell.xib in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
 				B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */,
 				B3530928255A55DC00B68347 /* GoogleService-Info.plist in Resources */,
@@ -643,6 +658,7 @@
 				B36E09A2253723E700F1B421 /* Protocols.swift in Sources */,
 				B36E09932536E6CC00F1B421 /* MainVc.swift in Sources */,
 				B34F7A7525460932004AB82B /* PendingNoteVc.swift in Sources */,
+				B37BF2D52570B4DA00421DEB /* ScanCell.swift in Sources */,
 				B35253C5253C309600AF71DF /* MapsModel.swift in Sources */,
 				B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */,
 				B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */,

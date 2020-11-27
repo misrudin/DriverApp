@@ -277,7 +277,8 @@ extension LoginView: LoginViewModelDelegate {
             
             let userData: [String:Any] = [
                 "codeDriver": user.codeDriver,
-                "idDriver":user.id
+                "idDriver":user.id,
+                "status": user.status
             ]
           
                 UserDefaults.standard.setValue(userData, forKey: "userData")

@@ -57,7 +57,7 @@ class HomeVc: UIViewController {
     
     
     var orderViewModel = OrderViewModel()
-    var orderData: [NewOrderData]?
+    var orderData: [OrderListDate]?
     
     lazy var refreshControl = UIRefreshControl()
     
@@ -65,7 +65,7 @@ class HomeVc: UIViewController {
        let table = UITableView()
         table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
         table.backgroundColor = UIColor(named: "grayKasumi")
-        table.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
+        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
         return table
     }()
 
@@ -116,7 +116,7 @@ class HomeVc: UIViewController {
         
         if let session = UserDefaults.standard.value(forKey: "userSession") as? [String: Any] {
             if session["date"] as? String != dateString {
-                print("!==")
+                print("---Sudah beda hari--")
                 let data: [String: Any] = [
                     "code_driver": codeDriver,
                     "date": dateString
@@ -124,8 +124,13 @@ class HomeVc: UIViewController {
                 UserDefaults.standard.setValue(data, forKey: "userSession")
                 getCurrentPosition()
             }else {
-                print("==")
-                getDataOrder()
+                print("---Masih di hari yang sama---")
+                if session["code_driver"] as! String != codeDriver {
+                    getCurrentPosition()
+                    print("----Driver lain Login---")
+                }else {
+                    getDataOrder()
+                }
             }
         }else {
             print("tidak ada data")
@@ -136,6 +141,11 @@ class HomeVc: UIViewController {
             UserDefaults.standard.setValue(data, forKey: "userSession")
             getCurrentPosition()
         }
+    }
+    
+    
+    private func storeSession(data: [String: Any], codeDriver: String) {
+        
     }
     
     override func viewDidLayoutSubviews() {
@@ -187,7 +197,7 @@ class HomeVc: UIViewController {
         orderViewModel.getDataOrder(codeDriver: codeDriver) {[weak self] (res) in
             switch res {
             case .failure(let err):
-                print(err.localizedDescription)
+                print(err)
                 DispatchQueue.main.async {
                     self?.orderData = []
                     self?.tableView.reloadData()
@@ -288,9 +298,26 @@ class HomeVc: UIViewController {
 @available(iOS 13.0, *)
 extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        if let orderData = orderData {
+            return orderData.filter({$0.order_list != nil}).count
+        }
+        
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
+    }
+
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let orderData = orderData {
-            return orderData.count
+            if orderData[section].order_list != nil {
+                return orderData[section].order_list!.count
+            }else {
+                return 0
+            }
         }
         
         return 0
@@ -300,18 +327,75 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: OrderCell.id, for: indexPath) as! OrderCell
         
         if let order = orderData {
-            cell.orderData = order[indexPath.row]
+            if order[indexPath.section].order_list != nil {
+                cell.orderData = order[indexPath.section].order_list![indexPath.row]
+            }
         }
         
         
         return cell
     }
     
+    class DateHeaderLabel: UILabel {
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            backgroundColor = .black
+            textColor = .white
+            textAlignment = .center
+            translatesAutoresizingMaskIntoConstraints = false
+            font = UIFont.boldSystemFont(ofSize: 14)
+        }
+        
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+        
+        override var intrinsicContentSize: CGSize{
+            let originalContentSize = super.intrinsicContentSize
+            let height = originalContentSize.height + 10
+            layer.cornerRadius = height / 2
+            layer.masksToBounds = true
+            return CGSize(width: originalContentSize.width + 20, height: height)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+        if let order = orderData {
+            let dateFormater = DateFormatter()
+            dateFormater.dateFormat = "yyyy/MM/dd"
+            let date = dateFormater.date(from: order[section].date)
+            let dateString = dateFormater.string(from: date!)
+            
+            let dateStringNow = dateFormater.string(from: Date())
+            
+            let value = dateString == dateStringNow ? "Today" : dateString
+            
+            let label = DateHeaderLabel()
+            label.text = value
+            
+            
+            
+            let containerLabel = UIView()
+            containerLabel.addSubview(label)
+            
+            label.centerXAnchor.constraint(equalTo: containerLabel.centerXAnchor).isActive=true
+            label.centerYAnchor.constraint(equalTo: containerLabel.centerYAnchor).isActive=true
+            
+            
+            return containerLabel
+        }
+        
+        return nil
+               
+       }
+    
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if let orderData = orderData {
-            let order = orderData[indexPath.row]
+            let order = orderData[indexPath.section].order_list![indexPath.row]
             
             let vc = LiveTrackingVC()
             vc.order = order

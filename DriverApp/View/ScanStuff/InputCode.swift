@@ -19,6 +19,9 @@ class InputCode: UIViewController {
         field.layer.borderColor = UIColor(named: "grayKasumi")?.cgColor
         field.autocorrectionType = .no
         field.autocapitalizationType = .none
+        field.placeholder = "Input code here ..."
+        field.paddingLeft(10)
+        field.paddingRight(10)
         return field
     }()
     

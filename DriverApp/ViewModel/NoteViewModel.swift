@@ -34,7 +34,7 @@ struct NoteViewModel {
     
     //MARK: GET DATA NOTE PENDING DRIVER
     func getDataNotePending(codeDriver: String, completion: @escaping (Result<NotesPending,Error>)->Void){
-        AF.request("\(Base.urlDriver)detail​/note​/pending​/\(codeDriver)/1/10",headers: Base.headers).response { response in
+        AF.request("\(Base.urlDriver)detail/note/pending/\(codeDriver)/1/10",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if let data = response.data {
@@ -124,6 +124,7 @@ struct NoteViewModel {
                    method: .patch,
                    parameters: dataToPost,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
                     switch response.result {
                     case .success:
                         if response.response?.statusCode == 200 {

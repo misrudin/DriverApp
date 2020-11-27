@@ -61,6 +61,8 @@ class LiveTrackingVC: UIViewController {
         return mapView
     }()
     
+    var currentStore: PickupDestination!
+    
     
     //origin
     var origin: Origin?
@@ -382,6 +384,10 @@ extension LiveTrackingVC {
 
 @available(iOS 13.0, *)
 extension LiveTrackingVC: CardViewControllerDelegate {
+    func updateSatatus(_ viewC: CardViewController, store: PickupDestination?) {
+        currentStore = store
+    }
+    
     func didTapButton(_ viewModel: CardViewController, type: TypeDelivery) {
         guard let orderNo = order?.order_number else {
             return
@@ -456,6 +462,8 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             print("Status Undefined")
         case .scan:
             let vc = ListScanView()
+            vc.store = currentStore
+            vc.orderNo = orderNo
             navigationController?.pushViewController(vc, animated: true)
         }
     }

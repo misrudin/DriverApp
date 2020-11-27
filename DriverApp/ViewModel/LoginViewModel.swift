@@ -31,10 +31,10 @@ struct LoginViewModel {
                            method: .post,
                            parameters: dataToPost,
                            encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                            debugPrint(response)
                             switch response.result {
                             case .success:
                                 if let data = response.data {
-                                    print(data)
                                     if let userData =  self.parseJson(data: data){
                                         delegate?.didLoginSuccess(self, user: userData)
                                     }
@@ -54,7 +54,8 @@ struct LoginViewModel {
             let decodedData = try JSONDecoder().decode(UserDetail.self, from: data)
             let idDriver = decodedData.data.id
             let codeDriver = decodedData.data.codeDriver
-            let user = User(id: idDriver, codeDriver: codeDriver)
+            let status = decodedData.data.status
+            let user = User(id: idDriver, codeDriver: codeDriver, status: status)
             return user
         }catch{
             delegate?.didFailedLogin(error)

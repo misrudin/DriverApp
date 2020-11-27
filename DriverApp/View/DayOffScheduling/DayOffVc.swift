@@ -190,6 +190,7 @@ class DayOffVc: UIViewController {
                     self.spiner.dismiss()
                     self.colectionViewDayoff.reloadData()
                     self.scrollToDate()
+                    print(data)
                 }
             case .failure(let error):
                 print(error)

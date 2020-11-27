@@ -24,7 +24,7 @@ struct DayOffPlanModel: Decodable {
 }
 
 struct DayOfParent: Decodable {
-    let dayOfStatus: DayOffStatus
+    let dayOfStatus: DayOffStatus?
     let dayOfStatusPlan: DayOffStatus?
     let workingStatus: String
     

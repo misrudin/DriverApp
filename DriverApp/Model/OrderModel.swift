@@ -141,7 +141,7 @@ struct DeleteHistory: Codable {
 
 //Parent
 struct NewOrder: Decodable {
-    let data: [NewOrderData]
+    let data: [OrderListDate]
     
     enum CodingKeys: String, CodingKey {
         case data
@@ -153,6 +153,16 @@ struct OrderDetail: Decodable {
     
     enum CodingKeys: String, CodingKey {
         case data
+    }
+}
+
+struct OrderListDate: Decodable {
+    let date: String
+    let order_list: [NewOrderData]?
+    
+    enum CodingKeys: String, CodingKey {
+        case date
+        case order_list
     }
 }
 
@@ -252,10 +262,47 @@ struct PickupItem: Decodable {
     let item_name: String
     let qty: String
     let qr_code_raw: String
+    let scan: Bool?
     
     enum CodingKeys: String, CodingKey {
         case item_name
         case qty
         case qr_code_raw
+        case scan
     }
+}
+
+
+//MARK: - CEK STATUS SCAN ITEMS data
+
+struct ScanedData: Decodable {
+    let data: [Scanned]
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
+}
+
+struct Scanned: Codable {
+    let scanned_status: Int
+    let qr_code_raw: String
+    let order_number: String
+    let pickup_store_name: String
+    let item_name: String
+    
+    enum CodingKeys: String, CodingKey {
+        case scanned_status
+        case qr_code_raw
+        case order_number
+        case pickup_store_name
+        case item_name
+    }
+}
+
+
+//MARK: - CHANGE STATUS ITEM SCANNED post/patch
+
+struct Scan: Codable {
+    let order_number: String
+    let qr_code_raw: [String]
 }

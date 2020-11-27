@@ -46,8 +46,6 @@ class OrderCell: UITableViewCell {
             }
             addresPickup.text = arrayOfStore.joined(separator: " - ")
             
-            print(orderDetail.pickup_destination)
-            
             deliveyAddress.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
         }
     }

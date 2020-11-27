@@ -28,10 +28,12 @@ struct LoginData: Codable {
 struct User: Codable {
     let id: Int
     let codeDriver: String
+    let status: String
     
     enum CodingKeys: String, CodingKey {
         case id = "id_driver"
         case codeDriver = "code_driver"
+        case status = "working_status"
     }
 }
 
