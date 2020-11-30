@@ -53,7 +53,20 @@ class LiveTrackingVC: UIViewController {
     
     private var manager: CLLocationManager?
     
-    var originMarker = GMSMarker()
+    var originMarker: GMSMarker = {
+        let marker = GMSMarker()
+        let car = UIImage(named: "car")
+        let carIcon = car?.resizeImage(CGSize(width: 25, height: 25))
+        let icon: UIImageView = {
+            let i = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 40))
+            i.image = carIcon
+            return i
+        }()
+        marker.groundAnchor = CGPoint(x: 0.25, y: 0.5)
+        marker.isFlat = true
+        marker.iconView = icon
+        return marker
+    }()
     
     let mapView: GMSMapView = {
         let mapView = GMSMapView()
@@ -84,7 +97,8 @@ class LiveTrackingVC: UIViewController {
             self.setupCard()
         }
         
-        mapView.frame = view.frame
+        mapView.frame = view.bounds
+        
         
         configureNavigationBar()
         
@@ -213,7 +227,6 @@ class LiveTrackingVC: UIViewController {
         manager = CLLocationManager()
         manager?.requestWhenInUseAuthorization()
         manager?.startUpdatingLocation()
-        manager?.startUpdatingHeading()
         manager?.delegate = self
     }
     
@@ -266,11 +279,8 @@ class LiveTrackingVC: UIViewController {
 @available(iOS 13.0, *)
 extension LiveTrackingVC: MapsViewModelDelegate {
     func didDrawDirection(_ viewModel: MapsViewModel, direction: GMSPolyline, markerOrigin: GMSMarker, markerDestination: GMSMarker, camera: GMSCameraPosition) {
-        mapView.clear()
         direction.map = mapView
-        markerOrigin.map = mapView
         markerDestination.map = mapView
-        mapView.animate(to: camera)
     }
 
     func didFailedDrawDirection(_ error: Error) {
@@ -281,7 +291,7 @@ extension LiveTrackingVC: MapsViewModelDelegate {
 }
 
 
-//MARK - core location
+//MARK: - CORE LOCATION DELEGATE
 @available(iOS 13.0, *)
 extension LiveTrackingVC: CLLocationManagerDelegate {
     
@@ -289,7 +299,7 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
         if let location = locations.last {
             let coordinate = location.coordinate
             
-            ///update position to firebase
+            //MARK: -   DATA UPDATE LOCATION TO FIREBASE
             let status: String = "Out for delivery"
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                   let codeDriver = userData["codeDriver"] as? String,
@@ -297,7 +307,9 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
                 print("No user data")
                 return
             }
-            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: status) { (res) in
+            
+            //MARK: -   UPDATE LOCATION TO FIREBASE
+            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: status,bearing: location.course) { (res) in
                 switch res {
                 case .failure(let err):
                     print(err)
@@ -309,51 +321,43 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             }
             
             
+            //MARK: -   MARKER AND DIRECTION
             CATransaction.begin()
             CATransaction.setAnimationDuration(2.0)
-//            originMarker.position = coordinate
             origin = Origin(latitude: coordinate.latitude, longitude: coordinate.longitude)
             
             guard let origin = origin, let destination = destination else {
                 return
             }
             
-            
             let direction: DirectionData = DirectionData(origin: origin, destination: destination)
-            
         
             self.mapsViewModel.drawDirection(direction: direction)
             
+            originMarker.map = mapView
+            let point = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
+                                               longitude: location.coordinate.longitude)
+            updateMarkerWith(position: point, angle: location.course)
             
+            mapView.animate(toLocation: point)
+            mapView.animate(toBearing: location.course)
+            mapView.animate(toZoom: 17.0)
+            mapView.animate(toViewingAngle: 50)
             CATransaction.commit()
+        }
+    }
+    
+    func updateMarkerWith(position: CLLocationCoordinate2D, angle: Double) {
+//            CATransaction.begin()
+//            CATransaction.setAnimationDuration(2.0)
+            originMarker.position = position
             
-            updateMapLocation(lattitude: coordinate.latitude, longitude: coordinate.longitude)
-        }
-    }
-    
-    func updateMapLocation(lattitude:CLLocationDegrees,longitude:CLLocationDegrees){
-        let camera = GMSCameraPosition.camera(withLatitude: lattitude, longitude: longitude, zoom: 16)
-        mapView.camera = camera
-        mapView.animate(to: camera)
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        let bearing = newHeading.magneticHeading
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
-            print("No user data")
-            return
-        }
-        databaseManager.updateHeading(codeDriver: codeDriver, bearing: bearing) { (res) in
-            switch res {
-            case .failure(let err):
-                print(err)
-            case .success(let oke):
-                if oke {
-                    print("succes update heading to firebase")
-                }
+            guard angle >= 0 && angle < 360 else {
+                return
             }
-        }
+            let angleInRadians: CGFloat = CGFloat(angle) * .pi / CGFloat(180)
+            originMarker.iconView?.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
+//            CATransaction.commit()
     }
 }
 
@@ -446,8 +450,6 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         
         
         CATransaction.commit()
-        
-        updateMapLocation(lattitude: origin.latitude, longitude: origin.longitude)
     }
     
     func scan(_ viewC: CardViewController, store: PickupDestination?) {
@@ -596,7 +598,6 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         
         CATransaction.commit()
         
-        updateMapLocation(lattitude: origin.latitude, longitude: origin.longitude)
     }
 }
 

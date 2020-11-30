@@ -53,6 +53,8 @@ class HistoryViewController: UIViewController {
     private let tableView: UITableView = {
        let table = UITableView()
         table.register(UINib(nibName: "HistoryCell", bundle: nil), forCellReuseIdentifier: HistoryCell.id)
+        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        table.showsVerticalScrollIndicator = false
         return table
     }()
 
@@ -65,7 +67,7 @@ class HistoryViewController: UIViewController {
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.frame=view.bounds
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
         

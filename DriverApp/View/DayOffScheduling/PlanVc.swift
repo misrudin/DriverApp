@@ -198,7 +198,8 @@ class PlanVc: UIViewController {
     private let tableView: UITableView = {
        let table = UITableView()
         table.register(ShiftCell.self, forCellReuseIdentifier: ShiftCell.id)
-        table.isScrollEnabled = false
+//        table.isScrollEnabled = false
+        table.showsVerticalScrollIndicator = false
         table.separatorStyle = .none
         return table
     }()

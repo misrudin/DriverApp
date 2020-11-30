@@ -268,7 +268,7 @@ struct ScanedData: Decodable {
 }
 
 struct Scanned: Codable {
-    let scanned_status: Int
+    var scanned_status: Int
     let qr_code_raw: String
     let order_number: String
     let pickup_store_name: String

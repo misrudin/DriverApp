@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AutoKeyboard
 
 extension Date {
     static func dateFromCustomString(customString: String) -> Date {
@@ -40,6 +41,9 @@ class ChatViewController: UIViewController {
     private let cellId = "id"
     var chatViewModel = ChatViewModel()
        
+    var anchor1: NSLayoutConstraint!
+    var anchor2: NSLayoutConstraint!
+    var keyboardH: CGFloat = 280
     
     var chatMessages = [[ChatMessage]]()
     
@@ -98,6 +102,8 @@ class ChatViewController: UIViewController {
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isUserInteractionEnabled = true
+        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
         listenData()
         view.addSubview(tableView)
         view.addSubview(inputChat)
@@ -105,27 +111,63 @@ class ChatViewController: UIViewController {
         inputField.delegate = self
       
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,bottom: inputChat.topAnchor, right: view.rightAnchor)
-        inputChat.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor,height: 55)
+        inputChat.anchor(left: view.leftAnchor, right: view.rightAnchor, height: 55)
         inputField.anchor(left: inputChat.leftAnchor, right: sendButton.leftAnchor, paddingLeft: 16, paddingRight: 10,height: 45)
         inputField.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
         sendButton.anchor(right: inputChat.rightAnchor, paddingRight: 16, width: 45,height: 45)
         sendButton.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
         
+        anchor1 = inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        anchor1.isActive = true
+        anchor2 = inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -keyboardH)
+        anchor2.isActive = false
+    }
+    
+    
+    @objc private func tap(){
+        view.endEditing(true)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        //Subscribe to a Notification which will fire before the keyboard will show
-        subscribeToNotification(UIResponder.keyboardWillShowNotification, selector: #selector(keyboardWillShowOrHide))
+        registerAutoKeyboard() { (result) in
+            
+            if let k = result.userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                let keyboardRectangle = k.cgRectValue.height
+                
+                self.keyboardH = keyboardRectangle
+            }
+            
 
-        //Subscribe to a Notification which will fire before the keyboard will hide
-        subscribeToNotification(UIResponder.keyboardWillHideNotification, selector: #selector(keyboardWillShowOrHide))
-
-        //We make a call to our keyboard handling function as soon as the view is loaded.
-        initializeHideKeyboard()
+        switch result.status {
+        case .willShow:
+        print("1")
+        case .didShow:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                
+                self.anchor1.isActive = false
+                self.anchor2.isActive = true
+            })
+        case .willHide:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.anchor1.isActive = true
+                self.anchor2.isActive = false
+            })
+        
+        case .didHide:
+            print("3")
+        case .willChangeFrame:
+            print("change")
+        case .didChangeFrame:
+            print("change2")
+        }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //Unsubscribe from all our notifications
-        unsubscribeFromAllNotifications()
+        unRegisterAutoKeyboard()
     }
 
     @objc
@@ -268,66 +310,4 @@ extension ChatViewController: UITextFieldDelegate {
         }
         return true
     }
-}
-
-@available(iOS 13.0, *)
-extension ChatViewController {
-    
-    func initializeHideKeyboard(){
-        //Declare a Tap Gesture Recognizer which will trigger our dismissMyKeyboard() function
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(
-            target: self,
-            action: #selector(dismissMyKeyboard))
-        
-        //Add this tap gesture recognizer to the parent view
-        tableView.isUserInteractionEnabled = true
-        tableView.addGestureRecognizer(tap)
-    }
-    
-    @objc func dismissMyKeyboard(){
-        //endEditing causes the view (or one of its embedded text fields) to resign the first responder status.
-        //In short- Dismiss the active keyboard.
-        view.endEditing(true)
-        unsubscribeFromAllNotifications()
-        inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-    }
-}
-
-@available(iOS 13.0, *)
-extension ChatViewController {
-    
-    func subscribeToNotification(_ notification: NSNotification.Name, selector: Selector) {
-        NotificationCenter.default.addObserver(self, selector: selector, name: notification, object: nil)
-    }
-    
-    func unsubscribeFromAllNotifications() {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc func keyboardWillShowOrHide(notification: NSNotification) {
-        // Get required info out of the notification
-        if  let userInfo = notification.userInfo, let endValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey], let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey], let curveValue = userInfo[UIResponder.keyboardAnimationCurveUserInfoKey] {
-            
-            // Transform the keyboard's frame into our view's coordinate system
-            let endRect = view.convert((endValue as AnyObject).cgRectValue, from: view.window)
-            
-            // Find out how much the keyboard overlaps our scroll view
-            let keyboardOverlap = tableView.frame.maxY - endRect.origin.y
-            
-            // Set the scroll view's content inset & scroll indicator to avoid the keyboard
-//            tableView.contentInset.bottom = keyboardOverlap
-//            tableView.scrollIndicatorInsets.bottom = keyboardOverlap
-            inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -(keyboardOverlap+55)).isActive = true
-            
-            print(keyboardOverlap)
-            print(endRect.origin.y)
-            
-            let duration = (durationValue as AnyObject).doubleValue
-            let options = UIView.AnimationOptions(rawValue: UInt((curveValue as AnyObject).integerValue << 16))
-            UIView.animate(withDuration: duration!, delay: 0, options: options, animations: {
-                self.view.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
-
 }

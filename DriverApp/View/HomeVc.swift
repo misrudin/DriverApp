@@ -68,7 +68,7 @@ class HomeVc: UIViewController {
        let table = UITableView()
         table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
         table.backgroundColor = UIColor(named: "grayKasumi")
-        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
         return table
     }()
@@ -433,18 +433,15 @@ extension HomeVc: CLLocationManagerDelegate {
             let coordinate = location.coordinate
             self.origin = Origin(latitude: coordinate.latitude, longitude: coordinate.longitude)
             if manager != driverManager {
-                print("--devault --")
                 self.upateLocation()
             }
-            print("-- manager --")
             print(manager)
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                   let codeDriver = userData["codeDriver"] as? String,
                   let idDriver = userData["idDriver"] as? Int else {
-                print("No user data")
                 return
             }
-            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: "idle") {[weak self] (res) in
+            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: "idle",bearing: location.course) {[weak self] (res) in
                 switch res {
                 case .failure(let err):
                     print(err)
@@ -456,26 +453,6 @@ extension HomeVc: CLLocationManagerDelegate {
                 }
             }
             manager.stopUpdatingLocation()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        let bearing = newHeading.magneticHeading
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
-            print("No user data")
-            return
-        }
-        databaseManager.updateHeading(codeDriver: codeDriver, bearing: bearing) {[weak self] (res) in
-            switch res {
-            case .failure(let err):
-                print(err)
-            case .success(let oke):
-                if oke {
-                    print("succes update heading to firebase")
-                    self?.driverManager?.stopUpdatingHeading()
-                }
-            }
         }
     }
     

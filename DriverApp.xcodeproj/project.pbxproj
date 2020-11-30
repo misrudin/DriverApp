@@ -70,6 +70,8 @@
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
+		B3ABAF0325748EB100A7B80B /* CameraScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ABAF0225748EB100A7B80B /* CameraScanView.swift */; };
+		B3ABAF062574B71900A7B80B /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ABAF052574B71800A7B80B /* MapsViewController.swift */; };
 		B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D58D256E00DE0056D867 /* SelectShift.swift */; };
 		B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D58E256E00DE0056D867 /* SelectShift.xib */; };
 		B3B9D593256E07260056D867 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D592256E07260056D867 /* PresentationController.swift */; };
@@ -158,6 +160,8 @@
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
+		B3ABAF0225748EB100A7B80B /* CameraScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScanView.swift; sourceTree = "<group>"; };
+		B3ABAF052574B71800A7B80B /* MapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
 		B3B9D58D256E00DE0056D867 /* SelectShift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectShift.swift; sourceTree = "<group>"; };
 		B3B9D58E256E00DE0056D867 /* SelectShift.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectShift.xib; sourceTree = "<group>"; };
 		B3B9D592256E07260056D867 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
@@ -355,6 +359,7 @@
 				B36E099A25371D7000F1B421 /* HomeVc.swift */,
 				B32A388625383207000EFBB6 /* HistoryViewController.swift */,
 				B354B120253B8B3E00B5798B /* LiveTrackingVC.swift */,
+				B3ABAF052574B71800A7B80B /* MapsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -432,6 +437,7 @@
 			children = (
 				B384A3E3256F9C2000D237CC /* ListScanView.swift */,
 				B384A3E6256F9C6700D237CC /* InputCode.swift */,
+				B3ABAF0225748EB100A7B80B /* CameraScanView.swift */,
 			);
 			path = ScanStuff;
 			sourceTree = "<group>";
@@ -654,12 +660,14 @@
 				B353094A255A632F00B68347 /* LoginView.swift in Sources */,
 				B36F8CB52564BB7700B0D209 /* Validation.swift in Sources */,
 				B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */,
+				B3ABAF0325748EB100A7B80B /* CameraScanView.swift in Sources */,
 				B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */,
 				B36E09A2253723E700F1B421 /* Protocols.swift in Sources */,
 				B36E09932536E6CC00F1B421 /* MainVc.swift in Sources */,
 				B34F7A7525460932004AB82B /* PendingNoteVc.swift in Sources */,
 				B37BF2D52570B4DA00421DEB /* ScanCell.swift in Sources */,
 				B35253C5253C309600AF71DF /* MapsModel.swift in Sources */,
+				B3ABAF062574B71900A7B80B /* MapsViewController.swift in Sources */,
 				B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */,
 				B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */,
 				B326FF7425612CF00067C0DE /* RestView.swift in Sources */,

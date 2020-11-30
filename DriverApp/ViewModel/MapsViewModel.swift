@@ -56,7 +56,7 @@ struct MapsViewModel {
                     delegate?.didDrawDirection(self,
                                                direction: polyline,
                                                markerOrigin: markerOrigin,
-                                               markerDestination: markerDestination, camera: camera)                }
+                                               markerDestination: markerDestination, camera: camera)}
                 
             }catch let error {
                 delegate?.didFailedDrawDirection(error)
@@ -69,6 +69,11 @@ struct MapsViewModel {
     func createMarkerOrigin(origin: Origin)-> GMSMarker?{
         let originMarker = GMSMarker()
         originMarker.position = CLLocationCoordinate2D(latitude: origin.latitude, longitude: origin.longitude)
+        originMarker.groundAnchor = CGPoint(x: 0.5, y: 0.5)
+        let car = UIImage(named: "car")
+        let carIcon = car?.resizeImage(CGSize(width: 25, height: 25))
+        originMarker.icon = carIcon
+        originMarker.isFlat = true
         return originMarker
     }
     
@@ -79,7 +84,8 @@ struct MapsViewModel {
     }
     
     func zoomTo(marker: GMSMarker)-> GMSCameraPosition{
-        let camera = GMSCameraPosition(target: marker.position, zoom: 10)
+//        let camera = GMSCameraPosition(target: marker.position, zoom: 10)
+        let camera = GMSCameraPosition(target: marker.position, zoom: 14, bearing: 0, viewingAngle: 50)
         return camera
     }
     

@@ -12,7 +12,7 @@ import FirebaseDatabase
 struct DatabaseManager {
     private let database = Database.database().reference()
     
-    func updateData(idDriver: String, codeDriver: String, lat: CLLocationDegrees, lng: CLLocationDegrees, status: String, completion: @escaping (Result<Bool, Error>)-> Void){
+    func updateData(idDriver: String, codeDriver: String, lat: CLLocationDegrees, lng: CLLocationDegrees, status: String,bearing: CLLocationDirection, completion: @escaping (Result<Bool, Error>)-> Void){
         
         let urlFirebase: String = "driver/\(codeDriver)"
         let dataToPost: [String: Any] = [
@@ -20,7 +20,8 @@ struct DatabaseManager {
             "id": codeDriver,
             "latitude": lat,
             "longitude": lng,
-            "status_driver": status
+            "status_driver": status,
+            "heading": bearing
         ]
         
         database.child(urlFirebase).updateChildValues(dataToPost) { (err, response) in
@@ -54,7 +55,7 @@ struct DatabaseManager {
     func updateHeading(codeDriver: String, bearing: CLLocationDirection, completion: @escaping (Result<Bool, Error>)->Void){
         let urlFirebase: String = "driver/\(codeDriver)"
         let dataToPost: [String: Any] = [
-            "bearing": bearing
+            "heading": bearing
         ]
         
         database.child(urlFirebase).updateChildValues(dataToPost) { (err, response) in

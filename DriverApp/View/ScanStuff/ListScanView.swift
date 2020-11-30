@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import AVFoundation
 
 class ListScanView: UIViewController {
     
@@ -14,11 +15,14 @@ class ListScanView: UIViewController {
     var orderNo: String = ""
     var orderVm = OrderViewModel()
     
+    
     var pickupItems: [Scanned]!
     
     var done: Bool = false
     
     //MARK: - COMPONENTS
+    
+    
     //MARK: - LOADING
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -79,17 +83,41 @@ class ListScanView: UIViewController {
     private func addMaunal(){
         let vc = InputCode()
         vc.orderNo = orderNo
+        vc.list = pickupItems
+        vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
     private func add(){
-        print("Scan With Camera")
+        let vc = CameraScanView()
+        vc.orderNo = orderNo
+        vc.list = pickupItems
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
     private func finish(){
-        navigationController?.popViewController(animated: true)
+        let scanedData = pickupItems.filter({$0.scanned_status > 0})
+        if scanedData.count == pickupItems.count {
+            let codes: [String] = scanedData.map({$0.qr_code_raw})
+            let data: Scan = Scan(order_number: orderNo, qr_code_raw: codes)
+            orderVm.changeStatusItems(data: data) {[weak self] (res) in
+                switch res {
+                case .success(let oke):
+                    DispatchQueue.main.async {
+                        if oke == true {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                case .failure(let err):
+                    let action1 = UIAlertAction(title: "Try again", style: .default, handler: nil)
+                    Helpers().showAlert(view: self!, message: "Something when wrong !", customAction1: action1)
+                    print(err)
+                }
+            }
+        }
     }
     
     lazy var tableView: UITableView = {
@@ -109,12 +137,14 @@ class ListScanView: UIViewController {
         
         configureUi()
         configureNavigationBar()
+        cekStatusItems()
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        cekStatusItems()
+//        cekStatusItems()
     }
 
     
@@ -175,6 +205,21 @@ class ListScanView: UIViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
         navigationController?.title = "Delivery Order List"
+    }
+    
+    func updateList(code: String){
+        if let row = self.pickupItems.firstIndex(where: {$0.qr_code_raw == code}) {
+            pickupItems[row].scanned_status = 1
+        }
+        let filtered = pickupItems.filter({$0.scanned_status == 0})
+        if filtered.count > 0 {
+            done = false
+            setupButton()
+        }else {
+            done = true
+            setupButton()
+        }
+        tableView.reloadData()
     }
     
 }

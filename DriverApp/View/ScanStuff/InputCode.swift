@@ -11,6 +11,8 @@ class InputCode: UIViewController {
     
     var orderNo: String = ""
     var orderVm = OrderViewModel()
+    var list: [Scanned]!
+    weak var delegate: ListScanView!
     
     lazy var titleLable = Reusable.makeLabel(text: "Add Order Code", font: UIFont.systemFont(ofSize: 16, weight: .semibold), color: UIColor(named: "orangeKasumi")!)
     
@@ -82,24 +84,13 @@ class InputCode: UIViewController {
             return
         }
         
-        print(code)
-        let codes: [String] = [code]
-        let data: Scan = Scan(order_number: orderNo, qr_code_raw: codes)
-        orderVm.changeStatusItems(data: data) {[weak self] (res) in
-            switch res {
-            case .success(let oke):
-                DispatchQueue.main.async {
-                    if oke == true {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                }
-            case .failure(let err):
-                let action1 = UIAlertAction(title: "Try Again", style: .default) {[weak self] (_) in
-                    self?.inputCode.becomeFirstResponder()
-                }
-                Helpers().showAlert(view: self!, message: "Something when wrong !, Item code not found.", customAction1: action1)
-                print(err)
-            }
+        let find = list.filter({ $0.qr_code_raw == code })
+        if find.count == 0 {
+            let action1 = UIAlertAction(title: "Try Again", style: .default, handler: nil)
+            Helpers().showAlert(view: self, message: "Item code not found.", customAction1: action1)
+        }else {
+            delegate.updateList(code: code)
+            navigationController?.popViewController(animated: true)
         }
         
     }
