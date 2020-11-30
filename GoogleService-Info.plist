@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>833358176603-qtbsi62rcoijev615v3gknevnaq5992u.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.833358176603-qtbsi62rcoijev615v3gknevnaq5992u</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>833358176603-tli82f1cdbap7jrdmms0pleeaetb7pbg.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCn86RMN3I-wR0jDTccUT-G-hbviYUtyn8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>833358176603</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.kasumiios</string>
+	<key>PROJECT_ID</key>
+	<string>kasumi-driver</string>
+	<key>STORAGE_BUCKET</key>
+	<string>kasumi-driver.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:833358176603:ios:93cd77a19ac9d3d216ba7e</string>
+	<key>DATABASE_URL</key>
+	<string>https://kasumi-driver.firebaseio.com</string>
+</dict>
+</plist>

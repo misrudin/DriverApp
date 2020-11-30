@@ -10,7 +10,7 @@ import Alamofire
 import AesEverywhere
 
 protocol OrderViewModelDelegate {
-    func didFetchOrder(_ viewModel: OrderViewModel, order: OrderData)
+//    func didFetchOrder(_ viewModel: OrderViewModel, order: OrderData)
     func didFailedGetOrder(_ error: Error)
 }
 
@@ -21,7 +21,6 @@ struct OrderViewModel {
 //    MARK: - GET DATA ORDER BY CODE DRIVER
     func getDataOrder(codeDriver: String, completion: @escaping (Result<[OrderListDate], Error>)-> Void){
         AF.request("\(Base.urlOrder)list/\(codeDriver)",headers: Base.headers).response { response in
-            debugPrint(response)
             switch response.result {
             case .success:
                 if response.response?.statusCode == 200 {
@@ -43,16 +42,20 @@ struct OrderViewModel {
     
     
     //MARK: - GET DATA HISTORY ORDER
-    func getDataHistoryOrder(codeDriver: String, completion: @escaping (Result<HistoryData,Error>)->Void){
+    func getDataHistoryOrder(codeDriver: String, completion: @escaping (Result<[History],Error>)->Void){
         AF.request("\(Base.urlOrder)history/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
-                if let data = response.data {
-                    if let orderData =  self.parseHistory(data: data){
-                        completion(.success(orderData))
-                    }else {
-                        completion(.failure(DataError.failedToFetch))
+                if response.response?.statusCode == 200 {
+                    if let data = response.data {
+                        if let orderData =  self.parseHistory(data: data){
+                            completion(.success(orderData))
+                        }else {
+                            completion(.failure(DataError.failedToParseJson))
+                        }
                     }
+                }else {
+                    completion(.failure(DataError.failedToFetch))
                 }
             case let .failure(error):
                 completion(.failure(error))
@@ -154,6 +157,7 @@ struct OrderViewModel {
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    debugPrint(response)
                     switch response.result {
                     case .success:
                         if response.response?.statusCode  == 200 {
@@ -181,10 +185,10 @@ struct OrderViewModel {
     }
     
     //    Parese data history
-    func parseHistory(data: Data) -> HistoryData?{
+    func parseHistory(data: Data) -> [History]?{
         do{
             let decodedData = try JSONDecoder().decode(HistoryData.self, from: data)
-            return decodedData
+            return decodedData.data
         }catch{
             return nil
         }

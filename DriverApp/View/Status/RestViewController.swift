@@ -28,6 +28,7 @@ class RestViewController: UIViewController {
     lazy var switchBtn: UISwitch = {
        let sw = UISwitch()
         sw.addTarget(self, action: #selector(switchValueDidChange), for: .valueChanged)
+        sw.isOn = false
         return sw
     }()
     
@@ -46,7 +47,10 @@ class RestViewController: UIViewController {
             self?.start()
         }
         
-        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let action2 = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            self.switchBtn.isOn = false
+            self.switchBtn.setOn(false, animated: true)
+        }
         Helpers().showAlert(view: self, message: "Start rest now ?", customTitle: "Sure", customAction1: action1, customAction2: action2)
     }
     

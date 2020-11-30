@@ -31,7 +31,6 @@ struct LoginViewModel {
                            method: .post,
                            parameters: dataToPost,
                            encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
-                            debugPrint(response)
                             switch response.result {
                             case .success:
                                 if let data = response.data {

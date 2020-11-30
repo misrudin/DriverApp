@@ -101,11 +101,11 @@ struct InOutViewModel {
     //MARK: - Rest time
     
     func restTimeDriver(data: CheckDriver, completion: @escaping (Result<Bool, Error>)-> Void){
-        AF.request("\(Base.urlDriver)check/rest-time",
+        AF.request("\(Base.urlDriver)rest-time",
                    method: .post,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
-                    
+                    debugPrint(response)
                     switch response.result {
                     case .success:
                         if response.response?.statusCode == 200 {
@@ -123,7 +123,7 @@ struct InOutViewModel {
     //MARK: - Work Time
     
     func workTimeDriver(data: CheckDriver, completion: @escaping (Result<Bool, Error>)-> Void){
-        AF.request("\(Base.urlDriver)check/rest-time",
+        AF.request("\(Base.urlDriver)rest-time",
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in

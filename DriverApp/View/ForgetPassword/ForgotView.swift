@@ -26,6 +26,7 @@ class ForgotView: UIViewController {
     @IBOutlet weak var subTitlw: UILabel!
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var submit: UIButton!
+    @IBOutlet weak var container: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +66,7 @@ class ForgotView: UIViewController {
     
     private func styleElement(){
         line.layer.cornerRadius = 2
+        line.backgroundColor = .red
         
         email.layer.cornerRadius = 5
         email.layer.borderWidth = 1

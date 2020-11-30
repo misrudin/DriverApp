@@ -13,7 +13,7 @@ import Alamofire
 
 struct NoteViewModel {
     //MARK: - GET DATA NOTE CHECKOUT DRIVER
-    func getDataNoteCheckout(codeDriver: String, completion: @escaping (Result<NotesCheckout,Error>)-> Void){
+    func getDataNoteCheckout(codeDriver: String, completion: @escaping (Result<[Note],Error>)-> Void){
         AF.request("\(Base.urlDriver)detail/note/checkout/\(codeDriver)/1/10",headers: Base.headers).response { response in
             switch response.result {
             case .success:
@@ -33,12 +33,12 @@ struct NoteViewModel {
     
     
     //MARK: GET DATA NOTE PENDING DRIVER
-    func getDataNotePending(codeDriver: String, completion: @escaping (Result<NotesPending,Error>)->Void){
+    func getDataNotePending(codeDriver: String, completion: @escaping (Result<[Note],Error>)->Void){
         AF.request("\(Base.urlDriver)detail/note/pending/\(codeDriver)/1/10",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if let data = response.data {
-                    if let pendingData = self.parseHistory(data: data){
+                    if let pendingData = self.parseJson(data: data){
                         completion(.success(pendingData))
                     }else {
                         completion(.failure(DataError.failedToFetch))
@@ -142,7 +142,7 @@ struct NoteViewModel {
     
     //MARK: - EDIT CHECKOUT NOTE
     func editNoteCheckout(id: Int, note: String, completion: @escaping (Result<Bool,Error>)-> Void){
-        let dataToPost = DataEditCheckout(id_note_driver_chcekout: id, note: note)
+        let dataToPost = DataEditCheckout(id_note: id, note: note)
         AF.request("\(Base.urlDriver)note/checkout",
                    method: .patch,
                    parameters: dataToPost,
@@ -164,25 +164,16 @@ struct NoteViewModel {
     
     //MARK: - PARSE DATA
     // PARSE NOTE CHECKOUT
-    func parseJson(data: Data) -> NotesCheckout?{
+    private func parseJson(data: Data) -> [Note]?{
         do{
-            let decodedData = try JSONDecoder().decode(NotesCheckout.self, from: data)
-            return decodedData
+            let decodedData = try JSONDecoder().decode(Notes.self, from: data)
+            return decodedData.data
         }catch{
             return nil
             
         }
     }
     
-    //   PARSE NOTE PENDING
-    func parseHistory(data: Data) -> NotesPending?{
-        do{
-            let decodedData = try JSONDecoder().decode(NotesPending.self, from: data)
-            return decodedData
-        }catch{
-            return nil
-        }
-    }
     
     //MARK: - ENUM - ERROR
     enum DataError: Error{

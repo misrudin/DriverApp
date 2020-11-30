@@ -15,9 +15,12 @@ import CoreLocation
 class HomeVc: UIViewController {
     
     private var manager: CLLocationManager?
+    private var driverManager: CLLocationManager?
     
     var inOutVm = InOutViewModel()
     var origin: Origin? = nil
+    
+    var databaseManager = DatabaseManager()
     
     var profileVm = ProfileViewModel()
     
@@ -66,18 +69,19 @@ class HomeVc: UIViewController {
         table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
         table.backgroundColor = UIColor(named: "grayKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
+        table.showsVerticalScrollIndicator = false
         return table
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "grayKasumi")
         
         view.addSubview(tableView)
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor)
+        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
         
@@ -89,6 +93,7 @@ class HomeVc: UIViewController {
         view.addSubview(emptyImage)
         emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
     }
     
     private func getCurrentPosition(){
@@ -102,6 +107,12 @@ class HomeVc: UIViewController {
         super.viewDidAppear(animated)
         
         configureNavigationBar()
+        
+        driverManager = CLLocationManager()
+        driverManager?.requestWhenInUseAuthorization()
+        driverManager?.startUpdatingLocation()
+        driverManager?.startUpdatingHeading()
+        driverManager?.delegate = self
         
         let formater = DateFormatter()
         formater.dateFormat = "yyyy-MM-dd"
@@ -125,11 +136,20 @@ class HomeVc: UIViewController {
                 getCurrentPosition()
             }else {
                 print("---Masih di hari yang sama---")
-                if session["code_driver"] as! String != codeDriver {
+                guard let currentDriver = session["code_driver"] as? String  else {
+                    return
+                }
+                if  currentDriver != codeDriver {
+                    let data: [String: Any] = [
+                        "code_driver": codeDriver,
+                        "date": dateString
+                    ]
+                    UserDefaults.standard.setValue(data, forKey: "userSession")
                     getCurrentPosition()
                     print("----Driver lain Login---")
                 }else {
                     getDataOrder()
+                    print("----Masih Driver Yang Sama---")
                 }
             }
         }else {
@@ -143,10 +163,6 @@ class HomeVc: UIViewController {
         }
     }
     
-    
-    private func storeSession(data: [String: Any], codeDriver: String) {
-        
-    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -314,6 +330,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let orderData = orderData {
             if orderData[section].order_list != nil {
+//                return orderData[section].order_list!.filter({$0.status_tracking != "pending"}).count
                 return orderData[section].order_list!.count
             }else {
                 return 0
@@ -415,8 +432,51 @@ extension HomeVc: CLLocationManagerDelegate {
         if let location = locations.last {
             let coordinate = location.coordinate
             self.origin = Origin(latitude: coordinate.latitude, longitude: coordinate.longitude)
-            self.upateLocation()
+            if manager != driverManager {
+                print("--devault --")
+                self.upateLocation()
+            }
+            print("-- manager --")
+            print(manager)
+            guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                  let codeDriver = userData["codeDriver"] as? String,
+                  let idDriver = userData["idDriver"] as? Int else {
+                print("No user data")
+                return
+            }
+            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: "idle") {[weak self] (res) in
+                switch res {
+                case .failure(let err):
+                    print(err)
+                case .success(let oke):
+                    if oke {
+                        print("succes update location to firebase")
+                        self?.driverManager?.stopUpdatingLocation()
+                    }
+                }
+            }
             manager.stopUpdatingLocation()
         }
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        let bearing = newHeading.magneticHeading
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        databaseManager.updateHeading(codeDriver: codeDriver, bearing: bearing) {[weak self] (res) in
+            switch res {
+            case .failure(let err):
+                print(err)
+            case .success(let oke):
+                if oke {
+                    print("succes update heading to firebase")
+                    self?.driverManager?.stopUpdatingHeading()
+                }
+            }
+        }
+    }
+    
 }

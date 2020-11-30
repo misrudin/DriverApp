@@ -16,6 +16,21 @@ class ScanCell: UITableViewCell {
             name.text = item.item_name
             code.text = "Code : \(item.qr_code_raw)"
             status.text = item.scanned_status > 0 ? "Verified" : "Unverified"
+            let colorU = UIColor(named: "orangeKasumi")
+            let colorV = UIColor(named: "colorGreen")
+            if item.scanned_status > 0 {
+                line.backgroundColor = colorV
+                container.layer.borderColor = colorV?.cgColor
+                status.textColor = colorV
+                name.textColor = colorV
+                code.textColor = colorV
+            }else {
+                line.backgroundColor = colorU
+                container.layer.borderColor = colorU?.cgColor
+                status.textColor = colorU
+                name.textColor = colorU
+                code.textColor = colorU
+            }
         }
     }
 
@@ -28,18 +43,18 @@ class ScanCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        
+        selectionStyle = .none
         configureUi()
     }
     
     private func configureUi(){
+        line.translatesAutoresizingMaskIntoConstraints = false
         container.layer.borderWidth = 1
         container.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
         container.backgroundColor = .white
         line.backgroundColor = UIColor(named: "orangeKasumi")
         container.layer.cornerRadius = 5
         line.layer.cornerRadius = 5/2
-        line.translatesAutoresizingMaskIntoConstraints = false
         line.widthAnchor.constraint(equalToConstant: 5).isActive = true
     }
 

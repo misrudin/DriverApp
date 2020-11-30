@@ -63,6 +63,8 @@ class LiveTrackingVC: UIViewController {
     
     var currentStore: PickupDestination!
     
+    var databaseManager = DatabaseManager()
+    
     
     //origin
     var origin: Origin?
@@ -89,9 +91,7 @@ class LiveTrackingVC: UIViewController {
         mapsViewModel.delegate = self
         
         guard let orderDetailString = order?.order_detail,
-              let userInfoString = order?.user_info,
               let orderNo = order?.order_number,
-              let userDetail = orderViewModel.decryptUserInfo(data: userInfoString, OrderNo: orderNo),
               let orderDetail = orderViewModel.decryptOrderDetail(data: orderDetailString, OrderNo: orderNo),
               let statusOrder = order?.status_tracking else {
             
@@ -110,17 +110,7 @@ class LiveTrackingVC: UIViewController {
             destination = Destination(latitude: CLLocationDegrees(orderDestinationLat)!, longitude: CLLocationDegrees(orderDestinationLng)!)
         }
         
-//        guard let origin = origin, let destination = destination else {
-//            return
-//        }
-//        let direction: DirectionData = DirectionData(origin: origin, destination: destination)
-//
-//        DispatchQueue.main.async {
-//            self.mapsViewModel.drawDirection(direction: direction)
-//        }
-
         getCurrentPosition()
-//        originMarker.map = mapView
 
  
     }
@@ -130,6 +120,14 @@ class LiveTrackingVC: UIViewController {
         super.viewDidAppear(animated)
         
         cekStatusDriver()
+        self.cardViewController.status = !self.cardViewController.status
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        manager?.stopUpdatingLocation()
+        manager?.stopUpdatingHeading()
     }
     
     private func cekStatusDriver(){
@@ -215,6 +213,7 @@ class LiveTrackingVC: UIViewController {
         manager = CLLocationManager()
         manager?.requestWhenInUseAuthorization()
         manager?.startUpdatingLocation()
+        manager?.startUpdatingHeading()
         manager?.delegate = self
     }
     
@@ -290,6 +289,26 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
         if let location = locations.last {
             let coordinate = location.coordinate
             
+            ///update position to firebase
+            let status: String = "Out for delivery"
+            guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                  let codeDriver = userData["codeDriver"] as? String,
+                  let idDriver = userData["idDriver"] as? Int else {
+                print("No user data")
+                return
+            }
+            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: status) { (res) in
+                switch res {
+                case .failure(let err):
+                    print(err)
+                case .success(let oke):
+                    if oke {
+                        print("succes update location to firebase")
+                    }
+                }
+            }
+            
+            
             CATransaction.begin()
             CATransaction.setAnimationDuration(2.0)
 //            originMarker.position = coordinate
@@ -298,6 +317,7 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             guard let origin = origin, let destination = destination else {
                 return
             }
+            
             
             let direction: DirectionData = DirectionData(origin: origin, destination: destination)
             
@@ -315,6 +335,25 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
         let camera = GMSCameraPosition.camera(withLatitude: lattitude, longitude: longitude, zoom: 16)
         mapView.camera = camera
         mapView.animate(to: camera)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        let bearing = newHeading.magneticHeading
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        databaseManager.updateHeading(codeDriver: codeDriver, bearing: bearing) { (res) in
+            switch res {
+            case .failure(let err):
+                print(err)
+            case .success(let oke):
+                if oke {
+                    print("succes update heading to firebase")
+                }
+            }
+        }
     }
 }
 
@@ -384,8 +423,41 @@ extension LiveTrackingVC {
 
 @available(iOS 13.0, *)
 extension LiveTrackingVC: CardViewControllerDelegate {
-    func updateSatatus(_ viewC: CardViewController, store: PickupDestination?) {
-        currentStore = store
+    func next(_ viewC: CardViewController, store: PickupDestination?) {
+        self.cardViewController.status = !self.cardViewController.status
+        
+        guard let storeDestinationLat = store?.lat,
+              let storeDestinationLng = store?.long else {return}
+        
+        destination = Destination(latitude: CLLocationDegrees(storeDestinationLat)!, longitude: CLLocationDegrees(storeDestinationLng)!)
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(2.0)
+
+        guard let origin = origin, let destination = destination else {
+            return
+        }
+        
+        
+        let direction: DirectionData = DirectionData(origin: origin, destination: destination)
+        
+    
+        self.mapsViewModel.drawDirection(direction: direction)
+        
+        
+        CATransaction.commit()
+        
+        updateMapLocation(lattitude: origin.latitude, longitude: origin.longitude)
+    }
+    
+    func scan(_ viewC: CardViewController, store: PickupDestination?) {
+        guard let orderNo = order?.order_number else {
+            return
+        }
+        let vc = ListScanView()
+        vc.store = store
+        vc.orderNo = orderNo
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func didTapButton(_ viewModel: CardViewController, type: TypeDelivery) {
@@ -460,11 +532,12 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             }
         case .none:
             print("Status Undefined")
+        case .next:
+            print("Next store")
         case .scan:
-            let vc = ListScanView()
-            vc.store = currentStore
-            vc.orderNo = orderNo
-            navigationController?.pushViewController(vc, animated: true)
+            print("Start Scan")
+        case .nostatus:
+            print("no status")
         }
     }
     
@@ -491,13 +564,39 @@ extension LiveTrackingVC: CardViewControllerDelegate {
     }
     
     private func donePickupOrder(){
-        guard let orderNo = order?.order_number else {
+        guard let orderDetailString = order?.order_detail,
+              let orderNo = order?.order_number,
+              let orderDetail = orderViewModel.decryptOrderDetail(data: orderDetailString, OrderNo: orderNo) else {
             return
         }
+        
         let data = Delivery(status: "pickup", order_number: orderNo, type: "done")
         self.orderViewModel.statusOrder(data: data) { (result) in
             self.handleResult(result: result)
         }
+        
+        let orderDestinationLat = orderDetail.delivery_destination.lat
+        let orderDestinationLng =  orderDetail.delivery_destination.long
+        
+        destination = Destination(latitude: CLLocationDegrees(orderDestinationLat)!, longitude: CLLocationDegrees(orderDestinationLng)!)
+        
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(2.0)
+
+        guard let origin = origin, let destination = destination else {
+            return
+        }
+        
+        
+        let direction: DirectionData = DirectionData(origin: origin, destination: destination)
+        
+    
+        self.mapsViewModel.drawDirection(direction: direction)
+        
+        
+        CATransaction.commit()
+        
+        updateMapLocation(lattitude: origin.latitude, longitude: origin.longitude)
     }
 }
 

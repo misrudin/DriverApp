@@ -9,7 +9,8 @@ import UIKit
 
 protocol CardViewControllerDelegate {
     func didTapButton(_ viewModel: CardViewController, type: TypeDelivery)
-    func updateSatatus(_ viewC: CardViewController, store: PickupDestination?)
+    func scan(_ viewC: CardViewController, store: PickupDestination?)
+    func next(_ viewC: CardViewController, store: PickupDestination?)
 }
 
 enum TypeDelivery {
@@ -18,7 +19,9 @@ enum TypeDelivery {
     case start_delivery
     case pending
     case done_delivery
+    case next
     case scan
+    case nostatus
     case none
 }
 
@@ -31,6 +34,9 @@ class CardViewController: UIViewController {
     var orderData:NewOrderData? = nil
     var titleButton: String = ""
     var orderNo: String?
+    
+    var currentIndex: Int = 0
+    var statusDelivery: TypeDelivery!
     
     var status: Bool = false {
         didSet {
@@ -131,45 +137,50 @@ class CardViewController: UIViewController {
         view.addSubview(titleLabelDestination)
         view.addSubview(destinationLabel)
         
-        
         view.backgroundColor = .white
         configureLayout()
+        
         guard let orderNo = orderData?.order_number,
-              let user = orderData?.user_info,
               let order = orderData?.order_detail,
+              let user = orderData?.user_info,
               let orderDetail = orderVm.decryptOrderDetail(data: order, OrderNo: orderNo),
               let userInfo = orderVm.decryptUserInfo(data: user, OrderNo: orderNo) else {
             return
         }
         
-        
-        self.storeLabel.text = orderDetail.pickup_destination[0].pickup_store_name
-        self.destinationLabel.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
+        storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
+        destinationLabel.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
         
     }
     
     @objc
     func didTap(){
-        guard let statusTracking = orderData?.status_tracking,
-              let orderNo = orderData?.order_number,
+        guard let orderNo = orderData?.order_number,
               let order = orderData?.order_detail,
               let orderDetail = orderVm.decryptOrderDetail(data: order, OrderNo: orderNo) else {
             return
         }
-        if statusTracking == "wait for pickup" {
+        
+        switch statusDelivery {
+        case .start_pickup:
             delegate?.didTapButton(self, type: .start_pickup)
-        }else if statusTracking == "on pickup process" {
-            if cekScanedItems(items: orderDetail.pickup_destination).count == 0 {
-                delegate?.didTapButton(self, type: .done_pickup)
-            }else {
-                delegate?.didTapButton(self, type: .scan)
-            }
-        }else if statusTracking == "waiting delivery" || statusTracking == "" {
+        case .done_pickup:
+            delegate?.didTapButton(self, type: .done_pickup)
+        case .start_delivery:
             delegate?.didTapButton(self, type: .start_delivery)
-        }else if statusTracking == "on delivery" {
+        case .done_delivery:
             delegate?.didTapButton(self, type: .done_delivery)
-        }else {
+        case .next:
+            currentIndex += 1
+            if currentIndex < orderDetail.pickup_destination.count {
+                delegate?.next(self, store: orderDetail.pickup_destination[currentIndex])
+            }
+        case .pending:
             delegate?.didTapButton(self, type: .start_delivery)
+        case .scan:
+            delegate?.scan(self, store: orderDetail.pickup_destination[currentIndex])
+        default:
+            print("undefined !")
         }
     }
     
@@ -204,7 +215,7 @@ class CardViewController: UIViewController {
     
     private func cekScanedItems(items: [PickupDestination]) -> [PickupDestination] {
         var newData: [PickupDestination] = []
-        
+
         for item in items {
             if item.pickup_item.filter({$0.scan == nil}).count != 0 {
                 newData.append(item)
@@ -214,39 +225,80 @@ class CardViewController: UIViewController {
         return newData
     }
     
+    private func cekScaned() {
+        guard let orderNo = orderData?.order_number,
+              let order = orderData?.order_detail,
+              let user = orderData?.user_info,
+              let orderDetail = orderVm.decryptOrderDetail(data: order, OrderNo: orderNo),
+              let userInfo = orderVm.decryptUserInfo(data: user, OrderNo: orderNo) else {
+            return
+        }
+        
+        storeLabel.text = orderDetail.pickup_destination[currentIndex].pickup_store_name
+        destinationLabel.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
+    
+        
+        let items = orderDetail.pickup_destination
+        let data = items[currentIndex]
+        
+        let dataToCheck = data.pickup_item.map({ $0.qr_code_raw })
+        let dataToPost: Scan = Scan(order_number: orderNo, qr_code_raw: dataToCheck)
+        //cek apakah current index == items.count
+        if currentIndex+1 < items.count {
+            orderVm.cekStatusItems(data: dataToPost) {[weak self] (res) in
+                switch res {
+                case .success(let data):
+                    DispatchQueue.main.async {
+                        let filtered = data.filter({$0.scanned_status == 0})
+                        if filtered.count > 0 {
+                            self?.titleButton = "Scan Stuff"
+                            self?.statusDelivery = .scan
+                        }else {
+                            self?.titleButton = "Next Store"
+                            self?.statusDelivery = .next
+                        }
+                        self?.orderButton.setTitle(self?.titleButton, for: .normal)
+                    }
+                case .failure(let err):
+                    print(err)
+                }
+            }
+        }else {
+            titleButton = "Done Pickup (\(orderNo))"
+            statusDelivery = .done_pickup
+            orderButton.setTitle(titleButton, for: .normal)
+        }
+    }
+    
+    
     private func getDetailOrder(orderNo: String){
         OrderViewModel().getDetailOrder(orderNo: orderNo) {[weak self] (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
                     let statusTracking = data.status_tracking
-                    guard let orderDetail = self?.orderVm.decryptOrderDetail(data: data.order_detail, OrderNo: data.order_number) else {
-                        return
-                    }
-                    let items = self?.cekScanedItems(items: orderDetail.pickup_destination)
-                    if items!.count > 0 {
-                        self?.delegate?.updateSatatus(self!, store: items![0])
-                    }
                     
                     if statusTracking == "wait for pickup" || statusTracking == "" {
                         self?.titleButton = "Pickup Order (\(orderNo))"
                         self?.setupDefaultButton()
+                        self?.statusDelivery = .start_pickup
                     }else if statusTracking == "on pickup process" {
-                        if self?.cekScanedItems(items: orderDetail.pickup_destination).count == 0 {
-                            self?.titleButton = "Done Pickup (\(orderNo))"
-                        }else {
-                            self?.titleButton = "Scan Stuff"
-                        }
+                        self?.titleButton = "Loading ..."
+                        self?.statusDelivery = .nostatus
+                        self?.cekScaned()
                         self?.setupDefaultButton()
                     }else if statusTracking == "waiting delivery" {
                         self?.titleButton = "Start Delivery (\(orderNo))"
                         self?.setupDefaultButton()
+                        self?.statusDelivery = .start_delivery
                     }else if statusTracking == "on delivery" {
                         self?.titleButton = "Done Delivery (\(orderNo))"
                         self?.setupButton()
+                        self?.statusDelivery = .done_delivery
                     }else {
                         self?.titleButton = "Start Delivery (\(orderNo))"
                         self?.setupDefaultButton()
+                        self?.statusDelivery = .start_delivery
                     }
                     self?.orderButton.setTitle(self?.titleButton, for: .normal)
                 }

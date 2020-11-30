@@ -245,6 +245,8 @@ extension LoginView{
     @objc
     func didForgetClick(){
         let slideVC = ForgotView()
+//        slideVC.hasSetPointOrigin = true
+//        slideVC.pointOrigin = CGPoint(x: 200, y: 100)
         slideVC.modalPresentationStyle = .custom
         slideVC.transitioningDelegate = self
         self.present(slideVC, animated: true, completion: nil)
@@ -363,6 +365,6 @@ extension LoginView {
 @available(iOS 13.0, *)
 extension LoginView: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        PresentationController(presentedViewController: presented, presenting: presenting)
+        ForgotPassword(presentedViewController: presented, presenting: presenting)
     }
 }

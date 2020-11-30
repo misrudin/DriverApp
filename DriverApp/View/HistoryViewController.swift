@@ -52,7 +52,7 @@ class HistoryViewController: UIViewController {
 
     private let tableView: UITableView = {
        let table = UITableView()
-        table.register(OrderTableViewCell.self, forCellReuseIdentifier: OrderTableViewCell.id)
+        table.register(UINib(nibName: "HistoryCell", bundle: nil), forCellReuseIdentifier: HistoryCell.id)
         return table
     }()
 
@@ -67,7 +67,7 @@ class HistoryViewController: UIViewController {
         tableView.delegate = self
         tableView.frame=view.bounds
         tableView.separatorStyle = .none
-        tableView.rowHeight = 150
+        tableView.estimatedRowHeight = 150
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
@@ -112,7 +112,7 @@ class HistoryViewController: UIViewController {
             switch result {
             case .success(let order):
                 DispatchQueue.main.async {
-                    self?.orderData = order.data
+                    self?.orderData = order
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
@@ -220,13 +220,64 @@ extension HistoryViewController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: OrderTableViewCell.id, for: indexPath) as! OrderTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: HistoryCell.id, for: indexPath) as! HistoryCell
         
         if let orderData = orderData {
-            cell.labelOrder.text = "Order Number: \(orderData[indexPath.row].orderNumber)"
-            cell.labelAdresDetail.text = "\(orderData[indexPath.row].addressUser)"
+            cell.item = orderData[indexPath.row]
         }
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print(indexPath.row)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+ 
+        let deleteAction = UIContextualAction(
+            style: .normal,
+               title: "Delete",
+            handler: {[weak self](action, view, completion) in
+                   completion(true)
+                guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                      let codeDriver = userData["codeDriver"] as? String, let order = self?.orderData else {
+                    print("No user data")
+                    return
+                }
+                let orderNo = order[indexPath.row].order_number
+                
+                let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver)
+                OrderViewModel().deleteOrder(data: data) { (res) in
+                    switch res {
+                    case .success(let oke):
+                        if oke {
+                            self?.orderData?.remove(at: indexPath.row)
+                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                        
+                    }
+                    case .failure(let err):
+                        print(err)
+                        Helpers().showAlert(view: self!, message: "Failed to delete history !")
+                    }
+                }
+           })
+
+
+        let imageDelete = UIImage(named: "deleteIcon")
+        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
+    
+        deleteAction.image = delete
+        deleteAction.backgroundColor = .red
+           let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+           configuration.performsFirstActionWithFullSwipe = false
+           return configuration
     }
 }

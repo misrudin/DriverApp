@@ -79,19 +79,15 @@ class MainVc: UIViewController {
         homeVc.title = "Jobs"
         let historyVc = UINavigationController(rootViewController: HistoryViewController())
         historyVc.title = "History"
-        let notesVc = UINavigationController(rootViewController: NotesVc())
-        notesVc.title = "Notes"
         let dayOffVc = UINavigationController(rootViewController: DayOffVc())
         dayOffVc.title = "Day Off"
-        let profileVc = UINavigationController(rootViewController: ProfileViewController())
-        profileVc.title = "My Account"
         
         let image = UIImage(named: "homeIcon")
         let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         
-        let images = [baru,baru,baru,baru,baru]
+        let images = [baru,baru,baru]
         
-        tabBarVc.setViewControllers([homeVc,historyVc,dayOffVc], animated: true)
+        tabBarVc.setViewControllers([historyVc,homeVc, dayOffVc], animated: true)
         
         guard let items = tabBarVc.tabBar.items else {
             return
@@ -103,6 +99,7 @@ class MainVc: UIViewController {
         
         tabBarVc.modalPresentationStyle = .fullScreen
         tabBarVc.modalTransitionStyle = .crossDissolve
+        tabBarVc.selectedIndex = 1
         present(tabBarVc, animated: true, completion: nil)
     }
     

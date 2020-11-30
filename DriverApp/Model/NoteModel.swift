@@ -30,8 +30,10 @@ struct Pending: Codable {
     }
 }
 
-struct NotesCheckout: Decodable {
-    let data: [Checkout]
+//MARK: - Notes
+
+struct Notes: Decodable {
+    let data: [Note]
     let totalData: Int
     let totalPage: Int
     
@@ -42,33 +44,43 @@ struct NotesCheckout: Decodable {
     }
 }
 
-
-struct Checkout: Decodable {
+//MARK: - NOTE
+struct Note: Decodable {
+    let update_time: String?
+    let note_category: String
     let note: String
-    let idNote: Int 
-    let createdDate: String
-    let createdTime: String
-    
-    enum CodingKeys: String, CodingKey {
-        case note = "note"
-        case idNote = "id_note_driver_chcekout"
-        case createdDate = "created_date"
-        case createdTime = "created_time"
-    }
+    let meta_data: MetaData?
+    let driver_detail: DriverDetail
+    let update_date: String?
+    let created_time: String
+    let id_note: Int
+    let created_date: String
 }
 
 
+//MARK: - Driver Detail
+struct DriverDetail: Decodable {
+    let working_status: String
+    let code_driver: String
+    let bio: String
+}
+
+
+
+//MARK: - update note
 struct DataPending: Codable {
     let code_driver: String
     let note: String
     let meta_data: MetaData
 }
 
+//MARK: - Meta data
 struct MetaData: Codable {
     let order_number: String
     let id_shift_time: String
 }
 
+//MARK: - update note checkout
 struct DataCheckout: Codable {
     let code_driver: String
     let note: String
@@ -81,6 +93,6 @@ struct DataEditPending:Codable {
 }
 
 struct DataEditCheckout:Codable {
-    let id_note_driver_chcekout: Int
+    let id_note: Int
     let note: String
 }

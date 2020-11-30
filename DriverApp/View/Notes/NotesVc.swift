@@ -46,8 +46,8 @@ class NotesVc: UIViewController {
         return spin
     }()
     
-    var pendingData: [Pending] = []
-    var checkoutData: [Checkout] = []
+    var pendingData: [Note] = []
+    var checkoutData: [Note] = []
     var codeDriver: String = ""
     var display: String = "CHECKOUT"
     
@@ -165,7 +165,7 @@ class NotesVc: UIViewController {
             switch result {
             case .success(let dataCheckout):
                 DispatchQueue.main.async {
-                    self?.checkoutData = dataCheckout.data
+                    self?.checkoutData = dataCheckout
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.emptyImage.isHidden = true
@@ -191,7 +191,7 @@ class NotesVc: UIViewController {
             switch result {
             case .success(let dataPending):
                 DispatchQueue.main.async {
-                    self?.pendingData = dataPending.data
+                    self?.pendingData = dataPending
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.emptyImage.isHidden = true
@@ -240,7 +240,7 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
         
         
         cell.labelNote.text = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
-        cell.labelTime.text = display == "CHECKOUT" ? "\(checkoutData[indexPath.row].createdDate), \(checkoutData[indexPath.row].createdTime)" : "\(pendingData[indexPath.row].createdDate), \(pendingData[indexPath.row].createdTime)"
+        cell.labelTime.text = display == "CHECKOUT" ? "\(checkoutData[indexPath.row].created_date), \(checkoutData[indexPath.row].created_time)" : "\(pendingData[indexPath.row].created_date), \(pendingData[indexPath.row].created_time)"
         
         return cell
         
@@ -261,7 +261,7 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
         let note = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
-        let id:Int = display == "CHECKOUT" ? checkoutData[indexPath.row].idNote : pendingData[indexPath.row].idNote
+        let id:Int = display == "CHECKOUT" ? checkoutData[indexPath.row].id_note : pendingData[indexPath.row].id_note
         
         let editAction = UIContextualAction(
                style: .normal,

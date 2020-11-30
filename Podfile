@@ -27,6 +27,8 @@ target 'DriverApp' do
     pod 'BulletinBoard'
 
 	pod 'FloatingTabBarController'
+  
+  pod 'AutoKeyboard' 
 
 end
 

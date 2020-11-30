@@ -16,6 +16,8 @@ class ListScanView: UIViewController {
     
     var pickupItems: [Scanned]!
     
+    var done: Bool = false
+    
     //MARK: - COMPONENTS
     //MARK: - LOADING
     private let spiner: JGProgressHUD = {
@@ -39,6 +41,20 @@ class ListScanView: UIViewController {
         b.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold )
         b.centerTextAndImage(spacing: 10.0)
         b.addTarget(self, action: #selector(add), for: .touchUpInside)
+        b.isHidden = true
+        return b
+    }()
+    
+    lazy var finishButton:UIButton = {
+        let b = UIButton()
+        b.setTitle("Finish", for: .normal)
+        b.setTitleColor(.white, for: .normal)
+        b.backgroundColor = UIColor(named: "orangeKasumi")
+        b.layer.cornerRadius = 5
+        b.layer.masksToBounds = true
+        b.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold )
+        b.addTarget(self, action: #selector(finish), for: .touchUpInside)
+        b.isHidden = true
         return b
     }()
     
@@ -55,19 +71,25 @@ class ListScanView: UIViewController {
         b.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular )
         b.centerTextAndImage(spacing: 10.0)
         b.addTarget(self, action: #selector(addMaunal), for: .touchUpInside)
+        b.isHidden = true
         return b
     }()
     
     @objc
-    func addMaunal(){
+    private func addMaunal(){
         let vc = InputCode()
-        
+        vc.orderNo = orderNo
         navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
-    func add(){
+    private func add(){
         print("Scan With Camera")
+    }
+    
+    @objc
+    private func finish(){
+        navigationController?.popViewController(animated: true)
     }
     
     lazy var tableView: UITableView = {
@@ -87,6 +109,11 @@ class ListScanView: UIViewController {
         
         configureUi()
         configureNavigationBar()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         cekStatusItems()
     }
 
@@ -105,17 +132,31 @@ class ListScanView: UIViewController {
                     self?.spiner.dismiss()
                     self?.pickupItems = result
                     self?.tableView.reloadData()
+                    let filtered = result.filter({$0.scanned_status == 0})
+                    if filtered.count > 0 {
+                        self?.done = false
+                        self?.setupButton()
+                    }else {
+                        self?.done = true
+                        self?.setupButton()
+                    }
                 }
-            case .failure(let err):
+            case .failure(_):
                 self?.spiner.dismiss()
                 self?.tableView.reloadData()
             }
         }
     }
     
+    private func setupButton(){
+        manualButotn.isHidden = done
+        scanButton.isHidden = done
+        finishButton.isHidden = !done
+    }
+    
     private func configureUi(){
         view.addSubview(tableView)
-        view.addSubviews(views: scanButton, manualButotn)
+        view.addSubviews(views: scanButton, manualButotn,finishButton)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: scanButton.topAnchor, right: view.rightAnchor,paddingBottom: 40)
@@ -124,6 +165,7 @@ class ListScanView: UIViewController {
         
         manualButotn.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
         scanButton.anchor(left: view.leftAnchor, bottom: manualButotn.topAnchor, right: view.rightAnchor, paddingBottom: 10, paddingLeft: 16, paddingRight: 16, height: 45)
+        finishButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
     }
     
     private func configureNavigationBar(){
@@ -147,10 +189,6 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
