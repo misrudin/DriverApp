@@ -65,7 +65,12 @@ class MainVc: UIViewController {
         signupButton.addTarget(self, action: #selector(register), for: .touchUpInside)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+//    override func viewDidAppear(_ animated: Bool) {
+//        cekUser()
+//    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         cekUser()
     }
     
@@ -82,10 +87,14 @@ class MainVc: UIViewController {
         let dayOffVc = UINavigationController(rootViewController: DayOffVc())
         dayOffVc.title = "Day Off"
         
-        let image = UIImage(named: "homeIcon")
-        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
+        let image1 = UIImage(named: "jobHistory")
+        let baru1 = image1?.resizeImage(CGSize(width: 25, height: 25))
+        let image2 = UIImage(named: "jobList")
+        let baru2 = image2?.resizeImage(CGSize(width: 25, height: 25))
+        let image3 = UIImage(named: "dayOff")
+        let baru3 = image3?.resizeImage(CGSize(width: 25, height: 25))
         
-        let images = [baru,baru,baru]
+        let images = [baru1,baru2,baru3]
         
         tabBarVc.setViewControllers([historyVc,homeVc, dayOffVc], animated: true)
         
@@ -105,11 +114,8 @@ class MainVc: UIViewController {
     
     
     func cekUser() {
-//        let vc = LoginView()
-//        vc.modalPresentationStyle = .fullScreen
         
         if UserDefaults.standard.value(forKey: "userData") != nil {
-//            vc.dismiss(animated: false, completion: nil)
             loginButton.isHidden = true
             signupButton.isHidden = true
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any], let codeDriver = userData["codeDriver"] as? String else {
@@ -135,7 +141,6 @@ class MainVc: UIViewController {
                 }
             }
         }else {
-//            present(vc, animated: false, completion: nil)
             loginButton.isHidden = false
             signupButton.isHidden = false
         }

@@ -173,6 +173,42 @@ struct OrderViewModel {
     }
     
     
+    //    MARK: - CEK DRIVER FREELANCE REJECT ORDER
+        func cekRejectOrder(driver: String, completion: @escaping (Result<NewOrderData,Error>)->Void){
+            AF.request("\(Base.urlOrder)detail/reject/\(driver)",headers: Base.headers).responseJSON { response in
+                switch response.result {
+                case .success:
+                    if response.response?.statusCode == 200 {
+                        debugPrint(response)
+                    }
+                case let .failure(error):
+                    completion(.failure(error))
+                }
+            }
+        }
+    
+    
+    //MARK: - REJECT ORDER FOR FLEELANCE
+    func rejectOrder(data: DeleteHistory, completion: @escaping (Result<Bool,Error>)-> Void){
+        AF.request("\(Base.urlOrder)update/reject",
+                   method: .patch,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        if response.response?.statusCode  == 200 {
+                            completion(.success(true))
+                        }else {
+                            completion(.failure(DataError.failedToUpdateData))
+                        }
+                    case .failure(let error):
+                        completion(.failure(error))
+                    }
+                    
+                   })
+    }
+    
     //MARK: - Parse Data Order
     //    Parese data order
     private func parseDataOrder(_ data: Data) -> [OrderListDate]?{

@@ -33,12 +33,11 @@ class OrderCell: UITableViewCell {
             
             orderNo.text = orderData.order_number
 
-            let df = DateFormatter()
-            let activeDate = Date.dateFromCustomString(customString: orderData.active_date)
-            df.dateFormat = "dd MMM yyyy"
-            let activeDateStr = df.string(from: activeDate)
+            let start = orderData.detail_shift.time_start_shift[...4]
+            let end = orderData.detail_shift.time_end_shift[...4]
 
-            date.text = activeDateStr
+
+            date.text = "\(start) - \(end)"
 
             var arrayOfStore: [String] = []
             for item in orderDetail.pickup_destination {
@@ -57,7 +56,6 @@ class OrderCell: UITableViewCell {
         selectionStyle = .none
         container.layer.cornerRadius = 5
         container.backgroundColor = .white
-        container.dropShadow(color: UIColor(named: "grayKasumi")!, offSet: CGSize(width: 2, height: 2))
         backgroundColor = UIColor(named: "grayKasumi")
     }
     

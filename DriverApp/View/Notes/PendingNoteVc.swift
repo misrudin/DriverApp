@@ -22,6 +22,18 @@ class PendingNoteVc: UIViewController {
         return spin
     }()
     
+    private let imageView: UIImageView = {
+       let iv = UIImageView()
+        iv.image = UIImage(named: "pendingImage")
+        iv.clipsToBounds = true
+        iv.contentMode = .scaleAspectFit
+        iv.layer.masksToBounds = true
+        return iv
+    }()
+    
+    private let messagelabel = Reusable.makeLabel(text: "Tell Your Pending Delivery Reason", font: UIFont.systemFont(ofSize: 16), color: .black, alignment: .center)
+    private let pendingLable = Reusable.makeLabel(text: "PENDING", font: UIFont.systemFont(ofSize: 20, weight: .semibold), color: UIColor.black, alignment: .center)
+    
     private let noteInput: UITextView = {
         let field = UITextView()
         field.autocapitalizationType = .none
@@ -29,7 +41,7 @@ class PendingNoteVc: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.systemGray5.cgColor
+        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
         field.layer.shadowOpacity = 0.5
         field.backgroundColor = .white
         field.dataDetectorTypes = .all
@@ -67,6 +79,8 @@ class PendingNoteVc: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         
+        view.addSubviews(views: imageView,pendingLable,messagelabel)
+        
         view.addSubview(submitButton)
         view.addSubview(cancelButton)
         view.addSubview(noteInput)
@@ -83,15 +97,24 @@ class PendingNoteVc: UIViewController {
     }
     
     func configureLayout(){
+        
+        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20, width: view.frame.width/3, height: view.frame.width/3)
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        
+        pendingLable.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20)
+        
+        messagelabel.numberOfLines = 0
+        messagelabel.anchor(top: pendingLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        
         submitButton.anchor(top: noteInput.bottomAnchor, left: view.leftAnchor, right: cancelButton.leftAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 10, height: 40)
         
         cancelButton.anchor(top: noteInput.bottomAnchor, right: view.rightAnchor, paddingTop: 20, paddingRight: 16, width: 100, height: 40)
         
-        noteInput.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 200)
+        noteInput.anchor(top: messagelabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 200)
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Give a pending reason"
+        navigationItem.title = "Pending Delivery"
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()

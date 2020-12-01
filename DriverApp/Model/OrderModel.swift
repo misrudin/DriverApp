@@ -153,6 +153,7 @@ struct OrderListDate: Decodable {
 //before decript
 struct NewOrderData: Decodable {
     let user_info: String
+    let detail_shift: DetailShift
     let order_detail: String
     let status_tracking: String
     let order_number: String
@@ -171,8 +172,15 @@ struct NewOrderData: Decodable {
         case active_date
         case id_order
         case id_shift_time
-//        case distance
+        case detail_shift
     }
+}
+
+//detail shift
+struct DetailShift: Decodable {
+    let time_start_shift: String
+    let label_data: String
+    let time_end_shift: String
 }
 
 

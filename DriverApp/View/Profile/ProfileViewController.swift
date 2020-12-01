@@ -46,10 +46,19 @@ class ProfileViewController: UIViewController {
     
     lazy var imageEdit = Reusable.makeImageView(image: UIImage(named: "editIconGray")!, contentMode: .scaleAspectFit)
     
-    func createButton(title: String, color: UIColor? = nil)-> UIView {
+    func createButton(title: String, color: UIColor? = nil, icon: UIImage)-> UIView {
         let buttonEditProfile: UIView = {
             let view = UIView()
             view.isUserInteractionEnabled = true
+            let imageR: UIImageView = {
+                let iv = UIImageView()
+                iv.contentMode = .scaleAspectFit
+                iv.clipsToBounds = true
+                iv.layer.masksToBounds = true
+                iv.image = icon
+                return iv
+            }()
+            
             let label: UILabel = {
                 let lable = UILabel()
                 lable.text = title
@@ -74,8 +83,12 @@ class ProfileViewController: UIViewController {
             
             view.addSubview(label)
             view.addSubview(image)
-            label.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: image.leftAnchor, paddingTop: 5, paddingBottom: 5, paddingLeft: 16, paddingRight: 5)
+            view.addSubview(imageR)
+            label.anchor(top: view.topAnchor, left: imageR.rightAnchor, bottom: view.bottomAnchor, right: image.leftAnchor, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 5)
             image.anchor(top: view.topAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 50)
+            
+            imageR.anchor(left: view.leftAnchor, paddingLeft: 16, width: 30,height: 30)
+            imageR.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
             
             return view
         }()
@@ -90,9 +103,9 @@ class ProfileViewController: UIViewController {
         return view
     }()
     
-    lazy var button1 = createButton(title: "Note")
-    lazy var button2 = createButton(title: "Change Password")
-    lazy var button6 = createButton(title: "Change Vehicle Data")
+    lazy var button1 = createButton(title: "Note", icon: UIImage(named: "note")!)
+    lazy var button2 = createButton(title: "Change Password", icon: UIImage(named: "password")!)
+    lazy var button6 = createButton(title: "Change Vehicle Data", icon: UIImage(named: "vehicle")!)
 //    lazy var button7 = createButton(title: "Edit Email")
 //    lazy var button3 = createButton(title: "Checkout")
 //    lazy var button4 = createButton(title: "Rest")
@@ -202,20 +215,6 @@ class ProfileViewController: UIViewController {
                         if status.isCheckin == true {
                             print("baru in")
                             self?.button3.isHidden = false //muncul
-                            self?.profileVM.cekStatusDriver(codeDriver: codeDriver) {[weak self] (res) in
-                                switch res {
-                                case .success(let data):
-                                    DispatchQueue.main.async {
-                                        if data.restTime != nil {
-//                                            self?.button4.isHidden = true //hide
-                                        }else {
-//                                            self?.button4.isHidden = false  //muncul
-                                        }
-                                    }
-                                case .failure(let err):
-                                    print(err)
-                                }
-                            }
                         }else {
                             self?.button3.isHidden = true
                         }

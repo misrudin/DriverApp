@@ -51,7 +51,16 @@ class LiveTrackingVC: UIViewController {
     
     var isCheckin: Bool = false
     
+    enum MapsType {
+        case folowing
+        case bounds
+        case free
+    }
+    
+    var mapsType: MapsType = .free
+    
     private var manager: CLLocationManager?
+    private var locationManager: CLLocationManager?
     
     var originMarker: GMSMarker = {
         let marker = GMSMarker()
@@ -68,11 +77,50 @@ class LiveTrackingVC: UIViewController {
         return marker
     }()
     
+    lazy var mapsButton: UIButton = {
+       let button = UIButton()
+        let image = UIImage(named: "location")
+        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
+        button.backgroundColor = UIColor(named: "grayKasumi")
+        button.setImage(baru, for: .normal)
+        button.layer.cornerRadius = 50/2
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(myPosition), for: .touchUpInside)
+       return button
+    }()
+    
+    @objc
+    func myPosition(){
+        locationManager = CLLocationManager()
+        locationManager?.requestWhenInUseAuthorization()
+        locationManager?.startUpdatingLocation()
+        locationManager?.delegate = self
+        mapsType = .free
+    }
+    
+    lazy var directionButton: UIButton = {
+       let button = UIButton()
+        let image = UIImage(named: "upload")
+        let baru = image?.resizeImage(CGSize(width: 25, height: 25))
+        button.backgroundColor = UIColor(named: "grayKasumi")
+        button.setImage(baru, for: .normal)
+        button.layer.cornerRadius = 50/2
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: #selector(dire), for: .touchUpInside)
+       return button
+    }()
+    
+    @objc func dire(){
+        mapsType = .folowing
+    }
+    
     let mapView: GMSMapView = {
         let mapView = GMSMapView()
-
         return mapView
     }()
+    
+    var oldPolyLines = [GMSPolyline]()
+    var oldMarkers = [GMSMarker]()
     
     var currentStore: PickupDestination!
     
@@ -90,19 +138,16 @@ class LiveTrackingVC: UIViewController {
         title = "Live Tracking"
         
        
-       
-        view.addSubview(mapView)
+        view.insertSubview(mapView, at: 0)
+        view.insertSubview(mapsButton, at: 1)
+        view.insertSubview(directionButton, at: 2)
+
+        mapsButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 20, paddingRight: 16, width: 50, height: 50)
+        directionButton.anchor(top: mapsButton.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingRight: 16, width: 50, height: 50)
        
         DispatchQueue.main.async {
             self.setupCard()
         }
-        
-        mapView.frame = view.bounds
-        
-        
-        configureNavigationBar()
-        
-        mapsViewModel.delegate = self
         
         guard let orderDetailString = order?.order_detail,
               let orderNo = order?.order_number,
@@ -124,6 +169,13 @@ class LiveTrackingVC: UIViewController {
             destination = Destination(latitude: CLLocationDegrees(orderDestinationLat)!, longitude: CLLocationDegrees(orderDestinationLng)!)
         }
         
+        mapView.frame = view.bounds
+        myPosition()
+        
+        configureNavigationBar()
+        
+        mapsViewModel.delegate = self
+        
         getCurrentPosition()
 
  
@@ -135,6 +187,10 @@ class LiveTrackingVC: UIViewController {
         
         cekStatusDriver()
         self.cardViewController.status = !self.cardViewController.status
+        
+        
+        mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
+        directionButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -225,6 +281,7 @@ class LiveTrackingVC: UIViewController {
     
     func getCurrentPosition(){
         manager = CLLocationManager()
+        manager?.desiredAccuracy = kCLLocationAccuracyBest
         manager?.requestWhenInUseAuthorization()
         manager?.startUpdatingLocation()
         manager?.delegate = self
@@ -279,6 +336,21 @@ class LiveTrackingVC: UIViewController {
 @available(iOS 13.0, *)
 extension LiveTrackingVC: MapsViewModelDelegate {
     func didDrawDirection(_ viewModel: MapsViewModel, direction: GMSPolyline, markerOrigin: GMSMarker, markerDestination: GMSMarker, camera: GMSCameraPosition) {
+        
+        if self.oldPolyLines.count > 0 {
+            for polyline in self.oldPolyLines {
+                polyline.map = nil
+            }
+        }
+        
+        if self.oldMarkers.count > 0 {
+            for marker in self.oldMarkers {
+                marker.map = nil
+            }
+        }
+        
+        self.oldPolyLines.append(direction)
+        self.oldMarkers.append(markerDestination)
         direction.map = mapView
         markerDestination.map = mapView
     }
@@ -298,6 +370,22 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             let coordinate = location.coordinate
+            
+            //MARK: - INITIAL POSITION
+            if manager == locationManager {
+                let camera = GMSCameraPosition(latitude: coordinate.latitude, longitude: coordinate.longitude, zoom: 19)
+                mapView.animate(to: camera)
+                
+                mapView.animate(toZoom: 17.0)
+                mapView.animate(toViewingAngle: 0)
+                mapView.animate(toBearing: location.course)
+                let point = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
+                                                   longitude: location.coordinate.longitude)
+                originMarker.position = point
+                originMarker.map = mapView
+                updateMarkerWith(position: point, angle: location.course)
+                locationManager?.stopUpdatingLocation()
+            }
             
             //MARK: -   DATA UPDATE LOCATION TO FIREBASE
             let status: String = "Out for delivery"
@@ -334,15 +422,24 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
         
             self.mapsViewModel.drawDirection(direction: direction)
             
-            originMarker.map = mapView
+            
             let point = CLLocationCoordinate2D(latitude: location.coordinate.latitude,
                                                longitude: location.coordinate.longitude)
+            let dest = CLLocationCoordinate2D(latitude: destination.latitude, longitude: destination.longitude)
             updateMarkerWith(position: point, angle: location.course)
             
-            mapView.animate(toLocation: point)
-            mapView.animate(toBearing: location.course)
-            mapView.animate(toZoom: 17.0)
-            mapView.animate(toViewingAngle: 50)
+            switch mapsType {
+            case .bounds:
+                fitToBounds(origin: point, destination: dest)
+            case .folowing:
+                mapView.animate(toBearing: location.course)
+                mapView.animate(toViewingAngle: 40)
+                folowUser(point: point)
+            default:
+                print("free")
+            }
+            
+            
             CATransaction.commit()
         }
     }
@@ -358,6 +455,23 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             let angleInRadians: CGFloat = CGFloat(angle) * .pi / CGFloat(180)
             originMarker.iconView?.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
 //            CATransaction.commit()
+    }
+    
+    //MARK: - fit two markers
+    func fitToBounds(origin: CLLocationCoordinate2D, destination: CLLocationCoordinate2D){
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(2.0)
+        let bounds = GMSCoordinateBounds(coordinate: origin, coordinate: destination)
+        mapView.camera(for: bounds, insets: UIEdgeInsets())
+        CATransaction.commit()
+    }
+    
+    //MARK: - FOLOW CAR
+    func folowUser(point: CLLocationCoordinate2D){
+        CATransaction.begin()
+        CATransaction.setAnimationDuration(2.0)
+        mapView.animate(toLocation: point)
+        CATransaction.commit()
     }
 }
 
@@ -427,6 +541,13 @@ extension LiveTrackingVC {
 
 @available(iOS 13.0, *)
 extension LiveTrackingVC: CardViewControllerDelegate {
+    func seeDetail(_ viewC: CardViewController, order: NewOrderDetail?, userInfo: NewUserInfo?) {
+        let vi = DetailView()
+        vi.orderDetail = order
+        vi.userInfo = userInfo
+        navigationController?.pushViewController(vi, animated: true)
+    }
+    
     func next(_ viewC: CardViewController, store: PickupDestination?) {
         self.cardViewController.status = !self.cardViewController.status
         

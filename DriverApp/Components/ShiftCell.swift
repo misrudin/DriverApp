@@ -36,6 +36,15 @@ class ShiftCell: UITableViewCell {
     lazy var lableShift = Reusable.makeLabel(font: UIFont.systemFont(ofSize: 18, weight: .semibold), color: UIColor(named: "colorRed")!)
     lazy var lableTime = Reusable.makeLabel(font: UIFont.systemFont(ofSize: 16, weight: .regular), color: UIColor.black)
     
+    let line: UIView = {
+        let v = UIView()
+        v.clipsToBounds = true
+        v.layer.cornerRadius = 5
+        v.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        v.backgroundColor = UIColor(named: "colorRed")
+        return v
+    }()
+    
     let viewContainer: UIView = {
        let view = UIView()
         view.backgroundColor = UIColor(named: "colorRed2")
@@ -57,7 +66,10 @@ class ShiftCell: UITableViewCell {
         viewContainer.addSubview(lableShift)
         viewContainer.addSubview(lableTime)
         viewContainer.addSubview(leftView)
+        viewContainer.addSubview(line)
         selectionStyle = .none
+        
+        line.anchor(top: viewContainer.topAnchor, left: viewContainer.leftAnchor, bottom: viewContainer.bottomAnchor, width: 10)
         
         viewContainer.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor,paddingTop: 5 ,paddingBottom: 5, paddingLeft: 10, paddingRight: 10)
         
@@ -65,6 +77,7 @@ class ShiftCell: UITableViewCell {
         
         lableShift.anchor(top: viewContainer.topAnchor, left: leftView.rightAnchor, right: viewContainer.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
         lableTime.anchor(left: leftView.rightAnchor, bottom: viewContainer.bottomAnchor, right: viewContainer.rightAnchor, paddingBottom: 5, paddingLeft: 10, paddingRight: 10)
+        
         
     }
     

@@ -1,19 +1,31 @@
 {
   "images" : [
     {
-      "filename" : "6619725-64 1.png",
+      "filename" : "Change_vehicle_data_icon (3).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "6619725-64 1@2x.png",
+      "filename" : "delivery-truck@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "6619725-64 1@3x.png",
+      "filename" : "delivery-truck@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "filename" : "Change_vehicle_data_icon (4).png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "unassigned" : true
+    },
+    {
+      "filename" : "Change_vehicle_data_icon (5).png",
+      "idiom" : "universal",
+      "scale" : "1x",
+      "unassigned" : true
     }
   ],
   "info" : {

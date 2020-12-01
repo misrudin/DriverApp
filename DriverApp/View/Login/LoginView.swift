@@ -175,10 +175,14 @@ class LoginView: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        configureNavigationBar()
         containerView.dropShadow(color: .black, opacity: 0.6, offSet: CGSize(width: 3, height: -3), radius: 10, scale: true)
         codeDriver.addBorder(toSide: .Bottom, withColor: UIColor.white.cgColor, andThickness: 1)
         password.addBorder(toSide: .Bottom, withColor: UIColor.white.cgColor, andThickness: 1)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationBar()
     }
     
     override func viewDidLayoutSubviews() {

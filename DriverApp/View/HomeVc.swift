@@ -65,7 +65,7 @@ class HomeVc: UIViewController {
     lazy var refreshControl = UIRefreshControl()
     
     private let tableView: UITableView = {
-       let table = UITableView()
+        let table = UITableView(frame: CGRect.zero, style: .grouped)
         table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
         table.backgroundColor = UIColor(named: "grayKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
@@ -84,6 +84,7 @@ class HomeVc: UIViewController {
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
+        
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
@@ -316,8 +317,10 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if let orderData = orderData {
-            return orderData.filter({$0.order_list != nil}).count
+//            return orderData.filter({$0.order_list != nil}).count
+            return orderData.count
         }
+        
         
         return 0
     }
@@ -357,8 +360,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         
         override init(frame: CGRect) {
             super.init(frame: frame)
-            backgroundColor = .black
-            textColor = .white
+            textColor = UIColor(named: "darkKasumi")
             textAlignment = .center
             translatesAutoresizingMaskIntoConstraints = false
             font = UIFont.boldSystemFont(ofSize: 14)
@@ -420,6 +422,84 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
             navigationController?.pushViewController(vc, animated: true)
             
         }
+    }
+    
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            print(indexPath.row)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+ 
+        let rejectAction = UIContextualAction(
+            style: .normal,
+               title: "Decline",
+            handler: {[weak self](action, view, completion) in
+                   completion(true)
+                
+                guard let allorder = self?.orderData,
+                      let dateOrder = allorder[indexPath.section].order_list,
+                      let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                            let codeDriver = userData["codeDriver"] as? String else {return}
+                
+                let orderNo = dateOrder[indexPath.row].order_number
+                
+                let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver)
+                
+                self?.orderViewModel.rejectOrder(data: data) { (res) in
+                    switch res {
+                    case .failure(let err):
+                        print(err)
+                        self?.tableView.reloadData()
+                    case .success(let oke):
+                        DispatchQueue.main.async {
+                            print(oke)
+                            self?.tableView.reloadData()
+                        }
+                    }
+             
+                }
+                
+           })
+        
+        let pendingAction = UIContextualAction(
+            style: .normal,
+               title: "Pending",
+            handler: {[weak self](action, view, completion) in
+                   completion(true)
+                let vc = PendingNoteVc()
+                if let order = self?.orderData {
+                    if order[indexPath.section].order_list != nil {
+                        let orderList = order[indexPath.section].order_list
+                        vc.orderData = orderList![indexPath.row]
+                    }
+                }
+                
+                let navVc = UINavigationController(rootViewController: vc)
+                self?.present(navVc, animated: true, completion: nil)
+           })
+
+
+        let imageDelete = UIImage(named: "remove")
+        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
+        
+        let imageEdit = UIImage(named: "time")
+        let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
+    
+        rejectAction.image = delete
+        rejectAction.backgroundColor = UIColor(named: "darkKasumi")
+        pendingAction.image = edit
+        pendingAction.backgroundColor = UIColor(named: "darkKasumi")
+           let configuration = UISwipeActionsConfiguration(actions: [rejectAction, pendingAction])
+           configuration.performsFirstActionWithFullSwipe = false
+           return configuration
     }
     
 }

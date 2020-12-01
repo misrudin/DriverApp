@@ -118,7 +118,8 @@ class PlanVc: UIViewController {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = months[Calendar.current.component(.month, from: Date())]
+        let index = Calendar.current.component(.month, from: Date()) < 12 ? Calendar.current.component(.month, from: Date()) : 0
+        label.text = months[index]
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 20,weight: .bold)
         label.textAlignment = .center
@@ -1091,7 +1092,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
-        let month = montnNumber <= 12 ? Date.monthNumber() + 1 : Date.monthNumber()
+        let month = montnNumber < 12 ? Date.monthNumber() + 1 : 1
         let year = montnNumber <= 12 ? Date.yearNumber() : Date.yearNumber()+1
         let i = indexPath.row + 1
         let dayName = Date.dayNameFromCustomDate(customDate: i, year: year, month: month)
@@ -1619,7 +1620,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let i = indexPath.row + 1
-        let month = montnNumber <= 12 ? Date.monthNumber() + 1 : Date.monthNumber()
+        let month = montnNumber < 12 ? Date.monthNumber() + 1 : 1
         let year = montnNumber <= 12 ? Date.yearNumber() : Date.yearNumber()+1
         
         let date = Date.dateStringNextMonthFrom(customDate: i, year: year, month: month)

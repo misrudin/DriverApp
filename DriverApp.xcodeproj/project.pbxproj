@@ -51,6 +51,7 @@
 		B354B121253B8B3E00B5798B /* LiveTrackingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B354B120253B8B3E00B5798B /* LiveTrackingVC.swift */; };
 		B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35598E52541ED2300866C10 /* OrderViewModel.swift */; };
 		B35642702566198800D3B644 /* EditVehicleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B356426F2566198800D3B644 /* EditVehicleView.swift */; };
+		B35918302576079B005135A0 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B359182E2576079B005135A0 /* DetailView.swift */; };
 		B36E09742536E11800F1B421 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09732536E11800F1B421 /* AppDelegate.swift */; };
 		B36E09762536E11800F1B421 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09752536E11800F1B421 /* SceneDelegate.swift */; };
 		B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B36E097C2536E11B00F1B421 /* Assets.xcassets */; };
@@ -91,8 +92,6 @@
 		B3F79C8C2573BD31003455D1 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C8A2573BD31003455D1 /* HistoryCell.swift */; };
 		B3F79C8D2573BD31003455D1 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F79C8B2573BD31003455D1 /* HistoryCell.xib */; };
 		B3F79C922573E3C0003455D1 /* ForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C912573E3C0003455D1 /* ForgotPassword.swift */; };
-		B3F79C9625747EB5003455D1 /* EditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C9425747EB5003455D1 /* EditView.swift */; };
-		B3F79C9725747EB5003455D1 /* EditView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F79C9525747EB5003455D1 /* EditView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -139,6 +138,7 @@
 		B354B120253B8B3E00B5798B /* LiveTrackingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveTrackingVC.swift; sourceTree = "<group>"; };
 		B35598E52541ED2300866C10 /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
 		B356426F2566198800D3B644 /* EditVehicleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVehicleView.swift; sourceTree = "<group>"; };
+		B359182E2576079B005135A0 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		B36E09702536E11800F1B421 /* DriverApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriverApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B36E09732536E11800F1B421 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B36E09752536E11800F1B421 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -181,8 +181,6 @@
 		B3F79C8A2573BD31003455D1 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
 		B3F79C8B2573BD31003455D1 /* HistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryCell.xib; sourceTree = "<group>"; };
 		B3F79C912573E3C0003455D1 /* ForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassword.swift; sourceTree = "<group>"; };
-		B3F79C9425747EB5003455D1 /* EditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditView.swift; sourceTree = "<group>"; };
-		B3F79C9525747EB5003455D1 /* EditView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditView.xib; sourceTree = "<group>"; };
 		DA329FD1DCFDA22A52414B86 /* Pods-DriverApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DriverApp.release.xcconfig"; path = "Target Support Files/Pods-DriverApp/Pods-DriverApp.release.xcconfig"; sourceTree = "<group>"; };
 		F47CDD454A99F9044645D9EE /* Pods_DriverApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DriverApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -288,8 +286,6 @@
 				B32944D0254213520040E90C /* EditProfileVc.swift */,
 				B356426F2566198800D3B644 /* EditVehicleView.swift */,
 				B32407FA25677A6C00BFF72D /* EditEmail.swift */,
-				B3F79C9425747EB5003455D1 /* EditView.swift */,
-				B3F79C9525747EB5003455D1 /* EditView.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -304,6 +300,14 @@
 				B326FF702560F0D00067C0DE /* CheckoutNoteView.swift */,
 			);
 			path = Notes;
+			sourceTree = "<group>";
+		};
+		B359182D2576077B005135A0 /* Delivery */ = {
+			isa = PBXGroup;
+			children = (
+				B359182E2576079B005135A0 /* DetailView.swift */,
+			);
+			path = Delivery;
 			sourceTree = "<group>";
 		};
 		B36E09672536E11800F1B421 = {
@@ -345,6 +349,7 @@
 		B36E098A2536E47100F1B421 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B359182D2576077B005135A0 /* Delivery */,
 				B335EC1C257103E90082DF1D /* TabView */,
 				B384A3E2256F9BF300D237CC /* ScanStuff */,
 				B3530944255A62F900B68347 /* ForgetPassword */,
@@ -554,7 +559,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3F79C9725747EB5003455D1 /* EditView.xib in Resources */,
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B3F79C8D2573BD31003455D1 /* HistoryCell.xib in Resources */,
@@ -696,7 +700,6 @@
 				B326FF712560F0D00067C0DE /* CheckoutNoteView.swift in Sources */,
 				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
-				B3F79C9625747EB5003455D1 /* EditView.swift in Sources */,
 				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
 				B3B9D59B256E41910056D867 /* ForgotView.swift in Sources */,
 				B32944CA2541F8710040E90C /* NoteModel.swift in Sources */,
@@ -711,6 +714,7 @@
 				B3544F1F253D3E0C00B6A001 /* ChangePasswordVC.swift in Sources */,
 				B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */,
 				B3530951255A898F00B68347 /* PreviewNoteView.swift in Sources */,
+				B35918302576079B005135A0 /* DetailView.swift in Sources */,
 				B384A3E4256F9C2000D237CC /* ListScanView.swift in Sources */,
 				B3530946255A631700B68347 /* RegisterView.swift in Sources */,
 				B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */,

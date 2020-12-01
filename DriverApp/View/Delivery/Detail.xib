@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Detail" customModule="DriverApp" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GDx-U8-7pY">
+                    <rect key="frame" x="16" y="59" width="382" height="478"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="originIcon" translatesAutoresizingMaskIntoConstraints="NO" id="kgo-g3-Rbe">
+                            <rect key="frame" x="10" y="10" width="20" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="bDr-Xd-t4s"/>
+                                <constraint firstAttribute="width" constant="20" id="m1b-6e-hr1"/>
+                            </constraints>
+                        </imageView>
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dbA-g3-M4W">
+                            <rect key="frame" x="17.5" y="49" width="5" height="128"/>
+                            <color key="backgroundColor" systemColor="systemPinkColor"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="5" id="hKB-di-1ZT"/>
+                            </constraints>
+                        </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="destinationIcon" translatesAutoresizingMaskIntoConstraints="NO" id="rR6-84-DVi">
+                            <rect key="frame" x="10" y="216" width="20" height="47"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="20" id="WVs-6Z-TNK"/>
+                                <constraint firstAttribute="width" constant="20" id="xtv-2T-saA"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pickup Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aLe-hG-hj6">
+                            <rect key="frame" x="46" y="10" width="111" height="24"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                            <color key="textColor" name="darkKasumi"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Vy-JQ-2JI">
+                            <rect key="frame" x="46" y="44" width="620.5" height="61"/>
+                            <string key="text">Store Name : Food Square Tsukuba Style Storeフードスクエアつくばスタイル店 
+Address : 5-19 Kenkyugakuen, Tsukuba City, Ibaraki Prefecture.
+Phone Number : 0120-979-266</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N1E-JK-WsY">
+                            <rect key="frame" x="61" y="229" width="42" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" name="grayKasumi"/>
+                    <constraints>
+                        <constraint firstItem="rR6-84-DVi" firstAttribute="leading" secondItem="GDx-U8-7pY" secondAttribute="leading" constant="10" id="BU4-lJ-y1j"/>
+                        <constraint firstItem="aLe-hG-hj6" firstAttribute="top" secondItem="GDx-U8-7pY" secondAttribute="top" constant="10" id="U49-xx-aFN"/>
+                        <constraint firstItem="4Vy-JQ-2JI" firstAttribute="leading" secondItem="rR6-84-DVi" secondAttribute="trailing" constant="16" id="W04-TM-EXq"/>
+                        <constraint firstItem="dbA-g3-M4W" firstAttribute="centerX" secondItem="kgo-g3-Rbe" secondAttribute="centerX" id="cno-Ya-7z4"/>
+                        <constraint firstItem="kgo-g3-Rbe" firstAttribute="leading" secondItem="GDx-U8-7pY" secondAttribute="leading" constant="10" id="i43-2Q-VZU"/>
+                        <constraint firstItem="4Vy-JQ-2JI" firstAttribute="top" secondItem="aLe-hG-hj6" secondAttribute="bottom" constant="10" id="ok3-26-Hw9"/>
+                        <constraint firstItem="rR6-84-DVi" firstAttribute="top" secondItem="dbA-g3-M4W" secondAttribute="bottom" constant="10" id="r2Q-we-U31"/>
+                        <constraint firstItem="dbA-g3-M4W" firstAttribute="top" secondItem="kgo-g3-Rbe" secondAttribute="bottom" constant="10" id="u10-H6-H1G"/>
+                        <constraint firstItem="aLe-hG-hj6" firstAttribute="leading" secondItem="kgo-g3-Rbe" secondAttribute="trailing" constant="16" id="uT5-Pf-02P"/>
+                        <constraint firstItem="kgo-g3-Rbe" firstAttribute="top" secondItem="GDx-U8-7pY" secondAttribute="top" constant="10" id="vTz-VA-pbi"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="GDx-U8-7pY" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="VMA-sg-97T"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="GDx-U8-7pY" secondAttribute="trailing" constant="16" id="Y3H-mX-ATC"/>
+                <constraint firstItem="GDx-U8-7pY" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="ZBJ-sT-X1a"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="56.919642857142854"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="destinationIcon" width="6.5" height="6.5"/>
+        <image name="originIcon" width="6.5" height="6.5"/>
+        <namedColor name="darkKasumi">
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="grayKasumi">
+            <color red="0.94900000095367432" green="0.94099998474121094" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemPinkColor">
+            <color red="1" green="0.17647058823529413" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

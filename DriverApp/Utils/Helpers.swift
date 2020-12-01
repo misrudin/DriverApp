@@ -61,12 +61,12 @@ extension UIView {
             layer.addSublayer(border)
         }
     
-    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
-            let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-            let mask = CAShapeLayer()
-            mask.path = path.cgPath
-            layer.mask = mask
-        }
+//    func roundCorners(corners: UIRectCorner, radius: CGFloat) {
+//            let path = UIBezierPath(roundedRect: bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+//            let mask = CAShapeLayer()
+//            mask.path = path.cgPath
+//            layer.mask = mask
+//        }
 }
 
 
@@ -408,3 +408,42 @@ extension UIImage {
 }
 
 
+public extension String {
+  subscript(value: Int) -> Character {
+    self[index(at: value)]
+  }
+}
+
+public extension String {
+  subscript(value: NSRange) -> Substring {
+    self[value.lowerBound..<value.upperBound]
+  }
+}
+
+public extension String {
+  subscript(value: CountableClosedRange<Int>) -> Substring {
+    self[index(at: value.lowerBound)...index(at: value.upperBound)]
+  }
+
+  subscript(value: CountableRange<Int>) -> Substring {
+    self[index(at: value.lowerBound)..<index(at: value.upperBound)]
+  }
+
+  subscript(value: PartialRangeUpTo<Int>) -> Substring {
+    self[..<index(at: value.upperBound)]
+  }
+
+  subscript(value: PartialRangeThrough<Int>) -> Substring {
+    self[...index(at: value.upperBound)]
+  }
+
+  subscript(value: PartialRangeFrom<Int>) -> Substring {
+    self[index(at: value.lowerBound)...]
+  }
+}
+
+private extension String {
+  func index(at offset: Int) -> String.Index {
+    index(startIndex, offsetBy: offset)
+  }
+}
