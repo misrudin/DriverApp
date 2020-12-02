@@ -59,6 +59,7 @@ class PlanVc: UIViewController {
     
     var selectedWeek: String?
     var selectedDay: String?
+    var selectedIndex: Int?
     
     var week1:[String: Any] = [
         "Sunday": NSNull(),
@@ -328,7 +329,6 @@ class PlanVc: UIViewController {
             ]
             return}
         
-        print(data.workingStatus)
         
         switch data.workingStatus {
         case "full time":
@@ -530,10 +530,10 @@ class PlanVc: UIViewController {
         }
         
         
-        if week1Count < 1 {
-            showAlert(text: "Minimal select 1 shift to work in week 1 !")
-            return
-        }
+//        if week1Count < 1 {
+//            showAlert(text: "Minimal select 1 shift to work in week 1 !")
+//            return
+//        }
  
         //cek week 2 minimal 1 work
         let dataWeek2 = dayOffPlan["2"] as! [String: Any]
@@ -592,11 +592,11 @@ class PlanVc: UIViewController {
                 week2Count += sat
             }
         }
-        if week2Count < 1 {
-            showAlert(text: "Minimal select 1 shift to work in week 2 !")
-            return
-        }
-        
+//        if week2Count < 1 {
+//            showAlert(text: "Minimal select 1 shift to work in week 2 !")
+//            return
+//        }
+//
         //cek week minimal 1 work
         let dataWeek3 = dayOffPlan["3"] as! [String: Any]
         
@@ -654,10 +654,10 @@ class PlanVc: UIViewController {
                 week3Count += sat
             }
         }
-        if week3Count < 1 {
-            showAlert(text: "Minimal select 1 shift to work in week 3 !")
-            return
-        }
+//        if week3Count < 1 {
+//            showAlert(text: "Minimal select 1 shift to work in week 3 !")
+//            return
+//        }
         //cek week minimal 1 work
         let dataWeek4 = dayOffPlan["4"] as! [String: Any]
         
@@ -715,13 +715,10 @@ class PlanVc: UIViewController {
                 week4Count += sat
             }
         }
-        if week4Count < 1 {
-            showAlert(text: "Minimal select 1 day to work in week 4 !")
-            return
-        }
-        //cek week 5 cek ada berapa hari dulu
-        
-        print("week 4 \(week4Count) week 3 \(week3Count) week 2 \(week2Count) week 1 \(week1Count)")
+//        if week4Count < 1 {
+//            showAlert(text: "Minimal select 1 day to work in week 4 !")
+//            return
+//        }
      
 //       MARK: - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
@@ -732,14 +729,19 @@ class PlanVc: UIViewController {
         
         spiner.show(in: view)
         
-        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) { (response) in
+        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) {[weak self] (response) in
             switch response {
             case .success(_):
-                self.spiner.dismiss()
-                print("ok")
-            case .failure(let err):
-                self.spiner.dismiss()
-                print(err)
+                DispatchQueue.main.async {
+                    self?.spiner.dismiss()
+                    let action1 = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
+                    Helpers().showAlert(view: self!, message: "Success to set plan next month.", customTitle: "Congratulation", customAction1: action1)
+                }
+            case .failure(_):
+                self?.spiner.dismiss()
+                Helpers().showAlert(view: self!, message: "It looks like an error occurred !")
             }
         }
     }
@@ -1101,6 +1103,13 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         cell.dayLable.text = dayName
         cell.dateLable.text = dateLable
         
+        //border color on select day
+        if selectedIndex != nil && selectedIndex == i {
+            cell.borderBotomSelected.isHidden = false
+        }else {
+            cell.borderBotomSelected.isHidden = true
+        }
+        
         //jumlah shift dan hari apa ini?
         let week1 = i <= 7
         let week2 = i > 7 && i <= 14
@@ -1116,6 +1125,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         
         //MARK: - Week 1
         if week1 {
+            cell.weekLabel.text = "w1"
             if dayOffPlan != nil {
                 let dataWeek = dayOffPlan["1"] as! [String: Any]
                 switch dayName {
@@ -1217,6 +1227,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         
         //MARK: - Week 2
         if week2 {
+            cell.weekLabel.text = "w2"
             if dayOffPlan != nil {
                 let dataWeek = dayOffPlan["2"] as! [String: Any]
                 switch dayName {
@@ -1317,6 +1328,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         
         //MARK: - Week 3
         if week3 {
+            cell.weekLabel.text = "w3"
             if dayOffPlan != nil {
                 let dataWeek = dayOffPlan["3"] as! [String: Any]
                 switch dayName {
@@ -1417,6 +1429,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         
         //MARK: - Week 4
         if week4 {
+            cell.weekLabel.text = "w4"
             if dayOffPlan != nil {
                 let dataWeek = dayOffPlan["4"] as! [String: Any]
                 switch dayName {
@@ -1517,6 +1530,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         
         //MARK: - Week 5
         if week5 {
+            cell.weekLabel.text = "w5"
             if dayOffPlan != nil {
                 let dataWeek = dayOffPlan["5"] as! [String: Any]
                 switch dayName {
@@ -1625,6 +1639,9 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         
         let date = Date.dateStringNextMonthFrom(customDate: i, year: year, month: month)
         let dayName = Date.dayNameFromCustomDate(customDate: i, year: year, month: month)
+        
+        selectedIndex = i
+        tableView.reloadData()
 
         btnTouch(tanggal: date, day: dayName, index: i)
     }

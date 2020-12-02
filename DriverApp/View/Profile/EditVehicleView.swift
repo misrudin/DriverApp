@@ -585,6 +585,12 @@ class EditVehicleView: UIViewController {
         vehicleImage3.af.setImage(withURL: urlPhoto3)
         dumy3.isHidden = true
         
+        //date
+        let expDate = Date.dateFromCustomString(customString: insuranceExpDate)
+        datePickerInsurance.date = expDate
+        let vehicleDate = Date.dateFromCustomString(customString: vehicleInsExpDate)
+        datePickerInspection.date = vehicleDate
+        
     }
     
     
@@ -732,7 +738,7 @@ func presentPhotoActionSheet(){
                                             
                                             self?.presentCamera()
                                         }))
-    actionSheet.addAction(UIAlertAction(title: "Choose Phote",
+    actionSheet.addAction(UIAlertAction(title: "Choose Photo",
                                         style: .default,
                                         handler: { [weak self] _ in
                                             self?.presetPhotoPicker()

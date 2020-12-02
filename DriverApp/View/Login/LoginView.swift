@@ -249,8 +249,6 @@ extension LoginView{
     @objc
     func didForgetClick(){
         let slideVC = ForgotView()
-//        slideVC.hasSetPointOrigin = true
-//        slideVC.pointOrigin = CGPoint(x: 200, y: 100)
         slideVC.modalPresentationStyle = .custom
         slideVC.transitioningDelegate = self
         self.present(slideVC, animated: true, completion: nil)

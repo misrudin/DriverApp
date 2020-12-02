@@ -237,7 +237,7 @@ struct PickupDestination: Decodable {
     let pickup_store_name: String
     let lat: String
     let long: String
-    let pickup_item: [PickupItem]
+    var pickup_item: [PickupItem]
     
     enum CodingKeys: String, CodingKey {
         case pickup_store_name
@@ -254,7 +254,7 @@ struct PickupItem: Decodable {
     let item_name: String
     let qty: String
     let qr_code_raw: String
-    let scan: Bool?
+    var scan: Bool?
     
     enum CodingKeys: String, CodingKey {
         case item_name

@@ -16,8 +16,8 @@ class OrderTableViewCell: UITableViewCell {
     
     var orderData: NewOrderData! {
         didSet {
-            guard let orderDetail = orderVm.decryptOrderDetail(data: orderData.order_detail, OrderNo: orderData.order_number),
-                  let userInfo = orderVm.decryptUserInfo(data: orderData.user_info, OrderNo: orderData.order_number) else {
+            guard let _ = orderVm.decryptOrderDetail(data: orderData.order_detail, OrderNo: orderData.order_number),
+                  let _ = orderVm.decryptUserInfo(data: orderData.user_info, OrderNo: orderData.order_number) else {
                 return
             }
             

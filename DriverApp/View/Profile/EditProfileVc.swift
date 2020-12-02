@@ -82,6 +82,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.paddingRight(10)
         field.keyboardType = .default
+        field.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
         field.isEnabled = false
         return field
     }()
@@ -101,6 +102,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.paddingRight(10)
         field.keyboardType = .default
+        field.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
         field.isEnabled = false
         return field
     }()
@@ -121,6 +123,7 @@ class EditProfileVc: UIViewController {
         field.returnKeyType = .continue
         field.paddingRight(10)
         field.keyboardType = .emailAddress
+        field.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
         field.isEnabled = false
         return field
     }()
@@ -204,6 +207,9 @@ class EditProfileVc: UIViewController {
         field.paddingRight(10)
         field.inputView = datePickerExpiration
         field.inputAccessoryView = toolBar
+        let image = UIImage(named: "calendarIcon")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        field.setRightViewIcon(icon: baru!)
         return field
     }()
     
@@ -247,20 +253,17 @@ class EditProfileVc: UIViewController {
         phoneNumber.text = bio?.phone_number
         license.text = bio?.driver_license_number
         expDate.text = bio?.driver_license_expiration_date
-        let format = DateFormatter()
-        if let date =  bio?.driver_license_expiration_date {
-            guard let dateFrom = format.date(from: date) else {
-                return
-            }
-            datePickerExpiration.date = dateFrom
-        }
         
-
-        
-        guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {return}
+        guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {
+            return}
         if let urlString = URL(string: "\(photoUrl)\(photoName)") {
             let placeholderImage = UIImage(named: "personCircle")
             self.profilePhotoImage.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
+        }
+        
+        if let date =  bio?.driver_license_expiration_date {
+            let tanggal = Date.dateFromCustomString(customString: date)
+            datePickerExpiration.date = tanggal
         }
         
        
@@ -297,12 +300,12 @@ class EditProfileVc: UIViewController {
                 self.scrollView.setContentOffset(bottomOffset, animated: true)
             })
         case .willHide:
-        print("3")
-        case .didHide:
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
                 self.stakView.heightAnchor.constraint(equalToConstant: 55*13).isActive = true
             })
+        case .didHide:
+            print("did hide")
         case .willChangeFrame:
             print("change")
         case .didChangeFrame:

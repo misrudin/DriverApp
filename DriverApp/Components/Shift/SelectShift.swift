@@ -91,7 +91,12 @@ class SelectShift: UIViewController {
         for item in filtered {
             selectedShift.append(item.id)
         }
-        delegate?.onSelectShift(self, idShift: selectedShift)
+        if selectedShift.count > 0 {
+            delegate?.onSelectShift(self, idShift: selectedShift)
+        }else {
+            delegate?.onDayOff(self)
+        }
+        
     }
     
     @objc

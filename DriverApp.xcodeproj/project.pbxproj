@@ -71,6 +71,8 @@
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
+		B3A0521725773CBD00BC6FE0 /* Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521625773CBD00BC6FE0 /* Encrypt.swift */; };
+		B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521A2577794A00BC6FE0 /* Preview.swift */; };
 		B3ABAF0325748EB100A7B80B /* CameraScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ABAF0225748EB100A7B80B /* CameraScanView.swift */; };
 		B3ABAF062574B71900A7B80B /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ABAF052574B71800A7B80B /* MapsViewController.swift */; };
 		B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D58D256E00DE0056D867 /* SelectShift.swift */; };
@@ -160,6 +162,8 @@
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
+		B3A0521625773CBD00BC6FE0 /* Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encrypt.swift; sourceTree = "<group>"; };
+		B3A0521A2577794A00BC6FE0 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		B3ABAF0225748EB100A7B80B /* CameraScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScanView.swift; sourceTree = "<group>"; };
 		B3ABAF052574B71800A7B80B /* MapsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
 		B3B9D58D256E00DE0056D867 /* SelectShift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectShift.swift; sourceTree = "<group>"; };
@@ -209,6 +213,7 @@
 		B32A388F25383674000EFBB6 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				B3A052192577793300BC6FE0 /* Preview */,
 				B3F79C902573E3A3003455D1 /* CutomModal */,
 				B3F79C892573BD05003455D1 /* History */,
 				B37BF2CE2570B49700421DEB /* Scan */,
@@ -415,6 +420,7 @@
 				B36F8CB42564BB7700B0D209 /* Validation.swift */,
 				B3EC8984256B5E3C00D1618D /* Reusable.swift */,
 				B3EC8988256B5ECB00D1618D /* Constraint.swift */,
+				B3A0521625773CBD00BC6FE0 /* Encrypt.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -445,6 +451,14 @@
 				B3ABAF0225748EB100A7B80B /* CameraScanView.swift */,
 			);
 			path = ScanStuff;
+			sourceTree = "<group>";
+		};
+		B3A052192577793300BC6FE0 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				B3A0521A2577794A00BC6FE0 /* Preview.swift */,
+			);
+			path = Preview;
 			sourceTree = "<group>";
 		};
 		B3B9D58C256E00C20056D867 /* Shift */ = {
@@ -673,6 +687,7 @@
 				B35253C5253C309600AF71DF /* MapsModel.swift in Sources */,
 				B3ABAF062574B71900A7B80B /* MapsViewController.swift in Sources */,
 				B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */,
+				B3A0521725773CBD00BC6FE0 /* Encrypt.swift in Sources */,
 				B36E09AD25372F3000F1B421 /* MenuOption.swift in Sources */,
 				B326FF7425612CF00067C0DE /* RestView.swift in Sources */,
 				B3DE97982555364400A30892 /* DayOffVc.swift in Sources */,
@@ -701,6 +716,7 @@
 				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
 				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
+				B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */,
 				B3B9D59B256E41910056D867 /* ForgotView.swift in Sources */,
 				B32944CA2541F8710040E90C /* NoteModel.swift in Sources */,
 				B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */,

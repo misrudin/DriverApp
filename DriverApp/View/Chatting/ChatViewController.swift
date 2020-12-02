@@ -90,6 +90,16 @@ class ChatViewController: UIViewController {
         table.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
        return table
     }()
+    
+    lazy var imageButton: UIButton = {
+       let button = UIButton()
+        button.setTitle("+", for: .normal)
+        button.layer.masksToBounds = true
+        button.setTitleColor(.blue, for: .normal)
+        button.clipsToBounds = true
+        button.addTarget(self, action: #selector(presentPhotoActionSheet), for: .touchUpInside)
+        return button
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -112,14 +122,20 @@ class ChatViewController: UIViewController {
       
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,bottom: inputChat.topAnchor, right: view.rightAnchor)
         inputChat.anchor(left: view.leftAnchor, right: view.rightAnchor, height: 55)
-        inputField.anchor(left: inputChat.leftAnchor, right: sendButton.leftAnchor, paddingLeft: 16, paddingRight: 10,height: 45)
+        inputChat.addSubview(imageButton)
+        
+        imageButton.anchor(top: inputChat.topAnchor, left: inputChat.leftAnchor, paddingLeft: 16, width: 45, height: 45)
+        
+        inputField.anchor(left: imageButton.rightAnchor, right: sendButton.leftAnchor, paddingLeft: 10, paddingRight: 10,height: 45)
+        
         inputField.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
+        imageButton.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
         sendButton.anchor(right: inputChat.rightAnchor, paddingRight: 16, width: 45,height: 45)
         sendButton.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
         
         anchor1 = inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         anchor1.isActive = true
-        anchor2 = inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -keyboardH)
+        anchor2 = inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -(keyboardH-10))
         anchor2.isActive = false
     }
     
@@ -186,6 +202,25 @@ class ChatViewController: UIViewController {
                 print("Failed to send messages")
             }
             self?.inputField.text = ""
+        }
+    }
+    
+    func sendFotoMessage(image: UIImage){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String,
+              let chat = inputField.text, chat != "" else {
+            print("No user data")
+            return
+        }
+        
+        let imageString: String = Helpers().convertImageToBase64String(img: image)
+        
+        chatViewModel.sendMessage(codeDriver: codeDriver, foto: imageString) { (result) in
+            if result {
+                print("Success To send Messages")
+            }else {
+                print("Failed to send messages")
+            }
         }
     }
     
@@ -310,4 +345,176 @@ extension ChatViewController: UITextFieldDelegate {
         }
         return true
     }
+}
+
+//MARK: - EXTENSION
+@available(iOS 13.0, *)
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    @objc func presentPhotoActionSheet(){
+        let actionSheet = UIAlertController(title: "Upload Picture",
+                                            message: "How would you like to select a picture?",
+                                            preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancel",
+                                            style: .cancel,
+                                            handler: nil))
+        actionSheet.addAction(UIAlertAction(title: "Take Photo",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+                                                
+                                                self?.presentCamera()
+                                            }))
+        actionSheet.addAction(UIAlertAction(title: "Choose Photo",
+                                            style: .default,
+                                            handler: { [weak self] _ in
+                                                self?.presetPhotoPicker()
+                                            }))
+        
+        present(actionSheet, animated: true)
+    }
+    
+    func presentCamera(){
+        let vc = UIImagePickerController()
+        vc.sourceType = .camera
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc,animated: true)
+    }
+    
+    func presetPhotoPicker(){
+        let vc = UIImagePickerController()
+        vc.sourceType = .photoLibrary
+        vc.delegate = self
+        vc.allowsEditing = true
+        present(vc,animated: true)
+        
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        print(picker)
+        picker.dismiss(animated: true, completion: nil)
+        guard let selectdedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
+            return
+        }
+        
+        
+        let hasil = Helpers().resizeImageUpload(image: selectdedImage)
+        
+        print(hasil)
+        
+        let slideVC = PeviewPhoto()
+        slideVC.modalPresentationStyle = .custom
+        slideVC.transitioningDelegate = self
+        slideVC.delegate = self
+        slideVC.image = hasil
+        present(slideVC, animated: true, completion: nil)
+        
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+
+@available(iOS 13.0, *)
+extension ChatViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        Preview(presentedViewController: presented, presenting: presenting)
+    }
+}
+
+
+
+@available(iOS 13.0, *)
+class PeviewPhoto: UIViewController {
+    var hasSetPointOrigin = false
+    var pointOrigin: CGPoint?
+    
+    weak var delegate: ChatViewController!
+    
+    var image: UIImage?
+    
+    let imageViewPreview: UIImageView = {
+       let iv = UIImageView()
+        iv.clipsToBounds = true
+        iv.layer.masksToBounds = true
+        iv.contentMode = .scaleAspectFit
+       return iv
+    }()
+    
+    let sendButton: UIButton = {
+       let b = UIButton()
+        b.setTitle("Send", for: .normal)
+        b.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
+        b.clipsToBounds = true
+        b.layer.masksToBounds = true
+        b.layer.borderWidth = 1
+        b.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
+        b.layer.cornerRadius = 5
+        b.addTarget(self, action: #selector(sendMessage), for: .touchUpInside)
+        return b
+    }()
+    
+    @objc func sendMessage(){
+        let imageToSend: UIImage = imageViewPreview.image!
+        delegate.sendFotoMessage(image: imageToSend)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    let line: UIView = {
+      let v = UIView()
+        v.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
+        v.layer.cornerRadius = 2
+        return v
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
+        view.addGestureRecognizer(panGesture)
+        
+        view.addSubview(line)
+        
+        view.addSubview(imageViewPreview)
+        view.addSubview(sendButton)
+        
+        view.backgroundColor = .white
+    }
+    
+    override func viewDidLayoutSubviews() {
+        if !hasSetPointOrigin {
+            hasSetPointOrigin = true
+            pointOrigin = self.view.frame.origin
+        }
+        imageViewPreview.image = image
+        line.anchor(top: view.topAnchor,paddingTop: 16, width: 100, height: 4)
+        line.centerX(toView: view)
+        
+        imageViewPreview.anchor(top: line.bottomAnchor, left: view.leftAnchor,bottom: sendButton.topAnchor, right: view.rightAnchor, paddingTop: 16,paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
+        sendButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
+    }
+    
+    
+    @objc func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: view)
+        
+        guard translation.y >= 0 else { return }
+        
+        view.frame.origin = CGPoint(x: 0, y: self.pointOrigin!.y + translation.y)
+        
+        if sender.state == .ended {
+            let dragVelocity = sender.velocity(in: view)
+            if dragVelocity.y >= 1300 {
+                self.dismiss(animated: true, completion: nil)
+            } else {
+                UIView.animate(withDuration: 0.3) {
+                    self.view.frame.origin = self.pointOrigin ?? CGPoint(x: 0, y: 400)
+                }
+            }
+        }
+    }
+    
+    
 }

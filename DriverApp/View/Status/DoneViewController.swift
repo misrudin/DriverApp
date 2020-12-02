@@ -8,15 +8,25 @@
 import UIKit
 
 class DoneViewController: UIViewController {
+    
+    let imageView: UIImageView = {
+       let iv = UIImageView()
+        iv.clipsToBounds = true
+        iv.image = UIImage(named: "successIcon")
+        iv.contentMode = .scaleAspectFill
+        return iv
+    }()
+    
+    lazy var titleLabel = Reusable.makeLabel(text: "SUCCESS", font: .systemFont(ofSize: 20, weight: .semibold), color: .black, alignment: .center)
+    
+    lazy var subTitleLabel = Reusable.makeLabel(text: "Your Delivery Task Done", font: .systemFont(ofSize: 16, weight: .medium), color: .black, alignment: .center)
 
     let submitButton: UIButton={
         let button = UIButton()
-        button.setTitle("Submit", for: .normal)
-        button.backgroundColor = UIColor(named: "orangeKasumi")
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
+        button.setTitle("Back to Homescreen", for: .normal)
+        button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
         button.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         return button
     }()
@@ -25,18 +35,31 @@ class DoneViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(submitButton)
+        view.addSubview(imageView)
+        view.addSubview(titleLabel)
+        view.addSubview(subTitleLabel)
         configureLayout()
         configureNavigationBar()
+        
     }
     
     func configureLayout(){
-        submitButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            submitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            submitButton.heightAnchor.constraint(equalToConstant: 40),
-            submitButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 16),
-            submitButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -16)
-        ])
+        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: view.frame.height/3, width: 100, height: 100)
+        imageView.centerX(toView: view)
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = true
+        subTitleLabel.translatesAutoresizingMaskIntoConstraints = true
+        
+        titleLabel.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16)
+        titleLabel.centerX(toView: view)
+        
+        subTitleLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16)
+        subTitleLabel.centerX(toView: view)
+        
+        submitButton.anchor(top: subTitleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 30)
+        submitButton.centerX(toView: view)
+        
+        
     }
     
     private var presentingController: UIViewController?

@@ -11,14 +11,14 @@ class ScanCell: UITableViewCell {
     
     static let id = "ScanCell"
     
-    var item: Scanned! {
+    var item: PickupItem! {
         didSet {
             name.text = item.item_name
             code.text = "Code : \(item.qr_code_raw)"
-            status.text = item.scanned_status > 0 ? "Verified" : "Unverified"
+            status.text = item.scan != nil ? "Verified" : "Unverified"
             let colorU = UIColor(named: "orangeKasumi")
             let colorV = UIColor(named: "colorGreen")
-            if item.scanned_status > 0 {
+            if item.scan != nil {
                 line.backgroundColor = colorV
                 container.layer.borderColor = colorV?.cgColor
                 status.textColor = colorV

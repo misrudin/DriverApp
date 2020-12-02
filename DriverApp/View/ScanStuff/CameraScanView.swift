@@ -14,7 +14,7 @@ class CameraScanView: UIViewController {
     var orderNo: String = ""
     var orderVm = OrderViewModel()
     
-    var list: [Scanned]!
+    var list: [PickupItem]!
     weak var delegate: ListScanView!
     
     //scan camera

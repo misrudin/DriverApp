@@ -60,6 +60,8 @@ class DayOffVc: UIViewController {
     
     let daysInMounth = Date().daysInMonth()
     
+    var selectedIndex: Int?
+    
     let months: [String] = ["January","February","Maret","April","Mei","Juni","July","Agustus","September","Oktober","November","Desember"]
     
     lazy var titleLabel: UILabel = {
@@ -529,6 +531,12 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
             cell.borderBotom.isHidden = true
         }
         
+        if selectedIndex != nil && selectedIndex == i {
+            cell.borderBotomSelected.isHidden = false
+        }else {
+            cell.borderBotomSelected.isHidden = true
+        }
+        
         //jumlah shift dan hari apa ini?
         let week1 = i <= 7
         let week2 = i > 7 && i <= 14
@@ -544,6 +552,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
 
         //MARK: - Week 1
         if week1 {
+            cell.weekLabel.text = "w1"
             switch dayName {
             case "Sun":
                 if dataDayOff != nil && dataDayOff.week1.Sun != nil && dataDayOff.week1.Sun?.count != 0 {
@@ -641,6 +650,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
         
         //MARK: - Week 2
         if week2 {
+            cell.weekLabel.text = "w2"
             switch dayName {
             case "Sun":
                 if dataDayOff != nil && dataDayOff.week2.Sun != nil && dataDayOff.week2.Sun?.count != 0 {
@@ -738,6 +748,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
         
         //MARK: - Week 3
         if week3 {
+            cell.weekLabel.text = "w3"
             switch dayName {
             case "Sun":
                 if dataDayOff != nil && dataDayOff.week3.Sun != nil && dataDayOff.week3.Sun?.count != 0 {
@@ -835,6 +846,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
         
         //MARK: - Week 4
         if week4 {
+            cell.weekLabel.text = "w4"
             switch dayName {
             case "Sun":
                 if dataDayOff != nil && dataDayOff.week4.Sun != nil && dataDayOff.week4.Sun?.count != 0 {
@@ -932,6 +944,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
         
         //MARK: - Week 5
         if week5 {
+            cell.weekLabel.text = "w5"
             switch dayName {
             case "Sun":
                 if dataDayOff != nil && dataDayOff.week5.Sun != nil && dataDayOff.week5.Sun?.count != 0 {
@@ -1036,6 +1049,9 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
      
         let date = Date.dateStringFrom(customDate: i)
         let dayName = Date.dayNameFromCustomDate(customDate: i)
+        
+        selectedIndex = i
+        tableView.reloadData()
 
         btnTouch(tanggal: date, day: dayName, index: i)
     }

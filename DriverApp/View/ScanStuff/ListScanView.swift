@@ -83,7 +83,7 @@ class ListScanView: UIViewController {
     private func addMaunal(){
         let vc = InputCode()
         vc.orderNo = orderNo
-        vc.list = pickupItems
+        vc.list = store.pickup_item
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -92,15 +92,15 @@ class ListScanView: UIViewController {
     private func add(){
         let vc = CameraScanView()
         vc.orderNo = orderNo
-        vc.list = pickupItems
+        vc.list = store.pickup_item
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc
     private func finish(){
-        let scanedData = pickupItems.filter({$0.scanned_status > 0})
-        if scanedData.count == pickupItems.count {
+        let scanedData = store.pickup_item.filter({$0.scan == true})
+        if scanedData.count == store.pickup_item.count {
             let codes: [String] = scanedData.map({$0.qr_code_raw})
             let data: Scan = Scan(order_number: orderNo, qr_code_raw: codes)
             orderVm.changeStatusItems(data: data) {[weak self] (res) in
@@ -160,7 +160,8 @@ class ListScanView: UIViewController {
             case .success(let result):
                 DispatchQueue.main.async {
                     self?.spiner.dismiss()
-                    self?.pickupItems = result
+//                    self?.pickupItems = result
+//                    print(result)
                     self?.tableView.reloadData()
                     let filtered = result.filter({$0.scanned_status == 0})
                     if filtered.count > 0 {
@@ -208,10 +209,10 @@ class ListScanView: UIViewController {
     }
     
     func updateList(code: String){
-        if let row = self.pickupItems.firstIndex(where: {$0.qr_code_raw == code}) {
-            pickupItems[row].scanned_status = 1
+        if let row = self.store.pickup_item.firstIndex(where: {$0.qr_code_raw == code}) {
+            store.pickup_item[row].scan = true
         }
-        let filtered = pickupItems.filter({$0.scanned_status == 0})
+        let filtered = store.pickup_item.filter({$0.scan == nil})
         if filtered.count > 0 {
             done = false
             setupButton()
@@ -227,10 +228,7 @@ class ListScanView: UIViewController {
 
 extension ListScanView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let d = pickupItems {
-            return d.count
-        }
-        return 0
+            return store.pickup_item.count
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -239,7 +237,7 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ScanCell.id, for: indexPath) as! ScanCell
-        cell.item = pickupItems[indexPath.row]
+        cell.item = store.pickup_item[indexPath.row]
         return cell
     }
     

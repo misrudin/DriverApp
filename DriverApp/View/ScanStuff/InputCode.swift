@@ -11,7 +11,7 @@ class InputCode: UIViewController {
     
     var orderNo: String = ""
     var orderVm = OrderViewModel()
-    var list: [Scanned]!
+    var list: [PickupItem]!
     weak var delegate: ListScanView!
     
     lazy var titleLable = Reusable.makeLabel(text: "Add Order Code", font: UIFont.systemFont(ofSize: 16, weight: .semibold), color: UIColor(named: "orangeKasumi")!)

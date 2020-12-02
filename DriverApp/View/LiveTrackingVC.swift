@@ -161,12 +161,19 @@ class LiveTrackingVC: UIViewController {
         let orderDestinationLng =  orderDetail.delivery_destination.long
         let storeDestinationLat = orderDetail.pickup_destination[0].lat
         let storeDestinationLng = orderDetail.pickup_destination[0].long
-      
+        
         
         if statusOrder == "wait for pickup" || statusOrder == "on pickup process" {
-            destination = Destination(latitude: CLLocationDegrees(storeDestinationLat)!, longitude: CLLocationDegrees(storeDestinationLng)!)
+            if let destinationLat = CLLocationDegrees(storeDestinationLat),
+               let destinatoinLong = CLLocationDegrees(storeDestinationLng) {
+                destination = Destination(latitude: destinationLat, longitude: destinatoinLong)
+            }
         } else {
-            destination = Destination(latitude: CLLocationDegrees(orderDestinationLat)!, longitude: CLLocationDegrees(orderDestinationLng)!)
+            
+            if let destinationLat = CLLocationDegrees(orderDestinationLat),
+               let destinationLong = CLLocationDegrees(orderDestinationLng) {
+                destination = Destination(latitude: destinationLat, longitude: destinationLong)
+            }
         }
         
         mapView.frame = view.bounds

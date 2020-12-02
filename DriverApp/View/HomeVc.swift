@@ -70,7 +70,18 @@ class HomeVc: UIViewController {
         table.backgroundColor = UIColor(named: "grayKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
+        table.sectionFooterHeight = 0
         return table
+    }()
+    
+    let arrowRight: UIImageView = {
+       let img = UIImageView()
+        let imageAset = UIImage(named: "arrowRight")
+        let baru = imageAset?.resizeImage(CGSize(width: 20, height: 20))
+        img.image = baru
+        img.layer.masksToBounds = true
+        img.contentMode = .right
+        return img
     }()
 
     override func viewDidLoad() {
@@ -84,7 +95,6 @@ class HomeVc: UIViewController {
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
-        
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
@@ -326,7 +336,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return 45
     }
 
     
@@ -356,12 +366,11 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         return cell
     }
     
-    class DateHeaderLabel: UILabel {
+    class DateHeaderHome: UILabel {
         
         override init(frame: CGRect) {
             super.init(frame: frame)
             textColor = UIColor(named: "darkKasumi")
-            textAlignment = .center
             translatesAutoresizingMaskIntoConstraints = false
             font = UIFont.boldSystemFont(ofSize: 14)
         }
@@ -372,10 +381,9 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         
         override var intrinsicContentSize: CGSize{
             let originalContentSize = super.intrinsicContentSize
-            let height = originalContentSize.height + 10
-            layer.cornerRadius = height / 2
+            let height = originalContentSize.height
             layer.masksToBounds = true
-            return CGSize(width: originalContentSize.width + 20, height: height)
+            return CGSize(width: originalContentSize.width, height: height)
         }
     }
     
@@ -391,16 +399,18 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
             
             let value = dateString == dateStringNow ? "Today" : dateString
             
-            let label = DateHeaderLabel()
+            let label = DateHeaderHome()
             label.text = value
             
             
             
             let containerLabel = UIView()
+            containerLabel.backgroundColor = .red
+            containerLabel.addSubview(arrowRight)
             containerLabel.addSubview(label)
             
-            label.centerXAnchor.constraint(equalTo: containerLabel.centerXAnchor).isActive=true
-            label.centerYAnchor.constraint(equalTo: containerLabel.centerYAnchor).isActive=true
+            label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 16, paddingRight: 16)
+            arrowRight.anchor(top: containerLabel.topAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 20)
             
             
             return containerLabel
