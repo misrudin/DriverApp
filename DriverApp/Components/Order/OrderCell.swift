@@ -32,9 +32,24 @@ class OrderCell: UITableViewCell {
             }
             
             orderNo.text = orderData.order_number
+      
+            
+            let formatDateTime = DateFormatter()
+            formatDateTime.dateFormat = "HH:mm"
+            let timeNow = formatDateTime.string(from: Date())
+            
+            
 
             let start = orderData.detail_shift.time_start_shift[...4]
             let end = orderData.detail_shift.time_end_shift[...4]
+            
+            if timeNow <= end {
+                container.backgroundColor = .white
+                isUserInteractionEnabled = true
+            }else {
+                container.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+                isUserInteractionEnabled = false
+            }
 
 
             date.text = "\(start) - \(end)"
@@ -57,6 +72,8 @@ class OrderCell: UITableViewCell {
         container.layer.cornerRadius = 5
         container.backgroundColor = .white
         backgroundColor = UIColor(named: "grayKasumi")
+        
+        
     }
     
     

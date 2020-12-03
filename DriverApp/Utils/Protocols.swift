@@ -5,11 +5,7 @@
 //  Created by BMG MacbookPro on 14/10/20.
 //
 
-//home protocols
-@available(iOS 13.0, *)
-protocol HomeVcDelegate {
-    func handleMenuToggle(forMenu menu: MenuOption?)
-}
+//home protocols∫
 
 //login protocols
 protocol LoginViewModelDelegate {

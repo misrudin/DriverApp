@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import AutoKeyboard
 
 @available(iOS 13.0, *)
 class PendingNoteVc: UIViewController {
@@ -73,19 +74,70 @@ class PendingNoteVc: UIViewController {
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
         return button
     }()
+    
+    lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
+    
+    //MARK: - Scroll View
+    lazy var scrollView: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.contentSize = contentViewSize
+        scroll.autoresizingMask = .flexibleHeight
+        scroll.showsHorizontalScrollIndicator = true
+        scroll.bounces = true
+        scroll.frame = self.view.bounds
+        return scroll
+    }()
+    
+    lazy var stakView: UIView = {
+        let view = UIView()
+        return view
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         configureNavigationBar()
+        view.addSubview(scrollView)
+        scrollView.addSubview(stakView)
+        stakView.addSubviews(views: imageView,pendingLable,messagelabel,submitButton,cancelButton,noteInput)
         
-        view.addSubviews(views: imageView,pendingLable,messagelabel)
-        
-        view.addSubview(submitButton)
-        view.addSubview(cancelButton)
-        view.addSubview(noteInput)
         noteInput.becomeFirstResponder()
         configureLayout()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        registerAutoKeyboard() { (result) in
+
+
+        switch result.status {
+        case .willShow:
+        print("1")
+        case .didShow:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                
+                self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 250, right: 0)
+                self.stakView.heightAnchor.constraint(equalToConstant: 55*13).isActive = true
+            })
+        case .willHide:
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+                self.stakView.heightAnchor.constraint(equalToConstant: 55*13).isActive = true
+            })
+        case .didHide:
+            print("3")
+        case .willChangeFrame:
+            print("change")
+        case .didChangeFrame:
+            print("change2")
+        }
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        unRegisterAutoKeyboard()
     }
     
     
@@ -96,21 +148,31 @@ class PendingNoteVc: UIViewController {
         presentingController = presentingViewController
     }
     
+    @objc func tapScV(){
+        view.endEditing(true)
+    }
+    
     func configureLayout(){
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.fill(toView: view)
+        scrollView.isUserInteractionEnabled = true
+        scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapScV)))
         
-        imageView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20, width: view.frame.width/3, height: view.frame.width/3)
-        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor,paddingTop: 16,paddingBottom: 16, paddingLeft: 16, paddingRight: 16,  height:(55*13))
         
-        pendingLable.anchor(top: imageView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20)
+        imageView.anchor(top: stakView.topAnchor, paddingTop: 20, width: view.frame.width/3, height: view.frame.width/3)
+        imageView.centerXAnchor.constraint(equalTo: stakView.centerXAnchor).isActive = true
+        
+        pendingLable.anchor(top: imageView.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20)
         
         messagelabel.numberOfLines = 0
-        messagelabel.anchor(top: pendingLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        messagelabel.anchor(top: pendingLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
         
-        submitButton.anchor(top: noteInput.bottomAnchor, left: view.leftAnchor, right: cancelButton.leftAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 10, height: 40)
+        submitButton.anchor(top: noteInput.bottomAnchor, left: stakView.leftAnchor, right: cancelButton.leftAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 10, height: 40)
         
-        cancelButton.anchor(top: noteInput.bottomAnchor, right: view.rightAnchor, paddingTop: 20, paddingRight: 16, width: 100, height: 40)
+        cancelButton.anchor(top: noteInput.bottomAnchor, right: stakView.rightAnchor, paddingTop: 20, paddingRight: 16, width: 100, height: 40)
         
-        noteInput.anchor(top: messagelabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 200)
+        noteInput.anchor(top: messagelabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 200)
     }
     
     func configureNavigationBar(){

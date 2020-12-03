@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -11,29 +12,57 @@
         <!--View Controller-->
         <scene sceneID="EHf-IW-A2E">
             <objects>
-                <viewController id="01J-lp-oVM" sceneMemberID="viewController">
+                <viewController interfaceStyle="dark" id="01J-lp-oVM" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoKasumi" translatesAutoresizingMaskIntoConstraints="NO" id="gE2-5F-FKR">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" image="bgMain" translatesAutoresizingMaskIntoConstraints="NO" id="Vih-yG-Frr">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <visualEffectView opaque="NO" alpha="0.5" tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Wy-Qq-477">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="t2z-tT-AAg">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                </view>
+                                <blurEffect style="dark"/>
+                            </visualEffectView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoKasumi" translatesAutoresizingMaskIntoConstraints="NO" id="xBG-19-0Pc">
                                 <rect key="frame" x="175" y="416" width="64" height="64"/>
+                                <color key="tintColor" name="bgInput"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="GpB-lP-dT5"/>
+                                    <constraint firstAttribute="width" constant="64" id="y1D-Oo-abB"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="gE2-5F-FKR" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="f7A-RP-fho"/>
-                            <constraint firstItem="gE2-5F-FKR" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="ohj-LM-78r"/>
+                            <constraint firstItem="Vih-yG-Frr" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="4rH-Ff-PJs"/>
+                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="5su-X8-Rph"/>
+                            <constraint firstItem="Vih-yG-Frr" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7W1-Wr-ynF"/>
+                            <constraint firstAttribute="trailing" secondItem="8Wy-Qq-477" secondAttribute="trailing" id="VNp-MV-ULc"/>
+                            <constraint firstAttribute="bottom" secondItem="Vih-yG-Frr" secondAttribute="bottom" id="WNU-7T-fTL"/>
+                            <constraint firstAttribute="bottom" secondItem="8Wy-Qq-477" secondAttribute="bottom" id="WxU-lA-DKV"/>
+                            <constraint firstItem="8Wy-Qq-477" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="q5C-Hu-lNF"/>
+                            <constraint firstItem="8Wy-Qq-477" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="vFr-af-Ow1"/>
+                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="xg0-GX-2in"/>
+                            <constraint firstAttribute="trailing" secondItem="Vih-yG-Frr" secondAttribute="trailing" id="zev-Ne-wjg"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-507" y="193"/>
+            <point key="canvasLocation" x="-507.24637681159425" y="192.85714285714286"/>
         </scene>
     </scenes>
     <resources>
+        <image name="bgMain" width="340" height="550"/>
         <image name="logoKasumi" width="64" height="64"/>
+        <namedColor name="bgInput">
+            <color red="0.9649999737739563" green="0.97299998998641968" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

@@ -20,6 +20,11 @@ class HomeVc: UIViewController {
     var inOutVm = InOutViewModel()
     var origin: Origin? = nil
     
+    var noteVm = NoteViewModel()
+    var pendingNotes: [Note]!
+    
+    var allowReject: Bool = false
+    
     var databaseManager = DatabaseManager()
     
     var profileVm = ProfileViewModel()
@@ -67,6 +72,7 @@ class HomeVc: UIViewController {
     private let tableView: UITableView = {
         let table = UITableView(frame: CGRect.zero, style: .grouped)
         table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
+        table.register(UINib(nibName: "PendingCell", bundle: nil), forCellReuseIdentifier: PendingCell.id)
         table.backgroundColor = UIColor(named: "grayKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
@@ -172,6 +178,9 @@ class HomeVc: UIViewController {
             UserDefaults.standard.setValue(data, forKey: "userSession")
             getCurrentPosition()
         }
+        
+        //get pending note
+        getPendingNote()
     }
     
     
@@ -179,6 +188,26 @@ class HomeVc: UIViewController {
         super.viewDidLayoutSubviews()
         
         emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: true)
+    }
+    
+    
+    private func getPendingNote(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        noteVm.getDataNotePending(codeDriver: codeDriver) { (res) in
+            switch res {
+            case .failure(let error): print(error)
+            case .success(let notes):
+                DispatchQueue.main.async {
+                    self.pendingNotes = notes
+                    self.tableView.reloadData()
+                }
+            }
+        }
     }
     
     private func upateLocation(){
@@ -328,7 +357,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         if let orderData = orderData {
 //            return orderData.filter({$0.order_list != nil}).count
-            return orderData.count
+            return orderData.count+1
         }
         
         
@@ -341,12 +370,18 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let orderData = orderData {
-            if orderData[section].order_list != nil {
-//                return orderData[section].order_list!.filter({$0.status_tracking != "pending"}).count
-                return orderData[section].order_list!.count
-            }else {
-                return 0
+        if section == 0 {
+            if let pending = pendingNotes {
+                return pending.count
+            }
+        }else {
+            if let orderData = orderData {
+                if orderData[section-1].order_list != nil {
+                    return orderData[section-1].order_list!.filter({$0.status_tracking != "pending"}).count
+    //                return orderData[section].order_list!.count
+                }else {
+                    return 0
+                }
             }
         }
         
@@ -354,16 +389,29 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: OrderCell.id, for: indexPath) as! OrderCell
         
-        if let order = orderData {
-            if order[indexPath.section].order_list != nil {
-                cell.orderData = order[indexPath.section].order_list![indexPath.row]
+        if indexPath.section == 0 {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: PendingCell.id, for: indexPath) as! PendingCell
+            if let pending = pendingNotes {
+                cell.pendingData = pending[indexPath.row]
             }
+            
+            return cell
+        }else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: OrderCell.id, for: indexPath) as! OrderCell
+            
+            if let order = orderData {
+                let data = order[indexPath.section-1].order_list?.filter({$0.status_tracking != "pending" })
+                if data != nil {
+                    //                cell.orderData = order[indexPath.section].order_list![indexPath.row]
+                    cell.orderData = data![indexPath.row]
+                }
+            }
+            
+            
+            return cell
         }
-        
-        
-        return cell
     }
     
     class DateHeaderHome: UILabel {
@@ -388,34 +436,37 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-
-        if let order = orderData {
-            let dateFormater = DateFormatter()
-            dateFormater.dateFormat = "yyyy/MM/dd"
-            let date = dateFormater.date(from: order[section].date)
-            let dateString = dateFormater.string(from: date!)
-            
-            let dateStringNow = dateFormater.string(from: Date())
-            
-            let value = dateString == dateStringNow ? "Today" : dateString
-            
-            let label = DateHeaderHome()
-            label.text = value
-            
-            
-            
-            let containerLabel = UIView()
-            containerLabel.backgroundColor = .red
-            containerLabel.addSubview(arrowRight)
-            containerLabel.addSubview(label)
-            
-            label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 16, paddingRight: 16)
-            arrowRight.anchor(top: containerLabel.topAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 20)
-            
-            
-            return containerLabel
-        }
         
+        let label = DateHeaderHome()
+        
+        let containerLabel = UIView()
+        containerLabel.addSubview(arrowRight)
+        containerLabel.addSubview(label)
+        
+        label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 16, paddingRight: 16)
+        arrowRight.anchor(top: containerLabel.topAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 20)
+
+        if section == 0 {
+            label.text = "Pending Delivery"
+            return containerLabel
+        }else {
+            if let order = orderData {
+                let dateFormater = DateFormatter()
+                dateFormater.dateFormat = "yyyy/MM/dd"
+                let date = dateFormater.date(from: order[section-1].date)
+                let dateString = dateFormater.string(from: date!)
+                
+                let dateStringNow = dateFormater.string(from: Date())
+                
+                let value = dateString == dateStringNow ? "Today" : dateString
+                
+                label.text = value
+                
+                
+                return containerLabel
+            }
+        }
+  
         return nil
                
        }
@@ -423,14 +474,18 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if let orderData = orderData {
-            let order = orderData[indexPath.section].order_list![indexPath.row]
-            
-            let vc = LiveTrackingVC()
-            vc.order = order
-            vc.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(vc, animated: true)
-            
+        if indexPath.section == 0 {
+            print("pending Data")
+        }else {
+            if let orderData = orderData {
+                let order = orderData[indexPath.section-1].order_list![indexPath.row]
+                
+                let vc = LiveTrackingVC()
+                vc.order = order
+                vc.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(vc, animated: true)
+                
+            }
         }
     }
     
@@ -457,7 +512,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 guard let allorder = self?.orderData,
                       let dateOrder = allorder[indexPath.section].order_list,
                       let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                            let codeDriver = userData["codeDriver"] as? String else {return}
+                            let codeDriver = userData["codeDriver"] as? String  else {return}
                 
                 let orderNo = dateOrder[indexPath.row].order_number
                 
@@ -507,9 +562,14 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         rejectAction.backgroundColor = UIColor(named: "darkKasumi")
         pendingAction.image = edit
         pendingAction.backgroundColor = UIColor(named: "darkKasumi")
-           let configuration = UISwipeActionsConfiguration(actions: [rejectAction, pendingAction])
-           configuration.performsFirstActionWithFullSwipe = false
-           return configuration
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                    let statusDriver = userData["status"] as? String  else {return nil}
+        let actions = statusDriver == "frelance" && allowReject ? [rejectAction, pendingAction] : [pendingAction]
+        
+        
+        let configuration = UISwipeActionsConfiguration(actions: actions)
+        configuration.performsFirstActionWithFullSwipe = false
+        return configuration
     }
     
 }

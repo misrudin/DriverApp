@@ -9,9 +9,11 @@ import Foundation
 
 struct DayOffModel: Decodable {
     let data: DayOfParent
+    let currentWeek: String
     
     enum CodingKeys: String, CodingKey {
         case data = "data"
+        case currentWeek
     }
 }
 
@@ -27,6 +29,7 @@ struct DayOfParent: Decodable {
     let dayOfStatus: DayOffStatus?
     let dayOfStatusPlan: DayOffStatus?
     let workingStatus: String
+    
     
     enum CodingKeys: String, CodingKey {
         case dayOfStatus = "day_off_status"

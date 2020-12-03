@@ -90,7 +90,7 @@ class PlanCell: UICollectionViewCell {
         dateLable.anchor(top: container2.topAnchor, left: container2.leftAnchor, right: container2.rightAnchor, paddingTop: 10)
         statusLable.anchor(top: dateLable.bottomAnchor, left: container2.leftAnchor, right: container2.rightAnchor, paddingTop: 10)
         
-        weekLabel.anchor(top: container2.topAnchor, right: container2.rightAnchor, paddingTop: 4, paddingRight: 4, width: 10, height: 10)
+        weekLabel.anchor(top: container2.topAnchor, right: container2.rightAnchor, paddingTop: 4, paddingRight: 4, width: 20, height: 10)
     }
     
     required init?(coder: NSCoder) {

@@ -176,6 +176,7 @@ struct OrderViewModel {
     //    MARK: - CEK DRIVER FREELANCE REJECT ORDER
         func cekRejectOrder(driver: String, completion: @escaping (Result<NewOrderData,Error>)->Void){
             AF.request("\(Base.urlOrder)detail/reject/\(driver)",headers: Base.headers).responseJSON { response in
+                debugPrint(response)
                 switch response.result {
                 case .success:
                     if response.response?.statusCode == 200 {

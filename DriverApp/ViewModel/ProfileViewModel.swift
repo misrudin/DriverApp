@@ -33,10 +33,12 @@ struct ProfileViewModel {
             let restTime = data["rest_time"]
             let workTime = data["work_time"]
             let checkoutTime = data["checkout_time"]
+            let currentOrder = data["current_order"]
             let userStatus: UserStatus = UserStatus(checkinTime: checkinTime,
                                                     checkoutTime: checkoutTime,
                                                     restTime: restTime,
-                                                    workTime: workTime)
+                                                    workTime: workTime,
+                                                    currentOrder: currentOrder)
             completion(.success(userStatus))
         }
     }
@@ -80,13 +82,26 @@ struct ProfileViewModel {
                         if response.response?.statusCode == 200 {
                             completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToEdit))
+                            if let data = response.data {
+                                if let res = parseResponse(data: data){
+                                    completion(.failure(DataError.failedToEditPassword(message: res.Message)))
+                                }
+                            }
                         }
                     case .failure(let error):
                         completion(.failure(error))
                     }
                     
                    })
+    }
+    
+    private func parseResponse(data: Data)-> ResponseData?{
+    do{
+        let decodedData = try JSONDecoder().decode(ResponseData.self, from: data)
+        return decodedData
+    }catch{
+        return nil
+    }
     }
     
     //MARK: - update photo
@@ -300,6 +315,7 @@ enum DataError: Error{
     case insurance_expiration_date
     
     case failedToEdit
+    case failedToEditPassword(message: String)
 }
 
 extension DataError: LocalizedError {
@@ -365,6 +381,11 @@ extension DataError: LocalizedError {
                 "Failed to edit data !",
                 comment: ""
             )
+        case .failedToEditPassword(let message):
+                return NSLocalizedString(
+                    message,
+                    comment: ""
+                )
         }
     }
 }

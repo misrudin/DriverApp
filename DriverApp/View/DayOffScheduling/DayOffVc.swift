@@ -184,22 +184,26 @@ class DayOffVc: UIViewController {
         }
         
         spiner.show(in: view)
-        dayOfVm.getDataDayOff(codeDriver: codeDriver) { (success) in
+        dayOfVm.getDataDayOff(codeDriver: codeDriver) {[weak self] (success) in
             switch success {
             case .success(let data):
                 DispatchQueue.main.async {
-                    self.dataDayOff = data.dayOfStatus
-                    self.dayOffPlan = data
-                    self.spiner.dismiss()
-                    self.colectionViewDayoff.reloadData()
-                    self.scrollToDate()
-                    print(data)
+                    self?.dataDayOff = data.data.dayOfStatus
+                    self?.dayOffPlan = data.data
+                    self?.spiner.dismiss()
+                    self?.colectionViewDayoff.reloadData()
+                    self?.scrollToDate()
+                    if data.currentWeek == "3" {
+                        self?.planButotn.isHidden = false
+                    }else {
+                        self?.planButotn.isHidden = true
+                    }
                 }
             case .failure(let error):
                 print(error)
-                self.spiner.dismiss()
-                self.colectionViewDayoff.reloadData()
-                self.scrollToDate()
+                self?.spiner.dismiss()
+                self?.colectionViewDayoff.reloadData()
+                self?.scrollToDate()
             }
         }
     }
@@ -1051,7 +1055,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
         let dayName = Date.dayNameFromCustomDate(customDate: i)
         
         selectedIndex = i
-        tableView.reloadData()
+        colectionViewDayoff.reloadData()
 
         btnTouch(tanggal: date, day: dayName, index: i)
     }

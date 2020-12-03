@@ -12,9 +12,8 @@ import SwiftyJSON
 struct DayOffViewModel {
     
     //MARK: - Get data day off
-    func getDataDayOff(codeDriver: String, completion: @escaping (Result<DayOfParent,Error>)->Void){
+    func getDataDayOff(codeDriver: String, completion: @escaping (Result<DayOffModel,Error>)->Void){
         AF.request("\(Base.urlDriver)detail/days-off/\(codeDriver)",headers: Base.headers).responseData { response in
-//            debugPrint(response)
             switch response.result {
             case .success:
                 if let data = response.data {
@@ -30,25 +29,6 @@ struct DayOffViewModel {
         }
     }
     
-    
-    //MARK: - GET PLAN NEXT MONTH
-//    func getDataPlanDayOff(idDriver: String, completion: @escaping (Result<DayOfPlan,Error>)->Void){
-//        AF.request("\(Base.url)livetracking/driver/plan/dayoff/\(idDriver)",headers: Base.headers).responseData { response in
-//
-//            switch response.result {
-//            case .success:
-//                if let data = response.data {
-//                    if let safeData = decodePlanData(data: data) {
-//                        completion(.success(safeData))
-//                    }else{
-//                        completion(.failure(DataError.failedToFetch))
-//                    }
-//                }
-//            case let .failure(error):
-//                completion(.failure(error))
-//            }
-//        }
-//    }
     
     
     //MARK: - set plan day off
@@ -79,10 +59,10 @@ struct DayOffViewModel {
     
     
     //MARK: - decode data dayoff
-    private func decodeData(data: Data)-> DayOfParent? {
+    private func decodeData(data: Data)-> DayOffModel? {
         do{
             let decodedData = try JSONDecoder().decode(DayOffModel.self, from: data)
-            return decodedData.data
+            return decodedData
         }catch{
             print(error)
             return nil

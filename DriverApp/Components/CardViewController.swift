@@ -72,9 +72,21 @@ class CardViewController: UIViewController {
         button.setTitle("", for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 45/2
         button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.addTarget(self, action: #selector(didTap), for: .touchUpInside)
+        return button
+    }()
+    
+    let orderButton2: UIButton={
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.backgroundColor = UIColor(named: "orangeKasumi")
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 45/2
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(didTap), for: .touchUpInside)
         return button
     }()
@@ -82,9 +94,9 @@ class CardViewController: UIViewController {
     let pendingButton: UIButton={
         let button = UIButton()
         button.setTitle("Pending", for: .normal)
-        button.backgroundColor = UIColor.darkGray
+        button.backgroundColor = UIColor(named: "darkKasumi")
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = 45/2
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .regular )
         button.addTarget(self, action: #selector(didTapPending), for: .touchUpInside)
@@ -152,7 +164,7 @@ class CardViewController: UIViewController {
         v.addSubview(lableText)
         v.addSubview(img)
         
-        img.anchor(left: v.leftAnchor, paddingLeft: 0, width: 21, height: 21)
+        img.anchor(left: v.leftAnchor, paddingLeft: 0, width: 30, height: 30)
         img.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         
         lableText.anchor(top: v.topAnchor, left: img.rightAnchor, bottom: v.bottomAnchor, right: v.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10)
@@ -164,13 +176,13 @@ class CardViewController: UIViewController {
     
     lazy var seeDetailButton: UIButton = {
        let button = UIButton()
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
-        button.setTitle("See Details", for: .normal)
-        button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
-        button.layer.cornerRadius = 10
+        button.backgroundColor = UIColor(named: "darkKasumi")
+        button.setTitle("Pending", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 45/2
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(details), for: .touchUpInside)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
        return button
     }()
     
@@ -198,6 +210,7 @@ class CardViewController: UIViewController {
         view.addSubview(destinationLabel)
         view.addSubview(seeDetailButton)
         view.addSubview(orderNoLable)
+        view.addSubview(orderButton2)
         view.backgroundColor = UIColor(named: "whiteKasumi")
         configureLayout()
         
@@ -266,23 +279,55 @@ class CardViewController: UIViewController {
         lineView.centerYAnchor.constraint(equalTo: handleArea.centerYAnchor).isActive = true
         lineView.centerXAnchor.constraint(equalTo: handleArea.centerXAnchor).isActive = true
         
+        
         orderNoLable.anchor(top: orderButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 30)
         
         titleLabel.anchor(top: orderNoLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20)
         storeLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 12)
-        titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
-        destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
+//        titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
+//        destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
         
-        seeDetailButton.anchor(top: destinationLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 45)
+        pendingButton.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
+        pendingButton.isHidden = true
+        orderButton.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
+        orderButton2.anchor(top: pendingButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 10)
+        orderButton2.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        orderButton2.isHidden = true
+        
+        seeDetailButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 0, paddingLeft: 20, paddingRight: 20, height: 45)
     }
     
     private func setupButton(){
-        self.orderButton.anchor(top: self.handleArea.bottomAnchor, left: self.view.leftAnchor, right: self.pendingButton.leftAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
-        self.pendingButton.anchor(top: self.handleArea.bottomAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingRight: 20,width: 100, height: 45)
+        pendingButton.isHidden = false
+        orderButton2.isHidden = false
+        
+        seeDetailButton.isHidden = true
+        
+        orderButton.isHidden = true
+        storeLabel.isHidden = true
+        titleLabel.isHidden = true
+        orderNoLable.isHidden = true
+        
+        titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: -40, paddingLeft: 20, paddingRight: 20)
+        destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
+        destinationLabel.numberOfLines = 0
     }
     
     private func setupDefaultButton(){
-        self.orderButton.anchor(top: self.handleArea.bottomAnchor, left: self.view.leftAnchor, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
+        pendingButton.isHidden = true
+        orderButton2.isHidden = true
+        
+        seeDetailButton.isHidden = false
+        
+        orderButton.isHidden = false
+        
+        storeLabel.isHidden = false
+        titleLabel.isHidden = false
+        orderNoLable.isHidden = false
+        
+        titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
+        destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
+        destinationLabel.numberOfLines = 2
     }
     
     private func cekScanedItems(items: [PickupDestination]) -> [PickupDestination] {
@@ -316,7 +361,8 @@ class CardViewController: UIViewController {
         let dataToCheck = data.pickup_item.map({ $0.qr_code_raw })
         let dataToPost: Scan = Scan(order_number: orderNo, qr_code_raw: dataToCheck)
         //cek apakah current index == items.count
-        if currentIndex+1 < items.count {
+//        print(currentIndex, items.count)/
+        if currentIndex < items.count {
             orderVm.cekStatusItems(data: dataToPost) {[weak self] (res) in
                 switch res {
                 case .success(let data):
@@ -325,20 +371,23 @@ class CardViewController: UIViewController {
                         if filtered.count > 0 {
                             self?.titleButton = "Scan Stuff"
                             self?.statusDelivery = .scan
+                        }else if filtered.count == 0 && self!.currentIndex == items.count-1 {
+                            self?.titleButton = "Done Pickup (\(orderNo))"
+                            self?.statusDelivery = .done_pickup
+                            self?.orderButton.setTitle(self?.titleButton, for: .normal)
+                            self?.orderButton2.setTitle(self?.titleButton, for: .normal)
                         }else {
                             self?.titleButton = "Next Store"
                             self?.statusDelivery = .next
                         }
+                        
                         self?.orderButton.setTitle(self?.titleButton, for: .normal)
+                        self?.orderButton2.setTitle(self?.titleButton, for: .normal)
                     }
                 case .failure(let err):
                     print(err)
                 }
             }
-        }else {
-            titleButton = "Done Pickup (\(orderNo))"
-            statusDelivery = .done_pickup
-            orderButton.setTitle(titleButton, for: .normal)
         }
     }
     
@@ -373,6 +422,7 @@ class CardViewController: UIViewController {
                         self?.statusDelivery = .start_delivery
                     }
                     self?.orderButton.setTitle(self?.titleButton, for: .normal)
+                    self?.orderButton2.setTitle(self?.titleButton, for: .normal)
                 }
             case .failure(let error):
                 DispatchQueue.main.async {

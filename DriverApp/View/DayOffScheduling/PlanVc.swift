@@ -1641,7 +1641,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         let dayName = Date.dayNameFromCustomDate(customDate: i, year: year, month: month)
         
         selectedIndex = i
-        tableView.reloadData()
+        colectionView.reloadData()
 
         btnTouch(tanggal: date, day: dayName, index: i)
     }

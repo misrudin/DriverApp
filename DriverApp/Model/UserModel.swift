@@ -160,6 +160,7 @@ struct UserStatus: Codable {
     let checkoutTime: String?
     let restTime: String?
     let workTime: String?
+    let currentOrder: String?
 }
 
 

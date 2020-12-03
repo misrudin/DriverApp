@@ -56,7 +56,7 @@ class MainVc: UIViewController {
         
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageView.anchor(width: view.frame.width / 4, height: view.frame.width / 4)
+        imageView.anchor(width: 64, height: 64)
         signupButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
         
         loginButton.anchor(left: view.leftAnchor, bottom: signupButton.topAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)

@@ -21,3 +21,12 @@ struct Base {
     
     static let baseUrlResetPassword: String = "https://usmh-user-livetracking.azurewebsites.net/reset-password"
 }
+
+
+struct ResponseData: Codable {
+    let Message: String
+
+    enum CodeingKeys: String, CodingKey{
+        case Message
+    }
+}

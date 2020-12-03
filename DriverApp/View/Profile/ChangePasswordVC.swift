@@ -116,6 +116,7 @@ class ChangePasswordVC: UIViewController {
         guard let oldP = oldPassword.text,
         let newP = newPassword.text,
         let confirmP = confirmPassword.text, oldP != "" && newP != "" && confirmP != "" else {return}
+        view.endEditing(true)
         
         if newP == confirmP {
             let data = PasswordModel(code_driver: codeDriver, old_password: oldP, password: newP)

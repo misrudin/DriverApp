@@ -32,7 +32,7 @@ class LiveTrackingVC: UIViewController {
        var visualEffectView:UIVisualEffectView!
        
        let cardHeight:CGFloat = 400
-       let cardHandleAreaHeight:CGFloat = 110
+        var cardHandleAreaHeight:CGFloat = 110
        
        var cardVisible = false
        var nextState:CardState {
@@ -164,12 +164,17 @@ class LiveTrackingVC: UIViewController {
         
         
         if statusOrder == "wait for pickup" || statusOrder == "on pickup process" {
+            cardHandleAreaHeight = 110
             if let destinationLat = CLLocationDegrees(storeDestinationLat),
                let destinatoinLong = CLLocationDegrees(storeDestinationLng) {
                 destination = Destination(latitude: destinationLat, longitude: destinatoinLong)
             }
         } else {
-            
+            if statusOrder == "waiting delivery" || statusOrder == "pending"  {
+                cardHandleAreaHeight = 110
+            }else {
+                cardHandleAreaHeight = 190
+            }
             if let destinationLat = CLLocationDegrees(orderDestinationLat),
                let destinationLong = CLLocationDegrees(orderDestinationLng) {
                 destination = Destination(latitude: destinationLat, longitude: destinationLong)
@@ -633,6 +638,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             let data = Delivery(status: "delivery", order_number: orderNo, type: "start")
             self.orderViewModel.statusOrder(data: data) { (result) in
                 self.handleResult(result: result)
+                self.cardHandleAreaHeight = 190
             }
         case .pending:
             let vc = PendingNoteVc()

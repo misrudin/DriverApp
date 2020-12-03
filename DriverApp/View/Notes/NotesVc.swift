@@ -58,35 +58,11 @@ class NotesVc: UIViewController {
        return table
     }()
     
-//     var checkoutButton: UIButton={
-//        let button = UIButton()
-//        button.setTitle("Checkout", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.layer.cornerRadius = 5
-//        button.layer.masksToBounds = true
-//        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .regular )
-//        button.addTarget(self, action: #selector(didTapCheckout), for: .touchUpInside)
-//        return button
-//    }()
-//
-//     var pendingButton: UIButton={
-//        let button = UIButton()
-//        button.setTitle("Pending", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.layer.cornerRadius = 5
-//        button.layer.masksToBounds = true
-//        button.titleLabel?.font = .systemFont(ofSize: 12, weight: .regular )
-//        button.addTarget(self, action: #selector(didTapPending), for: .touchUpInside)
-//        return button
-//    }()
     
     lazy var segmentC: UISegmentedControl = {
         let segment = UISegmentedControl(items: ["Checkout", "Pending"])
         segment.layer.cornerRadius = 5
-//        segment.backgroundColor = .white
         segment.selectedSegmentIndex = 0
-//        segment.tintColor = UIColor(named: "orangeKasumi")
-//        segment.selectedSegmentTintColor = .white
         segment.addTarget(self, action: #selector(changeColor(sender:)), for: .valueChanged)
         return segment
     }()
