@@ -65,6 +65,59 @@ class EditProfileVc: UIViewController {
         img.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         return img
     }()
+    
+    lazy var ratingLabel: UILabel = {
+        let lable = UILabel()
+        lable.text = "0"
+        lable.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        lable.textColor = UIColor(named: "darkKasumi")
+        return lable
+    }()
+    
+    lazy var rating1: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating2: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating3: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating4: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating5: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
 
     //MARK: - Name
     lazy var firstNameLable: UILabel = {
@@ -253,6 +306,61 @@ class EditProfileVc: UIViewController {
         phoneNumber.text = bio?.phone_number
         license.text = bio?.driver_license_number
         expDate.text = bio?.driver_license_expiration_date
+        ratingLabel.text = "\(dataDriver?.rating.avgRating ?? "0")"
+        
+        guard let totalRating: Double = Double((dataDriver?.rating.avgRating)!) else {
+            print("konot;")
+            
+            return
+        }
+        
+        if totalRating == 0 {
+            rating1.image = UIImage(named: "star2")
+            rating2.image = UIImage(named: "star2")
+            rating3.image = UIImage(named: "star2")
+            rating4.image = UIImage(named: "star2")
+            rating5.image = UIImage(named: "star2")
+        }
+        
+        if totalRating > 0  && totalRating >= 1 {
+            rating1.image = UIImage(named: "star")
+            rating2.image = UIImage(named: "star2")
+            rating3.image = UIImage(named: "star2")
+            rating4.image = UIImage(named: "star2")
+            rating5.image = UIImage(named: "star2")
+        }
+        
+        if (totalRating) > 1  && (totalRating) >= 2 {
+            rating1.image = UIImage(named: "star")
+            rating2.image = UIImage(named: "star")
+            rating3.image = UIImage(named: "star2")
+            rating4.image = UIImage(named: "star2")
+            rating5.image = UIImage(named: "star2")
+        }
+        
+        if (totalRating) > 2  && (totalRating) >= 3 {
+            rating1.image = UIImage(named: "star")
+            rating2.image = UIImage(named: "star")
+            rating3.image = UIImage(named: "star")
+            rating4.image = UIImage(named: "star2")
+            rating5.image = UIImage(named: "star2")
+        }
+        
+        if (totalRating) > 3  && (totalRating) >= 4 {
+            rating1.image = UIImage(named: "star")
+            rating2.image = UIImage(named: "star")
+            rating3.image = UIImage(named: "star")
+            rating4.image = UIImage(named: "star")
+            rating5.image = UIImage(named: "star2")
+        }
+        
+        if (totalRating) > 4  && (totalRating) >= 5 {
+            rating1.image = UIImage(named: "star")
+            rating2.image = UIImage(named: "star")
+            rating3.image = UIImage(named: "star")
+            rating4.image = UIImage(named: "star")
+            rating5.image = UIImage(named: "star")
+        }
         
         guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {
             return}
@@ -444,6 +552,18 @@ class EditProfileVc: UIViewController {
         stakView.addSubview(expDate)
         expDate.anchor(top: expDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
+        //ratings
+        stakView.addSubviews(views: rating1,rating2,rating3,rating4,rating5,ratingLabel)
+        ratingLabel.anchor(left: profilePhotoImage.rightAnchor, paddingLeft: 10)
+        rating1.anchor(left: ratingLabel.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating2.anchor(left: rating1.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating3.anchor(left: rating2.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating4.anchor(left: rating3.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating5.anchor(left: rating4.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        
+        [rating1,rating2,rating3,rating4,rating5,ratingLabel].forEach { (i) in
+            i.centerYAnchor.constraint(equalTo: profilePhotoImage.centerYAnchor).isActive = true
+        }
     
     }
     

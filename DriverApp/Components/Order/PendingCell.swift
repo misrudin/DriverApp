@@ -13,22 +13,22 @@ class PendingCell: UITableViewCell {
     
     var pendingData: Note! {
         didSet {
-            labelNote.text = pendingData.note
+            note.text = pendingData.note
             orderNo.text = pendingData.meta_data?.order_number
             
             let dateFormater = DateFormatter()
-            dateFormater.dateFormat = "dd MMM yyyy hh:mm"
-            let dateVlue = dateFormater.date(from: "\(pendingData.created_date) \(pendingData.created_time)")
-            let format = DateFormatter()
-            format.dateFormat = "dd MMM yyyy hh:mm"
+            dateFormater.dateFormat = "yyyy-MM-dd"
             
+            let dateVlue = dateFormater.date(from: pendingData.created_date)
+            let format = DateFormatter()
+            format.dateFormat = "dd MMM yyyy"
             let dateString = format.string(from: dateVlue!)
             
-            date.text = dateString
+            date.text = "\(dateString) \(pendingData.created_time[...4])"
         }
     }
     
-
+    
     @IBOutlet weak var container: UIView!
     
     @IBOutlet weak var labelOrderNo: UILabel!
@@ -47,12 +47,14 @@ class PendingCell: UITableViewCell {
         container.layer.cornerRadius = 5
         container.backgroundColor = .white
         
+        selectionStyle = .none
+        
         backgroundColor = UIColor(named: "grayKasumi")
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
     

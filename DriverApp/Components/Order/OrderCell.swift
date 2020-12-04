@@ -26,8 +26,9 @@ class OrderCell: UITableViewCell {
     
     var orderData: NewOrderData! {
         didSet {
-            guard let orderDetail = orderVm.decryptOrderDetail(data: orderData.order_detail, OrderNo: orderData.order_number),
-                  let userInfo = orderVm.decryptUserInfo(data: orderData.user_info, OrderNo: orderData.order_number) else {
+            
+            
+            guard let orderDetail = orderVm.decryptOrderDetail(data: orderData.order_detail, OrderNo: orderData.order_number) else {
                 return
             }
             
@@ -51,7 +52,6 @@ class OrderCell: UITableViewCell {
                 isUserInteractionEnabled = false
             }
 
-
             date.text = "\(start) - \(end)"
 
             var arrayOfStore: [String] = []
@@ -59,6 +59,10 @@ class OrderCell: UITableViewCell {
                 arrayOfStore.append(item.pickup_store_name)
             }
             addresPickup.text = arrayOfStore.joined(separator: " - ")
+            
+            guard let userInfo = orderVm.decryptUserInfo(data: orderData.user_info, OrderNo: orderData.order_number) else {
+                return
+            }
             
             deliveyAddress.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
         }

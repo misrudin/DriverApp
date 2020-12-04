@@ -53,7 +53,7 @@ class HistoryViewController: UIViewController {
     private let tableView: UITableView = {
        let table = UITableView()
         table.register(UINib(nibName: "HistoryCell", bundle: nil), forCellReuseIdentifier: HistoryCell.id)
-        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        table.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
         return table
     }()

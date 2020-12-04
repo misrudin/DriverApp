@@ -19,7 +19,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8QP-1C-PAG">
-                        <rect key="frame" x="10" y="10" width="366" height="162"/>
+                        <rect key="frame" x="10" y="5" width="366" height="172"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order No: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MUC-Oi-eRL">
                                 <rect key="frame" x="10" y="10" width="71.5" height="18"/>
@@ -127,8 +127,8 @@ Ibaraki 300-0013</string>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="8QP-1C-PAG" secondAttribute="bottom" constant="10" id="3Ua-jS-Pcz"/>
-                    <constraint firstItem="8QP-1C-PAG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="J0T-6U-dAd"/>
+                    <constraint firstAttribute="bottom" secondItem="8QP-1C-PAG" secondAttribute="bottom" constant="5" id="3Ua-jS-Pcz"/>
+                    <constraint firstItem="8QP-1C-PAG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="J0T-6U-dAd"/>
                     <constraint firstItem="8QP-1C-PAG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="c19-Cs-cph"/>
                     <constraint firstAttribute="trailing" secondItem="8QP-1C-PAG" secondAttribute="trailing" constant="10" id="fHd-GH-dbW"/>
                 </constraints>
@@ -153,7 +153,7 @@ Ibaraki 300-0013</string>
         <image name="destinationMarker" width="128" height="128"/>
         <image name="originMarker" width="128" height="128"/>
         <namedColor name="darkKasumi">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23499999940395355" green="0.23499999940395355" blue="0.23499999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="grayKasumi2">
             <color red="0.63099998235702515" green="0.63099998235702515" blue="0.63099998235702515" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

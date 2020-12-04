@@ -16,6 +16,7 @@ struct UserModel: Decodable {
     let working_status: String
     let bio: String
     let vehicle: String
+    let rating: Rating
 
     enum CodingKeys: String, CodingKey {
         case id_driver
@@ -26,6 +27,17 @@ struct UserModel: Decodable {
         case working_status
         case bio
         case vehicle
+        case rating
+    }
+}
+
+struct Rating: Decodable {
+    let avgRating: String?
+    let totalRating: String
+    
+    enum CodingKeys: String, CodingKey {
+        case avgRating
+        case totalRating
     }
 }
 

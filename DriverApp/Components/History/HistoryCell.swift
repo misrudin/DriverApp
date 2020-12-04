@@ -12,29 +12,27 @@ class HistoryCell: UITableViewCell {
     static let id = "HistoryCell"
     
     @IBOutlet weak var date: UILabel!
-    @IBOutlet weak var dateLable: UILabel!
     @IBOutlet weak var orderNo: UILabel!
     @IBOutlet weak var orderNoLable: UILabel!
-    @IBOutlet weak var addressLable: UILabel!
-    @IBOutlet weak var address: UILabel!
-    @IBOutlet weak var receiverLable: UILabel!
-    @IBOutlet weak var receiver: UILabel!
     @IBOutlet weak var statusLable: UILabel!
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var container: UIView!
-    @IBOutlet weak var marker: UIImageView!
+
+    @IBOutlet weak var review: UILabel!
+    @IBOutlet weak var labelRating: UILabel!
+    @IBOutlet weak var rating1: UIImageView!
+    @IBOutlet weak var rating2: UIImageView!
+    @IBOutlet weak var rating3: UIImageView!
+    @IBOutlet weak var rating4: UIImageView!
+    @IBOutlet weak var rating5: UIImageView!
+    
+    let lableNothing = Reusable.makeLabel(text: "has not reviewed by admin", font: UIFont.systemFontItalic(size: 15), color: UIColor(named: "darkKasumi")!, alignment: .left)
     
     lazy var orderVm = OrderViewModel()
 
     var item: History! {
         didSet {
             orderNo.text = item.order_number
-            
-            
-            guard let orderDetail = orderVm.decryptOrderDetail(data: item.order_detail, OrderNo: item.order_number),
-                  let userInfo = orderVm.decryptUserInfo(data: item.user_info, OrderNo: item.order_number) else {
-                return
-            }
             
             let df = DateFormatter()
             let activeDate = Date.dateFromCustomString(customString: item.active_date)
@@ -43,16 +41,82 @@ class HistoryCell: UITableViewCell {
 
             date.text = activeDateStr
 
-            var arrayOfStore: [String] = []
-            for item in orderDetail.pickup_destination {
-                arrayOfStore.append(item.pickup_store_name)
+
+            labelRating.text = "\(item.rating)"
+            
+            if let comment = item.comment {
+                review.text = comment
             }
             
-            address.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
+            if item.rating == 0 {
+                rating1.image = UIImage(named: "star2")
+                rating2.image = UIImage(named: "star2")
+                rating3.image = UIImage(named: "star2")
+                rating4.image = UIImage(named: "star2")
+                rating5.image = UIImage(named: "star2")
+            }
             
-            status.text = "Done Delivery"
+            if item.rating > 0  && item.rating >= 1 {
+                rating1.image = UIImage(named: "star")
+                rating2.image = UIImage(named: "star2")
+                rating3.image = UIImage(named: "star2")
+                rating4.image = UIImage(named: "star2")
+                rating5.image = UIImage(named: "star2")
+            }
             
-            receiver.text = "\(userInfo.first_name) \(userInfo.last_name)"
+            if item.rating > 1  && item.rating >= 2 {
+                rating1.image = UIImage(named: "star")
+                rating2.image = UIImage(named: "star")
+                rating3.image = UIImage(named: "star2")
+                rating4.image = UIImage(named: "star2")
+                rating5.image = UIImage(named: "star2")
+            }
+            
+            if item.rating > 2  && item.rating >= 3 {
+                rating1.image = UIImage(named: "star")
+                rating2.image = UIImage(named: "star")
+                rating3.image = UIImage(named: "star")
+                rating4.image = UIImage(named: "star2")
+                rating5.image = UIImage(named: "star2")
+            }
+            
+            if item.rating > 3  && item.rating >= 4 {
+                rating1.image = UIImage(named: "star")
+                rating2.image = UIImage(named: "star")
+                rating3.image = UIImage(named: "star")
+                rating4.image = UIImage(named: "star")
+                rating5.image = UIImage(named: "star2")
+            }
+            
+            if item.rating > 4  && item.rating >= 5 {
+                rating1.image = UIImage(named: "star")
+                rating2.image = UIImage(named: "star")
+                rating3.image = UIImage(named: "star")
+                rating4.image = UIImage(named: "star")
+                rating5.image = UIImage(named: "star")
+            }
+            
+            if item.status_rating == false {
+                review.isHidden = false
+                rating1.isHidden = false
+                rating2.isHidden = false
+                rating3.isHidden = false
+                rating4.isHidden = false
+                rating5.isHidden = false
+                labelRating.isHidden = false
+                lableNothing.isHidden = true
+            }else {
+                review.isHidden = true
+                rating1.isHidden = true
+                rating2.isHidden = true
+                rating3.isHidden = true
+                rating4.isHidden = true
+                rating5.isHidden = true
+                labelRating.isHidden = true
+                lableNothing.isHidden = false
+            }
+            
+            
         }
     }
     
@@ -61,6 +125,8 @@ class HistoryCell: UITableViewCell {
         // Initialization code
         
         container.layer.cornerRadius = 10
+        container.addSubview(lableNothing)
+        lableNothing.anchor(top: orderNo.bottomAnchor, left: container.leftAnchor, right: container.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingRight: 10)
         selectionStyle = .none
     }
 

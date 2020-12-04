@@ -69,6 +69,9 @@ struct History: Decodable {
     let order_detail: String
     let order_number: String
     let time_detail: TimeDetail
+    let status_rating: Bool
+    let rating: Double
+    let comment: String?
         
     enum CodingKeys: String, CodingKey {
         case code_driver
@@ -80,6 +83,9 @@ struct History: Decodable {
         case order_detail
         case order_number
         case time_detail
+        case status_rating
+        case rating
+        case comment
     }
 }
 

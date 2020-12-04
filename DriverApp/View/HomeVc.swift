@@ -25,6 +25,8 @@ class HomeVc: UIViewController {
     
     var allowReject: Bool = false
     
+    var expanded: Bool = false
+    
     var databaseManager = DatabaseManager()
     
     var profileVm = ProfileViewModel()
@@ -353,10 +355,31 @@ class HomeVc: UIViewController {
 //MARK: - TABLE VIEW ORDER
 @available(iOS 13.0, *)
 extension HomeVc: UITableViewDelegate,UITableViewDataSource {
+    @objc func colapsibleHeaderPending(){
+        var indexPaths = [IndexPath]()
+        for row in pendingNotes.indices {
+            let indexPath = IndexPath(row: row, section: 0)
+            indexPaths.append(indexPath)
+        }
+        
+        expanded = !expanded
+        
+        
+        if !expanded {
+            tableView.deleteRows(at: indexPaths, with: .fade)
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.arrowRight.transform = .identity
+            })
+        } else {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.arrowRight.rotate(angle: 90)
+            })
+            tableView.insertRows(at: indexPaths, with: .fade)
+        }
+    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if let orderData = orderData {
-//            return orderData.filter({$0.order_list != nil}).count
             return orderData.count+1
         }
         
@@ -367,12 +390,35 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 45
     }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == 0{
+            return 1
+        }
+        return 0
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section == 0 {
+           let v = UIView()
+            v.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1)
+            v.backgroundColor = UIColor(named: "orangeKasumi")
+           return v
+        }
+        return nil
+    }
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             if let pending = pendingNotes {
-                return pending.count
+                if expanded {
+                    return pending.count
+                }else {
+                    return 0
+                }
+            }else {
+                return 0
             }
         }else {
             if let orderData = orderData {
@@ -440,14 +486,23 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         let label = DateHeaderHome()
         
         let containerLabel = UIView()
-        containerLabel.addSubview(arrowRight)
         containerLabel.addSubview(label)
         
         label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 16, paddingRight: 16)
-        arrowRight.anchor(top: containerLabel.topAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 20)
+        
 
         if section == 0 {
-            label.text = "Pending Delivery"
+            if let pending = pendingNotes {
+                label.text = "Pending Delivery (\(pending.count))"
+            }else {
+                label.text = "Pending Delivery (0)"
+            }
+            containerLabel.addSubview(arrowRight)
+            
+            
+            arrowRight.anchor(top: containerLabel.topAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 20)
+            
+            containerLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(colapsibleHeaderPending)))
             return containerLabel
         }else {
             if let order = orderData {
@@ -460,7 +515,9 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 
                 let value = dateString == dateStringNow ? "Today" : dateString
                 
-                label.text = value
+                let totalOrderList = order[section-1].order_list?.filter({$0.status_tracking != "pending"})
+                
+                label.text = "\(value) (\(totalOrderList?.count ?? 0))"
                 
                 
                 return containerLabel
@@ -491,6 +548,9 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0{
+            return false
+        }
         return true
     }
     
@@ -510,7 +570,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                    completion(true)
                 
                 guard let allorder = self?.orderData,
-                      let dateOrder = allorder[indexPath.section].order_list,
+                      let dateOrder = allorder[indexPath.section-1].order_list,
                       let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                             let codeDriver = userData["codeDriver"] as? String  else {return}
                 
@@ -541,8 +601,8 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                    completion(true)
                 let vc = PendingNoteVc()
                 if let order = self?.orderData {
-                    if order[indexPath.section].order_list != nil {
-                        let orderList = order[indexPath.section].order_list
+                    if order[indexPath.section-1].order_list != nil {
+                        let orderList = order[indexPath.section-1].order_list
                         vc.orderData = orderList![indexPath.row]
                     }
                 }

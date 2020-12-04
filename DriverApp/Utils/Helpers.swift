@@ -238,7 +238,6 @@ class CustomTap: UITapGestureRecognizer {
     var index: Int?
 }
 
-
 extension UITextField {
     func paddingLeft(_ amount:CGFloat){
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: amount, height: self.frame.size.height))
@@ -264,6 +263,12 @@ extension UITextField {
 public let kShapeDashed : String = "kShapeDashed"
 
 extension UIView {
+    
+    func rotate(angle: CGFloat) {
+           let radians = angle / 180.0 * CGFloat.pi
+            let rotation = self.transform.rotated(by: radians);
+           self.transform = rotation
+       }
     
     func removeDashedBorder(_ view: UIView) {
         view.layer.sublayers?.forEach {
@@ -446,4 +451,12 @@ private extension String {
   func index(at offset: Int) -> String.Index {
     index(startIndex, offsetBy: offset)
   }
+}
+
+
+extension UIFont {
+    static func systemFontItalic(size fontSize: CGFloat = 17.0, fontWeight: UIFont.Weight = .light) -> UIFont {
+        let font = UIFont.systemFont(ofSize: fontSize, weight: fontWeight)
+        return UIFont(descriptor: font.fontDescriptor.withSymbolicTraits(.traitItalic)!, size: fontSize)
+    }
 }
