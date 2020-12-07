@@ -16,10 +16,11 @@ struct Message:Codable {
 
 
 struct ChatMessage:Codable {
-    let text: String
+    let text: String?
     let isIncoming: Bool
     let date: Date
     let time: String
+    let photo: String?
 }
 
 

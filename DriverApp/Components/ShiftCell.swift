@@ -29,7 +29,7 @@ class ShiftCell: UITableViewCell {
     var shiftTime: ShiftTime! {
         didSet {
             lableShift.text = shiftTime.label_data
-            lableTime.text = "\(shiftTime.time_start_shift) - \(shiftTime.time_end_shift)"
+            lableTime.text = "\(shiftTime.time_start_shift[...4]) - \(shiftTime.time_end_shift[...4])"
         }
     }
 
@@ -73,7 +73,7 @@ class ShiftCell: UITableViewCell {
         
         viewContainer.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor,paddingTop: 5 ,paddingBottom: 5, paddingLeft: 10, paddingRight: 10)
         
-        leftView.anchor(top: viewContainer.topAnchor, left: viewContainer.leftAnchor, bottom: viewContainer.bottomAnchor, width: 10)
+        leftView.anchor(top: viewContainer.topAnchor, left: viewContainer.leftAnchor, bottom: viewContainer.bottomAnchor, width: 5)
         
         lableShift.anchor(top: viewContainer.topAnchor, left: leftView.rightAnchor, right: viewContainer.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
         lableTime.anchor(left: leftView.rightAnchor, bottom: viewContainer.bottomAnchor, right: viewContainer.rightAnchor, paddingBottom: 5, paddingLeft: 10, paddingRight: 10)

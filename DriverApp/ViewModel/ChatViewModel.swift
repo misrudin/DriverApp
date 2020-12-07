@@ -37,7 +37,8 @@ struct ChatViewModel {
                     guard let sender = value["sendBy"] else {return}
                     let isMe = "\(sender)" == codeDriver
                     
-                    let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")")
+                    let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")", photo: "\(value["photo"] ?? "")")
+                    
                     newValues.append(newDic)
                 })
                 tempData.append(newValues)
@@ -94,7 +95,8 @@ struct ChatViewModel {
             "chatContent" : chatdData.chatContent,
             "chatDate" : chatdData.chatDate,
             "chatTime" : chatdData.chatTime,
-            "sendBy" : Int(chatdData.sendBy)!
+            "sendBy" : Int(chatdData.sendBy)!,
+            "type": "text"
         ]
         //push data
         database.child(urlFirebase).childByAutoId().setValue(chatDataDict) { (error, _) in
@@ -156,10 +158,12 @@ struct ChatViewModel {
                                                          token: "")
         
         let chatDataDict: [String: Any] = [
-            "chatContent" : foto,
+            "photo" : foto,
             "chatDate" : dateString,
             "chatTime" : timeString,
-            "sendBy" : Int(codeDriver)!
+            "sendBy" : Int(codeDriver)!,
+            "type": "image",
+            "chatContent": ""
         ]
         //push data
         database.child(urlFirebase).childByAutoId().setValue(chatDataDict) { (error, _) in

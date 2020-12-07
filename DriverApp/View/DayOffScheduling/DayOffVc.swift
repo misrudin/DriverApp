@@ -90,6 +90,7 @@ class DayOffVc: UIViewController {
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
         button.addTarget(self, action: #selector(setPlanClick), for: .touchUpInside)
+        button.isHidden = true
         return button
     }()
     

@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     var window : UIWindow?
+    var dataBaseManager: DatabaseManager!
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
@@ -23,6 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey(Base.mapsApiKey)
         GMSPlacesClient.provideAPIKey(Base.mapsApiKey)
         FirebaseApp.configure()
+        
+        dataBaseManager = DatabaseManager()
         
         if #available(iOS 13, *) {
             // do only pure app launch stuff, not interface stuff
@@ -34,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window!.makeKeyAndVisible()
             self.window!.backgroundColor = .red
         }
+        updateStatus(status: "idle")
         
         return true
     }
@@ -47,6 +51,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
       print("discard session")
+        updateStatus(status: "inactive")
+    }
+    
+    private func updateStatus(status: String){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            return
+        }
+        
+        dataBaseManager.updateStatus(codeDriver: codeDriver, status: status) { (res) in
+            switch res {
+            case .failure(let err): print(err)
+            case .success(_): print("succes update status driver")
+            }
+        }
+        
     }
 
 

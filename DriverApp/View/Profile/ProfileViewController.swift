@@ -30,7 +30,7 @@ class ProfileViewController: UIViewController {
     
     lazy var containerView: UIView = {
         let container = UIView()
-        container.backgroundColor = .white
+        container.backgroundColor = .rgba(red: 0, green: 0, blue: 0, alpha: 0.025)
         container.addSubview(lableName)
         container.addSubview(lableEmail)
         container.addSubview(imageView)
@@ -106,9 +106,61 @@ class ProfileViewController: UIViewController {
     lazy var button1 = createButton(title: "Note", icon: UIImage(named: "note")!)
     lazy var button2 = createButton(title: "Change Password", icon: UIImage(named: "password")!)
     lazy var button6 = createButton(title: "Change Vehicle Data", icon: UIImage(named: "vehicle")!)
-//    lazy var button7 = createButton(title: "Edit Email")
-//    lazy var button3 = createButton(title: "Checkout")
-//    lazy var button4 = createButton(title: "Rest")
+
+    //MARK: - Ratings
+    lazy var ratingLabel: UILabel = {
+        let lable = UILabel()
+        lable.text = "0"
+        lable.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        lable.textColor = UIColor(named: "darkKasumi")
+        return lable
+    }()
+    
+    lazy var rating1: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating2: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating3: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating4: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
+    lazy var rating5: UIImageView = {
+        let img = UIImageView()
+        img.clipsToBounds = true
+        img.layer.masksToBounds = true
+        img.contentMode = .scaleAspectFit
+        img.image = UIImage(named: "star2")
+        return img
+    }()
+    
     lazy var button5:UIButton = {
         let b = UIButton()
         let image = UIImage(named: "logoutIcon")
@@ -311,7 +363,7 @@ class ProfileViewController: UIViewController {
         containerView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 100)
         containerView.addSubview(imageEdit)
         
-        lableName.anchor(top: containerView.topAnchor, left: imageView.rightAnchor, right: imageEdit.leftAnchor, paddingTop: 25, paddingLeft: 16, paddingRight: 10)
+        lableName.anchor(top: containerView.topAnchor, left: imageView.rightAnchor, right: imageEdit.leftAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 10)
         
         lableEmail.anchor(top: lableName.bottomAnchor, left: imageView.rightAnchor, right: containerView.rightAnchor, paddingTop: 5, paddingLeft: 16, paddingRight: 16)
         
@@ -341,6 +393,19 @@ class ProfileViewController: UIViewController {
         button5.anchor(left: containerButton.leftAnchor, bottom: containerButton.bottomAnchor, right: containerButton.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
         button5.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapLogout)))
         
+        //ratings
+        containerView.addSubviews(views: rating1,rating2,rating3,rating4,rating5,ratingLabel)
+        ratingLabel.anchor(top: lableEmail.bottomAnchor,left: imageView.rightAnchor,paddingTop: 10, paddingLeft: 16)
+        rating1.anchor(left: ratingLabel.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating2.anchor(left: rating1.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating3.anchor(left: rating2.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating4.anchor(left: rating3.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        rating5.anchor(left: rating4.rightAnchor, paddingLeft: 10, width: 15, height: 15)
+        
+        [rating1,rating2,rating3,rating4,rating5].forEach { (i) in
+            i.centerYAnchor.constraint(equalTo: ratingLabel.centerYAnchor).isActive = true
+        }
+        
     }
     
 }
@@ -357,13 +422,72 @@ extension ProfileViewController: ProfileViewModelDelegate {
                 self.user = user
                 self.bioData = bio
                 self.vehicleData = vehicle
-                let placeholderImage = UIImage(named: "personCircle")
+                let placeholderImage = UIImage(named: "profileIcon")
                 
                 self.imageView.af.setImage(withURL: urlString, placeholderImage: placeholderImage)
                 let fullName: String = "\(bio.first_name) \(bio.last_name)"
                 self.lableName.text = fullName
                 self.lableEmail.text = user.email
-                //                self.pop.show = false
+                
+                
+                //MARK: -Ratings
+                let numberFormater = NumberFormatter()
+                numberFormater.numberStyle = .decimal
+                let totalRatingDecimal = numberFormater.number(from: user.rating.avgRating!)
+                
+                self.ratingLabel.text = "\(totalRatingDecimal ?? 0)"
+                
+                guard let totalRating: Double = Double((user.rating.avgRating)!) else {
+                    return
+                }
+                
+                if totalRating == 0 {
+                    self.rating1.image = UIImage(named: "star2")
+                    self.rating2.image = UIImage(named: "star2")
+                    self.rating3.image = UIImage(named: "star2")
+                    self.rating4.image = UIImage(named: "star2")
+                    self.rating5.image = UIImage(named: "star2")
+                }
+                
+                if totalRating > 0  && totalRating >= 1 {
+                    self.rating1.image = UIImage(named: "star")
+                    self.rating2.image = UIImage(named: "star2")
+                    self.rating3.image = UIImage(named: "star2")
+                    self.rating4.image = UIImage(named: "star2")
+                    self.rating5.image = UIImage(named: "star2")
+                }
+                
+                if (totalRating) > 1  && (totalRating) >= 2 {
+                    self.rating1.image = UIImage(named: "star")
+                    self.rating2.image = UIImage(named: "star")
+                    self.rating3.image = UIImage(named: "star2")
+                    self.rating4.image = UIImage(named: "star2")
+                    self.rating5.image = UIImage(named: "star2")
+                }
+                
+                if (totalRating) > 2  && (totalRating) >= 3 {
+                    self.rating1.image = UIImage(named: "star")
+                    self.rating2.image = UIImage(named: "star")
+                    self.rating3.image = UIImage(named: "star")
+                    self.rating4.image = UIImage(named: "star2")
+                    self.rating5.image = UIImage(named: "star2")
+                }
+                
+                if (totalRating) > 3  && (totalRating) >= 4 {
+                    self.rating1.image = UIImage(named: "star")
+                    self.rating2.image = UIImage(named: "star")
+                    self.rating3.image = UIImage(named: "star")
+                    self.rating4.image = UIImage(named: "star")
+                    self.rating5.image = UIImage(named: "star2")
+                }
+                
+                if (totalRating) > 4  && (totalRating) >= 5 {
+                    self.rating1.image = UIImage(named: "star")
+                    self.rating2.image = UIImage(named: "star")
+                    self.rating3.image = UIImage(named: "star")
+                    self.rating4.image = UIImage(named: "star")
+                    self.rating5.image = UIImage(named: "star")
+                }
             }
         }
     }

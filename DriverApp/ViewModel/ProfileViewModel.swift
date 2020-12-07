@@ -53,7 +53,6 @@ struct ProfileViewModel {
                     if let data = response.data {
                         guard let userData =  parseJson(data: data), let bioData = decodeBio(data: userData.bio, codeDriver: userData.code_driver), let vehicleData = decodeVehicle(data: userData.vehicle, codeDriver: userData.code_driver) else {
                             delegate?.didFailedToFetch(ErrorDriver.failedToDecode)
-                            print("Decode Failed")
                             return }
                         
                             delegate?.didFetchUser(self, user: userData, bio: bioData, vehicle: vehicleData)

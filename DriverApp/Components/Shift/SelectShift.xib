@@ -39,12 +39,10 @@
                     <color key="textColor" name="grayKasumi2"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GmZ-0S-owH">
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GmZ-0S-owH">
                     <rect key="frame" x="20" y="64" width="374" height="3"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" name="colorBlue"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="1" id="wBB-CB-eHo"/>
-                    </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vht-Px-eBT">
                     <rect key="frame" x="356" y="319" width="30" height="30"/>

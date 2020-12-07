@@ -13,6 +13,79 @@ class HistoryViewController: UIViewController {
     
     var profileVm = ProfileViewModel()
     
+    //nav
+//    let bottomCustom: UIView = {
+//       let v = UIView()
+//        v.backgroundColor = .rgba(red: 255, green: 255, blue: 255, alpha: 1)
+//        return v
+//    }()
+//
+//    let visualEffectView: UIVisualEffectView = {
+//        let blurEffect = UIBlurEffect(style: .light)
+//        let view = UIVisualEffectView(effect: blurEffect)
+//        view.translatesAutoresizingMaskIntoConstraints = false
+//        return view
+//    }()
+//
+//    let stakView: UIStackView = {
+//       let s = UIStackView()
+//        s.axis = .horizontal
+//        s.alignment = .fill
+//        s.distribution = .fillEqually
+//        s.spacing = 16
+//        return s
+//    }()
+//
+//    lazy var menu1: UIButton = {
+//       let button = UIButton()
+//        let btn = UIButton()
+//        let image = UIImage(named: "photoChat")
+//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+//        button.setImage(baru, for: .normal)
+//        button.layer.masksToBounds = true
+//        button.setTitleColor(.blue, for: .normal)
+//        button.clipsToBounds = true
+//        button.addTarget(self, action: #selector(menu1Click), for: .touchUpInside)
+//        return button
+//    }()
+//
+//    @objc func menu1Click(){
+//        tabBarController?.selectedIndex = 0
+//    }
+//    @objc func menu2Click(){
+//        tabBarController?.selectedIndex = 1
+//    }
+//    @objc func menu3Click(){
+//        tabBarController?.selectedIndex = 2
+//    }
+//
+//    lazy var menu2: UIButton = {
+//       let button = UIButton()
+//        let btn = UIButton()
+//        let image = UIImage(named: "photoChat")
+//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+//        button.setImage(baru, for: .normal)
+//        button.layer.masksToBounds = true
+//        button.setTitleColor(.blue, for: .normal)
+//        button.clipsToBounds = true
+//        button.addTarget(self, action: #selector(menu2Click), for: .touchUpInside)
+//        return button
+//    }()
+//
+//    lazy var menu3: UIButton = {
+//       let button = UIButton()
+//        let btn = UIButton()
+//        let image = UIImage(named: "photoChat")
+//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+//        button.setImage(baru, for: .normal)
+//        button.layer.masksToBounds = true
+//        button.setTitleColor(.blue, for: .normal)
+//        button.clipsToBounds = true
+//        button.addTarget(self, action: #selector(menu3Click), for: .touchUpInside)
+//        return button
+//    }()
+    //nav
+    
     private let emptyImage: UIView = {
         let view = UIView()
         let imageView: UIImageView = {
@@ -60,6 +133,7 @@ class HistoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        tabBarController?.tabBar.isHidden = true
 
         
         view.backgroundColor = .white
@@ -80,11 +154,23 @@ class HistoryViewController: UIViewController {
         emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
+//        view.addSubview(bottomCustom)
+//        bottomCustom.addSubview(visualEffectView)
+//        visualEffectView.fill(toView: bottomCustom)
+//        bottomCustom.addSubview(stakView)
+//        stakView.anchor(top: bottomCustom.topAnchor, left: bottomCustom.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: bottomCustom.rightAnchor)
+//        stakView.addArrangedSubview(menu1)
+//        stakView.addArrangedSubview(menu2)
+//        stakView.addArrangedSubview(menu3)
+//        bottomCustom.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingBottom: 0, paddingLeft: 0, paddingRight: 0, height: 70)
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: true)
+        
+//        bottomCustom.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 0, height: -1), radius: 0, scale: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {

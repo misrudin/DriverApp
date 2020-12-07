@@ -93,7 +93,10 @@ class ChatViewController: UIViewController {
     
     lazy var imageButton: UIButton = {
        let button = UIButton()
-        button.setTitle("+", for: .normal)
+        let btn = UIButton()
+        let image = UIImage(named: "photoChat")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        button.setImage(baru, for: .normal)
         button.layer.masksToBounds = true
         button.setTitleColor(.blue, for: .normal)
         button.clipsToBounds = true
@@ -112,8 +115,9 @@ class ChatViewController: UIViewController {
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.isUserInteractionEnabled = true
-        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+//        tableView.isUserInteractionEnabled = true
+//        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
+//        tableView.estimatedRowHeight = 50
         listenData()
         view.addSubview(tableView)
         view.addSubview(inputChat)
@@ -207,19 +211,18 @@ class ChatViewController: UIViewController {
     
     func sendFotoMessage(image: UIImage){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String,
-              let chat = inputField.text, chat != "" else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
+        let imageData = image.jpegData(compressionQuality: 0.5)
+        let imageString = imageData?.base64EncodedString()
         
-        let imageString: String = Helpers().convertImageToBase64String(img: image)
-        
-        chatViewModel.sendMessage(codeDriver: codeDriver, foto: imageString) { (result) in
+        chatViewModel.sendMessage(codeDriver: codeDriver, foto: imageString!) { (result) in
             if result {
-                print("Success To send Messages")
+                print("Success To send Foto")
             }else {
-                print("Failed to send messages")
+                print("Failed to send Foto")
             }
         }
     }
@@ -334,6 +337,25 @@ extension ChatViewController: UITableViewDelegate, UITableViewDataSource {
            
            return cell
        }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chatMessage = chatMessages[indexPath.section][indexPath.row]
+        tap()
+        if chatMessage.photo != "" {
+            let slideVC = PeviewPhoto()
+            slideVC.modalPresentationStyle = .custom
+            slideVC.transitioningDelegate = self
+            slideVC.sendButton.isHidden = true
+            slideVC.closeButton.isHidden = false
+            if let stringPhoto = chatMessage.photo {
+                let newImageData = Data(base64Encoded: stringPhoto)
+                if let image = newImageData {
+                    slideVC.image = UIImage(data: image)
+                }
+            }
+            present(slideVC, animated: true, completion: nil)
+        }
+    }
 }
 
 
@@ -400,12 +422,13 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         
         let hasil = Helpers().resizeImageUpload(image: selectdedImage)
         
-        print(hasil)
         
         let slideVC = PeviewPhoto()
         slideVC.modalPresentationStyle = .custom
         slideVC.transitioningDelegate = self
         slideVC.delegate = self
+        slideVC.sendButton.isHidden = false
+        slideVC.closeButton.isHidden = true
         slideVC.image = hasil
         present(slideVC, animated: true, completion: nil)
         
@@ -457,9 +480,27 @@ class PeviewPhoto: UIViewController {
         return b
     }()
     
+    let closeButton: UIButton = {
+       let b = UIButton()
+        b.setTitle("Close", for: .normal)
+        b.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
+        b.clipsToBounds = true
+        b.layer.masksToBounds = true
+        b.layer.borderWidth = 1
+        b.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
+        b.layer.cornerRadius = 5
+        b.addTarget(self, action: #selector(close), for: .touchUpInside)
+        b.isHidden = true
+        return b
+    }()
+    
     @objc func sendMessage(){
         let imageToSend: UIImage = imageViewPreview.image!
         delegate.sendFotoMessage(image: imageToSend)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func close(){
         dismiss(animated: true, completion: nil)
     }
     
@@ -479,6 +520,7 @@ class PeviewPhoto: UIViewController {
         
         view.addSubview(imageViewPreview)
         view.addSubview(sendButton)
+        view.addSubview(closeButton)
         
         view.backgroundColor = .white
     }
@@ -494,6 +536,8 @@ class PeviewPhoto: UIViewController {
         
         imageViewPreview.anchor(top: line.bottomAnchor, left: view.leftAnchor,bottom: sendButton.topAnchor, right: view.rightAnchor, paddingTop: 16,paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
         sendButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
+        
+        closeButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
     }
     
     

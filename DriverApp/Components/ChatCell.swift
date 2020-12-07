@@ -14,8 +14,19 @@ class ChatCell: UITableViewCell {
     let timeLabel = UILabel()
     let bubleBackgroundView = UIView()
     
+    let imageViewMsg: UIImageView = {
+       let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.layer.cornerRadius = 5
+        iv.layer.masksToBounds = true
+        iv.clipsToBounds = true
+        return iv
+    }()
+    
     var leading: NSLayoutConstraint!
     var trailing: NSLayoutConstraint!
+//    var heightLabel: NSLayoutConstraint!
+//    var widthLabel: NSLayoutConstraint!
     
     var chatMessage: ChatMessage! {
         didSet{
@@ -33,6 +44,27 @@ class ChatCell: UITableViewCell {
                 leading.isActive = true
                 trailing.isActive = false
             }
+            
+            if chatMessage.photo != "" {
+                messageLabel.text = "Photo Message - Click to preview."
+                messageLabel.textColor = UIColor(named: "colorRed")
+            }
+            
+//            if chatMessage.photo != "" {
+//                if let stringPhoto = chatMessage.photo {
+//                    let newImageData = Data(base64Encoded: stringPhoto)
+//                    if let image = newImageData {
+//                        imageViewMsg.image = UIImage(data: image)
+//                    }
+//                }
+////                widthLabel.isActive = true
+//                imageViewMsg.isHidden = false
+////                heightLabel.isActive = true
+//            }else{
+//                imageViewMsg.isHidden = true
+////                widthLabel.isActive = false
+////                heightLabel.isActive = false
+//            }
         }
     }
     
@@ -68,7 +100,7 @@ class ChatCell: UITableViewCell {
             bubleBackgroundView.trailingAnchor.constraint(equalTo: messageLabel.trailingAnchor,constant: 10),
             
             timeLabel.bottomAnchor.constraint(equalTo: bubleBackgroundView.bottomAnchor, constant: -10),
-            timeLabel.trailingAnchor.constraint(equalTo: bubleBackgroundView.trailingAnchor, constant: -10)
+            timeLabel.trailingAnchor.constraint(equalTo: bubleBackgroundView.trailingAnchor, constant: -10),
             
         ]
         
@@ -80,6 +112,10 @@ class ChatCell: UITableViewCell {
         leading.isActive = false
         trailing = messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -32)
         trailing.isActive = false
+//        widthLabel = imageViewMsg.heightAnchor.constraint(equalToConstant: 200)
+//        widthLabel.isActive = false
+//        heightLabel = imageViewMsg.widthAnchor.constraint(equalToConstant: 200)
+//        heightLabel.isActive = false
     }
     
     required init?(coder: NSCoder) {
