@@ -195,7 +195,6 @@ struct OrderViewModel {
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
-                    debugPrint(response)
                     switch response.result {
                     case .success:
                         if response.response?.statusCode  == 200 {
@@ -288,8 +287,11 @@ struct OrderViewModel {
     /// Order Detail
     func decryptOrderDetail(data: String, OrderNo: String)-> NewOrderDetail? {
         let decrypted = try! AES256.decrypt(input: data, passphrase: OrderNo)
+        print(decrypted)
         let data = Data(decrypted.utf8)
+        print(data)
         let order = parseOrderDetail(data)
+        print(order)
         return order
     }
     

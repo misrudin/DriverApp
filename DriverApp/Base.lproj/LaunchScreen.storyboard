@@ -41,14 +41,14 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Vih-yG-Frr" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="4rH-Ff-PJs"/>
-                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="5su-X8-Rph"/>
+                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerY" secondItem="Vih-yG-Frr" secondAttribute="centerY" id="5su-X8-Rph"/>
                             <constraint firstItem="Vih-yG-Frr" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7W1-Wr-ynF"/>
                             <constraint firstAttribute="trailing" secondItem="8Wy-Qq-477" secondAttribute="trailing" id="VNp-MV-ULc"/>
                             <constraint firstAttribute="bottom" secondItem="Vih-yG-Frr" secondAttribute="bottom" id="WNU-7T-fTL"/>
                             <constraint firstAttribute="bottom" secondItem="8Wy-Qq-477" secondAttribute="bottom" id="WxU-lA-DKV"/>
                             <constraint firstItem="8Wy-Qq-477" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="q5C-Hu-lNF"/>
                             <constraint firstItem="8Wy-Qq-477" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="vFr-af-Ow1"/>
-                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="xg0-GX-2in"/>
+                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="xg0-GX-2in"/>
                             <constraint firstAttribute="trailing" secondItem="Vih-yG-Frr" secondAttribute="trailing" id="zev-Ne-wjg"/>
                         </constraints>
                     </view>

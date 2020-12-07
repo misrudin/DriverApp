@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 //struct OrderData: Decodable {
 //    let data: [Order]
@@ -228,8 +229,8 @@ struct NewOrderDetail: Decodable {
 
 //delivery destination
 struct DeliveryDestination: Decodable {
-    let lat: String
-    let long: String
+    let lat: CLLocationDegrees?
+    let long: CLLocationDegrees?
     
     enum CodingKeys: String, CodingKey {
         case lat
@@ -241,8 +242,8 @@ struct DeliveryDestination: Decodable {
 //pickup destination
 struct PickupDestination: Decodable {
     let pickup_store_name: String
-    let lat: String
-    let long: String
+    let lat: String?
+    let long: String?
     var pickup_item: [PickupItem]
     
     enum CodingKeys: String, CodingKey {

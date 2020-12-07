@@ -429,6 +429,7 @@ class HomeVc: UIViewController {
 @available(iOS 13.0, *)
 extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     @objc func colapsibleHeaderPending(){
+        if pendingNotes == nil {return}
         var indexPaths = [IndexPath]()
         for row in pendingNotes.indices {
             let indexPath = IndexPath(row: row, section: 0)

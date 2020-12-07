@@ -165,8 +165,8 @@ class LiveTrackingVC: UIViewController {
         
         if statusOrder == "wait for pickup" || statusOrder == "on pickup process" {
             cardHandleAreaHeight = 110
-            if let destinationLat = CLLocationDegrees(storeDestinationLat),
-               let destinatoinLong = CLLocationDegrees(storeDestinationLng) {
+            if let destinationLat = CLLocationDegrees(storeDestinationLat!),
+               let destinatoinLong = CLLocationDegrees(storeDestinationLng!) {
                 destination = Destination(latitude: destinationLat, longitude: destinatoinLong)
             }
         } else {
@@ -175,10 +175,10 @@ class LiveTrackingVC: UIViewController {
             }else {
                 cardHandleAreaHeight = 190
             }
-            if let destinationLat = CLLocationDegrees(orderDestinationLat),
-               let destinationLong = CLLocationDegrees(orderDestinationLng) {
-                destination = Destination(latitude: destinationLat, longitude: destinationLong)
-            }
+             let destinationLat = orderDestinationLat
+            let destinationLong = orderDestinationLng
+            destination = Destination(latitude: destinationLat!, longitude: destinationLong!)
+            
         }
         
         mapView.frame = view.bounds
@@ -714,7 +714,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         let orderDestinationLat = orderDetail.delivery_destination.lat
         let orderDestinationLng =  orderDetail.delivery_destination.long
         
-        destination = Destination(latitude: CLLocationDegrees(orderDestinationLat)!, longitude: CLLocationDegrees(orderDestinationLng)!)
+        destination = Destination(latitude: orderDestinationLat!, longitude: orderDestinationLng!)
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(2.0)

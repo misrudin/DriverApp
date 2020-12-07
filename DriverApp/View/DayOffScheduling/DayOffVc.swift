@@ -194,7 +194,7 @@ class DayOffVc: UIViewController {
                     self?.spiner.dismiss()
                     self?.colectionViewDayoff.reloadData()
                     self?.scrollToDate()
-                    if data.currentWeek == "3" {
+                    if data.currentWeek == "1" {
                         self?.planButotn.isHidden = false
                     }else {
                         self?.planButotn.isHidden = true
