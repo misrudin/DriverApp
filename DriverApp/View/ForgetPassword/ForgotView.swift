@@ -33,8 +33,13 @@ class ForgotView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
         view.addGestureRecognizer(panGesture)
         
-        email.becomeFirstResponder()
         
+        
+    }
+    
+    @objc
+    private func tap(){
+        view.endEditing(true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -46,6 +51,7 @@ class ForgotView: UIViewController {
     }
     
     @objc func panGestureRecognizerAction(sender: UIPanGestureRecognizer) {
+        tap()
         let translation = sender.translation(in: view)
         
         guard translation.y >= 0 else { return }
@@ -79,6 +85,9 @@ class ForgotView: UIViewController {
         submit.setTitleColor(.white, for: .normal)
         submit.layer.cornerRadius = 5
         submit.addTarget(self, action: #selector(didSubmit), for: .touchUpInside)
+        
+        email.becomeFirstResponder()
+        
     }
     
     @objc

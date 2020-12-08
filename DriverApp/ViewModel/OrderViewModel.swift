@@ -174,13 +174,20 @@ struct OrderViewModel {
     
     
     //    MARK: - CEK DRIVER FREELANCE REJECT ORDER
-        func cekRejectOrder(driver: String, completion: @escaping (Result<NewOrderData,Error>)->Void){
+        func cekRejectOrder(driver: String, completion: @escaping (Result<ResponseReject,Error>)->Void){
             AF.request("\(Base.urlOrder)detail/reject/\(driver)",headers: Base.headers).responseJSON { response in
-                debugPrint(response)
                 switch response.result {
                 case .success:
                     if response.response?.statusCode == 200 {
-                        debugPrint(response)
+                        if let data = response.data {
+                            if let parsedData = parseReject(data) {
+                                completion(.success(parsedData))
+                            }else {
+                                completion(.failure(DataError.failedToParseJson))
+                            }
+                        }
+                    }else {
+                        completion(.failure(DataError.failedToFetch))
                     }
                 case let .failure(error):
                     completion(.failure(error))
@@ -195,6 +202,7 @@ struct OrderViewModel {
                    method: .patch,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    debugPrint(response)
                     switch response.result {
                     case .success:
                         if response.response?.statusCode  == 200 {
@@ -215,6 +223,15 @@ struct OrderViewModel {
         do{
             let decodedData = try JSONDecoder().decode(NewOrder.self, from: data)
             return decodedData.data
+        }catch{
+            return nil
+        }
+    }
+    
+    private func parseReject(_ data: Data) -> ResponseReject?{
+        do{
+            let decodedData = try JSONDecoder().decode(ResponseReject.self, from: data)
+            return decodedData
         }catch{
             return nil
         }
@@ -287,11 +304,8 @@ struct OrderViewModel {
     /// Order Detail
     func decryptOrderDetail(data: String, OrderNo: String)-> NewOrderDetail? {
         let decrypted = try! AES256.decrypt(input: data, passphrase: OrderNo)
-        print(decrypted)
         let data = Data(decrypted.utf8)
-        print(data)
         let order = parseOrderDetail(data)
-        print(order)
         return order
     }
     

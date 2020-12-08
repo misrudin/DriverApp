@@ -175,9 +175,11 @@ class LiveTrackingVC: UIViewController {
             }else {
                 cardHandleAreaHeight = 190
             }
-             let destinationLat = orderDestinationLat
-            let destinationLong = orderDestinationLng
-            destination = Destination(latitude: destinationLat!, longitude: destinationLong!)
+            if let destinationLat = CLLocationDegrees(orderDestinationLat!),
+               let destinationLong = CLLocationDegrees(orderDestinationLng!) {
+                destination = Destination(latitude: destinationLat, longitude: destinationLong)
+             }
+            
             
         }
         
@@ -457,8 +459,6 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
     }
     
     func updateMarkerWith(position: CLLocationCoordinate2D, angle: Double) {
-//            CATransaction.begin()
-//            CATransaction.setAnimationDuration(2.0)
             originMarker.position = position
             
             guard angle >= 0 && angle < 360 else {
@@ -466,7 +466,8 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             }
             let angleInRadians: CGFloat = CGFloat(angle) * .pi / CGFloat(180)
             originMarker.iconView?.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
-//            CATransaction.commit()
+        
+//            directionButton.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
     }
     
     //MARK: - fit two markers
@@ -711,10 +712,11 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             self.handleResult(result: result)
         }
         
-        let orderDestinationLat = orderDetail.delivery_destination.lat
-        let orderDestinationLng =  orderDetail.delivery_destination.long
-        
-        destination = Destination(latitude: orderDestinationLat!, longitude: orderDestinationLng!)
+        if let orderDestinationLat = CLLocationDegrees(orderDetail.delivery_destination.lat!),
+           let orderDestinationLng =  CLLocationDegrees(orderDetail.delivery_destination.long!) {
+            destination = Destination(latitude: orderDestinationLat, longitude: orderDestinationLng)
+        }
+
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(2.0)

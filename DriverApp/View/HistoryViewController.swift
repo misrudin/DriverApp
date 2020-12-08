@@ -349,8 +349,7 @@ extension HistoryViewController: UITableViewDelegate,UITableViewDataSource {
                         if oke {
                             self?.orderData?.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        
-                    }
+                        }
                     case .failure(let err):
                         print(err)
                         Helpers().showAlert(view: self!, message: "Failed to delete history !")

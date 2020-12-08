@@ -229,8 +229,8 @@ struct NewOrderDetail: Decodable {
 
 //delivery destination
 struct DeliveryDestination: Decodable {
-    let lat: CLLocationDegrees?
-    let long: CLLocationDegrees?
+    let lat: String?
+    let long: String?
     
     enum CodingKeys: String, CodingKey {
         case lat
@@ -304,4 +304,10 @@ struct Scanned: Codable {
 struct Scan: Codable {
     let order_number: String
     let qr_code_raw: [String]
+}
+
+
+//MARK: - Response Reject
+struct ResponseReject: Decodable {
+    let data: Int
 }

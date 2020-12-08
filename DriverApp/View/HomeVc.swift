@@ -23,7 +23,7 @@ class HomeVc: UIViewController {
     var noteVm = NoteViewModel()
     var pendingNotes: [Note]!
     
-    var allowReject: Bool = false
+    var allowReject: Bool = true
     
     var expanded: Bool = false
     
@@ -223,7 +223,7 @@ class HomeVc: UIViewController {
         
         if let session = UserDefaults.standard.value(forKey: "userSession") as? [String: Any] {
             if session["date"] as? String != dateString {
-                print("---Sudah beda hari--")
+//                print("---Sudah beda hari--")
                 let data: [String: Any] = [
                     "code_driver": codeDriver,
                     "date": dateString
@@ -231,7 +231,7 @@ class HomeVc: UIViewController {
                 UserDefaults.standard.setValue(data, forKey: "userSession")
                 getCurrentPosition()
             }else {
-                print("---Masih di hari yang sama---")
+//                print("---Masih di hari yang sama---")
                 guard let currentDriver = session["code_driver"] as? String  else {
                     return
                 }
@@ -242,10 +242,10 @@ class HomeVc: UIViewController {
                     ]
                     UserDefaults.standard.setValue(data, forKey: "userSession")
                     getCurrentPosition()
-                    print("----Driver lain Login---")
+//                    print("----Driver lain Login---")
                 }else {
                     getDataOrder()
-                    print("----Masih Driver Yang Sama---")
+//                    print("----Masih Driver Yang Sama---")
                 }
             }
         }else {
@@ -260,6 +260,7 @@ class HomeVc: UIViewController {
         
         //get pending note
         getPendingNote()
+        cekStatusReject()
     }
     
     
@@ -344,6 +345,33 @@ class HomeVc: UIViewController {
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
                 }
+            }
+        }
+    }
+    
+    private func cekStatusReject(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String,
+              let status = userData["status"] as? String, status == "freelance" else {
+            print("status")
+            return
+        }
+        
+        orderViewModel.cekRejectOrder(driver: codeDriver) {[weak self] (res) in
+            switch res {
+            case.success(let data):
+                DispatchQueue.main.async {
+                    let reject = data.data
+                    print(reject)
+                    if reject < 2 {
+                        self?.allowReject = true
+                    }else {
+                        self?.allowReject = false
+                    }
+                }
+            case .failure(let err):
+                print(err)
+                self?.allowReject = false
             }
         }
     }
@@ -467,7 +495,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if section == 0{
-            return 1
+            return 30
         }
         return 0
     }
@@ -475,8 +503,15 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section == 0 {
            let v = UIView()
-            v.frame = CGRect(x: 0, y: 0, width: tableView.frame.width, height: 1)
-            v.backgroundColor = UIColor(named: "orangeKasumi")
+            let v2 = UIView()
+            let lableDelivery = Reusable.makeLabel(text: "DELIVERY LIST ORDER", font: UIFont.systemFont(ofSize: 16, weight: .medium), color: UIColor(named: "orangeKasumi")!)
+            
+            v.addSubview(v2)
+            v2.anchor(top: v.topAnchor, left: v.leftAnchor, right: v.rightAnchor, paddingTop: 5, height: 1)
+            
+            v.addSubview(lableDelivery)
+            lableDelivery.anchor(left: v.leftAnchor, bottom: v.bottomAnchor, right: v.rightAnchor, paddingLeft: 10, paddingRight: 10)
+            v2.backgroundColor = UIColor(named: "orangeKasumi")
            return v
         }
         return nil
@@ -562,14 +597,14 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         let containerLabel = UIView()
         containerLabel.addSubview(label)
         
-        label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 16, paddingRight: 16)
+        label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10)
         
 
         if section == 0 {
             if let pending = pendingNotes {
-                label.text = "Pending Delivery (\(pending.count))"
+                label.text = "Pending List Order (\(pending.count))"
             }else {
-                label.text = "Pending Delivery (0)"
+                label.text = "Pending List Order (0)"
             }
             containerLabel.addSubview(arrowRight)
             
@@ -652,15 +687,15 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 
                 let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver)
                 
-                self?.orderViewModel.rejectOrder(data: data) { (res) in
+                self?.orderViewModel.rejectOrder(data: data) {[weak self] (res) in
                     switch res {
-                    case .failure(let err):
-                        print(err)
-                        self?.tableView.reloadData()
+                    case .failure(_):
+                        Helpers().showAlert(view: self!, message: "Failed to decline this order !")
                     case .success(let oke):
-                        DispatchQueue.main.async {
-                            print(oke)
-                            self?.tableView.reloadData()
+                        if oke {
+                            self?.orderData?.remove(at: indexPath.row)
+                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                            self?.cekStatusReject()
                         }
                     }
              
@@ -696,9 +731,8 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         rejectAction.backgroundColor = UIColor(named: "darkKasumi")
         pendingAction.image = edit
         pendingAction.backgroundColor = UIColor(named: "darkKasumi")
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                    let statusDriver = userData["status"] as? String  else {return nil}
-        let actions = statusDriver == "frelance" && allowReject ? [rejectAction, pendingAction] : [pendingAction]
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any], let statusDriver = userData["status"] as? String  else {return nil}
+        let actions = statusDriver == "freelance" && allowReject ? [rejectAction, pendingAction] : [pendingAction]
         
         
         let configuration = UISwipeActionsConfiguration(actions: actions)
@@ -719,7 +753,6 @@ extension HomeVc: CLLocationManagerDelegate {
             if manager != driverManager {
                 self.upateLocation()
             }
-            print(manager)
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                   let codeDriver = userData["codeDriver"] as? String,
                   let idDriver = userData["idDriver"] as? Int else {
@@ -731,7 +764,6 @@ extension HomeVc: CLLocationManagerDelegate {
                     print(err)
                 case .success(let oke):
                     if oke {
-                        print("succes update location to firebase")
                         self?.driverManager?.stopUpdatingLocation()
                     }
                 }
