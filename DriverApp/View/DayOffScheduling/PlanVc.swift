@@ -115,7 +115,7 @@ class PlanVc: UIViewController {
     
     var dayOffPlan:[String: Any]!
     
-    let months: [String] = ["January","February","Maret","April","Mei","Juni","July","Agustus","September","Oktober","November","Desember"]
+    let months: [String] = ["January","February","March","April","May","June","July","August","September","October","November","December"]
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()

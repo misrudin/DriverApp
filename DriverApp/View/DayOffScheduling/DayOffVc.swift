@@ -62,7 +62,7 @@ class DayOffVc: UIViewController {
     
     var selectedIndex: Int?
     
-    let months: [String] = ["January","February","Maret","April","Mei","Juni","July","Agustus","September","Oktober","November","Desember"]
+    let months: [String] = ["January","February","March","April","May","June","July","August","September","October","November","December"]
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -194,7 +194,7 @@ class DayOffVc: UIViewController {
                     self?.spiner.dismiss()
                     self?.colectionViewDayoff.reloadData()
                     self?.scrollToDate()
-                    if data.currentWeek == "1" {
+                    if data.currentWeek == "3" {
                         self?.planButotn.isHidden = false
                     }else {
                         self?.planButotn.isHidden = true

@@ -43,8 +43,9 @@ class OrderCell: UITableViewCell {
 
             let start = orderData.detail_shift.time_start_shift[...4]
             let end = orderData.detail_shift.time_end_shift[...4]
+             
             
-            if timeNow <= end {
+            if timeNow <= end && timeNow > start {
                 container.backgroundColor = .white
                 isUserInteractionEnabled = true
             }else {

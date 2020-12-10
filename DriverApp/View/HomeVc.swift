@@ -24,6 +24,7 @@ class HomeVc: UIViewController {
     var pendingNotes: [Note]!
     
     var allowReject: Bool = true
+    var totalReject: Int = 0
     
     var expanded: Bool = false
     
@@ -362,7 +363,7 @@ class HomeVc: UIViewController {
             case.success(let data):
                 DispatchQueue.main.async {
                     let reject = data.data
-                    print(reject)
+                    self?.totalReject = reject
                     if reject < 2 {
                         self?.allowReject = true
                     }else {
@@ -371,7 +372,7 @@ class HomeVc: UIViewController {
                 }
             case .failure(let err):
                 print(err)
-                self?.allowReject = false
+                self?.allowReject = true
             }
         }
     }
@@ -686,6 +687,9 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 let orderNo = dateOrder[indexPath.row].order_number
                 
                 let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver)
+                if self!.totalReject >= 2 {
+                    return
+                }
                 
                 self?.orderViewModel.rejectOrder(data: data) {[weak self] (res) in
                     switch res {
@@ -695,7 +699,10 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                         if oke {
                             self?.orderData?.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                            self?.cekStatusReject()
+                            self?.totalReject += 1
+                            if self!.totalReject >= 2{
+                                self?.allowReject = false
+                            }
                         }
                     }
              

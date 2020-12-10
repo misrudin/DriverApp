@@ -16,7 +16,7 @@ struct DatabaseManager {
         
         let urlFirebase: String = "driver/\(codeDriver)"
         let dataToPost: [String: Any] = [
-            "diver_id": idDriver,
+            "driver_id": idDriver,
             "id": codeDriver,
             "latitude": lat,
             "longitude": lng,

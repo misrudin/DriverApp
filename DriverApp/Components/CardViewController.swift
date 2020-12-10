@@ -187,14 +187,15 @@ class CardViewController: UIViewController {
     }()
     
     @objc private func details(){
-        guard let orderNo = orderData?.order_number,
-              let order = orderData?.order_detail,
-              let user = orderData?.user_info,
-              let orderDetail = orderVm.decryptOrderDetail(data: order, OrderNo: orderNo),
-              let userInfo = orderVm.decryptUserInfo(data: user, OrderNo: orderNo) else {
-            return
-        }
-        delegate?.seeDetail(self, order: orderDetail, userInfo: userInfo)
+//        guard let orderNo = orderData?.order_number,
+//              let order = orderData?.order_detail,
+//              let user = orderData?.user_info,
+//              let orderDetail = orderVm.decryptOrderDetail(data: order, OrderNo: orderNo),
+//              let userInfo = orderVm.decryptUserInfo(data: user, OrderNo: orderNo) else {
+//            return
+//        }
+//        delegate?.seeDetail(self, order: orderDetail, userInfo: userInfo)
+        delegate?.didTapButton(self, type: .pending)
     }
     
     override func viewDidLoad() {
@@ -294,7 +295,7 @@ class CardViewController: UIViewController {
         orderButton2.heightAnchor.constraint(equalToConstant: 45).isActive = true
         orderButton2.isHidden = true
         
-        seeDetailButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 0, paddingLeft: 20, paddingRight: 20, height: 45)
+        seeDetailButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 10, paddingLeft: 20, paddingRight: 20, height: 45)
     }
     
     private func setupButton(){
@@ -372,7 +373,7 @@ class CardViewController: UIViewController {
                             self?.titleButton = "Scan Stuff"
                             self?.statusDelivery = .scan
                         }else if filtered.count == 0 && self!.currentIndex == items.count-1 {
-                            self?.titleButton = "Done Pickup (\(orderNo))"
+                            self?.titleButton = "Done Pickup"
                             self?.statusDelivery = .done_pickup
                             self?.orderButton.setTitle(self?.titleButton, for: .normal)
                             self?.orderButton2.setTitle(self?.titleButton, for: .normal)

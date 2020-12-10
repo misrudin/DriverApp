@@ -370,3 +370,4 @@ extension LoginView: UIViewControllerTransitioningDelegate {
         ForgotPassword(presentedViewController: presented, presenting: presenting)
     }
 }
+

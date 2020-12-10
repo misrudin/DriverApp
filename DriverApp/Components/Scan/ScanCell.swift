@@ -14,7 +14,8 @@ class ScanCell: UITableViewCell {
     var item: PickupItem! {
         didSet {
             name.text = item.item_name
-            code.text = "Code : \(item.qr_code_raw)"
+//            code.text = "Code : \(item.qr_code_raw)"
+            print(item.qr_code_raw)
             status.text = item.scan != nil ? "Verified" : "Unverified"
             let colorU = UIColor(named: "orangeKasumi")
             let colorV = UIColor(named: "colorGreen")
@@ -23,13 +24,13 @@ class ScanCell: UITableViewCell {
                 container.layer.borderColor = colorV?.cgColor
                 status.textColor = colorV
                 name.textColor = colorV
-                code.textColor = colorV
+//                code.textColor = colorV
             }else {
                 line.backgroundColor = colorU
                 container.layer.borderColor = colorU?.cgColor
                 status.textColor = colorU
                 name.textColor = colorU
-                code.textColor = colorU
+//                code.textColor = colorU
             }
         }
     }
@@ -37,7 +38,7 @@ class ScanCell: UITableViewCell {
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var line: UIView!
     @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var code: UILabel!
+//    @IBOutlet weak var code: UILabel!
     @IBOutlet weak var status: UILabel!
     
     override func awakeFromNib() {

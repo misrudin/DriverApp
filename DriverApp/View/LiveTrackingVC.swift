@@ -555,10 +555,15 @@ extension LiveTrackingVC {
 @available(iOS 13.0, *)
 extension LiveTrackingVC: CardViewControllerDelegate {
     func seeDetail(_ viewC: CardViewController, order: NewOrderDetail?, userInfo: NewUserInfo?) {
-        let vi = DetailView()
-        vi.orderDetail = order
-        vi.userInfo = userInfo
-        navigationController?.pushViewController(vi, animated: true)
+//        let vi = DetailView()
+//        vi.orderDetail = order
+//        vi.userInfo = userInfo
+//        navigationController?.pushViewController(vi, animated: true)
+//        let vc = PendingNoteVc()
+//        vc.orderData = order
+//        let navVc = UINavigationController(rootViewController: vc)
+//
+//        present(navVc, animated: true, completion: nil)
     }
     
     func next(_ viewC: CardViewController, store: PickupDestination?) {

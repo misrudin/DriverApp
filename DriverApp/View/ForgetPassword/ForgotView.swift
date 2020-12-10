@@ -72,7 +72,7 @@ class ForgotView: UIViewController {
     
     private func styleElement(){
         line.layer.cornerRadius = 2
-        line.backgroundColor = .red
+        line.backgroundColor = .white
         
         email.layer.cornerRadius = 5
         email.layer.borderWidth = 1
@@ -80,6 +80,7 @@ class ForgotView: UIViewController {
         email.keyboardType = .emailAddress
         email.autocorrectionType = .no
         email.autocapitalizationType = .none
+        email.placeholder = "Email"
         
         submit.backgroundColor = UIColor(named: "orangeKasumi")
         submit.setTitleColor(.white, for: .normal)
