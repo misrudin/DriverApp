@@ -149,7 +149,7 @@ struct OrderDetail: Decodable {
 
 struct OrderListDate: Decodable {
     let date: String
-    let order_list: [NewOrderData]?
+    var order_list: [NewOrderData]?
     
     enum CodingKeys: String, CodingKey {
         case date

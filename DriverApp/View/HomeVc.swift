@@ -691,21 +691,23 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                     return
                 }
                 
+                
                 self?.orderViewModel.rejectOrder(data: data) {[weak self] (res) in
                     switch res {
                     case .failure(_):
                         Helpers().showAlert(view: self!, message: "Failed to decline this order !")
                     case .success(let oke):
                         if oke {
-                            self?.orderData?.remove(at: indexPath.row)
-                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+                            self?.orderData![indexPath.section-1].order_list?.remove(at: indexPath.row)
+                            self?.tableView.deleteRows(at: [indexPath], with: .middle)
                             self?.totalReject += 1
                             if self!.totalReject >= 2{
                                 self?.allowReject = false
                             }
+                            self?.tableView.reloadData()
                         }
                     }
-             
+
                 }
                 
            })
@@ -735,9 +737,9 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
     
         rejectAction.image = delete
-        rejectAction.backgroundColor = UIColor(named: "darkKasumi")
+        rejectAction.backgroundColor = UIColor(named: "grayKasumi")
         pendingAction.image = edit
-        pendingAction.backgroundColor = UIColor(named: "darkKasumi")
+        pendingAction.backgroundColor = UIColor(named: "grayKasumi")
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any], let statusDriver = userData["status"] as? String  else {return nil}
         let actions = statusDriver == "freelance" && allowReject ? [rejectAction, pendingAction] : [pendingAction]
         

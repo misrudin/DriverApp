@@ -38,8 +38,12 @@ class HistoryCell: UITableViewCell {
             let activeDate = Date.dateFromCustomString(customString: item.active_date)
             df.dateFormat = "dd MMM yyyy"
             let activeDateStr = df.string(from: activeDate)
+            
+            guard let time = item.time_detail.time_done_delivery else {
+                return
+            }
 
-            date.text = activeDateStr
+            date.text = activeDateStr + " " + "\(time[...4])"
 
 
             labelRating.text = "\(item.rating)"
@@ -128,6 +132,7 @@ class HistoryCell: UITableViewCell {
         container.addSubview(lableNothing)
         lableNothing.anchor(top: orderNo.bottomAnchor, left: container.leftAnchor, right: container.rightAnchor, paddingTop: 30, paddingLeft: 10, paddingRight: 10)
         selectionStyle = .none
+        date.font = UIFont.systemFont(ofSize: 14)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

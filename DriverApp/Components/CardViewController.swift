@@ -62,7 +62,7 @@ class CardViewController: UIViewController {
     let lineView: UIView = {
         let line = UIView()
         line.backgroundColor = .lightGray
-        line.layer.cornerRadius = 3
+        line.layer.cornerRadius = 5
         return line
     }()
     
@@ -107,7 +107,7 @@ class CardViewController: UIViewController {
         let label = UILabel()
         label.text = "PickUp Store"
         label.textColor = .lightGray
-        label.font = UIFont(name: "Avenir", size: 16)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         
         return label
@@ -115,9 +115,8 @@ class CardViewController: UIViewController {
     
     let storeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 18)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor(named: "darkKasumi")
-        label.numberOfLines = 0
         
         return label
     }()
@@ -126,17 +125,15 @@ class CardViewController: UIViewController {
         let label = UILabel()
         label.text = "Delivery Location"
         label.textColor = .lightGray
-        label.font = UIFont(name: "Avenir", size: 16)
-        label.numberOfLines = 2
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         return label
     }()
     
     let destinationLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont(name: "Avenir", size: 18)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor(named: "darkKasumi")
-        label.numberOfLines = 2
         
         return label
     }()
@@ -187,14 +184,6 @@ class CardViewController: UIViewController {
     }()
     
     @objc private func details(){
-//        guard let orderNo = orderData?.order_number,
-//              let order = orderData?.order_detail,
-//              let user = orderData?.user_info,
-//              let orderDetail = orderVm.decryptOrderDetail(data: order, OrderNo: orderNo),
-//              let userInfo = orderVm.decryptUserInfo(data: user, OrderNo: orderNo) else {
-//            return
-//        }
-//        delegate?.seeDetail(self, order: orderDetail, userInfo: userInfo)
         delegate?.didTapButton(self, type: .pending)
     }
     
@@ -227,7 +216,8 @@ class CardViewController: UIViewController {
         lableText.text = orderNo
         
         storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
-        destinationLabel.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
+        destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) 〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.phone_number)"
+        destinationLabel.numberOfLines = 0
         
     }
     
@@ -285,8 +275,6 @@ class CardViewController: UIViewController {
         
         titleLabel.anchor(top: orderNoLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20)
         storeLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 12)
-//        titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
-//        destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
         
         pendingButton.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
         pendingButton.isHidden = true
@@ -295,7 +283,7 @@ class CardViewController: UIViewController {
         orderButton2.heightAnchor.constraint(equalToConstant: 45).isActive = true
         orderButton2.isHidden = true
         
-        seeDetailButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 10, paddingLeft: 20, paddingRight: 20, height: 45)
+        seeDetailButton.anchor(top: destinationLabel.bottomAnchor ,left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 45)
     }
     
     private func setupButton(){
@@ -328,7 +316,6 @@ class CardViewController: UIViewController {
         
         titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
         destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
-        destinationLabel.numberOfLines = 2
     }
     
     private func cekScanedItems(items: [PickupDestination]) -> [PickupDestination] {

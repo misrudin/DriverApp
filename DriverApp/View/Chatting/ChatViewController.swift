@@ -115,9 +115,6 @@ class ChatViewController: UIViewController {
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.isUserInteractionEnabled = true
-//        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
-//        tableView.estimatedRowHeight = 50
         listenData()
         view.addSubview(tableView)
         view.addSubview(inputChat)

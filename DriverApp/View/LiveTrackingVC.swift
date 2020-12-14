@@ -13,7 +13,7 @@ import JGProgressHUD
 @available(iOS 13.0, *)
 class LiveTrackingVC: UIViewController {
     
-//    loading
+    //    loading
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
         spin.textLabel.text = "Loading"
@@ -21,28 +21,31 @@ class LiveTrackingVC: UIViewController {
         return spin
     }()
     
-//    card
+    //    card
     
     enum CardState {
-           case expanded
-           case collapsed
-       }
-       
-       var cardViewController:CardViewController!
-       var visualEffectView:UIVisualEffectView!
-       
-       let cardHeight:CGFloat = 400
-        var cardHandleAreaHeight:CGFloat = 110
-       
-       var cardVisible = false
-       var nextState:CardState {
-           return cardVisible ? .collapsed : .expanded
-       }
-       
-       var runningAnimations = [UIViewPropertyAnimator]()
-       var animationProgressWhenInterrupted:CGFloat = 0
+        case expanded
+        case collapsed
+        case full
+    }
     
-//    order
+    var cardViewController:CardViewController!
+    var visualEffectView:UIVisualEffectView!
+    
+    let cardHeight:CGFloat = 400
+    let cardFullHeight:CGFloat = 800
+    var cardHandleAreaHeight:CGFloat = 110
+    
+    var cardVisible = false
+    var cardFull = false
+    var nextState:CardState {
+        return cardVisible ? .collapsed : cardFull ? .full : .expanded
+    }
+    
+    var runningAnimations = [UIViewPropertyAnimator]()
+    var animationProgressWhenInterrupted:CGFloat = 0
+    
+    //    order
     
     var order:NewOrderData? = nil
     var mapsViewModel = MapsViewModel()
@@ -78,7 +81,7 @@ class LiveTrackingVC: UIViewController {
     }()
     
     lazy var mapsButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         let image = UIImage(named: "location")
         let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         button.backgroundColor = UIColor(named: "grayKasumi")
@@ -86,7 +89,7 @@ class LiveTrackingVC: UIViewController {
         button.layer.cornerRadius = 50/2
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(myPosition), for: .touchUpInside)
-       return button
+        return button
     }()
     
     @objc
@@ -99,7 +102,7 @@ class LiveTrackingVC: UIViewController {
     }
     
     lazy var directionButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         let image = UIImage(named: "upload")
         let baru = image?.resizeImage(CGSize(width: 25, height: 25))
         button.backgroundColor = UIColor(named: "grayKasumi")
@@ -107,7 +110,7 @@ class LiveTrackingVC: UIViewController {
         button.layer.cornerRadius = 50/2
         button.layer.masksToBounds = true
         button.addTarget(self, action: #selector(dire), for: .touchUpInside)
-       return button
+        return button
     }()
     
     @objc func dire(){
@@ -130,21 +133,21 @@ class LiveTrackingVC: UIViewController {
     //origin
     var origin: Origin?
     var destination: Destination?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .white
         title = "Live Tracking"
         
-       
+        
         view.insertSubview(mapView, at: 0)
         view.insertSubview(mapsButton, at: 1)
         view.insertSubview(directionButton, at: 2)
-
+        
         mapsButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 20, paddingRight: 16, width: 50, height: 50)
         directionButton.anchor(top: mapsButton.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingRight: 16, width: 50, height: 50)
-       
+        
         DispatchQueue.main.async {
             self.setupCard()
         }
@@ -178,7 +181,7 @@ class LiveTrackingVC: UIViewController {
             if let destinationLat = CLLocationDegrees(orderDestinationLat!),
                let destinationLong = CLLocationDegrees(orderDestinationLng!) {
                 destination = Destination(latitude: destinationLat, longitude: destinationLong)
-             }
+            }
             
             
         }
@@ -191,8 +194,8 @@ class LiveTrackingVC: UIViewController {
         mapsViewModel.delegate = self
         
         getCurrentPosition()
-
- 
+        
+        
     }
     
     
@@ -254,44 +257,61 @@ class LiveTrackingVC: UIViewController {
         self.view.addSubview(cardViewController.view)
         cardViewController.delegate = self
         
-        cardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardHeight)
+        cardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardFullHeight)
         
         cardViewController.view.clipsToBounds = false
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan(recognizer:)))
-
+        
         cardViewController.handleArea.addGestureRecognizer(panGestureRecognizer)
         
         
     }
+
     
     @objc
-        func handleCardTap(recognzier:UITapGestureRecognizer) {
-            switch recognzier.state {
-            case .ended:
-                animateTransitionIfNeeded(state: nextState, duration: 0.9)
+    func handleCardPan (recognizer:UIPanGestureRecognizer) {
+        switch recognizer.state {
+        case .began:
+            startInteractiveTransition(state: nextState, duration: 0.9)
+            
+            switch recognizer.direction{
+            case .topToBottom:
+                print("top to botom")
+                if cardFull {
+                    cardFull = false
+                    cardVisible = true
+                }else {
+                    cardVisible = true
+                    cardFull = false
+                }
+            case .bottomToTop:
+                print("btm to top")
+                if cardVisible {
+                    cardFull = true
+                    cardVisible = false
+                }else {
+                    cardVisible = false
+                    cardFull = false
+                }
             default:
-                break
+                print("default")
             }
+        case .changed:
+            let translation = recognizer.translation(in: self.cardViewController.handleArea)
+            var fractionComplete = translation.y / cardHeight
+            fractionComplete = cardVisible ? fractionComplete : -fractionComplete
+            updateInteractiveTransition(fractionCompleted: fractionComplete)
+            
+           
+        case .ended:
+            continueInteractiveTransition()
+            
+        default:
+            break
         }
         
-        @objc
-        func handleCardPan (recognizer:UIPanGestureRecognizer) {
-            switch recognizer.state {
-            case .began:
-                startInteractiveTransition(state: nextState, duration: 0.9)
-            case .changed:
-                let translation = recognizer.translation(in: self.cardViewController.handleArea)
-                var fractionComplete = translation.y / cardHeight
-                fractionComplete = cardVisible ? fractionComplete : -fractionComplete
-                updateInteractiveTransition(fractionCompleted: fractionComplete)
-            case .ended:
-                continueInteractiveTransition()
-            default:
-                break
-            }
-            
-        }
+    }
     
     func getCurrentPosition(){
         manager = CLLocationManager()
@@ -314,7 +334,7 @@ class LiveTrackingVC: UIViewController {
         spiner.show(in: view)
         inOutVm.updateLastPosition(data: data) { (res) in
             switch res {
-                
+            
             case .success(_):
                 DispatchQueue.main.async {
                     self.spiner.dismiss()
@@ -368,12 +388,12 @@ extension LiveTrackingVC: MapsViewModelDelegate {
         direction.map = mapView
         markerDestination.map = mapView
     }
-
+    
     func didFailedDrawDirection(_ error: Error) {
         print(error)
     }
-
-
+    
+    
 }
 
 
@@ -433,7 +453,7 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             }
             
             let direction: DirectionData = DirectionData(origin: origin, destination: destination)
-        
+            
             self.mapsViewModel.drawDirection(direction: direction)
             
             
@@ -459,15 +479,15 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
     }
     
     func updateMarkerWith(position: CLLocationCoordinate2D, angle: Double) {
-            originMarker.position = position
-            
-            guard angle >= 0 && angle < 360 else {
-                return
-            }
-            let angleInRadians: CGFloat = CGFloat(angle) * .pi / CGFloat(180)
-            originMarker.iconView?.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
+        originMarker.position = position
         
-//            directionButton.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
+        guard angle >= 0 && angle < 360 else {
+            return
+        }
+        let angleInRadians: CGFloat = CGFloat(angle) * .pi / CGFloat(180)
+        originMarker.iconView?.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
+        
+        //            directionButton.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
     }
     
     //MARK: - fit two markers
@@ -501,29 +521,21 @@ extension LiveTrackingVC {
                     self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight
                 case .collapsed:
                     self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHandleAreaHeight
+                case .full:
+                    self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardFullHeight
                 }
             }
             
             frameAnimator.addCompletion { _ in
-                self.cardVisible = !self.cardVisible
+//                if !self.cardFull {
+//                    self.cardVisible = !self.cardVisible
+//                }
+                
                 self.runningAnimations.removeAll()
             }
             
             frameAnimator.startAnimation()
             runningAnimations.append(frameAnimator)
-            
-            let cornerRadiusAnimator = UIViewPropertyAnimator(duration: duration, curve: .linear) {
-                switch state {
-                case .expanded:
-                    self.cardViewController.view.layer.cornerRadius = 12
-                case .collapsed:
-                    self.cardViewController.view.layer.cornerRadius = 0
-                }
-            }
-            
-            cornerRadiusAnimator.startAnimation()
-            runningAnimations.append(cornerRadiusAnimator)
-            
             
         }
     }
@@ -555,15 +567,15 @@ extension LiveTrackingVC {
 @available(iOS 13.0, *)
 extension LiveTrackingVC: CardViewControllerDelegate {
     func seeDetail(_ viewC: CardViewController, order: NewOrderDetail?, userInfo: NewUserInfo?) {
-//        let vi = DetailView()
-//        vi.orderDetail = order
-//        vi.userInfo = userInfo
-//        navigationController?.pushViewController(vi, animated: true)
-//        let vc = PendingNoteVc()
-//        vc.orderData = order
-//        let navVc = UINavigationController(rootViewController: vc)
-//
-//        present(navVc, animated: true, completion: nil)
+        //        let vi = DetailView()
+        //        vi.orderDetail = order
+        //        vi.userInfo = userInfo
+        //        navigationController?.pushViewController(vi, animated: true)
+        //        let vc = PendingNoteVc()
+        //        vc.orderData = order
+        //        let navVc = UINavigationController(rootViewController: vc)
+        //
+        //        present(navVc, animated: true, completion: nil)
     }
     
     func next(_ viewC: CardViewController, store: PickupDestination?) {
@@ -576,7 +588,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(2.0)
-
+        
         guard let origin = origin, let destination = destination else {
             return
         }
@@ -584,7 +596,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         
         let direction: DirectionData = DirectionData(origin: origin, destination: destination)
         
-    
+        
         self.mapsViewModel.drawDirection(direction: direction)
         
         
@@ -721,11 +733,11 @@ extension LiveTrackingVC: CardViewControllerDelegate {
            let orderDestinationLng =  CLLocationDegrees(orderDetail.delivery_destination.long!) {
             destination = Destination(latitude: orderDestinationLat, longitude: orderDestinationLng)
         }
-
+        
         
         CATransaction.begin()
         CATransaction.setAnimationDuration(2.0)
-
+        
         guard let origin = origin, let destination = destination else {
             return
         }
@@ -733,7 +745,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         
         let direction: DirectionData = DirectionData(origin: origin, destination: destination)
         
-    
+        
         self.mapsViewModel.drawDirection(direction: direction)
         
         
