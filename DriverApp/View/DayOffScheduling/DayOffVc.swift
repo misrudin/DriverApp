@@ -469,8 +469,8 @@ class DayOffVc: UIViewController {
     
     @objc
     func onClickChatButton(){
-        let vc = ChatViewController()
-        vc.hidesBottomBarWhenPushed = true
+        let vc = ChatView()
+//        vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
 

@@ -460,3 +460,18 @@ extension UIFont {
         return UIFont(descriptor: font.fontDescriptor.withSymbolicTraits(.traitItalic)!, size: fontSize)
     }
 }
+
+
+extension Date {
+    static func dateFromCustomString(customString: String) -> Date {
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "yyyy/MM/dd"
+
+        return dateFormater.date(from: customString) ?? Date()
+    }
+}
+
+
+extension UIColor {
+    static let primaryColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
+}

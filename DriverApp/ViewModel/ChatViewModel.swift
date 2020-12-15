@@ -15,38 +15,38 @@ struct ChatViewModel {
     let idAdmin = "17257"
     
     func getAllMsssages(codeDriver: String, completion: @escaping (Result<[[ChatMessage]],Error>)-> Void){
-        let urlFirebase = "chatting/\(codeDriver)_\(idAdmin)/allChat"
-        database.child(urlFirebase).observe(.value) { (snapshot) in
-            
-            guard let data = snapshot.value as? [String: [String: Any]] else{
-                            completion(.failure(DatabaseError.failedToFetch))
-                            return
-                        }
-            
-            var tempData = [[ChatMessage]]()
-            let sortedKeyDate = data.keys.sorted()
-            sortedKeyDate.forEach { (e) in
-                let values = data[e] as! [String: [String: Any]]
-                var newValues = [ChatMessage]()
-                let sortedValues = values.keys.sorted()
+            let urlFirebase = "chatting/\(codeDriver)_\(idAdmin)/allChat"
+            database.child(urlFirebase).observe(.value) { (snapshot) in
                 
-                sortedValues.forEach({ (key) in
+                guard let data = snapshot.value as? [String: [String: Any]] else{
+                                completion(.failure(DatabaseError.failedToFetch))
+                                return
+                            }
+                
+                var tempData = [[ChatMessage]]()
+                let sortedKeyDate = data.keys.sorted()
+                sortedKeyDate.forEach { (e) in
+                    let values = data[e] as! [String: [String: Any]]
+                    var newValues = [ChatMessage]()
+                    let sortedValues = values.keys.sorted()
+                    
+                    sortedValues.forEach({ (key) in
 
-                    let value = values[key]!
-                    
-                    guard let sender = value["sendBy"] else {return}
-                    let isMe = "\(sender)" == codeDriver
-                    
-                    let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")", photo: "\(value["photo"] ?? "")")
-                    
-                    newValues.append(newDic)
-                })
-                tempData.append(newValues)
+                        let value = values[key]!
+                        
+                        guard let sender = value["sendBy"] else {return}
+                        let isMe = "\(sender)" == codeDriver
+                        
+                        let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")", photo: "\(value["photo"] ?? "")")
+                        
+                        newValues.append(newDic)
+                    })
+                    tempData.append(newValues)
+                }
+                 
+                completion(.success(tempData))
             }
-             
-            completion(.success(tempData))
         }
-    }
     
     func getNewMessageValue(codeDriver: String, completion: @escaping (Int)->Void){
         let urlFirebase = "messages/\(idAdmin)/\(codeDriver)_\(idAdmin)"
@@ -96,7 +96,6 @@ struct ChatViewModel {
             "chatDate" : chatdData.chatDate,
             "chatTime" : chatdData.chatTime,
             "sendBy" : Int(chatdData.sendBy)!,
-            "type": "text"
         ]
         //push data
         database.child(urlFirebase).childByAutoId().setValue(chatDataDict) { (error, _) in
@@ -129,7 +128,7 @@ struct ChatViewModel {
     }
     
     
-    func sendMessage(codeDriver: String, foto: String, completion: @escaping (Bool)-> Void){
+    func sendMessage(codeDriver: String, foto: String, chat: String, completion: @escaping (Bool)-> Void){
         let dateNow = Date()
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy-MM-dd"
@@ -158,12 +157,11 @@ struct ChatViewModel {
                                                          token: "")
         
         let chatDataDict: [String: Any] = [
-            "photo" : foto,
+            "file" : "data:image/png;base64, \(foto)",
             "chatDate" : dateString,
             "chatTime" : timeString,
             "sendBy" : Int(codeDriver)!,
-            "type": "image",
-            "chatContent": ""
+            "chatContent": chat
         ]
         //push data
         database.child(urlFirebase).childByAutoId().setValue(chatDataDict) { (error, _) in
