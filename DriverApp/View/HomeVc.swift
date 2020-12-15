@@ -446,7 +446,7 @@ class HomeVc: UIViewController {
     
     @objc
     func onClickChatButton(){
-        let vc = ChatViewController()
+        let vc = ChatView()
         vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }

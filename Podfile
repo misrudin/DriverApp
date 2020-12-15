@@ -32,6 +32,8 @@ target 'DriverApp' do
   
     pod 'CryptoSwift'
 
+	pod 'MessageKit'
+
 end
 
 
