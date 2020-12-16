@@ -326,13 +326,10 @@ extension ChatView: UITableViewDelegate, UITableViewDataSource {
        }
        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//           let cell = tableView.dequeueReusableCell(withIdentifier: cellId,for: indexPath) as! ChatCell
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId,for: indexPath) as! CustomCellChat
            let chatMessage = chatMessages[indexPath.section][indexPath.row]
            
-//           cell.chatMessage = chatMessage
-        
-        cell.contentChat.text = chatMessage.text
+        cell.item = chatMessage
            
            return cell
        }
