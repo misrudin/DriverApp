@@ -11,6 +11,7 @@ import UIKit
 class MainVc: UIViewController {
     
     var profileVm = ProfileViewModel()
+    var ordervm = OrderViewModel()
     
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
@@ -125,13 +126,34 @@ class MainVc: UIViewController {
             profileVm.cekStatusDriver(codeDriver: codeDriver) {[weak self] (res) in
                 switch res {
                 case .success(let data):
+                    print(data)
                     DispatchQueue.main.async {
                         if data.restTime != nil && data.workTime == nil {
                             let vc = RestView()
                             vc.modalPresentationStyle = .fullScreen
                             vc.modalTransitionStyle = .crossDissolve
                             self?.present(vc, animated: true, completion: nil)
-                        }else {
+                        }
+                        else if data.currentOrder != nil && data.currentOrder != "" {
+                            self!.ordervm.getDetailOrder(orderNo: data.currentOrder!) { (res) in
+                                switch res {
+                                case .success(let data):
+                                    DispatchQueue.main.async {
+                                        let vc = LiveTrackingVC()
+                                        vc.order = data
+                                        let navVc = UINavigationController(rootViewController: vc)
+                                        navVc.modalPresentationStyle = .fullScreen
+                                        self?.present(navVc, animated: true, completion: nil)
+                                    }
+                                case .failure(let error):
+                                    DispatchQueue.main.async {
+                                        print(error)
+                                    }
+                                }
+                            }
+                            
+                        }
+                        else {
                             self?.configureNavigation()
                         }
                     }

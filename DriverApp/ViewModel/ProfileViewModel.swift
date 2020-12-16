@@ -24,21 +24,22 @@ struct ProfileViewModel {
         let urlFirebase = "monitoring/\(dateNow)/\(codeDriver)"
         
         database.child(urlFirebase).observe(.value) { (snapshot) in
-            guard let data = snapshot.value as? [String: String] else{
+            guard let data = snapshot.value as? [String: Any] else{
                             completion(.failure(DataError.failedToFetch))
                             return
                         }
             
-            let checkinTime = data["checkin_time"]
-            let restTime = data["rest_time"]
-            let workTime = data["work_time"]
-            let checkoutTime = data["checkout_time"]
-            let currentOrder = data["current_order"]
+            let checkinTime = data["checkin_time"] as? String
+            let restTime = data["rest_time"] as? String
+            let workTime = data["work_time"] as? String
+            let checkoutTime = data["checkout_time"] as? String
+            let currentOrder = data["current_order"] as? String
             let userStatus: UserStatus = UserStatus(checkinTime: checkinTime,
                                                     checkoutTime: checkoutTime,
                                                     restTime: restTime,
                                                     workTime: workTime,
                                                     currentOrder: currentOrder)
+            debugPrint(data)
             completion(.success(userStatus))
         }
     }

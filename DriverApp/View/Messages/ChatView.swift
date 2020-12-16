@@ -37,7 +37,14 @@ class ChatView: UIViewController {
        
     var anchor1: NSLayoutConstraint!
     var anchor2: NSLayoutConstraint!
-    var keyboardH: CGFloat = 280
+    var keyboardH: CGFloat = 0
+    
+    var showQuickChat: Bool = false
+    var sendCount: Int = 0
+    
+    var layout: NSLayoutConstraint?
+
+    private var chatObserver: NSObjectProtocol?
     
     var chatMessages = [[ChatMessage]]()
     
@@ -104,15 +111,14 @@ class ChatView: UIViewController {
         view.backgroundColor = .white
         configureNavigationBar()
         
-//        tableView.register(ChatCell.self, forCellReuseIdentifier: cellId)
-//        tableView.register("Chat", forCellReuseIdentifier: Chat.id)
+
         tableView.register(UINib(nibName: "CustomCellChat", bundle: nil), forCellReuseIdentifier: cellId)
+        tableView.register(UINib(nibName: "ImageCell", bundle: nil), forCellReuseIdentifier: ImageCell.id)
+        tableView.register(UINib(nibName: "QuickCell", bundle: nil), forCellReuseIdentifier: QuickCell.id)
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.isUserInteractionEnabled = true
-//        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tap)))
         tableView.estimatedRowHeight = 50
         listenData()
         view.addSubview(tableView)
@@ -132,59 +138,41 @@ class ChatView: UIViewController {
         imageButton.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
         sendButton.anchor(right: inputChat.rightAnchor, paddingRight: 16, width: 45,height: 45)
         sendButton.centerYAnchor.constraint(equalTo: inputChat.centerYAnchor).isActive = true
+
+        layout = NSLayoutConstraint(item: inputChat, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         
-        anchor1 = inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        anchor1.isActive = true
-        anchor2 = inputChat.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,constant: -(keyboardH-10))
-        anchor2.isActive = false
+        view.addConstraint(layout!)
+        
+        
+        
+        chatObserver = NotificationCenter.default.addObserver(forName: .didSendMessage,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                self?.hideQuickChat()
+            })
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
     }
     
+    @objc func keyboardWillShow(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            
+            let show = notification.name == UIResponder.keyboardWillShowNotification
+            
+            layout?.constant = show ? -keyboardHeight : 0
+        }
+    }
     
     @objc private func tap(){
         view.endEditing(true)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        registerAutoKeyboard() { (result) in
-            
-            if let k = result.userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-                let keyboardRectangle = k.cgRectValue.height
-                
-                self.keyboardH = keyboardRectangle
-            }
-            
-
-        switch result.status {
-        case .willShow:
-        print("1")
-        case .didShow:
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                
-                self.anchor1.isActive = false
-                self.anchor2.isActive = true
-            })
-        case .willHide:
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.anchor1.isActive = true
-                self.anchor2.isActive = false
-            })
-        
-        case .didHide:
-            print("3")
-        case .willChangeFrame:
-            print("change")
-        case .didChangeFrame:
-            print("change2")
-        }
-        }
-    }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        unRegisterAutoKeyboard()
-    }
 
     @objc
     func didSendMessage(){
@@ -194,6 +182,12 @@ class ChatView: UIViewController {
             print("No user data")
             return
         }
+        
+        if(sendCount == 0){
+            showQuickChat = true
+            sendCount += 1
+        }
+        
         
         chatViewModel.sendMessage(codeDriver: codeDriver,chat: chat) {[weak self] (result) in
             if result {
@@ -205,6 +199,14 @@ class ChatView: UIViewController {
         }
     }
     
+    public func hideQuickChat(){
+        if let observer = chatObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+
+        showQuickChat = false
+    }
+    
     func sendFotoMessage(image: UIImage){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
@@ -213,6 +215,11 @@ class ChatView: UIViewController {
         }
         let imageData = image.jpegData(compressionQuality: 0.5)
         let imageString = imageData?.base64EncodedString()
+        
+        if(sendCount == 0){
+            showQuickChat = true
+            sendCount += 1
+        }
         
         chatViewModel.sendMessage(codeDriver: codeDriver, foto: imageString!, chat: "") { (result) in
             if result {
@@ -290,6 +297,7 @@ extension ChatView: UITableViewDelegate, UITableViewDataSource {
        }
        
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
            if let firstIndexInMessage = chatMessages[section].first{
                let dateFormater = DateFormatter()
                dateFormater.dateFormat = "yyyy/MM/dd"
@@ -309,6 +317,10 @@ extension ChatView: UITableViewDelegate, UITableViewDataSource {
                
                label.centerXAnchor.constraint(equalTo: containerLabel.centerXAnchor).isActive=true
                label.centerYAnchor.constraint(equalTo: containerLabel.centerYAnchor).isActive=true
+            
+            if firstIndexInMessage.text == nil && firstIndexInMessage.photo == nil {
+                return nil
+            }
                
                
                return containerLabel
@@ -318,40 +330,77 @@ extension ChatView: UITableViewDelegate, UITableViewDataSource {
        }
        
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-           return 50
-       }
+        
+        if let firstIndexInMessage = chatMessages[section].first{
+         if firstIndexInMessage.text == nil && firstIndexInMessage.photo == nil {
+             return 0
+         }
+            return 50
+
+        }
+        return 0
+    }
               
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
            return chatMessages[section].count
        }
        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellId,for: indexPath) as! CustomCellChat
-           let chatMessage = chatMessages[indexPath.section][indexPath.row]
-           
-        cell.item = chatMessage
-           
-           return cell
-       }
+        let dataChat = chatMessages[indexPath.section][indexPath.row]
+        if dataChat.text == nil && dataChat.photo == nil {
+            let cell = tableView.dequeueReusableCell(withIdentifier: QuickCell.id,for: indexPath) as! QuickCell
+            
+            if showQuickChat {
+                return cell
+            }else{
+                let c = UITableViewCell()
+                c.backgroundColor = .clear
+                c.translatesAutoresizingMaskIntoConstraints = false
+                c.heightAnchor.constraint(equalToConstant: 0).isActive=true
+                return c
+            }
+            
+        }
+        else if dataChat.photo != "" && dataChat.photo != nil {
+            let cell = tableView.dequeueReusableCell(withIdentifier: ImageCell.id,for: indexPath) as! ImageCell
+            
+            cell.item = dataChat
+            
+            return cell
+        }else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: cellId,for: indexPath) as! CustomCellChat
+            
+            cell.item = dataChat
+            
+            return cell
+        }
+    }
+        
+        
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let chatMessage = chatMessages[indexPath.section][indexPath.row]
-//        tap()
-//        if chatMessage.photo != "" {
-//            let slideVC = PeviewPhoto()
-//            slideVC.modalPresentationStyle = .custom
-//            slideVC.transitioningDelegate = self
-//            slideVC.sendButton.isHidden = true
-//            slideVC.closeButton.isHidden = false
-//            if let stringPhoto = chatMessage.photo {
-//                let newImageData = Data(base64Encoded: stringPhoto)
-//                if let image = newImageData {
-//                    slideVC.image = UIImage(data: image)
-//                }
-//            }
-//            present(slideVC, animated: true, completion: nil)
-//        }
-//    }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let chatMessage = chatMessages[indexPath.section][indexPath.row]
+        tap()
+        if chatMessage.photo != "" {
+            let slideVC = PeviewPhoto()
+            slideVC.modalPresentationStyle = .custom
+            slideVC.transitioningDelegate = self
+            slideVC.sendButton.isHidden = true
+            slideVC.closeButton.isHidden = false
+            if let stringPhoto = chatMessage.photo {
+                var imageBase64 = stringPhoto.replacingOccurrences(of: "data:image/png;base64,", with: " ")
+                imageBase64 = imageBase64.replacingOccurrences(of: "data:image/jpg;base64,", with: " ")
+                imageBase64 = imageBase64.replacingOccurrences(of: "data:image/svg;base64,", with: " ")
+                imageBase64 = imageBase64.replacingOccurrences(of: "data:image/jpeg;base64,", with: " ")
+                imageBase64 = imageBase64.replacingOccurrences(of: "data:image/gif;base64,", with: " ")
+                imageBase64 = imageBase64.replacingOccurrences(of: "data:image/webp;base64,", with: " ")
+                let imageData = Data(base64Encoded: imageBase64.trimmingCharacters(in: .whitespacesAndNewlines))
+                slideVC.image = UIImage(data: imageData!)
+                
+            }
+            present(slideVC, animated: true, completion: nil)
+        }
+    }
 }
 
 

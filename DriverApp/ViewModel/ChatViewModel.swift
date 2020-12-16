@@ -37,12 +37,17 @@ struct ChatViewModel {
                         guard let sender = value["sendBy"] else {return}
                         let isMe = "\(sender)" == codeDriver
                         
-                        let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")", photo: "\(value["photo"] ?? "")")
+                        let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")", photo: "\(value["file"] ?? "")")
                         
                         newValues.append(newDic)
                     })
                     tempData.append(newValues)
                 }
+                
+                let boot = [
+                    ChatMessage(text: nil, isIncoming: true, date: Date(), time: "", photo: nil)
+                ]
+                tempData.append(boot)
                  
                 completion(.success(tempData))
             }

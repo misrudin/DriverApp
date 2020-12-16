@@ -28,14 +28,11 @@
 		B32A389525386C2E000EFBB6 /* AesEverywhere in Frameworks */ = {isa = PBXBuildFile; productRef = B32A389425386C2E000EFBB6 /* AesEverywhere */; };
 		B335EC1E257104230082DF1D /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335EC1D257104230082DF1D /* TabBarView.swift */; };
 		B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0025434D73007BDD3A /* PopUpView.swift */; };
-		B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B052543746E007BDD3A /* ChatViewController.swift */; };
 		B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B092543747C007BDD3A /* ChatViewModel.swift */; };
 		B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0C2543748A007BDD3A /* ChatModel.swift */; };
 		B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0F2543775B007BDD3A /* ChatCell.swift */; };
 		B33DFEB72563A00A006AF898 /* RegisterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33DFEB62563A00A006AF898 /* RegisterModel.swift */; };
 		B33DFEBA2563A01D006AF898 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33DFEB92563A01D006AF898 /* RegisterViewModel.swift */; };
-		B348E8DC2588A55600133CB8 /* MockMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = B348E8DB2588A55600133CB8 /* MockMessage.swift */; };
-		B348E8DF2588A6D700133CB8 /* MockUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B348E8DE2588A6D700133CB8 /* MockUser.swift */; };
 		B348E8EA2588B0FE00133CB8 /* CustomCellChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B348E8E82588B0FE00133CB8 /* CustomCellChat.swift */; };
 		B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */ = {isa = PBXBuildFile; fileRef = B348E8E92588B0FE00133CB8 /* CustomCellChat.xib */; };
 		B34F7A7525460932004AB82B /* PendingNoteVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7425460932004AB82B /* PendingNoteVc.swift */; };
@@ -93,6 +90,10 @@
 		B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97A22555611B00A30892 /* ShiftCell.swift */; };
 		B3DFFD83256D01F700B3C2D0 /* ShiftTimeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DFFD82256D01F700B3C2D0 /* ShiftTimeModel.swift */; };
 		B3DFFD86256D02E000B3C2D0 /* ShiftTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DFFD85256D02E000B3C2D0 /* ShiftTimeViewModel.swift */; };
+		B3E256422589AD0D00CDED81 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E256402589AD0D00CDED81 /* ImageCell.swift */; };
+		B3E256432589AD0D00CDED81 /* ImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3E256412589AD0D00CDED81 /* ImageCell.xib */; };
+		B3E256472589B56900CDED81 /* QuickCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E256452589B56900CDED81 /* QuickCell.swift */; };
+		B3E256482589B56900CDED81 /* QuickCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3E256462589B56900CDED81 /* QuickCell.xib */; };
 		B3EC8985256B5E3C00D1618D /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8984256B5E3C00D1618D /* Reusable.swift */; };
 		B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8988256B5ECB00D1618D /* Constraint.swift */; };
 		B3F79C832573628E003455D1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3F79C822573628E003455D1 /* GoogleService-Info.plist */; };
@@ -123,14 +124,11 @@
 		B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		B335EC1D257104230082DF1D /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		B33B1B0025434D73007BDD3A /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
-		B33B1B052543746E007BDD3A /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		B33B1B092543747C007BDD3A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B33B1B0C2543748A007BDD3A /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B33B1B0F2543775B007BDD3A /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		B33DFEB62563A00A006AF898 /* RegisterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterModel.swift; sourceTree = "<group>"; };
 		B33DFEB92563A01D006AF898 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
-		B348E8DB2588A55600133CB8 /* MockMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockMessage.swift; sourceTree = "<group>"; };
-		B348E8DE2588A6D700133CB8 /* MockUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockUser.swift; sourceTree = "<group>"; };
 		B348E8E82588B0FE00133CB8 /* CustomCellChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellChat.swift; sourceTree = "<group>"; };
 		B348E8E92588B0FE00133CB8 /* CustomCellChat.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCellChat.xib; sourceTree = "<group>"; };
 		B34F7A7425460932004AB82B /* PendingNoteVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingNoteVc.swift; sourceTree = "<group>"; };
@@ -190,6 +188,10 @@
 		B3DE97A22555611B00A30892 /* ShiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCell.swift; sourceTree = "<group>"; };
 		B3DFFD82256D01F700B3C2D0 /* ShiftTimeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTimeModel.swift; sourceTree = "<group>"; };
 		B3DFFD85256D02E000B3C2D0 /* ShiftTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTimeViewModel.swift; sourceTree = "<group>"; };
+		B3E256402589AD0D00CDED81 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		B3E256412589AD0D00CDED81 /* ImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageCell.xib; sourceTree = "<group>"; };
+		B3E256452589B56900CDED81 /* QuickCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickCell.swift; sourceTree = "<group>"; };
+		B3E256462589B56900CDED81 /* QuickCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickCell.xib; sourceTree = "<group>"; };
 		B3EC8984256B5E3C00D1618D /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		B3EC8988256B5ECB00D1618D /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		B3F79C822573628E003455D1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
@@ -261,19 +263,15 @@
 			path = TabView;
 			sourceTree = "<group>";
 		};
-		B33B1B042543744F007BDD3A /* Chatting */ = {
-			isa = PBXGroup;
-			children = (
-				B33B1B052543746E007BDD3A /* ChatViewController.swift */,
-			);
-			path = Chatting;
-			sourceTree = "<group>";
-		};
 		B348E8E12588ABC400133CB8 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
 				B348E8E82588B0FE00133CB8 /* CustomCellChat.swift */,
 				B348E8E92588B0FE00133CB8 /* CustomCellChat.xib */,
+				B3E256402589AD0D00CDED81 /* ImageCell.swift */,
+				B3E256412589AD0D00CDED81 /* ImageCell.xib */,
+				B3E256452589B56900CDED81 /* QuickCell.swift */,
+				B3E256462589B56900CDED81 /* QuickCell.xib */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -393,7 +391,6 @@
 				B3530942255A62EB00B68347 /* Login */,
 				B3DE97962555360000A30892 /* DayOffScheduling */,
 				B34F7A7725461F6D004AB82B /* Status */,
-				B33B1B042543744F007BDD3A /* Chatting */,
 				B3544F2D253D894800B6A001 /* Notes */,
 				B3544F1D253D3DE100B6A001 /* Profile */,
 				B36E09922536E6CC00F1B421 /* MainVc.swift */,
@@ -407,8 +404,6 @@
 		B36E098B2536E47700F1B421 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				B348E8DE2588A6D700133CB8 /* MockUser.swift */,
-				B348E8DB2588A55600133CB8 /* MockMessage.swift */,
 				B31AF1892539424C00D693D3 /* LoginModel.swift */,
 				B31AF1A52539F6FD00D693D3 /* UserModel.swift */,
 				B354B11A253B7B3600B5798B /* OrderModel.swift */,
@@ -610,9 +605,11 @@
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */,
+				B3E256482589B56900CDED81 /* QuickCell.xib in Resources */,
 				B3F79C8D2573BD31003455D1 /* HistoryCell.xib in Resources */,
 				B384A3DF256F624900D237CC /* OrderCell.xib in Resources */,
 				B36C4FBA2578B7BB002C4D06 /* PendingCell.xib in Resources */,
+				B3E256432589AD0D00CDED81 /* ImageCell.xib in Resources */,
 				B37BF2D62570B4DA00421DEB /* ScanCell.xib in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
 				B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */,
@@ -717,12 +714,12 @@
 				B3ABAF0325748EB100A7B80B /* CameraScanView.swift in Sources */,
 				B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */,
 				B36E09A2253723E700F1B421 /* Protocols.swift in Sources */,
-				B348E8DC2588A55600133CB8 /* MockMessage.swift in Sources */,
 				B36E09932536E6CC00F1B421 /* MainVc.swift in Sources */,
 				B34F7A7525460932004AB82B /* PendingNoteVc.swift in Sources */,
 				B37BF2D52570B4DA00421DEB /* ScanCell.swift in Sources */,
 				B35253C5253C309600AF71DF /* MapsModel.swift in Sources */,
 				B3544F23253D3ECD00B6A001 /* ProfileViewController.swift in Sources */,
+				B3E256422589AD0D00CDED81 /* ImageCell.swift in Sources */,
 				B3A0521725773CBD00BC6FE0 /* Encrypt.swift in Sources */,
 				B326FF7425612CF00067C0DE /* RestView.swift in Sources */,
 				B3DE97982555364400A30892 /* DayOffVc.swift in Sources */,
@@ -739,7 +736,6 @@
 				B3B9D596256E107A0056D867 /* ShiftTimeCell.swift in Sources */,
 				B32407FB25677A6D00BFF72D /* EditEmail.swift in Sources */,
 				B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */,
-				B348E8DF2588A6D700133CB8 /* MockUser.swift in Sources */,
 				B3F79C8C2573BD31003455D1 /* HistoryCell.swift in Sources */,
 				B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */,
 				B3EC8985256B5E3C00D1618D /* Reusable.swift in Sources */,
@@ -750,13 +746,13 @@
 				B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */,
 				B384A3DE256F624900D237CC /* OrderCell.swift in Sources */,
 				B326FF712560F0D00067C0DE /* CheckoutNoteView.swift in Sources */,
-				B33B1B062543746E007BDD3A /* ChatViewController.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
 				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
 				B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */,
 				B3B9D59B256E41910056D867 /* ForgotView.swift in Sources */,
 				B32944CA2541F8710040E90C /* NoteModel.swift in Sources */,
 				B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */,
+				B3E256472589B56900CDED81 /* QuickCell.swift in Sources */,
 				B35253C8253C30A900AF71DF /* MapsViewModel.swift in Sources */,
 				B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */,
 				B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */,

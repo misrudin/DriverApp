@@ -14,8 +14,10 @@ class ListScanView: UIViewController {
     var store: PickupDestination!
     var orderNo: String = ""
     var orderVm = OrderViewModel()
+    var inOutVm = InOutViewModel()
     
-    
+    var isCheckin: Bool = false
+    var origin: Origin?
     var pickupItems: [Scanned]!
     
     var done: Bool = false
@@ -57,7 +59,7 @@ class ListScanView: UIViewController {
         b.layer.cornerRadius = 5
         b.layer.masksToBounds = true
         b.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold )
-        b.addTarget(self, action: #selector(finish), for: .touchUpInside)
+        b.addTarget(self, action: #selector(cekSatatusCheckin), for: .touchUpInside)
         b.isHidden = true
         return b
     }()
@@ -97,7 +99,59 @@ class ListScanView: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    @objc
+    private func cekStatusDriver(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        spiner.show(in: view)
+        
+        inOutVm.cekStatusDriver(codeDriver: codeDriver) { (res) in
+            switch res {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    if response.isCheckin == true {
+                        self.isCheckin = true
+                    }
+                }
+            case .failure(let err):
+                self.spiner.dismiss()
+                print(err.localizedDescription)
+                self.isCheckin = false
+            }
+        }
+        
+    }
+    
+    
+    @objc private func cekSatatusCheckin(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String, let lat = origin?.latitude, let long = origin?.longitude else {
+            print("No user data")
+            return
+        }
+        if self.isCheckin == false {
+            print("belum cekin")
+            self.inOutVm.checkinDriver(with: codeDriver, lat: String(lat), long: String(long)) { (res) in
+                switch res {
+                case .success(let oke):
+                    DispatchQueue.main.async {
+                        if oke == true {
+                            self.finish()
+                        }
+                    }
+                case .failure(let err):
+                    print(err)
+                    Helpers().showAlert(view: self, message: "Something when wrong !")
+                }
+            }
+        }else {
+            print("Sudah cekin")
+            self.finish()
+        }
+    }
     private func finish(){
         let scanedData = store.pickup_item.filter({$0.scan == true})
         if scanedData.count == store.pickup_item.count {

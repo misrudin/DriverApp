@@ -6,6 +6,7 @@
 //
 
 //home protocols∫
+import Foundation
 
 //login protocols
 protocol LoginViewModelDelegate {
@@ -17,4 +18,8 @@ protocol LoginViewModelDelegate {
 protocol ProfileViewModelDelegate {
     func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel, bio: Bio, vehicle: VehicleData)
     func didFailedToFetch(_ error: Error)
+}
+
+extension Notification.Name {
+    static let didSendMessage = Notification.Name("didSendMessage")
 }

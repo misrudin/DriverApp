@@ -290,7 +290,7 @@ class HistoryViewController: UIViewController {
     @objc
     func onClickChatButton(){
         let vc = ChatView()
-//        vc.hidesBottomBarWhenPushed = true
+        vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
 

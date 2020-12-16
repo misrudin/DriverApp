@@ -43,9 +43,13 @@ class OrderCell: UITableViewCell {
 
             let start = orderData.detail_shift.time_start_shift[...4]
             let end = orderData.detail_shift.time_end_shift[...4]
+            
+            let dateFormater = DateFormatter()
+            dateFormater.dateFormat = "yyyy-MM-dd"
+            let dateNow = dateFormater.string(from: Date())
              
             
-            if timeNow <= end && timeNow > start {
+            if timeNow <= end && timeNow > start && orderData.active_date == dateNow {
                 container.backgroundColor = .white
                 isUserInteractionEnabled = true
             }else {

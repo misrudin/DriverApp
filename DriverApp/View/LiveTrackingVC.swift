@@ -32,8 +32,8 @@ class LiveTrackingVC: UIViewController {
     var cardViewController:CardViewController!
     var visualEffectView:UIVisualEffectView!
     
-    let cardHeight:CGFloat = 400
-    let cardFullHeight:CGFloat = 800
+    let cardHeight:CGFloat = UIScreen.main.bounds.height - 110
+    let cardFullHeight:CGFloat = UIScreen.main.bounds.height - 110
     var cardHandleAreaHeight:CGFloat = 110
     
     var cardVisible = false
@@ -51,8 +51,7 @@ class LiveTrackingVC: UIViewController {
     var mapsViewModel = MapsViewModel()
     var orderViewModel = OrderViewModel()
     var inOutVm = InOutViewModel()
-    
-    var isCheckin: Bool = false
+    var databaseM = DatabaseManager()
     
     enum MapsType {
         case folowing
@@ -202,7 +201,6 @@ class LiveTrackingVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        cekStatusDriver()
         self.cardViewController.status = !self.cardViewController.status
         
         
@@ -215,32 +213,6 @@ class LiveTrackingVC: UIViewController {
         
         manager?.stopUpdatingLocation()
         manager?.stopUpdatingHeading()
-    }
-    
-    private func cekStatusDriver(){
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
-            print("No user data")
-            return
-        }
-        spiner.show(in: view)
-        
-        inOutVm.cekStatusDriver(codeDriver: codeDriver) { (res) in
-            switch res {
-            case .success(let response):
-                DispatchQueue.main.async {
-                    self.spiner.dismiss()
-                    if response.isCheckin == true {
-                        self.isCheckin = true
-                    }
-                }
-            case .failure(let err):
-                self.spiner.dismiss()
-                print(err.localizedDescription)
-                self.isCheckin = false
-            }
-        }
-        
     }
     
     
@@ -278,22 +250,22 @@ class LiveTrackingVC: UIViewController {
             switch recognizer.direction{
             case .topToBottom:
                 print("top to botom")
-                if cardFull {
-                    cardFull = false
-                    cardVisible = true
-                }else {
-                    cardVisible = true
-                    cardFull = false
-                }
+//                if cardFull {
+//                    cardFull = false
+//                    cardVisible = true
+//                }else {
+//                    cardVisible = true
+//                    cardFull = false
+//                }
             case .bottomToTop:
                 print("btm to top")
-                if cardVisible {
-                    cardFull = true
-                    cardVisible = false
-                }else {
-                    cardVisible = false
-                    cardFull = false
-                }
+//                if cardVisible {
+//                    cardFull = true
+//                    cardVisible = false
+//                }else {
+//                    cardVisible = false
+//                    cardFull = false
+//                }
             default:
                 print("default")
             }
@@ -360,7 +332,7 @@ class LiveTrackingVC: UIViewController {
     @objc
     func onClickChatButton(){
         let vc = ChatView()
-//        vc.hidesBottomBarWhenPushed = true
+        vc.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(vc, animated: true)
     }
 }
@@ -530,7 +502,7 @@ extension LiveTrackingVC {
 //                if !self.cardFull {
 //                    self.cardVisible = !self.cardVisible
 //                }
-                
+                self.cardVisible = !self.cardVisible
                 self.runningAnimations.removeAll()
             }
             
@@ -610,6 +582,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         let vc = ListScanView()
         vc.store = store
         vc.orderNo = orderNo
+        vc.origin = origin
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -624,33 +597,18 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             self.orderViewModel.statusOrder(data: data) { (result) in
                 self.handleResult(result: result)
             }
-        case .done_pickup:
+            
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                  let codeDriver = userData["codeDriver"] as? String, let lat = origin?.latitude, let long = origin?.longitude else {
+                  let codeDriver = userData["codeDriver"] as? String else {
                 print("No user data")
                 return
             }
-            spiner.show(in: view)
-            
-            if self.isCheckin == false {
-                print("belum cekin")
-                self.inOutVm.checkinDriver(with: codeDriver, lat: String(lat), long: String(long)) { (res) in
-                    switch res {
-                    case .success(let oke):
-                        DispatchQueue.main.async {
-                            if oke == true {
-                                self.donePickupOrder()
-                            }
-                        }
-                    case .failure(let err):
-                        print(err)
-                        Helpers().showAlert(view: self, message: "Something when wrong !")
-                    }
-                }
-            }else {
-                print("Sudah cekin")
-                donePickupOrder()
+            self.databaseM.setCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (re) in
+                print(re)
             }
+        case .done_pickup:
+            spiner.show(in: view)
+            donePickupOrder()
         case .start_delivery:
             spiner.show(in: view)
             let data = Delivery(status: "delivery", order_number: orderNo, type: "start")
@@ -683,6 +641,16 @@ extension LiveTrackingVC: CardViewControllerDelegate {
                         print(error)
                     }
                 }
+            }
+            
+            
+            guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                  let codeDriver = userData["codeDriver"] as? String else {
+                print("No user data")
+                return
+            }
+            self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
+                print(res)
             }
         case .none:
             print("Status Undefined")
