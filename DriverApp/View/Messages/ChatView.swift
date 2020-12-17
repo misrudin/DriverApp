@@ -381,7 +381,7 @@ extension ChatView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let chatMessage = chatMessages[indexPath.section][indexPath.row]
         tap()
-        if chatMessage.photo != "" {
+        if chatMessage.photo != "" && chatMessage.photo != nil {
             let slideVC = PeviewPhoto()
             slideVC.modalPresentationStyle = .custom
             slideVC.transitioningDelegate = self

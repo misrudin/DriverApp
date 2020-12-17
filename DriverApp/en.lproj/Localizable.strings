@@ -1,0 +1,135 @@
+/* 
+ Localizable.strings
+ DriverApp
+ 
+ Created by Indo Office4 on 17/12/20.
+ 
+ */
+
+//MARK: - Button
+"submit" = "Submit";
+"back" = "Back";
+"finish" = "Finish Registration";
+"save" = "Save";
+"set-work" = "Set Work Day";
+"set-to-dayoff" = "Set To DayOff";
+"edit-shift" = "Edit Shift Time";
+
+//MARK: - PLACEHOLDER
+"p-email" = "Email";
+
+//MARK: - TITLE NAVIGATION
+///top navigation
+"t-register" = "Registration";
+"t-job-list" = "Job List";
+"t-history" = "Job History";
+"t-day-off" = "Day Off Driver";
+"t-plan" = "Plan Next Month";
+"t-chat" = "Customer Service";
+"t-profile" = "My Profile";
+"t-note" = "Notes";
+"t-change-password" = "Change Password";
+"t-change-vehicle" = "Change Vehicle Data";
+"t-edit-profile" = "Edit Profile";
+
+///bottom navigation
+"b-job" = "Jobs";
+"b-history" = "History";
+"b-day-off" = "Day OFf";
+
+//MARK: - MAIN PAGE
+
+"login" = "Have Account? Login";
+"register" = "Join Us - Register";
+
+//MARK: - LOGIN PAGE
+"title-login" = "LOGIN";
+"driver-code" = "Driver Code";
+"password" = "Password";
+"forget-password" = "Forget your password";
+
+//MARK: -  FORGOT PASSWORD
+"title-forgot" = "Forgot your password ?";
+"sub-title-forgot" = "Enter your email address and we will share a link to create a new password";
+
+//MARK: - Registration
+"title-register" = "Register as a freelance driver";
+
+"personal-information" = "PERSONAL INFORMATION";
+"profile-photo" = "Profile Photo";
+"first-name" = "Frist Name";
+"last-name" = "Last Name";
+"dob" = "Date Of Birth";
+
+"address" = "ADDRESS";
+"postal-code" = "Postal Code";
+"prefecture" = "Prefecture";
+"municipal-district" = "Municipal District";
+"chome" = "Chome";
+"municipality-kana" = "Municiapity Kana";
+"kana-after-address" = "Kana After Address";
+"gender" = "Gender";
+"language" = "Language";
+"phone-number" = "Phone Number";
+"email" = "Email";
+
+"driver-license" = "DRIVER LICENSE";
+"license-number" = "License Number";
+"license-exp" = "Driver's License Expiration Date";
+
+"vehicle-data" = "VEHICLE DATA";
+"insurance-company" = "Indurance Company";
+"personal-cov" = "Personal Coverage";
+"convension" = "Compension Range-Objective";
+"insurance-exp-date" = "Insurance Expiration Date";
+"vehicle-name" = "Vehicle Name";
+"vehicle-number" = "Vehicle Number Plater";
+"vehicle-year" = "Vehicle Year";
+"vehicle-ownership" = "Vehicle Ownership";
+"vehicle-inspection-exp-date" = "Vehicle Inspection Exp. Date";
+"vehicle-inspection-cer-photo" = "Vehicle Inspection Certificate Photo";
+"vahicle-photo" = "Vehicle Photo";
+"upload-photo" = "Upload Photo";
+
+//MARK: - JOB LIST
+"pending-list-order" = "Pending List Order";
+"delivery-list-order" = "DELIVERY LIST ORDER";
+
+//MARK: - JOB HISTORY
+
+//MARK: - DAY OFF
+"shift-on-this-date" = "Shift on this date";
+
+
+//MARK: - PLAN NEXT MONTH
+
+
+
+//MARK: - CHATTING
+"quick-title" = "Quick Chat";
+"q-hello" = "Hello";
+"q-address" = "Address cannot be found";
+"q-person" = "Person not at home";
+"q-package" = "Package not correct";
+"q-accident" = "I have an accidents";
+"chat-placeholder" = "Type your message here ...";
+
+//MARK: - PROFILE
+"p-note" = "Note";
+"p-change-password" = "Change Password";
+"p-change-vehicle-data" = "Change Vehicle Data";
+"p-logout" = "Logout";
+
+//MARK: - CHANGE PROFILE
+
+//MARK: - NOTES
+"n-checkout" = "Checkout";
+"n-pending" = "Pending";
+
+//MARK: - SEND NOTES
+
+//MARK: - CHANGE VEHICLE DATA
+
+
+
+

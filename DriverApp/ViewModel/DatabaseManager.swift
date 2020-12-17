@@ -8,7 +8,6 @@
 import Foundation
 import CoreLocation
 import FirebaseDatabase
-import MessageKit
 //import UIKit
 
 struct DatabaseManager {
@@ -101,17 +100,7 @@ struct DatabaseManager {
         let dateNow: String = dateFormater.string(from: date)
         let urlFirebase = "monitoring/\(dateNow)/\(codeDriver)"
 
-        let dataToPost: [String: Any] = [
-            "current_order": ""
-        ]
-        
-        database.child(urlFirebase).updateChildValues(dataToPost) { (err, res) in
-            if err != nil {
-                completion(.failure(DatabaseError.failedToUpdateData))
-                return
-            }
-            completion(.success(true))
-        }
+        database.child(urlFirebase).child("current_order").removeValue()
         
     }
     

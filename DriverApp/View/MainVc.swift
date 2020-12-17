@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class MainVc: UIViewController {
@@ -25,9 +26,9 @@ class MainVc: UIViewController {
     
     private let bg = Reusable.makeImageView(image: UIImage(named: "bgMain"), contentMode: .scaleToFill)
     
-    private let loginButton = Reusable.makeButton(text: "Have Account? Login",font: .systemFont(ofSize: 20, weight: .regular), color: .white, background: UIColor(named: "orangeKasumi")!, rounded: 5)
+    private let loginButton = Reusable.makeButton(text: "login".localiz(),font: .systemFont(ofSize: 20, weight: .regular), color: .white, background: UIColor(named: "orangeKasumi")!, rounded: 5)
     
-    private let signupButton = Reusable.makeButton(text: "Join Us - Register",font: .systemFont(ofSize: 20, weight: .regular), color: UIColor(named: "orangeKasumi")!, background: .white, rounded: 5)
+    private let signupButton = Reusable.makeButton(text: "register".localiz(),font: .systemFont(ofSize: 20, weight: .regular), color: UIColor(named: "orangeKasumi")!, background: .white, rounded: 5)
     
     @objc
     func login(){
@@ -64,11 +65,13 @@ class MainVc: UIViewController {
         
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
         signupButton.addTarget(self, action: #selector(register), for: .touchUpInside)
+        loginButton.alpha = 0
+        signupButton.alpha = 0
+        loginButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+        signupButton.transform = CGAffineTransform(scaleX: 0, y: 0)
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        cekUser()
-//    }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -82,11 +85,11 @@ class MainVc: UIViewController {
     func configureNavigation(){
         let tabBarVc = UITabBarController()
         let homeVc = UINavigationController(rootViewController: HomeVc())
-        homeVc.title = "Jobs"
+        homeVc.title = "b-job".localiz()
         let historyVc = UINavigationController(rootViewController: HistoryViewController())
-        historyVc.title = "History"
+        historyVc.title = "b-history".localiz()
         let dayOffVc = UINavigationController(rootViewController: DayOffVc())
-        dayOffVc.title = "Day Off"
+        dayOffVc.title = "b-day-off".localiz()
         
         let image1 = UIImage(named: "jobHistory")
         let baru1 = image1?.resizeImage(CGSize(width: 25, height: 25))
@@ -163,8 +166,14 @@ class MainVc: UIViewController {
                 }
             }
         }else {
-            loginButton.isHidden = false
-            signupButton.isHidden = false
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.loginButton.isHidden = false
+                self.signupButton.isHidden = false
+                self.loginButton.alpha = 1
+                self.signupButton.alpha = 1
+                self.loginButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                self.signupButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+            })
         }
     }
     

@@ -26,6 +26,16 @@ struct RegisterViewModel {
             return
         }
         
+        if data.first_name_hisragana == "" {
+            completion(.failure(ErrorRegister.firstNameHiragana))
+            return
+        }
+        
+        if data.last_name_hiragana == "" {
+            completion(.failure(ErrorRegister.lastNameHiragana))
+            return
+        }
+        
         if data.date_of_birth == "" {
             completion(.failure(ErrorRegister.dateOfBirth))
             return
@@ -167,6 +177,8 @@ struct RegisterViewModel {
             "photo" : data.user_image,
             "first_name" : data.first_name,
             "last_name" : data.last_name,
+            "first_name_hiragana" : data.first_name_hisragana,
+            "last_name_hiragana" : data.last_name_hiragana,
             "birthday_date" : data.date_of_birth,
             "postal_code" : data.postal_code,
             "prefecture" : data.prefectures,
@@ -211,6 +223,8 @@ enum ErrorRegister: Error {
     case userFoto
     case firstName
     case lastName
+    case firstNameHiragana
+    case lastNameHiragana
     case dateOfBirth
     case postalCode
     case prefectures
@@ -258,6 +272,16 @@ extension ErrorRegister: LocalizedError {
         case .lastName:
             return NSLocalizedString(
                 "Last name must be entered !",
+                comment: ""
+            )
+        case .firstNameHiragana:
+            return NSLocalizedString(
+                "First name hiragana must be entered !",
+                comment: ""
+            )
+        case .lastNameHiragana:
+            return NSLocalizedString(
+                "Last name hiragana must be entered !",
                 comment: ""
             )
         case .dateOfBirth:

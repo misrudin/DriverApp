@@ -123,7 +123,7 @@ class CardViewController: UIViewController {
     
     let titleLabelDestination: UILabel = {
         let label = UILabel()
-        label.text = "Delivery Location"
+        label.text = "Receiver"
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         

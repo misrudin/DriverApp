@@ -9,6 +9,7 @@ import UIKit
 import GoogleMaps
 import GooglePlaces
 import Firebase
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 @main
@@ -38,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window!.backgroundColor = .red
         }
         updateStatus(status: "idle")
+        
+        LanguageManager.shared.defaultLanguage = .ja
         
         return true
     }

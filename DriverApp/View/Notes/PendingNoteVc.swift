@@ -15,6 +15,7 @@ class PendingNoteVc: UIViewController {
     var orderData: NewOrderData?
     
     let noteViewModel = NoteViewModel()
+    var databaseM = DatabaseManager()
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -205,7 +206,7 @@ extension PendingNoteVc {
             return
         }
         
-        let metaData = MetaData(order_number: orderNo, id_shift_time: String(idShiftTime))
+        let metaData = MetaData(order_number: orderNo, id_shift_time: Int(idShiftTime), status_chat: false, status_done: false)
         let data = DataPending(code_driver: codeDriver, note: note, meta_data: metaData)
         spiner.show(in: view)
         noteViewModel.pendingNote(data: data) { (result) in
@@ -215,6 +216,9 @@ extension PendingNoteVc {
                     self.spiner.dismiss()
                     self.dismiss(animated: true) {
                         self.presentingController?.dismiss(animated: false)
+                    }
+                    self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
+                        print(res)
                     }
                 }
             case .failure(let error):

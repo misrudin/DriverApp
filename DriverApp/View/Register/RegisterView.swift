@@ -95,6 +95,8 @@ class RegisterView: UIViewController {
     lazy var profilePhotoLable = Reusable.makeLabel(text: "Profile Photo",font: lablefont, color: lableColor, alignment: .center)
     lazy var firstNameLable = Reusable.makeLabel(text: "First Name",font: lablefont, color: lableColor)
     lazy var lastNameLable = Reusable.makeLabel(text: "Last Name",font: lablefont, color: lableColor)
+    lazy var firstNameHiraganaLable = Reusable.makeLabel(text: "First Name Hiragana",font: lablefont, color: lableColor)
+    lazy var lastNameHiraganaLable = Reusable.makeLabel(text: "Last Name Hiragana",font: lablefont, color: lableColor)
     lazy var emailLable = Reusable.makeLabel(text: "Email",font: lablefont, color: lableColor)
     lazy var passwordLable = Reusable.makeLabel(text: "Password",font: lablefont, color: lableColor)
     lazy var brithDateLable = Reusable.makeLabel(text: "Date Of Birth",font: lablefont, color: lableColor)
@@ -126,6 +128,9 @@ class RegisterView: UIViewController {
     //MARK: - Input Text
     lazy var firstName = Reusable.makeInput(placeholder: "First Name", bg: inputBg, radius: 5, autoKapital: .none)
     lazy var lastName = Reusable.makeInput(placeholder: "Last Name", bg: inputBg, radius: 5, autoKapital: .none)
+    
+    lazy var firstNameHiragana = Reusable.makeInput(placeholder: "First Name Hiragana", bg: inputBg, radius: 5, autoKapital: .none)
+    lazy var lastNameHiragana = Reusable.makeInput(placeholder: "Last Name Hiragana", bg: inputBg, radius: 5, autoKapital: .none)
     
     //MARK: - Input Select
     
@@ -928,7 +933,7 @@ class RegisterView: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*26))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*28))
 
         stakView.addSubview(lableTitleRegister)
         lableTitleRegister.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
@@ -971,8 +976,18 @@ class RegisterView: UIViewController {
         stakView.addSubview(lastName)
         lastName.anchor(top: lastNameLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
         
+        stakView.addSubview(firstNameHiraganaLable)
+        firstNameHiraganaLable.anchor(top: firstName.bottomAnchor, left: stakView.leftAnchor, paddingTop: 20,width: view.frame.width/2-20)
+        stakView.addSubview(firstNameHiragana)
+        firstNameHiragana.anchor(top: firstNameHiraganaLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: view.frame.width/2-20, height: 45)
+        
+        stakView.addSubview(lastNameHiraganaLable)
+        lastNameHiraganaLable.anchor(top: lastName.bottomAnchor,left: firstNameHiraganaLable.rightAnchor, right: stakView.rightAnchor, paddingTop: 20,paddingLeft: 8, width: view.frame.width/2-20)
+        stakView.addSubview(lastNameHiragana)
+        lastNameHiragana.anchor(top: lastNameHiraganaLable.bottomAnchor,left: firstName.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 8, width: view.frame.width/2-20, height: 45)
+        
         stakView.addSubview(brithDateLable)
-        brithDateLable.anchor(top: firstName.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+        brithDateLable.anchor(top: firstNameHiragana.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
         stakView.addSubview(brithDate)
         brithDate.anchor(top: brithDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
@@ -1320,6 +1335,8 @@ extension RegisterView {
         
         guard let firstName = self.firstName.text,
               let lastName = self.lastName.text,
+              let firstNameHiragana = self.firstNameHiragana.text,
+              let lastNameHiragana = self.lastNameHiragana.text,
               let dateOfBirth = self.brithDate.text,
               let postalCode = self.postalCode.text,
               let prefectures = self.prefecture.text,
@@ -1352,6 +1369,8 @@ extension RegisterView {
         
         let data: RegisterDataTemp = RegisterDataTemp(first_name: firstName,
                                                       last_name: lastName,
+                                                      first_name_hisragana: firstNameHiragana,
+                                                      last_name_hiragana: lastNameHiragana,
                                                       date_of_birth: dateOfBirth,
                                                       postal_code: postalCode,
                                                       prefectures: prefectures,
@@ -1414,6 +1433,8 @@ extension RegisterView {
         let dataToPost: RegisterData = RegisterData(user_image: userImage,
                                                     first_name: firstName,
                                                     last_name: lastName,
+                                                    first_name_hisragana: firstNameHiragana,
+                                                    last_name_hiragana: lastNameHiragana,
                                                     date_of_birth: dateOfBirth,
                                                     postal_code: postalCode,
                                                     prefectures: prefectures,

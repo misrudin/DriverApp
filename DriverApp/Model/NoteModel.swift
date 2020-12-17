@@ -50,7 +50,7 @@ struct Note: Decodable {
     let note_category: String
     let note: String
     let meta_data: MetaData?
-    let driver_detail: DriverDetail
+    let driver_detail: DriverDetail?
     let update_date: String?
     let created_time: String
     let id_note: Int
@@ -77,7 +77,16 @@ struct DataPending: Codable {
 //MARK: - Meta data
 struct MetaData: Codable {
     let order_number: String
-    let id_shift_time: String
+    let id_shift_time: Int?
+    let status_chat: Bool?
+    let status_done: Bool?
+    
+    enum CodingKeys: String, CodingKey {
+        case order_number
+        case id_shift_time
+        case status_chat
+        case status_done
+    }
 }
 
 //MARK: - update note checkout

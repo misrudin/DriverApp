@@ -19,10 +19,9 @@ struct NoteViewModel {
             case .success:
                 if let data = response.data {
                     if let dataNotes = self.parseJson(data: data){
-                        debugPrint(dataNotes)
                         completion(.success(dataNotes))
                     }else {
-                        completion(.failure(DataError.failedToFetch))
+                        completion(.failure(DataError.failedTodecode))
                     }
                 }
             case let .failure(error):
@@ -41,7 +40,7 @@ struct NoteViewModel {
                     if let pendingData = self.parseJson(data: data){
                         completion(.success(pendingData))
                     }else {
-                        completion(.failure(DataError.failedToFetch))
+                        completion(.failure(DataError.failedTodecode))
                     }
                 }
             case let .failure(error):
@@ -167,8 +166,10 @@ struct NoteViewModel {
     private func parseJson(data: Data) -> [Note]?{
         do{
             let decodedData = try JSONDecoder().decode(Notes.self, from: data)
+            print(decodedData)
             return decodedData.data
         }catch{
+            print(error)
             return nil
             
         }
@@ -180,6 +181,7 @@ struct NoteViewModel {
         case failedToFetch
         case failedToSendingNote
         case failedToDeleteNote
+        case failedTodecode
     }
     
     

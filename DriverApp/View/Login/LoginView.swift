@@ -9,6 +9,7 @@ import UIKit
 import AesEverywhere
 import JGProgressHUD
 import BLTNBoard
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class LoginView: UIViewController {
@@ -65,7 +66,7 @@ class LoginView: UIViewController {
     
     private let labelTitleLogin: UILabel = {
        let label = UILabel()
-        label.text = "LOGIN"
+        label.text = "title-login".localiz()
         label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         label.textColor = .white
         label.textAlignment = .center
@@ -74,7 +75,7 @@ class LoginView: UIViewController {
     
     private let forgetPassword: UILabel = {
        let label = UILabel()
-        label.text = "Forgot your password"
+        label.text = "forget-password".localiz()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .white
         label.textAlignment = .right
@@ -82,8 +83,8 @@ class LoginView: UIViewController {
         return label
     }()
     
-    let lableCode = Reusable.makeLabel(text: "Driver Code", color: .white)
-    let lablePass = Reusable.makeLabel(text: "Password", color: .white)
+    let lableCode = Reusable.makeLabel(text: "driver-code".localiz(), color: .white)
+    let lablePass = Reusable.makeLabel(text: "password".localiz(), color: .white)
     
     private let codeDriver: UITextField = {
         let field = UITextField()
@@ -111,7 +112,7 @@ class LoginView: UIViewController {
     
     private let loginButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Submit", for: .normal)
+        loginButton.setTitle("submit".localiz(), for: .normal)
         loginButton.backgroundColor = .white
         loginButton.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         loginButton.layer.cornerRadius = 45/2
@@ -178,6 +179,10 @@ class LoginView: UIViewController {
         containerView.dropShadow(color: .black, opacity: 0.6, offSet: CGSize(width: 3, height: -3), radius: 10, scale: true)
         codeDriver.addBorder(toSide: .Bottom, withColor: UIColor.white.cgColor, andThickness: 1)
         password.addBorder(toSide: .Bottom, withColor: UIColor.white.cgColor, andThickness: 1)
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.loginButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+        })
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -214,6 +219,7 @@ class LoginView: UIViewController {
         loginButton.anchor(top: forgetPassword.bottomAnchor, left: containerView.leftAnchor, right: containerView.rightAnchor, paddingTop: 30,paddingLeft: 20,paddingRight: 20, height: 45)
         
     
+        loginButton.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
     }
 }
 
@@ -239,11 +245,6 @@ extension LoginView{
         loginViewModel.signIn(codeDriver: codeDriver, password: password)
     }
     
-//    @objc func didForgetClick(){
-//        let forgetVc = ForgetViewController()
-//        navigationController?.pushViewController(forgetVc, animated: true)
-//
-//    }
     
     //MARK: - Show modal
     @objc

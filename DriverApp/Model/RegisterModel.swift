@@ -24,6 +24,8 @@ struct RegisterData: Codable {
     let user_image: String
     let first_name: String
     let last_name: String
+    let first_name_hisragana: String
+    let last_name_hiragana: String
     let date_of_birth: String
     let postal_code: String
     let prefectures: String
@@ -57,6 +59,8 @@ struct RegisterData: Codable {
 struct RegisterDataTemp: Codable {
     let first_name: String
     let last_name: String
+    let first_name_hisragana: String
+    let last_name_hiragana: String
     let date_of_birth: String
     let postal_code: String
     let prefectures: String

@@ -136,6 +136,7 @@ class LiveTrackingVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         view.backgroundColor = .white
         title = "Live Tracking"
         
@@ -592,19 +593,19 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         }
         switch type {
         case .start_pickup:
-            spiner.show(in: view)
-            let data = Delivery(status: "pickup", order_number: orderNo, type: "start")
-            self.orderViewModel.statusOrder(data: data) { (result) in
-                self.handleResult(result: result)
-            }
-            
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                   let codeDriver = userData["codeDriver"] as? String else {
                 print("No user data")
                 return
             }
-            self.databaseM.setCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (re) in
-                print(re)
+            spiner.show(in: view)
+            let data = Delivery(status: "pickup", order_number: orderNo, type: "start")
+            self.orderViewModel.statusOrder(data: data) { (result) in
+                self.handleResult(result: result)
+                self.navigationItem.hidesBackButton = true
+                self.databaseM.setCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (re) in
+                    print(re)
+                }
             }
         case .done_pickup:
             spiner.show(in: view)
@@ -629,6 +630,15 @@ extension LiveTrackingVC: CardViewControllerDelegate {
                 switch result {
                 case .success(_):
                     DispatchQueue.main.async {
+                        self.navigationItem.hidesBackButton = false
+                        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+                              let codeDriver = userData["codeDriver"] as? String else {
+                            print("No user data")
+                            return
+                        }
+                        self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
+                            print(res)
+                        }
                         self.upateLocation()
                         self.spiner.dismiss()
                         let vc = DoneViewController()
@@ -643,15 +653,6 @@ extension LiveTrackingVC: CardViewControllerDelegate {
                 }
             }
             
-            
-            guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                  let codeDriver = userData["codeDriver"] as? String else {
-                print("No user data")
-                return
-            }
-            self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
-                print(res)
-            }
         case .none:
             print("Status Undefined")
         case .next:
