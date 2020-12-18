@@ -43,7 +43,7 @@ struct OrderViewModel {
     
     //MARK: - GET DATA HISTORY ORDER
     func getDataHistoryOrder(codeDriver: String, completion: @escaping (Result<[History],Error>)->Void){
-        AF.request("\(Base.urlOrder)history/\(codeDriver)",headers: Base.headers).response { response in
+        AF.request("\(Base.urlOrder)today/history/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if response.response?.statusCode == 200 {

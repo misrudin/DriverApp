@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class RegisterView: UIViewController {
@@ -24,13 +25,13 @@ class RegisterView: UIViewController {
     
     //MARK: - variable
     let genders:[Gender] = [
-        Gender(name: "Male"),
-        Gender(name: "Female")
+        Gender(name: "Male".localiz()),
+        Gender(name: "Female".localiz())
     ]
     
     let languages:[Language] = [
-        Language(name: "JP"),
-        Language(name: "EN")
+        Language(name: "JP".localiz()),
+        Language(name: "EN".localiz())
     ]
     
     var vehicleY = [VehicleYear]()
@@ -41,7 +42,7 @@ class RegisterView: UIViewController {
     //MARK: - Component
     lazy var lableTitleRegister: UILabel = {
         let lable = UILabel()
-        lable.text = "Register as a freelance driver"
+        lable.text = "Register as a freelance driver".localiz()
         lable.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -50,7 +51,7 @@ class RegisterView: UIViewController {
     
     lazy var personalLabel: UILabel = {
         let lable = UILabel()
-        lable.text = "PERSONAL INFORMATION"
+        lable.text = "PERSONAL INFORMATION".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -58,7 +59,7 @@ class RegisterView: UIViewController {
     
     lazy var addressLable: UILabel = {
         let lable = UILabel()
-        lable.text = "ADDRESS"
+        lable.text = "ADDRESS".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -92,42 +93,42 @@ class RegisterView: UIViewController {
     let inputBg: UIColor = UIColor(named: "bgInput")!
     
     //MARK: - Lable
-    lazy var profilePhotoLable = Reusable.makeLabel(text: "Profile Photo",font: lablefont, color: lableColor, alignment: .center)
-    lazy var firstNameLable = Reusable.makeLabel(text: "First Name",font: lablefont, color: lableColor)
-    lazy var lastNameLable = Reusable.makeLabel(text: "Last Name",font: lablefont, color: lableColor)
+    lazy var profilePhotoLable = Reusable.makeLabel(text: "Profile Photo".localiz(),font: lablefont, color: lableColor, alignment: .center)
+    lazy var firstNameLable = Reusable.makeLabel(text: "First Name".localiz(),font: lablefont, color: lableColor)
+    lazy var lastNameLable = Reusable.makeLabel(text: "Last Name".localiz(),font: lablefont, color: lableColor)
     lazy var firstNameHiraganaLable = Reusable.makeLabel(text: "First Name Hiragana",font: lablefont, color: lableColor)
     lazy var lastNameHiraganaLable = Reusable.makeLabel(text: "Last Name Hiragana",font: lablefont, color: lableColor)
-    lazy var emailLable = Reusable.makeLabel(text: "Email",font: lablefont, color: lableColor)
-    lazy var passwordLable = Reusable.makeLabel(text: "Password",font: lablefont, color: lableColor)
-    lazy var brithDateLable = Reusable.makeLabel(text: "Date Of Birth",font: lablefont, color: lableColor)
-    lazy var genderLable = Reusable.makeLabel(text: "Gender",font: lablefont, color: lableColor)
-    lazy var languageLable = Reusable.makeLabel(text: "Language",font: lablefont, color: lableColor)
-    lazy var phoneNumberLable = Reusable.makeLabel(text: "Phone Number",font: lablefont, color: lableColor)
-    lazy var postalCodeLable = Reusable.makeLabel(text: "Postal Code",font: lablefont, color: lableColor)
-    lazy var prefecturesLable = Reusable.makeLabel(text: "Prefectures",font: lablefont, color: lableColor)
-    lazy var municipalLable = Reusable.makeLabel(text: "Municipal District",font: lablefont, color: lableColor)
-    lazy var chomeLable = Reusable.makeLabel(text: "Chome",font: lablefont, color: lableColor)
-    lazy var municipalityKanaLable = Reusable.makeLabel(text: "Municipality Kana",font: lablefont, color: lableColor)
-    lazy var kanaAfterAddressLable = Reusable.makeLabel(text: "Kana After Address",font: lablefont, color: lableColor)
-    lazy var vehiclePhotoLable = Reusable.makeLabel(text: "Vehicle Inspection Certificate Photo",font: lablefont, color: lableColor)
-    lazy var vehiclePhotoLable2 = Reusable.makeLabel(text: "Vehicle Photo",font: lablefont, color: lableColor)
-    lazy var licenseExpiretionDateLable = Reusable.makeLabel(text: "Driver's License Expiration Date", color: lableColor)
-    lazy var insuranceCompanyLable = Reusable.makeLabel(text: "Insurance Company",font: lablefont, color: lableColor)
-    lazy var personalCoverageLable = Reusable.makeLabel(text: "Personal Coverage",font: lablefont, color: lableColor)
-    lazy var compensationLable = Reusable.makeLabel(text: "Compensation Range-Objective",font: lablefont, color: lableColor)
-    lazy var insuranceExpirationDateLabel = Reusable.makeLabel(text: "Insurance Expiration Date",font: lablefont, color: lableColor)
-    lazy var vehicleNameLable =  Reusable.makeLabel(text: "Vehicle Name",font: lablefont, color: lableColor)
-    lazy var vehicleNumberPlateLable =  Reusable.makeLabel(text: "Vehicle Number Plate",font: lablefont, color: lableColor)
-    lazy var vehicleYearLable =  Reusable.makeLabel(text: "Vehicle Year",font: lablefont, color: lableColor)
-    lazy var vehicleOwnershipLable =  Reusable.makeLabel(text: "Vehicle Ownership",font: lablefont, color: lableColor)
-    lazy var vehicleInspectionExpDateLable =  Reusable.makeLabel(text: "Vehicle Inspection Exp. Date",font: lablefont, color: lableColor)
-    lazy var licenseNumberLable = Reusable.makeLabel(text: "License Number",font: lablefont, color: lableColor)
+    lazy var emailLable = Reusable.makeLabel(text: "Email".localiz(),font: lablefont, color: lableColor)
+    lazy var passwordLable = Reusable.makeLabel(text: "Password".localiz(),font: lablefont, color: lableColor)
+    lazy var brithDateLable = Reusable.makeLabel(text: "Date Of Birth".localiz(),font: lablefont, color: lableColor)
+    lazy var genderLable = Reusable.makeLabel(text: "Gender".localiz(),font: lablefont, color: lableColor)
+    lazy var languageLable = Reusable.makeLabel(text: "Language".localiz(),font: lablefont, color: lableColor)
+    lazy var phoneNumberLable = Reusable.makeLabel(text: "Phone Number".localiz(),font: lablefont, color: lableColor)
+    lazy var postalCodeLable = Reusable.makeLabel(text: "Postal Code".localiz(),font: lablefont, color: lableColor)
+    lazy var prefecturesLable = Reusable.makeLabel(text: "Prefectures".localiz(),font: lablefont, color: lableColor)
+    lazy var municipalLable = Reusable.makeLabel(text: "Municipal District".localiz(),font: lablefont, color: lableColor)
+    lazy var chomeLable = Reusable.makeLabel(text: "Chome".localiz(),font: lablefont, color: lableColor)
+    lazy var municipalityKanaLable = Reusable.makeLabel(text: "Municipality Kana".localiz(),font: lablefont, color: lableColor)
+    lazy var kanaAfterAddressLable = Reusable.makeLabel(text: "Kana After Address".localiz(),font: lablefont, color: lableColor)
+    lazy var vehiclePhotoLable = Reusable.makeLabel(text: "Vehicle Inspection Certificate Photo".localiz(),font: lablefont, color: lableColor)
+    lazy var vehiclePhotoLable2 = Reusable.makeLabel(text: "Vehicle Photo".localiz(),font: lablefont, color: lableColor)
+    lazy var licenseExpiretionDateLable = Reusable.makeLabel(text: "Driver's License Expiration Date".localiz(), color: lableColor)
+    lazy var insuranceCompanyLable = Reusable.makeLabel(text: "Insurance Company".localiz(),font: lablefont, color: lableColor)
+    lazy var personalCoverageLable = Reusable.makeLabel(text: "Personal Coverage".localiz(),font: lablefont, color: lableColor)
+    lazy var compensationLable = Reusable.makeLabel(text: "Compensation Range-Objective".localiz(),font: lablefont, color: lableColor)
+    lazy var insuranceExpirationDateLabel = Reusable.makeLabel(text: "Insurance Expiration Date".localiz(),font: lablefont, color: lableColor)
+    lazy var vehicleNameLable =  Reusable.makeLabel(text: "Vehicle Name".localiz(),font: lablefont, color: lableColor)
+    lazy var vehicleNumberPlateLable =  Reusable.makeLabel(text: "Vehicle Number Plate".localiz(),font: lablefont, color: lableColor)
+    lazy var vehicleYearLable =  Reusable.makeLabel(text: "Vehicle Year".localiz(),font: lablefont, color: lableColor)
+    lazy var vehicleOwnershipLable =  Reusable.makeLabel(text: "Vehicle Ownership".localiz(),font: lablefont, color: lableColor)
+    lazy var vehicleInspectionExpDateLable =  Reusable.makeLabel(text: "Vehicle Inspection Exp. Date".localiz(),font: lablefont, color: lableColor)
+    lazy var licenseNumberLable = Reusable.makeLabel(text: "License Number".localiz(),font: lablefont, color: lableColor)
  
 
     
     //MARK: - Input Text
-    lazy var firstName = Reusable.makeInput(placeholder: "First Name", bg: inputBg, radius: 5, autoKapital: .none)
-    lazy var lastName = Reusable.makeInput(placeholder: "Last Name", bg: inputBg, radius: 5, autoKapital: .none)
+    lazy var firstName = Reusable.makeInput(placeholder: "First Name".localiz(), bg: inputBg, radius: 5, autoKapital: .none)
+    lazy var lastName = Reusable.makeInput(placeholder: "Last Name".localiz(), bg: inputBg, radius: 5, autoKapital: .none)
     
     lazy var firstNameHiragana = Reusable.makeInput(placeholder: "First Name Hiragana", bg: inputBg, radius: 5, autoKapital: .none)
     lazy var lastNameHiragana = Reusable.makeInput(placeholder: "Last Name Hiragana", bg: inputBg, radius: 5, autoKapital: .none)
@@ -137,7 +138,7 @@ class RegisterView: UIViewController {
     //MARK: - Input Date
     
     //MARK: - Input Email
-    lazy var email = Reusable.makeInput(placeholder: "Email", keyType: .emailAddress, bg: inputBg, radius: 5, autoKapital: .none)
+    lazy var email = Reusable.makeInput(placeholder: "Email".localiz(), keyType: .emailAddress, bg: inputBg, radius: 5, autoKapital: .none)
     
     //MARK: - Input Number
     
@@ -148,7 +149,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Password"
+        field.placeholder = "Password".localiz()
         field.paddingLeft(10)
         let button = UIButton(type: .custom)
         let image = UIImage(named: "eyeIcon1")
@@ -214,7 +215,7 @@ class RegisterView: UIViewController {
         tool.barStyle = .default
         tool.isTranslucent = true
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(onClickDoneButton))
+        let doneButton = UIBarButtonItem(title: "Done".localiz(), style: .done, target: self, action: #selector(onClickDoneButton))
         tool.setItems([space, doneButton], animated: false)
         tool.isUserInteractionEnabled = true
         tool.sizeToFit()
@@ -252,7 +253,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Select Your Gender"
+        field.placeholder = "Select Your Gender".localiz()
         field.paddingLeft(10)
         let image = UIImage(named: "arrowDownIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
@@ -279,7 +280,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Select Your Language"
+        field.placeholder = "Select Your Language".localiz()
         field.paddingLeft(10)
         let image = UIImage(named: "arrowDownIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
@@ -328,7 +329,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Postal Code"
+        field.placeholder = "Postal Code".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -346,7 +347,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Prefectures"
+        field.placeholder = "Prefectures".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -363,7 +364,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Municipal District"
+        field.placeholder = "Municipal District".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -380,7 +381,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Chome"
+        field.placeholder = "Chome".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -397,7 +398,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Municipality Kana"
+        field.placeholder = "Municipality Kana".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -412,7 +413,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Kana After Address"
+        field.placeholder = "Kana After Address".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -424,7 +425,7 @@ class RegisterView: UIViewController {
     //MARK: - Driver Lincense
     lazy var driverLicenseLable: UILabel = {
         let lable = UILabel()
-        lable.text = "DRIVER LICENSE"
+        lable.text = "DRIVER LICENSE".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -433,7 +434,7 @@ class RegisterView: UIViewController {
     //MARK:- vehicleDataLable
     lazy var vehicleDataLable: UILabel = {
         let lable = UILabel()
-        lable.text = "VEHICLE DATA"
+        lable.text = "VEHICLE DATA".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -475,7 +476,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "License Number"
+        field.placeholder = "License Number".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -515,7 +516,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 3
-        field.placeholder = "Driver's License Expiration Date"
+        field.placeholder = "Driver's License Expiration Date".localiz()
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
@@ -537,7 +538,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Insurance Company Name"
+        field.placeholder = "Insurance Company Name".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -554,7 +555,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Personal Coverage"
+        field.placeholder = "Personal Coverage".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -572,7 +573,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Compensation Range-Objective"
+        field.placeholder = "Compensation Range-Objective".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -611,7 +612,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Insurance Expiration Date"
+        field.placeholder = "Insurance Expiration Date".localiz()
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
@@ -631,7 +632,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Vehicle Name"
+        field.placeholder = "Vehicle Name".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -649,7 +650,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Vehicle Number Plate"
+        field.placeholder = "Vehicle Number Plate".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -672,7 +673,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Vehicle Year"
+        field.placeholder = "Vehicle Year".localiz()
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
@@ -692,7 +693,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Vehicle Ownership"
+        field.placeholder = "Vehicle Ownership".localiz()
         field.paddingLeft(10)
         field.paddingRight(10)
         field.backgroundColor = UIColor(named: "bgInput")
@@ -731,7 +732,7 @@ class RegisterView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Insurance Expiration Date"
+        field.placeholder = "Insurance Expiration Date".localiz()
         field.paddingLeft(10)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
@@ -746,7 +747,7 @@ class RegisterView: UIViewController {
 //   MARK: - Next button
     private let nextButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Finish Registration", for: .normal)
+        loginButton.setTitle("Finish Registration".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.setTitleColor(.lightGray, for: .highlighted)
@@ -772,7 +773,7 @@ class RegisterView: UIViewController {
         let lable = UILabel()
         let img = UIImageView()
         img.image = UIImage(named: "cameraIcon2")
-        lable.text = "Upload Foto"
+        lable.text = "Upload Foto".localiz()
         lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         lable.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
         lable.textAlignment = .center
@@ -919,13 +920,13 @@ class RegisterView: UIViewController {
     //MARK: - FUNC
     
     private func configureNavigationBar(){
-        navigationItem.title = "Registration"
+        navigationItem.title = "Registration".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back".localiz(), style: .plain, target: self, action: #selector(back))
         navigationController?.navigationBar.tintColor = .white
     }
     
@@ -1196,20 +1197,20 @@ extension RegisterView: UIImagePickerControllerDelegate, UINavigationControllerD
     
     
     func presentPhotoActionSheet(){
-        let actionSheet = UIAlertController(title: "Profile Picture",
-                                            message: "How would you like to select a picture?",
+        let actionSheet = UIAlertController(title: "Select Photo".localiz(),
+                                            message: "How would you like to select a picture ?".localiz(),
                                             preferredStyle: .actionSheet)
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel",
+        actionSheet.addAction(UIAlertAction(title: "Cancel".localiz(),
                                             style: .cancel,
                                             handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Take Photo",
+        actionSheet.addAction(UIAlertAction(title: "Take Photo".localiz(),
                                             style: .default,
                                             handler: { [weak self] _ in
                                                 
                                                 self?.presentCamera()
                                             }))
-        actionSheet.addAction(UIAlertAction(title: "Choose Phote",
+        actionSheet.addAction(UIAlertAction(title: "Choose Photo".localiz(),
                                             style: .default,
                                             handler: { [weak self] _ in
                                                 self?.presetPhotoPicker()
@@ -1329,7 +1330,7 @@ extension RegisterView {
     func onNext(){
         
         guard let userImgTemp = self.profilePhotoImage.image else {
-            Helpers().showAlert(view: self, message: "Profile photo must be entered !")
+            Helpers().showAlert(view: self, message: "Profile photo must be entered !".localiz())
             return}
         
         
@@ -1410,13 +1411,13 @@ extension RegisterView {
         
         
         guard let vCerPhotoTemp = self.vehicleCertifiateImage.image else {
-            Helpers().showAlert(view: self, message: "Vehicle certification photo must be entered !")
+            Helpers().showAlert(view: self, message: "Vehicle certification photo must be entered !".localiz())
             return}
         
         guard let vPhotoTemp1 = self.vehicleImage1.image,
               let vPhotoTemp2 = self.vehicleImage2.image,
               let vPhotoTemp3 = self.vehicleImage3.image else {
-            Helpers().showAlert(view: self, message: "Vehicle photo must be entered !")
+            Helpers().showAlert(view: self, message: "Vehicle photo must be entered !".localiz())
             return}
         
         
@@ -1463,12 +1464,12 @@ extension RegisterView {
                                                     vehicle_photo_2: vPhoto2,
                                                     vehicle_photo_3: vPhoto3,
                                                     date_add: dateAdd)
-        let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
+        let action1 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
             self?.register(data: dataToPost)
         }
-        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        Helpers().showAlert(view: self, message: "Continue to register ?",
-                            customTitle: "Are you sure ?", customAction1: action2, customAction2: action1)
+        let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
+        Helpers().showAlert(view: self, message: "Continue to register ?".localiz(),
+                            customTitle: "Are you sure ?".localiz(), customAction1: action2, customAction2: action1)
         //MARK: - End
     }
     
@@ -1481,10 +1482,10 @@ extension RegisterView {
                 DispatchQueue.main.async {
                     if oke == true {
                         self.spiner.dismiss()
-                        let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+                        let action = UIAlertAction(title: "Oke".localiz(), style: .default) {[weak self] (_) in
                             self?.dismiss(animated: true, completion: nil)
                         }
-                        Helpers().showAlert(view: self, message: "Registration data has been sent please wait us to verification your data. We will contact you by email.", customTitle: "Registration success",customAction1: action)
+                        Helpers().showAlert(view: self, message: "Registration data has been sent please wait us to verification your data. We will contact you by email.".localiz(), customTitle: "Registration success".localiz(),customAction1: action)
                     }
                 }
             case .failure(let error):

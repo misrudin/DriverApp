@@ -27,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FirebaseApp.configure()
         
         dataBaseManager = DatabaseManager()
+        LanguageManager.shared.defaultLanguage = .ja
         
         if #available(iOS 13, *) {
             // do only pure app launch stuff, not interface stuff
@@ -39,8 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window!.backgroundColor = .red
         }
         updateStatus(status: "idle")
-        
-        LanguageManager.shared.defaultLanguage = .ja
         
         return true
     }

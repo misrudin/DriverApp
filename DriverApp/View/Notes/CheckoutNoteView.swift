@@ -24,25 +24,25 @@ class CheckoutNoteView: UIViewController {
         return spin
     }()
     
-    private let noteInput: UITextView = {
-        let field = UITextView()
-        field.autocapitalizationType = .none
-        field.autocorrectionType = .no
-        field.returnKeyType = .continue
-        field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.systemGray5.cgColor
-        field.layer.shadowOpacity = 0.5
-        field.backgroundColor = .white
-        field.dataDetectorTypes = .all
-        field.textAlignment = .left
-        field.font = UIFont.systemFont(ofSize: 16)
-        return field
-    }()
-    
+//    private let noteInput: UITextView = {
+//        let field = UITextView()
+//        field.autocapitalizationType = .none
+//        field.autocorrectionType = .no
+//        field.returnKeyType = .continue
+//        field.layer.cornerRadius = 5
+//        field.layer.borderWidth = 1
+//        field.layer.borderColor = UIColor.systemGray5.cgColor
+//        field.layer.shadowOpacity = 0.5
+//        field.backgroundColor = .white
+//        field.dataDetectorTypes = .all
+//        field.textAlignment = .left
+//        field.font = UIFont.systemFont(ofSize: 16)
+//        return field
+//    }()
+//
     let submitButton: UIButton={
         let button = UIButton()
-        button.setTitle("Submit", for: .normal)
+        button.setTitle("Yes, Checkout", for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -63,6 +63,8 @@ class CheckoutNoteView: UIViewController {
         button.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
         return button
     }()
+    
+    lazy var labelQuestion = Reusable.makeLabel(text: "Are you sure ?", font: UIFont.systemFont(ofSize: 16, weight: .medium), color: .black, alignment: .center)
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -90,9 +92,9 @@ class CheckoutNoteView: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(stakView)
-        stakView.addSubviews(views: submitButton,cancelButton,noteInput)
+        stakView.addSubviews(views: submitButton,cancelButton, labelQuestion)
         
-        noteInput.becomeFirstResponder()
+//        noteInput.becomeFirstResponder()
         configureLayout()
     }
     
@@ -151,11 +153,11 @@ class CheckoutNoteView: UIViewController {
         
         stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor,paddingTop: 16,paddingBottom: 16, paddingLeft: 16, paddingRight: 16,  height:(55*13))
         
-        submitButton.anchor(top: noteInput.bottomAnchor, left: stakView.leftAnchor, right: cancelButton.leftAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 10, height: 40)
+        labelQuestion.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: view.frame.height/2-view.frame.width/2)
         
-        cancelButton.anchor(top: noteInput.bottomAnchor, right: stakView.rightAnchor, paddingTop: 20, paddingRight: 16, width: 100, height: 40)
+        cancelButton.anchor(top: labelQuestion.bottomAnchor, left: stakView.leftAnchor, paddingTop: 20, paddingRight: 10,width: 100, height: 40)
         
-        noteInput.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16, height: 200)
+        submitButton.anchor(top: labelQuestion.bottomAnchor,left: cancelButton.rightAnchor, right: stakView.rightAnchor, paddingTop: 20, paddingLeft: 10, height: 40)
     }
     
     func configureNavigationBar(){
@@ -180,21 +182,18 @@ extension CheckoutNoteView {
     @objc
     func didTapSubmit(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String,
-              let note = noteInput.text, note.count > 5 else {
+              let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
             return
         }
         spiner.show(in: view)
         let driver: CheckDriver = CheckDriver(code_driver: codeDriver)
-        let data: DataCheckout = DataCheckout(code_driver: codeDriver, note: note)
         inoutVm.checkoutDriver(data: driver) {[weak self] (result) in
             switch result {
-            case .success(let oke):
+            case .success(_):
                 DispatchQueue.main.async {
-                    if oke == true {
-                        self?.sendCheckoutNote(data: data)
-                    }
+                        self?.spiner.dismiss()
+                        self?.navigationController?.popViewController(animated: true)
                 }
             case .failure(let err):
                 print(err)
@@ -204,19 +203,19 @@ extension CheckoutNoteView {
         }
     }
     
-    private func sendCheckoutNote(data: DataCheckout){
-        noteViewModel.checkoutNote(data: data){[weak self] (result) in
-            switch result {
-            case .success(_):
-                DispatchQueue.main.async {
-                    self?.spiner.dismiss()
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            case .failure(let error):
-                print(error)
-                self?.spiner.dismiss()
-                Helpers().showAlert(view: self!, message: "Something when wrong !")
-            }
-        }
-    }
+//    private func sendCheckoutNote(data: DataCheckout){
+//        noteViewModel.checkoutNote(data: data){[weak self] (result) in
+//            switch result {
+//            case .success(_):
+//                DispatchQueue.main.async {
+//                    self?.spiner.dismiss()
+//                    self?.navigationController?.popViewController(animated: true)
+//                }
+//            case .failure(let error):
+//                print(error)
+//                self?.spiner.dismiss()
+//                Helpers().showAlert(view: self!, message: "Something when wrong !")
+//            }
+//        }
+//    }
 }

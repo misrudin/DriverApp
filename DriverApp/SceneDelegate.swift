@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import LanguageManager_iOS
+
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -16,11 +18,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let winScene = (scene as? UIWindowScene) else { return }
+        LanguageManager.shared.defaultLanguage = .ja
         
         window = UIWindow(windowScene: winScene)
         window?.makeKeyAndVisible()
         window?.rootViewController = MainVc()
         dataBaseManager = DatabaseManager()
+        
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

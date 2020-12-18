@@ -19,12 +19,16 @@ class HistoryCell: UITableViewCell {
     @IBOutlet weak var container: UIView!
 
     @IBOutlet weak var review: UILabel!
-    @IBOutlet weak var labelRating: UILabel!
     @IBOutlet weak var rating1: UIImageView!
     @IBOutlet weak var rating2: UIImageView!
     @IBOutlet weak var rating3: UIImageView!
     @IBOutlet weak var rating4: UIImageView!
     @IBOutlet weak var rating5: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var marker: UIImageView!
+    
     
     let lableNothing = Reusable.makeLabel(text: "has not reviewed by admin", font: UIFont.systemFontItalic(size: 15), color: UIColor(named: "darkKasumi")!, alignment: .left)
     
@@ -39,14 +43,16 @@ class HistoryCell: UITableViewCell {
             df.dateFormat = "dd MMM yyyy"
             let activeDateStr = df.string(from: activeDate)
             
-            guard let time = item.time_detail.time_done_delivery else {
+            guard let timeDone = item.time_detail.time_done_delivery, let timeStart = item.time_detail.time_start_pickup  else {
                 return
             }
 
-            date.text = activeDateStr + " " + "\(time[...4])"
+            date.text = activeDateStr
+            
+            timeLabel.text = timeStart[...4] + " - " + timeDone[...4]
 
 
-            labelRating.text = "\(item.rating)"
+//            labelRating.text = "\(item.rating)"
             
             if let comment = item.comment {
                 review.text = comment
@@ -107,7 +113,6 @@ class HistoryCell: UITableViewCell {
                 rating3.isHidden = false
                 rating4.isHidden = false
                 rating5.isHidden = false
-                labelRating.isHidden = false
                 lableNothing.isHidden = true
             }else {
                 review.isHidden = true
@@ -116,11 +121,16 @@ class HistoryCell: UITableViewCell {
                 rating3.isHidden = true
                 rating4.isHidden = true
                 rating5.isHidden = true
-                labelRating.isHidden = true
                 lableNothing.isHidden = false
             }
             
+            guard let userDetail = orderVm.decryptUserInfo(data: item.user_info, OrderNo: item.order_number) else {
+                return
+            }
             
+            print(userDetail)
+            nameLabel.text = "\(userDetail.first_name) \(userDetail.last_name)"
+            addressLabel.text = "〒\(userDetail.postal_code) \(userDetail.prefecture) \(userDetail.chome) \(userDetail.address) \(userDetail.kana_after_address) \(userDetail.phone_number)"
         }
     }
     

@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class DayOffVc: UIViewController {
@@ -39,7 +40,7 @@ class DayOffVc: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -74,7 +75,7 @@ class DayOffVc: UIViewController {
     
     lazy var dayOffLable: UILabel = {
         let label = UILabel()
-        label.text = "Day Off"
+        label.text = "Day Off".localiz()
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 30,weight: .bold)
         label.isHidden = true
@@ -83,7 +84,7 @@ class DayOffVc: UIViewController {
     
     private let planButotn: UIButton={
         let button = UIButton()
-        button.setTitle("Plan Next Month", for: .normal)
+        button.setTitle("Plan Next Month".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -111,7 +112,7 @@ class DayOffVc: UIViewController {
     
     lazy var subTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Shift on this date"
+        label.text = "Shift on this date".localiz()
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 18,weight: .regular)
         return label

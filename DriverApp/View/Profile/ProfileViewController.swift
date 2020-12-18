@@ -103,9 +103,9 @@ class ProfileViewController: UIViewController {
         return view
     }()
     
-    lazy var button1 = createButton(title: "Note", icon: UIImage(named: "note")!)
-    lazy var button2 = createButton(title: "Change Password", icon: UIImage(named: "password")!)
-    lazy var button6 = createButton(title: "Change Vehicle Data", icon: UIImage(named: "vehicle")!)
+    lazy var button1 = createButton(title: "Note".localiz(), icon: UIImage(named: "note")!)
+    lazy var button2 = createButton(title: "Change Password".localiz(), icon: UIImage(named: "password")!)
+    lazy var button6 = createButton(title: "Change Vehicle Data".localiz(), icon: UIImage(named: "vehicle")!)
 
     //MARK: - Ratings
     lazy var ratingLabel: UILabel = {
@@ -213,6 +213,13 @@ class ProfileViewController: UIViewController {
         profileVM.delegate = self
         configureLayout()
         configureNavigationBar()
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        spiner.show(in: view)
+        profileVM.getDetailUser(with: codeDriver)
     }
     
     
@@ -241,7 +248,6 @@ class ProfileViewController: UIViewController {
         code = codeDriver
         idDriver = id
         profileVM.getDetailUser(with: codeDriver)
-        spiner.show(in: view)
         listenStatusDriver()
     }
     
@@ -348,9 +354,34 @@ class ProfileViewController: UIViewController {
     //MARK: - Checkout
     @objc
     private func didTapCheckout(){
-        let vc = CheckoutNoteView()
+        let action1 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let action2 = UIAlertAction(title: "Yes, Checkout", style: .default) {[weak self] (_) in
+            self?.didCheckout()
+        }
         
-        navigationController?.pushViewController(vc, animated: true)
+        Helpers().showAlert(view: self, message: "Do you want to checkout now", customTitle: "Are you sure ?", customAction1: action1, customAction2: action2)
+    }
+    
+    private func didCheckout(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        spiner.show(in: view)
+        let driver: CheckDriver = CheckDriver(code_driver: codeDriver)
+        inoutVm.checkoutDriver(data: driver) {[weak self] (result) in
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                        self?.spiner.dismiss()
+                }
+            case .failure(let err):
+                print(err)
+                self?.spiner.dismiss()
+                Helpers().showAlert(view: self!, message: "Something when wrong !")
+            }
+        }
     }
     
     

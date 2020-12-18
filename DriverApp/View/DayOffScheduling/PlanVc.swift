@@ -8,13 +8,14 @@
 import UIKit
 import FirebaseCrashlytics
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class PlanVc: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -138,7 +139,7 @@ class PlanVc: UIViewController {
     
     lazy var subTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Shift on this date"
+        label.text = "Shift on this date".localiz()
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 18,weight: .regular)
         return label
@@ -153,7 +154,7 @@ class PlanVc: UIViewController {
     
     private let saveButton: UIButton={
         let button = UIButton()
-        button.setTitle("Save", for: .normal)
+        button.setTitle("Save".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -166,7 +167,7 @@ class PlanVc: UIViewController {
     
     private let setWorkButton: UIButton={
         let button = UIButton()
-        button.setTitle("Set Work Day", for: .normal)
+        button.setTitle("Set Work Day".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "grayKasumi")
         button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         button.layer.cornerRadius = 5
@@ -179,7 +180,7 @@ class PlanVc: UIViewController {
     
     private let editButton: UIButton={
         let button = UIButton()
-        button.setTitle("Edit", for: .normal)
+        button.setTitle("Edit".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "grayKasumi")
         button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         button.layer.cornerRadius = 5
@@ -286,7 +287,7 @@ class PlanVc: UIViewController {
     func openModal(){
         if selectedWeek == nil && selectedDay == nil {
             let action = UIAlertAction(title: "Oke", style: .default, handler: nil)
-            Helpers().showAlert(view: self, message: "Plese select day !", customTitle: "Opss", customAction1: action)
+            Helpers().showAlert(view: self, message: "Plese select day !".localiz(), customTitle: "Opss", customAction1: action)
             return
         }
         
@@ -444,7 +445,7 @@ class PlanVc: UIViewController {
     
 
     func configureNavigationBar(){
-        navigationItem.title = "Plan Next Month"
+        navigationItem.title = "Plan Next Month".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()

@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 class ForgotView: UIViewController {
     
@@ -33,6 +34,8 @@ class ForgotView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
         view.addGestureRecognizer(panGesture)
         
+        titleLable.text = "Forgot your password ?".localiz()
+        subTitlw.text = "Enter your email address and we will share a link to create a new password".localiz()
         
         
     }
@@ -80,7 +83,7 @@ class ForgotView: UIViewController {
         email.keyboardType = .emailAddress
         email.autocorrectionType = .no
         email.autocapitalizationType = .none
-        email.placeholder = "Email"
+        email.placeholder = "Email".localiz()
         
         submit.backgroundColor = UIColor(named: "orangeKasumi")
         submit.setTitleColor(.white, for: .normal)
@@ -108,10 +111,10 @@ class ForgotView: UIViewController {
                     self.showMessageToUser()
                 }
             case .failure(_):
-                let action = UIAlertAction(title: "Try again", style: .default) {[weak self] (_) in
+                let action = UIAlertAction(title: "Try again".localiz(), style: .default) {[weak self] (_) in
                     self?.email.becomeFirstResponder()
                 }
-                Helpers().showAlert(view: self, message: "Email not found !",customAction1: action)
+                Helpers().showAlert(view: self, message: "Email not found !".localiz(),customAction1: action)
                 self.spiner.dismiss()
             }
         }
@@ -121,7 +124,7 @@ class ForgotView: UIViewController {
         let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
             self?.dismiss(animated: true, completion: nil)
         }
-        Helpers().showAlert(view: self, message: "Please check your email !", customTitle: "Success", customAction1: action)
+        Helpers().showAlert(view: self, message: "Please check your email !".localiz(), customTitle: "Success".localiz(), customAction1: action)
     }
 
 

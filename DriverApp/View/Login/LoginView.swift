@@ -66,7 +66,7 @@ class LoginView: UIViewController {
     
     private let labelTitleLogin: UILabel = {
        let label = UILabel()
-        label.text = "title-login".localiz()
+        label.text = "LOGIN".localiz()
         label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         label.textColor = .white
         label.textAlignment = .center
@@ -75,7 +75,7 @@ class LoginView: UIViewController {
     
     private let forgetPassword: UILabel = {
        let label = UILabel()
-        label.text = "forget-password".localiz()
+        label.text = "Forgot your password ?".localiz()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textColor = .white
         label.textAlignment = .right
@@ -83,8 +83,8 @@ class LoginView: UIViewController {
         return label
     }()
     
-    let lableCode = Reusable.makeLabel(text: "driver-code".localiz(), color: .white)
-    let lablePass = Reusable.makeLabel(text: "password".localiz(), color: .white)
+    let lableCode = Reusable.makeLabel(text: "Driver Code".localiz(), color: .white)
+    let lablePass = Reusable.makeLabel(text: "Password".localiz(), color: .white)
     
     private let codeDriver: UITextField = {
         let field = UITextField()
@@ -112,7 +112,7 @@ class LoginView: UIViewController {
     
     private let loginButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("submit".localiz(), for: .normal)
+        loginButton.setTitle("Submit".localiz(), for: .normal)
         loginButton.backgroundColor = .white
         loginButton.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         loginButton.layer.cornerRadius = 45/2
@@ -161,7 +161,7 @@ class LoginView: UIViewController {
     
     
     func configureNavigationBar(){
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back".localiz(), style: .plain, target: self, action: #selector(back))
         navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.backgroundColor = .clear
         self.navigationController!.navigationBar.setBackgroundImage(UIImage(), for: .default)

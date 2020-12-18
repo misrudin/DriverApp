@@ -65,7 +65,8 @@ class ShiftCell: UITableViewCell {
         addSubview(viewContainer)
         viewContainer.addSubview(lableShift)
         viewContainer.addSubview(lableTime)
-        viewContainer.addSubview(leftView)
+//        viewContainer.addSubview(leftView)
+        viewContainer.insertSubview(leftView, at: 0)
         viewContainer.addSubview(line)
         selectionStyle = .none
         

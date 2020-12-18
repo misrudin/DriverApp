@@ -10,6 +10,7 @@ import RxSwift
 import RxCocoa
 import JGProgressHUD
 import CoreLocation
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class HomeVc: UIViewController {
@@ -31,98 +32,6 @@ class HomeVc: UIViewController {
     var databaseManager = DatabaseManager()
     
     var profileVm = ProfileViewModel()
-    
-//    private let emptyImage: UIView = {
-//        let view = UIView()
-//        let imageView: UIImageView = {
-//           let img = UIImageView()
-//            img.image = UIImage(named: "emptyImage")
-//            img.tintColor = UIColor(named: "orangeKasumi")
-//            img.clipsToBounds = true
-//            img.layer.masksToBounds = true
-//            img.translatesAutoresizingMaskIntoConstraints = false
-//            img.contentMode = .scaleAspectFit
-//            return img
-//        }()
-//
-//        view.addSubview(imageView)
-//        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-//        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-//        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
-//        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
-//
-//        view.backgroundColor = UIColor(named: "bgKasumi")
-//        view.layer.cornerRadius = 120/2
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        view.heightAnchor.constraint(equalToConstant: 120).isActive = true
-//        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
-//        return view
-//    }()
-    
-//    let bottomCustom: UIView = {
-//       let v = UIView()
-//        v.backgroundColor = .white
-//        return v
-//    }()
-//
-//    let stakView: UIStackView = {
-//       let s = UIStackView()
-//        s.axis = .horizontal
-//        s.alignment = .fill
-//        s.distribution = .fillEqually
-//        s.spacing = 16
-//        return s
-//    }()
-//
-//    lazy var menu1: UIButton = {
-//       let button = UIButton()
-//        let btn = UIButton()
-//        let image = UIImage(named: "photoChat")
-//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        button.setImage(baru, for: .normal)
-//        button.layer.masksToBounds = true
-//        button.setTitleColor(.blue, for: .normal)
-//        button.clipsToBounds = true
-//        button.addTarget(self, action: #selector(menu1Click), for: .touchUpInside)
-//        return button
-//    }()
-//
-//    @objc func menu1Click(){
-//        tabBarController?.selectedIndex = 0
-//    }
-//    @objc func menu2Click(){
-//        tabBarController?.selectedIndex = 1
-//    }
-//    @objc func menu3Click(){
-//        tabBarController?.selectedIndex = 2
-//    }
-//
-//    lazy var menu2: UIButton = {
-//       let button = UIButton()
-//        let btn = UIButton()
-//        let image = UIImage(named: "jobList")
-//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        button.setImage(baru, for: .normal)
-//        button.layer.masksToBounds = true
-//        button.setTitleColor(.blue, for: .normal)
-//        button.clipsToBounds = true
-//        button.backgroundColor = UIColor(named: "orangeKasumi")
-//        button.addTarget(self, action: #selector(menu2Click), for: .touchUpInside)
-//        return button
-//    }()
-//
-//    lazy var menu3: UIButton = {
-//       let button = UIButton()
-//        let btn = UIButton()
-//        let image = UIImage(named: "photoChat")
-//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        button.setImage(baru, for: .normal)
-//        button.layer.masksToBounds = true
-//        button.setTitleColor(.blue, for: .normal)
-//        button.clipsToBounds = true
-//        button.addTarget(self, action: #selector(menu3Click), for: .touchUpInside)
-//        return button
-//    }()
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -171,22 +80,11 @@ class HomeVc: UIViewController {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
         
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh".localiz())
         refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
         
         tableView.addSubview(refreshControl)
         
-//        view.addSubview(emptyImage)
-//        emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-//        emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-//        view.addSubview(bottomCustom)
-//        bottomCustom.addSubview(stakView)
-//        stakView.anchor(top: bottomCustom.topAnchor, left: bottomCustom.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: bottomCustom.rightAnchor)
-//        stakView.addArrangedSubview(menu1)
-//        stakView.addArrangedSubview(menu2)
-//        stakView.addArrangedSubview(menu3)
-//        bottomCustom.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingBottom: 0, paddingLeft: 0, paddingRight: 0, height: 70)
         
         configureNavigationBar()
         
@@ -385,7 +283,7 @@ class HomeVc: UIViewController {
         let profile = imageProfile?.resizeImage(CGSize(width: 25, height: 25))
         let rest = imageRest?.resizeImage(CGSize(width: 25, height: 25))
         
-        navigationItem.title = "Job List"
+        navigationItem.title = "Job List".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -505,7 +403,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         if section == 0 {
            let v = UIView()
             let v2 = UIView()
-            let lableDelivery = Reusable.makeLabel(text: "DELIVERY LIST ORDER", font: UIFont.systemFont(ofSize: 16, weight: .medium), color: UIColor(named: "orangeKasumi")!)
+            let lableDelivery = Reusable.makeLabel(text: "DELIVERY LIST ORDER".localiz(), font: UIFont.systemFont(ofSize: 16, weight: .medium), color: UIColor(named: "orangeKasumi")!)
             
             v.addSubview(v2)
             v2.anchor(top: v.topAnchor, left: v.leftAnchor, right: v.rightAnchor, paddingTop: 5, height: 1)
@@ -603,9 +501,9 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
 
         if section == 0 {
             if let pending = pendingNotes {
-                label.text = "Pending List Order (\(pending.count))"
+                label.text = "\("Pending List Order".localiz()) (\(pending.count))"
             }else {
-                label.text = "Pending List Order (0)"
+                label.text = "\("Pending List Order".localiz()) (0)"
             }
             containerLabel.addSubview(arrowRight)
             
@@ -623,7 +521,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 
                 let dateStringNow = dateFormater.string(from: Date())
                 
-                let value = dateString == dateStringNow ? "Today" : dateString
+                let value = dateString == dateStringNow ? "Today".localiz() : dateString
                 
                 let totalOrderList = order[section-1].order_list?.filter({$0.status_tracking != "pending"})
                 
@@ -695,7 +593,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 self?.orderViewModel.rejectOrder(data: data) {[weak self] (res) in
                     switch res {
                     case .failure(_):
-                        Helpers().showAlert(view: self!, message: "Failed to decline this order !")
+                        Helpers().showAlert(view: self!, message: "Failed to decline this order !".localiz())
                     case .success(let oke):
                         if oke {
                             self?.orderData![indexPath.section-1].order_list?.remove(at: indexPath.row)

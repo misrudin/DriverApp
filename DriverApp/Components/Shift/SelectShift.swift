@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 protocol SelectShiftDelegate {
     func onSelectShift(_ vm: SelectShift, idShift: [Int])
@@ -52,6 +53,9 @@ class SelectShift: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        titleLable.text = "Select Shift".localiz()
+        descriptionLable.text = "Select shift you want to add".localiz()
+        
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
         view.addGestureRecognizer(panGesture)
         
@@ -147,7 +151,7 @@ class SelectShift: UIViewController {
 
 extension SelectShift: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 90, height: 50)
+        return CGSize(width: colectionView.frame.width/3-20, height: 50)
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return shifts.count

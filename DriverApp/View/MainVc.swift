@@ -26,9 +26,13 @@ class MainVc: UIViewController {
     
     private let bg = Reusable.makeImageView(image: UIImage(named: "bgMain"), contentMode: .scaleToFill)
     
-    private let loginButton = Reusable.makeButton(text: "login".localiz(),font: .systemFont(ofSize: 20, weight: .regular), color: .white, background: UIColor(named: "orangeKasumi")!, rounded: 5)
+    private let loginButton = Reusable.makeButton(text: "Have Account? Login".localiz(),font: .systemFont(ofSize: 20, weight: .regular), color: .white, background: UIColor(named: "orangeKasumi")!, rounded: 5)
     
-    private let signupButton = Reusable.makeButton(text: "register".localiz(),font: .systemFont(ofSize: 20, weight: .regular), color: UIColor(named: "orangeKasumi")!, background: .white, rounded: 5)
+    private let signupButton = Reusable.makeButton(text: "Join Us - Register".localiz(),font: .systemFont(ofSize: 20, weight: .regular), color: UIColor(named: "orangeKasumi")!, background: .white, rounded: 5)
+    
+    private let javButton = Reusable.makeButton(text: "JP".localiz(),font: .systemFont(ofSize: 14, weight: .medium), color: UIColor(named: "orangeKasumi")!, background: .white, rounded: 5)
+    
+    private let engButton = Reusable.makeButton(text: "EN".localiz(),font: .systemFont(ofSize: 14, weight: .medium), color: UIColor(named: "orangeKasumi")!, background: .white, rounded: 5)
     
     @objc
     func login(){
@@ -53,6 +57,11 @@ class MainVc: UIViewController {
         view.addSubview(loginButton)
         view.addSubview(signupButton)
         
+        view.addSubview(javButton)
+        view.addSubview(engButton)
+        
+        javButton.isHidden = false
+        engButton.isHidden = false
         visualEffectView.fill(toView: view)
         bg.fill(toView: view)
         
@@ -62,20 +71,87 @@ class MainVc: UIViewController {
         signupButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 20, paddingLeft: 16, paddingRight: 16, height: 45)
         
         loginButton.anchor(left: view.leftAnchor, bottom: signupButton.topAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
+       
+        javButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: engButton.leftAnchor, paddingTop: 16, paddingRight: 10, width: 40, height: 30)
+        
+        engButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 16, paddingRight: 16, width: 40, height: 30)
         
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
         signupButton.addTarget(self, action: #selector(register), for: .touchUpInside)
-        loginButton.alpha = 0
-        signupButton.alpha = 0
-        loginButton.transform = CGAffineTransform(scaleX: 0, y: 0)
-        signupButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+    
+        javButton.addTarget(self, action: #selector(didTapJav), for: .touchUpInside)
+        engButton.addTarget(self, action: #selector(didTapEng), for: .touchUpInside)
+        
+        cekLanguageActive()
     }
     
+    @objc private func didTapJav(){
+        UserDefaults.standard.setValue("JP", forKey: "language")
+        javButton.setTitleColor(.white, for: .normal)
+        javButton.backgroundColor = UIColor(named: "orangeKasumi")
+        engButton.setTitleColor(UIColor(named: "orangeKasumi")!, for: .normal)
+        engButton.backgroundColor = .white
+        LanguageManager.shared.setLanguage(language: .ja)
+           { title -> UIViewController in
+             let storyboard = MainVc()
+            return storyboard
+           } animation: { view in
+             view.transform = CGAffineTransform(scaleX: 0, y: 0)
+             view.alpha = 0
+           }
+    }
+    
+    @objc private func didTapEng(){
+        UserDefaults.standard.setValue("EN", forKey: "language")
+        javButton.setTitleColor(UIColor(named: "orangeKasumi")!, for: .normal)
+        javButton.backgroundColor = .white
+        engButton.setTitleColor(.white, for: .normal)
+        engButton.backgroundColor = UIColor(named: "orangeKasumi")
+        LanguageManager.shared.setLanguage(language: .en)
+           { title -> UIViewController in
+             let storyboard = MainVc()
+            return storyboard
+           } animation: { view in
+             view.transform = CGAffineTransform(scaleX: 0, y: 0)
+             view.alpha = 0
+           }
+    }
+    
+    private func cekLanguageActive(){
+        guard let language = UserDefaults.standard.value(forKey: "language") as? String else {
+            javButton.setTitleColor(.white, for: .normal)
+            javButton.backgroundColor = UIColor(named: "orangeKasumi")
+            engButton.setTitleColor(UIColor(named: "orangeKasumi")!, for: .normal)
+            engButton.backgroundColor = .white
+            return
+        }
+        
+        if(language == "EN"){
+            javButton.setTitleColor(UIColor(named: "orangeKasumi")!, for: .normal)
+            javButton.backgroundColor = .white
+            engButton.setTitleColor(.white, for: .normal)
+            engButton.backgroundColor = UIColor(named: "orangeKasumi")
+        }else {
+            javButton.setTitleColor(.white, for: .normal)
+            javButton.backgroundColor = UIColor(named: "orangeKasumi")
+            engButton.setTitleColor(UIColor(named: "orangeKasumi")!, for: .normal)
+            engButton.backgroundColor = .white
+        }
+    }
 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loginButton.alpha = 0
+        signupButton.alpha = 0
+        javButton.alpha = 0
+        engButton.alpha = 0
+        loginButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+        signupButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+        javButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+        engButton.transform = CGAffineTransform(scaleX: 0, y: 0)
         cekUser()
+        cekLanguageActive()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -85,11 +161,11 @@ class MainVc: UIViewController {
     func configureNavigation(){
         let tabBarVc = UITabBarController()
         let homeVc = UINavigationController(rootViewController: HomeVc())
-        homeVc.title = "b-job".localiz()
+        homeVc.title = "Jobs".localiz()
         let historyVc = UINavigationController(rootViewController: HistoryViewController())
-        historyVc.title = "b-history".localiz()
+        historyVc.title = "History".localiz()
         let dayOffVc = UINavigationController(rootViewController: DayOffVc())
-        dayOffVc.title = "b-day-off".localiz()
+        dayOffVc.title = "Day Off".localiz()
         
         let image1 = UIImage(named: "jobHistory")
         let baru1 = image1?.resizeImage(CGSize(width: 25, height: 25))
@@ -171,8 +247,12 @@ class MainVc: UIViewController {
                 self.signupButton.isHidden = false
                 self.loginButton.alpha = 1
                 self.signupButton.alpha = 1
+                self.engButton.alpha = 1
+                self.javButton.alpha = 1
                 self.loginButton.transform = CGAffineTransform(scaleX: 1, y: 1)
                 self.signupButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                self.javButton.transform = CGAffineTransform(scaleX: 1, y: 1)
+                self.engButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             })
         }
     }
