@@ -162,6 +162,17 @@ struct Helpers {
         return UIImage(data: imageData!)!
     }
     
+    
+    //MARK: - DECODE ERROR RESPONSE
+    func decodeError(data: Data)-> ErrorResponse? {
+        do{
+            let decodedData = try JSONDecoder().decode(ErrorResponse.self, from: data)
+            return decodedData
+        }catch{
+            return nil
+        }
+    }
+    
 }
 
 extension Date {
@@ -475,3 +486,5 @@ extension Date {
 extension UIColor {
     static let primaryColor = UIColor(red: 69/255, green: 193/255, blue: 89/255, alpha: 1)
 }
+
+

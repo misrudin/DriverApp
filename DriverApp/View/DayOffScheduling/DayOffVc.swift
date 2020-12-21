@@ -63,7 +63,18 @@ class DayOffVc: UIViewController {
     
     var selectedIndex: Int?
     
-    let months: [String] = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    let months: [String] = ["January".localiz(),
+                            "February".localiz(),
+                            "March".localiz(),
+                            "April".localiz(),
+                            "May".localiz(),
+                            "June".localiz(),
+                            "July".localiz(),
+                            "August".localiz(),
+                            "September".localiz(),
+                            "October".localiz(),
+                            "November".localiz(),
+                            "December".localiz()]
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -250,7 +261,6 @@ class DayOffVc: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: true)
         contrainerView.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 1, height: 1), radius: 5, scale: true)
     }
     
@@ -409,7 +419,7 @@ class DayOffVc: UIViewController {
         let profile = imageProfile?.resizeImage(CGSize(width: 25, height: 25))
         let rest = imageRest?.resizeImage(CGSize(width: 25, height: 25))
         
-        navigationItem.title = "Day Off Driver"
+        navigationItem.title = "Day Off Driver".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -569,7 +579,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -582,7 +592,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -595,7 +605,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -608,7 +618,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -621,7 +631,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -634,7 +644,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -647,7 +657,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -667,7 +677,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -680,7 +690,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -693,7 +703,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -706,7 +716,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -719,7 +729,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -732,7 +742,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -745,7 +755,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -765,7 +775,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -778,7 +788,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -791,7 +801,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -804,7 +814,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -817,7 +827,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -830,7 +840,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -843,7 +853,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -863,7 +873,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -876,7 +886,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -889,7 +899,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -902,7 +912,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -915,7 +925,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -928,7 +938,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -941,7 +951,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -961,7 +971,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -969,12 +979,12 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                 if dataDayOff != nil && dataDayOff.week5.Mon != nil  && dataDayOff.week5.Mon?.count != 0 {
                     let array:[Int]? = dataDayOff.week5.Mon ?? nil
                     cell.container2.backgroundColor = bgColor1
-                    cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                    cell.statusLable.text = "\(array?.count ?? 0) Shift".localiz()
                     cell.dayLable.textColor = color1
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -987,7 +997,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -1000,7 +1010,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -1013,7 +1023,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -1026,7 +1036,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }
@@ -1039,7 +1049,7 @@ extension DayOffVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSour
                     cell.dateLable.textColor = color1
                 }else {
                     cell.container2.backgroundColor = bgColor2
-                    cell.statusLable.text = "Day Off"
+                    cell.statusLable.text = "Day Off".localiz()
                     cell.dayLable.textColor = color2
                     cell.dateLable.textColor = color2
                 }

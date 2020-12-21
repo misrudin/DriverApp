@@ -7,91 +7,18 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class HistoryViewController: UIViewController {
     
     var profileVm = ProfileViewModel()
     
-    //nav
-//    let bottomCustom: UIView = {
-//       let v = UIView()
-//        v.backgroundColor = .rgba(red: 255, green: 255, blue: 255, alpha: 1)
-//        return v
-//    }()
-//
-//    let visualEffectView: UIVisualEffectView = {
-//        let blurEffect = UIBlurEffect(style: .light)
-//        let view = UIVisualEffectView(effect: blurEffect)
-//        view.translatesAutoresizingMaskIntoConstraints = false
-//        return view
-//    }()
-//
-//    let stakView: UIStackView = {
-//       let s = UIStackView()
-//        s.axis = .horizontal
-//        s.alignment = .fill
-//        s.distribution = .fillEqually
-//        s.spacing = 16
-//        return s
-//    }()
-//
-//    lazy var menu1: UIButton = {
-//       let button = UIButton()
-//        let btn = UIButton()
-//        let image = UIImage(named: "photoChat")
-//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        button.setImage(baru, for: .normal)
-//        button.layer.masksToBounds = true
-//        button.setTitleColor(.blue, for: .normal)
-//        button.clipsToBounds = true
-//        button.addTarget(self, action: #selector(menu1Click), for: .touchUpInside)
-//        return button
-//    }()
-//
-//    @objc func menu1Click(){
-//        tabBarController?.selectedIndex = 0
-//    }
-//    @objc func menu2Click(){
-//        tabBarController?.selectedIndex = 1
-//    }
-//    @objc func menu3Click(){
-//        tabBarController?.selectedIndex = 2
-//    }
-//
-//    lazy var menu2: UIButton = {
-//       let button = UIButton()
-//        let btn = UIButton()
-//        let image = UIImage(named: "photoChat")
-//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        button.setImage(baru, for: .normal)
-//        button.layer.masksToBounds = true
-//        button.setTitleColor(.blue, for: .normal)
-//        button.clipsToBounds = true
-//        button.addTarget(self, action: #selector(menu2Click), for: .touchUpInside)
-//        return button
-//    }()
-//
-//    lazy var menu3: UIButton = {
-//       let button = UIButton()
-//        let btn = UIButton()
-//        let image = UIImage(named: "photoChat")
-//        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        button.setImage(baru, for: .normal)
-//        button.layer.masksToBounds = true
-//        button.setTitleColor(.blue, for: .normal)
-//        button.clipsToBounds = true
-//        button.addTarget(self, action: #selector(menu3Click), for: .touchUpInside)
-//        return button
-//    }()
-    //nav
-    
     private let emptyImage: UIView = {
         let view = UIView()
         let imageView: UIImageView = {
            let img = UIImageView()
             img.image = UIImage(named: "emptyImage")
-            img.tintColor = UIColor(named: "orangeKasumi")
             img.clipsToBounds = true
             img.layer.masksToBounds = true
             img.translatesAutoresizingMaskIntoConstraints = false
@@ -113,10 +40,12 @@ class HistoryViewController: UIViewController {
         return view
     }()
     
+    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: .black, numberOfLines: 0, alignment: .center)
+    
     var orderData: [History]?
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -133,7 +62,6 @@ class HistoryViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        tabBarController?.tabBar.isHidden = true
 
         
         view.backgroundColor = .white
@@ -145,32 +73,17 @@ class HistoryViewController: UIViewController {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
         
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh".localiz())
         refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
         
         tableView.addSubview(refreshControl)
         
         view.addSubview(emptyImage)
+        view.addSubview(labelEmpty)
         emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        
-//        view.addSubview(bottomCustom)
-//        bottomCustom.addSubview(visualEffectView)
-//        visualEffectView.fill(toView: bottomCustom)
-//        bottomCustom.addSubview(stakView)
-//        stakView.anchor(top: bottomCustom.topAnchor, left: bottomCustom.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: bottomCustom.rightAnchor)
-//        stakView.addArrangedSubview(menu1)
-//        stakView.addArrangedSubview(menu2)
-//        stakView.addArrangedSubview(menu3)
-//        bottomCustom.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingBottom: 0, paddingLeft: 0, paddingRight: 0, height: 70)
-        
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: true)
-        
-//        bottomCustom.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 0, height: -1), radius: 0, scale: true)
+        labelEmpty.anchor(top: emptyImage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        labelEmpty.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -205,15 +118,17 @@ class HistoryViewController: UIViewController {
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
                     self?.emptyImage.isHidden = true
+                    self?.labelEmpty.isHidden = true
                 }
             case .failure(let error):
-                print(error)
                 DispatchQueue.main.async {
                     self?.orderData = []
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
                     self?.emptyImage.isHidden = false
+                    self?.labelEmpty.isHidden = false
+                    self?.labelEmpty.text = error.localizedDescription
                 }
             }
         }
@@ -228,7 +143,7 @@ class HistoryViewController: UIViewController {
         let profile = imageProfile?.resizeImage(CGSize(width: 25, height: 25))
         let rest = imageRest?.resizeImage(CGSize(width: 25, height: 25))
         
-        navigationItem.title = "Jobs History"
+        navigationItem.title = "Jobs History".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -317,15 +232,15 @@ extension HistoryViewController: UITableViewDelegate,UITableViewDataSource {
         return cell
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            print(indexPath.row)
-        }
-    }
+//    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+//        return true
+//    }
+//
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if editingStyle == .delete {
+//            print(indexPath.row)
+//        }
+//    }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         

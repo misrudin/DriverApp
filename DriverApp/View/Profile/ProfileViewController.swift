@@ -8,12 +8,13 @@
 import UIKit
 import AlamofireImage
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class ProfileViewController: UIViewController {
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -167,7 +168,7 @@ class ProfileViewController: UIViewController {
         let baru = image?.resizeImage(CGSize(width: 15, height: 15))
         
         b.setImage(baru, for: .normal)
-        b.setTitle("Logout", for: .normal)
+        b.setTitle("Logout".localiz(), for: .normal)
         b.setTitleColor(.red, for: .normal)
         b.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         b.layer.cornerRadius = 5
@@ -179,7 +180,7 @@ class ProfileViewController: UIViewController {
     
     lazy var button3:UIButton = {
         let b = UIButton()
-        b.setTitle("Checkout", for: .normal)
+        b.setTitle("Checkout".localiz(), for: .normal)
         b.setTitleColor(.white, for: .normal)
         b.backgroundColor = UIColor(named: "darkKasumi")
         b.layer.cornerRadius = 5
@@ -224,7 +225,7 @@ class ProfileViewController: UIViewController {
     
     
     func configureNavigationBar(){
-        navigationItem.title = "My Profile"
+        navigationItem.title = "My Profile".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -339,11 +340,11 @@ class ProfileViewController: UIViewController {
     //MARK: - Logout
     @objc
     private func didTapLogout(){
-        let confirmationAlert = UIAlertController(title: "Are you sure ?",
-                                                  message: "Do you want to logout ?",
+        let confirmationAlert = UIAlertController(title: "Are you sure ?".localiz(),
+                                                  message: "Do you want to logout ?".localiz(),
                                                   preferredStyle: .alert)
-        confirmationAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        confirmationAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: {[weak self] (_) in
+        confirmationAlert.addAction(UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil))
+        confirmationAlert.addAction(UIAlertAction(title: "Yes".localiz(), style: .default, handler: {[weak self] (_) in
             UserDefaults.standard.removeObject(forKey: "userData")
             self?.dismiss(animated: true, completion: nil)
         }))
@@ -354,12 +355,12 @@ class ProfileViewController: UIViewController {
     //MARK: - Checkout
     @objc
     private func didTapCheckout(){
-        let action1 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        let action2 = UIAlertAction(title: "Yes, Checkout", style: .default) {[weak self] (_) in
+        let action1 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
+        let action2 = UIAlertAction(title: "Yes, Checkout".localiz(), style: .default) {[weak self] (_) in
             self?.didCheckout()
         }
         
-        Helpers().showAlert(view: self, message: "Do you want to checkout now", customTitle: "Are you sure ?", customAction1: action1, customAction2: action2)
+        Helpers().showAlert(view: self, message: "Do you want to checkout now".localiz(), customTitle: "Are you sure ?".localiz(), customAction1: action1, customAction2: action2)
     }
     
     private func didCheckout(){
@@ -379,7 +380,7 @@ class ProfileViewController: UIViewController {
             case .failure(let err):
                 print(err)
                 self?.spiner.dismiss()
-                Helpers().showAlert(view: self!, message: "Something when wrong !")
+                Helpers().showAlert(view: self!, message: "Something when wrong !".localiz())
             }
         }
     }

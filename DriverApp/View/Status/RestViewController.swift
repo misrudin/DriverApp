@@ -7,12 +7,13 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 class RestViewController: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -43,15 +44,15 @@ class RestViewController: UIViewController {
     }
     
     private func on(){
-        let action1 = UIAlertAction(title: "Start", style: .default) {[weak self] (_) in
+        let action1 = UIAlertAction(title: "Start".localiz(), style: .default) {[weak self] (_) in
             self?.start()
         }
         
-        let action2 = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel) { _ in
             self.switchBtn.isOn = false
             self.switchBtn.setOn(false, animated: true)
         }
-        Helpers().showAlert(view: self, message: "Start rest now ?", customTitle: "Sure", customAction1: action1, customAction2: action2)
+        Helpers().showAlert(view: self, message: "Start rest now ?".localiz(), customTitle: "Sure".localiz(), customAction1: action1, customAction2: action2)
     }
     
     private func start(){
@@ -71,7 +72,7 @@ class RestViewController: UIViewController {
             switch res {
             case .failure(let err):
                 print(err)
-                Helpers().showAlert(view: self!, message: "Something when wrong !")
+                Helpers().showAlert(view: self!, message: "Something when wrong !".localiz())
                 self?.spiner.dismiss()
             case .success(let oke):
                 DispatchQueue.main.async {
@@ -100,7 +101,7 @@ class RestViewController: UIViewController {
         return iv
     }()
     
-    lazy var lable = Reusable.makeLabel(text: "Activate rest now")
+    lazy var lable = Reusable.makeLabel(text: "Activate rest now".localiz())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,7 +143,7 @@ class RestViewController: UIViewController {
     }
     
     private func configureNavigationBar(){
-        navigationItem.title = "Rest"
+        navigationItem.title = "Rest".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()

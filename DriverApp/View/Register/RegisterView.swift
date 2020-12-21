@@ -45,6 +45,7 @@ class RegisterView: UIViewController {
         lable.text = "Register as a freelance driver".localiz()
         lable.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
         lable.textColor = UIColor(named: "orangeKasumi")
+        lable.numberOfLines = 0
         return lable
     }()
 
@@ -229,15 +230,27 @@ class RegisterView: UIViewController {
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
         field.placeholder = "YYYY-MM-DD"
+        
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        let button = UIButton(type: .custom)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(penDob), for: .touchUpInside)
+        
+        field.rightView = button
+        field.rightViewMode = .always
         field.paddingLeft(10)
         field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePicker
         field.inputAccessoryView = toolBar
         return field
     }()
+    
+    @objc private func penDob(){
+        brithDate.becomeFirstResponder()
+    }
     
     //MARK:- Gender
     
@@ -255,15 +268,26 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 5
         field.placeholder = "Select Your Gender".localiz()
         field.paddingLeft(10)
+        
         let image = UIImage(named: "arrowDownIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        let button = UIButton(type: .custom)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openGender), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
+        
         field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = pickerView1
         field.inputAccessoryView = toolBar
         return field
     }()
 
+    @objc private func openGender(){
+        gender.becomeFirstResponder()
+    }
     
     
     //MARK:- Language
@@ -282,14 +306,26 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 5
         field.placeholder = "Select Your Language".localiz()
         field.paddingLeft(10)
+        
         let image = UIImage(named: "arrowDownIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        let button = UIButton(type: .custom)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openLan), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
+        
         field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = pickerView2
         field.inputAccessoryView = toolBar
         return field
     }()
+    
+    @objc private func openLan(){
+        language.becomeFirstResponder()
+    }
     
     //MARK:- PhoneNumber
     
@@ -518,14 +554,25 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 3
         field.placeholder = "Driver's License Expiration Date".localiz()
         field.paddingLeft(10)
+        
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        let button = UIButton(type: .custom)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openLicenseDate), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
         field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerExpiration
         field.inputAccessoryView = toolBar
         return field
     }()
+    
+    @objc private func openLicenseDate(){
+        licenseExpiration.becomeFirstResponder()
+    }
     
     
     //MARK:- Vehicle Data
@@ -614,14 +661,25 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 5
         field.placeholder = "Insurance Expiration Date".localiz()
         field.paddingLeft(10)
+        
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        let button = UIButton(type: .custom)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openInsurance), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
         field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerInsurance
         field.inputAccessoryView = toolBar
         return field
     }()
+    
+    @objc private func openInsurance(){
+        insuranceExpirationDate.becomeFirstResponder()
+    }
     
     //MARK: - Vehicle Name
     
@@ -675,14 +733,25 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Year".localiz()
         field.paddingLeft(10)
+        
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        let button = UIButton(type: .custom)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openVehicleYear), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
         field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = pickerView3
         field.inputAccessoryView = toolBar
         return field
     }()
+    
+    @objc private func openVehicleYear(){
+        vehicleYear.becomeFirstResponder()
+    }
     
     //MARK:- Vehicle Ownership
     
@@ -734,14 +803,25 @@ class RegisterView: UIViewController {
         field.layer.cornerRadius = 5
         field.placeholder = "Insurance Expiration Date".localiz()
         field.paddingLeft(10)
+        
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        let button = UIButton(type: .custom)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openExp), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
         field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerInspection
         field.inputAccessoryView = toolBar
         return field
     }()
+    
+    @objc private func openExp(){
+        vehicleInspectionExpDate.becomeFirstResponder()
+    }
     
     
 //   MARK: - Next button

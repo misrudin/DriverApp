@@ -94,7 +94,7 @@ class CameraScanView: UIViewController {
     
     
     func failed() {
-        let ac = UIAlertController(title: "Scanner not supported", message: "Please use a device with a camera. Because this device does not support scanning a code", preferredStyle: .alert)
+        let ac = UIAlertController(title: "Scanner not supported".localiz(), message: "Please use a device with a camera. Because this device does not support scanning a code".localiz(), preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
         present(ac, animated: true)
         avCaptureSession = nil
@@ -129,7 +129,7 @@ extension CameraScanView: AVCaptureMetadataOutputObjectsDelegate {
             let action1 = UIAlertAction(title: "Try again", style: .default) {[weak self]  (_) in
                 self?.avCaptureSession.startRunning()
             }
-            Helpers().showAlert(view: self, message: "Something when wrong !, Item code not found.", customAction1: action1)
+            Helpers().showAlert(view: self, message: "Something when wrong !, Item code not found.".localiz(), customAction1: action1)
         }else {
             delegate.updateList(code: code)
             navigationController?.popViewController(animated: true)

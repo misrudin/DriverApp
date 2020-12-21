@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 import AutoKeyboard
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class PendingNoteVc: UIViewController {
@@ -19,7 +20,7 @@ class PendingNoteVc: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -33,8 +34,8 @@ class PendingNoteVc: UIViewController {
         return iv
     }()
     
-    private let messagelabel = Reusable.makeLabel(text: "Tell Your Pending Delivery Reason", font: UIFont.systemFont(ofSize: 16), color: .black, alignment: .center)
-    private let pendingLable = Reusable.makeLabel(text: "PENDING", font: UIFont.systemFont(ofSize: 20, weight: .semibold), color: UIColor.black, alignment: .center)
+    private let messagelabel = Reusable.makeLabel(text: "Tell Your Pending Delivery Reason".localiz(), font: UIFont.systemFont(ofSize: 16), color: .black, alignment: .center)
+    private let pendingLable = Reusable.makeLabel(text: "PENDING".localiz(), font: UIFont.systemFont(ofSize: 20, weight: .semibold), color: UIColor.black, alignment: .center)
     
     private let noteInput: UITextView = {
         let field = UITextView()
@@ -54,7 +55,7 @@ class PendingNoteVc: UIViewController {
     
     let submitButton: UIButton={
         let button = UIButton()
-        button.setTitle("Submit", for: .normal)
+        button.setTitle("Submit".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -66,7 +67,7 @@ class PendingNoteVc: UIViewController {
     
     let cancelButton: UIButton={
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle("Cancel".localiz(), for: .normal)
         button.backgroundColor = UIColor.darkGray
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -177,7 +178,7 @@ class PendingNoteVc: UIViewController {
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Pending Delivery"
+        navigationItem.title = "Pending Delivery".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()

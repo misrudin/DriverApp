@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class CheckoutNoteView: UIViewController {
@@ -19,7 +20,7 @@ class CheckoutNoteView: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -42,7 +43,7 @@ class CheckoutNoteView: UIViewController {
 //
     let submitButton: UIButton={
         let button = UIButton()
-        button.setTitle("Yes, Checkout", for: .normal)
+        button.setTitle("Yes, Checkout".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -54,7 +55,7 @@ class CheckoutNoteView: UIViewController {
     
     let cancelButton: UIButton={
         let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
+        button.setTitle("Cancel".localiz(), for: .normal)
         button.backgroundColor = UIColor.darkGray
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -64,7 +65,7 @@ class CheckoutNoteView: UIViewController {
         return button
     }()
     
-    lazy var labelQuestion = Reusable.makeLabel(text: "Are you sure ?", font: UIFont.systemFont(ofSize: 16, weight: .medium), color: .black, alignment: .center)
+    lazy var labelQuestion = Reusable.makeLabel(text: "Are you sure ?".localiz(), font: UIFont.systemFont(ofSize: 16, weight: .medium), color: .black, alignment: .center)
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -161,7 +162,7 @@ class CheckoutNoteView: UIViewController {
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Checkout"
+        navigationItem.title = "Checkout".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()

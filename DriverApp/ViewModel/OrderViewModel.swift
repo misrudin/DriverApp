@@ -10,7 +10,7 @@ import Alamofire
 import AesEverywhere
 
 protocol OrderViewModelDelegate {
-//    func didFetchOrder(_ viewModel: OrderViewModel, order: OrderData)
+    //    func didFetchOrder(_ viewModel: OrderViewModel, order: OrderData)
     func didFailedGetOrder(_ error: Error)
 }
 
@@ -18,7 +18,7 @@ protocol OrderViewModelDelegate {
 struct OrderViewModel {
     var delegate: OrderViewModelDelegate?
     
-//    MARK: - GET DATA ORDER BY CODE DRIVER
+    //    MARK: - GET DATA ORDER BY CODE DRIVER
     func getDataOrder(codeDriver: String, completion: @escaping (Result<[OrderListDate], Error>)-> Void){
         AF.request("\(Base.urlOrder)list/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
@@ -28,11 +28,15 @@ struct OrderViewModel {
                         if let orderData =  parseDataOrder(data){
                             completion(.success(orderData))
                         }else {
-                            completion(.failure(DataError.failedToParseJson))
+                            completion(.failure(OrderError.failedToParseJson))
                         }
                     }
                 }else {
-                    completion(.failure(DataError.failedToFetch))
+                    if let data = response.data {
+                        if let re = Helpers().decodeError(data: data){
+                            completion(.failure(OrderError.failedToFetch(re.Message)))
+                        }
+                    }
                 }
             case let .failure(error):
                 completion(.failure(error))
@@ -51,11 +55,15 @@ struct OrderViewModel {
                         if let orderData =  self.parseHistory(data: data){
                             completion(.success(orderData))
                         }else {
-                            completion(.failure(DataError.failedToParseJson))
+                            completion(.failure(OrderError.failedToParseJson))
                         }
                     }
                 }else {
-                    completion(.failure(DataError.failedToFetch))
+                    if let data = response.data {
+                        if let re = Helpers().decodeError(data: data){
+                            completion(.failure(OrderError.failedToFetch(re.Message)))
+                        }
+                    }
                 }
             case let .failure(error):
                 completion(.failure(error))
@@ -75,7 +83,11 @@ struct OrderViewModel {
                         if response.response?.statusCode == 200 {
                             completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToUpdateData))
+                            if let data = response.data {
+                                if let re = Helpers().decodeError(data: data){
+                                    completion(.failure(OrderError.failedToUpdateData(re.Message)))
+                                }
+                            }
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -83,9 +95,9 @@ struct OrderViewModel {
                     
                    })
     }
-     
     
-//    MARK: - GET DETAIL ORDER
+    
+    //    MARK: - GET DETAIL ORDER
     func getDetailOrder(orderNo: String, completion: @escaping (Result<NewOrderData,Error>)->Void){
         AF.request("\(Base.urlOrder)driver/detail/\(orderNo)",headers: Base.headers).responseJSON { response in
             switch response.result {
@@ -94,7 +106,7 @@ struct OrderViewModel {
                     if let detail =  self.parseDetail(data: data){
                         completion(.success(detail))
                     }else {
-                        completion(.failure(DataError.failedToFetch))
+                        completion(.failure(OrderError.failedToParseJson))
                     }
                 }
             case let .failure(error):
@@ -115,7 +127,11 @@ struct OrderViewModel {
                         if response.response?.statusCode  == 200 {
                             completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToUpdateData))
+                            if let data = response.data {
+                                if let re = Helpers().decodeError(data: data){
+                                    completion(.failure(OrderError.failedToUpdateData(re.Message)))
+                                }
+                            }
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -139,11 +155,15 @@ struct OrderViewModel {
                                 if let scanData = parseScanData(data) {
                                     completion(.success(scanData))
                                 }else {
-                                    completion(.failure(DataError.failedToParseJson))
+                                    completion(.failure(OrderError.failedToParseJson))
                                 }
                             }
                         }else {
-                            completion(.failure(DataError.failedToFetch))
+                            if let data = response.data {
+                                if let re = Helpers().decodeError(data: data){
+                                    completion(.failure(OrderError.failedToFetch(re.Message)))
+                                }
+                            }
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -163,7 +183,11 @@ struct OrderViewModel {
                         if response.response?.statusCode  == 200 {
                             completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToUpdateData))
+                            if let data = response.data {
+                                if let re = Helpers().decodeError(data: data){
+                                    completion(.failure(OrderError.failedToUpdateData(re.Message)))
+                                }
+                            }
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -174,26 +198,30 @@ struct OrderViewModel {
     
     
     //    MARK: - CEK DRIVER FREELANCE REJECT ORDER
-        func cekRejectOrder(driver: String, completion: @escaping (Result<ResponseReject,Error>)->Void){
-            AF.request("\(Base.urlOrder)detail/reject/\(driver)",headers: Base.headers).responseJSON { response in
-                switch response.result {
-                case .success:
-                    if response.response?.statusCode == 200 {
-                        if let data = response.data {
-                            if let parsedData = parseReject(data) {
-                                completion(.success(parsedData))
-                            }else {
-                                completion(.failure(DataError.failedToParseJson))
-                            }
+    func cekRejectOrder(driver: String, completion: @escaping (Result<ResponseReject,Error>)->Void){
+        AF.request("\(Base.urlOrder)detail/reject/\(driver)",headers: Base.headers).responseJSON { response in
+            switch response.result {
+            case .success:
+                if response.response?.statusCode == 200 {
+                    if let data = response.data {
+                        if let parsedData = parseReject(data) {
+                            completion(.success(parsedData))
+                        }else {
+                            completion(.failure(OrderError.failedToParseJson))
                         }
-                    }else {
-                        completion(.failure(DataError.failedToFetch))
                     }
-                case let .failure(error):
-                    completion(.failure(error))
+                }else {
+                    if let data = response.data {
+                        if let re = Helpers().decodeError(data: data){
+                            completion(.failure(OrderError.failedToFetch(re.Message)))
+                        }
+                    }
                 }
+            case let .failure(error):
+                completion(.failure(error))
             }
         }
+    }
     
     
     //MARK: - REJECT ORDER FOR FLEELANCE
@@ -207,7 +235,11 @@ struct OrderViewModel {
                         if response.response?.statusCode  == 200 {
                             completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToUpdateData))
+                            if let data = response.data {
+                                if let re = Helpers().decodeError(data: data){
+                                    completion(.failure(OrderError.failedToUpdateData(re.Message)))
+                                }
+                            }
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -308,10 +340,33 @@ struct OrderViewModel {
         return order
     }
     
-    enum DataError: Error{
-        case failedToFetch
-        case failedToParseJson
-        case failedToUpdateData
+}
+
+enum OrderError: Error{
+    case failedToFetch(_ message: String)
+    case failedToParseJson
+    case failedToUpdateData(_ message: String)
+}
+
+extension OrderError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        
+        case .failedToFetch(let message):
+            return NSLocalizedString(
+                message,
+                comment: ""
+            )
+        case .failedToParseJson:
+            return NSLocalizedString(
+                "Failed to parse data",
+                comment: ""
+            )
+        case .failedToUpdateData(let message):
+            return NSLocalizedString(
+                message,
+                comment: ""
+            )
+        }
     }
-    
 }

@@ -573,7 +573,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
  
         let rejectAction = UIContextualAction(
             style: .normal,
-               title: "Decline",
+            title: "Decline".localiz(),
             handler: {[weak self](action, view, completion) in
                    completion(true)
                 
@@ -612,7 +612,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         
         let pendingAction = UIContextualAction(
             style: .normal,
-               title: "Pending",
+            title: "Pending".localiz(),
             handler: {[weak self](action, view, completion) in
                    completion(true)
                 let vc = PendingNoteVc()

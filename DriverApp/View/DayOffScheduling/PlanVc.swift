@@ -116,7 +116,18 @@ class PlanVc: UIViewController {
     
     var dayOffPlan:[String: Any]!
     
-    let months: [String] = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+    let months: [String] = ["January".localiz(),
+                            "February".localiz(),
+                            "March".localiz(),
+                            "April".localiz(),
+                            "May".localiz(),
+                            "June".localiz(),
+                            "July".localiz(),
+                            "August".localiz(),
+                            "September".localiz(),
+                            "October".localiz(),
+                            "November".localiz(),
+                            "December".localiz()]
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -278,7 +289,6 @@ class PlanVc: UIViewController {
     //MARK: - Shadow
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: true)
         contrainerView.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 1, height: 1), radius: 5, scale: true)
     }
     
@@ -1139,7 +1149,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1152,7 +1162,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1165,7 +1175,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1178,7 +1188,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1191,7 +1201,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1204,7 +1214,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1217,7 +1227,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1241,7 +1251,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1254,7 +1264,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1267,7 +1277,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1280,7 +1290,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1293,7 +1303,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1306,7 +1316,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1319,7 +1329,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1342,7 +1352,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1355,7 +1365,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1368,7 +1378,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1381,7 +1391,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1394,7 +1404,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1407,7 +1417,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1420,7 +1430,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1443,7 +1453,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1456,7 +1466,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1469,7 +1479,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1482,7 +1492,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1495,7 +1505,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1508,7 +1518,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1521,7 +1531,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1544,7 +1554,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1557,7 +1567,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1570,7 +1580,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1583,7 +1593,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1596,7 +1606,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1609,7 +1619,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1622,7 +1632,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.dateLable.textColor = color1
                     }else {
                         cell.container2.backgroundColor = bgColor2
-                        cell.statusLable.text = "Day Off"
+                        cell.statusLable.text = "Day Off".localiz()
                         cell.dayLable.textColor = color2
                         cell.dateLable.textColor = color2
                     }
@@ -1670,12 +1680,12 @@ extension PlanVc: SelectShiftDelegate {
         if listShift == nil {
             tableView.isHidden = true
             emptyImage.isHidden = false
-            setWorkButton.setTitle("Set Work Day", for: .normal)
+            setWorkButton.setTitle("Set Work Day".localiz(), for: .normal)
         }else{
             tableView.isHidden = false
             emptyImage.isHidden = true
             tableView.reloadData()
-            setWorkButton.setTitle("Set To DayOff", for: .normal)
+            setWorkButton.setTitle("Set To DayOff".localiz(), for: .normal)
         }
         
         colectionView.reloadData()
@@ -1694,12 +1704,12 @@ extension PlanVc: SelectShiftDelegate {
         if listShift == nil {
             tableView.isHidden = true
             emptyImage.isHidden = false
-            setWorkButton.setTitle("Set Work Day", for: .normal)
+            setWorkButton.setTitle("Set Work Day".localiz(), for: .normal)
         }else{
             tableView.isHidden = false
             emptyImage.isHidden = true
             tableView.reloadData()
-            setWorkButton.setTitle("Set To DayOff", for: .normal)
+            setWorkButton.setTitle("Set To DayOff".localiz(), for: .normal)
         }
         
         colectionView.reloadData()

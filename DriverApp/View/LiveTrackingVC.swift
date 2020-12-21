@@ -9,6 +9,7 @@ import UIKit
 import GoogleMaps
 import CoreLocation
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class LiveTrackingVC: UIViewController {
@@ -16,7 +17,7 @@ class LiveTrackingVC: UIViewController {
     //    loading
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -138,7 +139,7 @@ class LiveTrackingVC: UIViewController {
         
         
         view.backgroundColor = .white
-        title = "Live Tracking"
+        title = "Live Tracking".localiz()
         
         
         view.insertSubview(mapView, at: 0)
@@ -395,7 +396,7 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             }
             
             //MARK: -   DATA UPDATE LOCATION TO FIREBASE
-            let status: String = "Out for delivery"
+            let status: String = "Out for delivery".localiz()
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                   let codeDriver = userData["codeDriver"] as? String,
                   let idDriver = userData["idDriver"] as? Int else {

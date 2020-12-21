@@ -7,6 +7,7 @@
 
 import UIKit
 import AutoKeyboard
+import LanguageManager_iOS
 
 extension Date {
     
@@ -54,7 +55,7 @@ class ChatView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.placeholder = "Type your message here ..."
+        field.placeholder = "Type your message here ...".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
@@ -255,7 +256,7 @@ class ChatView: UIViewController {
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Customer Service"
+        navigationItem.title = "Customer Service".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -306,7 +307,7 @@ extension ChatView: UITableViewDelegate, UITableViewDataSource {
                 let dateStringYesterday = dateFormater.string(from: Date.yesterday)
                 let dateStringNow = dateFormater.string(from: Date())
             
-                let value = dateString == dateStringNow ? "Today" : dateString == dateStringYesterday ? "Yesterday" : dateString
+            let value = dateString == dateStringNow ? "Today".localiz() : dateString == dateStringYesterday ? "Yesterday".localiz() : dateString
 
                let label = DateHeaderLabel()
                label.text = value
@@ -418,20 +419,20 @@ extension ChatView: UITextFieldDelegate {
 @available(iOS 13.0, *)
 extension ChatView: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     @objc func presentPhotoActionSheet(){
-        let actionSheet = UIAlertController(title: "Upload Picture",
-                                            message: "How would you like to select a picture?",
+        let actionSheet = UIAlertController(title: "Upload Picture".localiz(),
+                                            message: "How would you like to select a picture?".localiz(),
                                             preferredStyle: .actionSheet)
         
-        actionSheet.addAction(UIAlertAction(title: "Cancel",
+        actionSheet.addAction(UIAlertAction(title: "Cancel".localiz(),
                                             style: .cancel,
                                             handler: nil))
-        actionSheet.addAction(UIAlertAction(title: "Take Photo",
+        actionSheet.addAction(UIAlertAction(title: "Take Photo".localiz(),
                                             style: .default,
                                             handler: { [weak self] _ in
                                                 
                                                 self?.presentCamera()
                                             }))
-        actionSheet.addAction(UIAlertAction(title: "Choose Photo",
+        actionSheet.addAction(UIAlertAction(title: "Choose Photo".localiz(),
                                             style: .default,
                                             handler: { [weak self] _ in
                                                 self?.presetPhotoPicker()
@@ -514,7 +515,7 @@ class PeviewPhoto: UIViewController {
     
     let sendButton: UIButton = {
        let b = UIButton()
-        b.setTitle("Send", for: .normal)
+        b.setTitle("Send".localiz(), for: .normal)
         b.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         b.clipsToBounds = true
         b.layer.masksToBounds = true
@@ -527,7 +528,7 @@ class PeviewPhoto: UIViewController {
     
     let closeButton: UIButton = {
        let b = UIButton()
-        b.setTitle("Close", for: .normal)
+        b.setTitle("Close".localiz(), for: .normal)
         b.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         b.clipsToBounds = true
         b.layer.masksToBounds = true

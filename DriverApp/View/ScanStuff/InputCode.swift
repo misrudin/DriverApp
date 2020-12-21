@@ -14,7 +14,7 @@ class InputCode: UIViewController {
     var list: [PickupItem]!
     weak var delegate: ListScanView!
     
-    lazy var titleLable = Reusable.makeLabel(text: "Add Order Code", font: UIFont.systemFont(ofSize: 16, weight: .semibold), color: UIColor(named: "orangeKasumi")!)
+    lazy var titleLable = Reusable.makeLabel(text: "Add Order Code".localiz(), font: UIFont.systemFont(ofSize: 16, weight: .semibold), color: UIColor(named: "orangeKasumi")!)
     
     lazy var inputCode: UITextField = {
         let field = UITextField()
@@ -22,7 +22,7 @@ class InputCode: UIViewController {
         field.layer.borderColor = UIColor(named: "grayKasumi")?.cgColor
         field.autocorrectionType = .no
         field.autocapitalizationType = .none
-        field.placeholder = "Input code here ..."
+        field.placeholder = "Input code here ...".localiz()
         field.textAlignment  = .center
         field.paddingLeft(10)
         field.paddingRight(10)
@@ -31,7 +31,7 @@ class InputCode: UIViewController {
     
     lazy var submitButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Verify Package", for: .normal)
+        button.setTitle("Verify Package".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 5
@@ -45,7 +45,7 @@ class InputCode: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        title = "Add code manual"
+        title = "Add code manual".localiz()
 
         configureUi()
         configureNavigationBar()
@@ -64,7 +64,7 @@ class InputCode: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
-        navigationController?.title = "Add code manual"
+        navigationController?.title = "Add code manual".localiz()
     }
     
     private func configureUi(){
@@ -86,8 +86,8 @@ class InputCode: UIViewController {
         
         let find = list.filter({ $0.qr_code_raw == code })
         if find.count == 0 {
-            let action1 = UIAlertAction(title: "Try Again", style: .default, handler: nil)
-            Helpers().showAlert(view: self, message: "Item code not found.", customAction1: action1)
+            let action1 = UIAlertAction(title: "Try Again".localiz(), style: .default, handler: nil)
+            Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
             delegate.updateList(code: code)
             navigationController?.popViewController(animated: true)

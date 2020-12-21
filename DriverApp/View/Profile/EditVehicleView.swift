@@ -8,13 +8,14 @@
 import UIKit
 import JGProgressHUD
 import AlamofireImage
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class EditVehicleView: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -44,7 +45,7 @@ class EditVehicleView: UIViewController {
         tool.barStyle = .default
         tool.isTranslucent = true
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(onClickDoneButton))
+        let doneButton = UIBarButtonItem(title: "Done".localiz(), style: .done, target: self, action: #selector(onClickDoneButton))
         tool.setItems([space, doneButton], animated: false)
         tool.isUserInteractionEnabled = true
         tool.sizeToFit()
@@ -58,7 +59,7 @@ class EditVehicleView: UIViewController {
     //MARK:- Insurance Company
     lazy var insuranceCompanyLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Insurance Company"
+        lable.text = "Insurance Company".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -70,7 +71,7 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Insurance Company Name"
+        field.placeholder = "Insurance Company Name".localiz()
 //        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
@@ -81,7 +82,7 @@ class EditVehicleView: UIViewController {
     //MARK:- Personal Coverage
     lazy var personalCoverageLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Personal Coverage"
+        lable.text = "Personal Coverage".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -93,7 +94,7 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Personal Coverage"
+        field.placeholder = "Personal Coverage".localiz()
 //        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
@@ -104,7 +105,7 @@ class EditVehicleView: UIViewController {
     //MARK:- Compensation Range-Objective
     lazy var compensationLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Compensation Range-Objective"
+        lable.text = "Compensation Range-Objective".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -116,7 +117,7 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Compensation Range-Objective"
+        field.placeholder = "Compensation Range-Objective".localiz()
 //        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
@@ -127,7 +128,7 @@ class EditVehicleView: UIViewController {
     //MARK:- Insurance Expiration Date
     lazy var insuranceExpirationDateLabel: UILabel = {
         let lable = UILabel()
-        lable.text = "Insurance Expiration Date"
+        lable.text = "Insurance Expiration Date".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -161,21 +162,30 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Insurance Expiration Date"
+        field.placeholder = "Insurance Expiration Date".localiz()
+        let button = UIButton(type: .custom)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        field.setRightViewIcon(icon: baru!)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(expOpen), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
         field.backgroundColor = .white
         field.inputView = datePickerInsurance
         field.inputAccessoryView = toolBar
         return field
     }()
     
+    @objc private func expOpen(){
+        insuranceExpirationDate.becomeFirstResponder()
+    }
+    
     //MARK: - Vehicle Name
     lazy var vehicleNameLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Name"
+        lable.text = "Vehicle Name".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -187,7 +197,7 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Vehicle Name"
+        field.placeholder = "Vehicle Name".localiz()
         field.paddingRight(10)
         field.backgroundColor = .white
 //        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
@@ -198,7 +208,7 @@ class EditVehicleView: UIViewController {
     //MARK: - Vehicle Number Plate
     lazy var vehicleNumberPlateLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Number Plate"
+        lable.text = "Vehicle Number Plate".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -210,7 +220,7 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Vehicle Number Plate"
+        field.placeholder = "Vehicle Number Plate".localiz()
 //        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
@@ -221,7 +231,7 @@ class EditVehicleView: UIViewController {
     //MARK: - Vehicle Year
     lazy var vehicleYearLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Year"
+        lable.text = "Vehicle Year".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -239,21 +249,32 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Vehicle Year"
+        field.placeholder = "Vehicle Year".localiz()
+        
+        let button = UIButton(type: .custom)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
-        field.setRightViewIcon(icon: baru!)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openVehicle), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
+        
         field.backgroundColor = .white
         field.inputView = pickerView3
         field.inputAccessoryView = toolBar
         return field
     }()
     
+    @objc private func openVehicle(){
+        vehicleYear.becomeFirstResponder()
+    }
+    
     //MARK:- Vehicle Ownership
     lazy var vehicleOwnershipLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Ownership"
+        lable.text = "Vehicle Ownership".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -265,7 +286,7 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Vehicle Ownership"
+        field.placeholder = "Vehicle Ownership".localiz()
 //        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
         field.backgroundColor = .white
@@ -276,7 +297,7 @@ class EditVehicleView: UIViewController {
     //MARK:- Vehicle Inspection Exp. Date
     lazy var vehicleInspectionExpDateLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Inspection Exp. Date"
+        lable.text = "Vehicle Inspection Exp. Date".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -312,10 +333,18 @@ class EditVehicleView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 2
-        field.placeholder = "Insurance Expiration Date"
+        field.placeholder = "Insurance Expiration Date".localiz()
+        
+        let button = UIButton(type: .custom)
         let image = UIImage(named: "calendarIcon")
         let baru = image?.resizeImage(CGSize(width: 20, height: 20))
-        field.setRightViewIcon(icon: baru!)
+        button.setImage(baru, for: .normal)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
+        button.frame = CGRect(x: CGFloat(field.frame.size.width - 25), y: CGFloat(5), width: CGFloat(25), height: CGFloat(25))
+        button.addTarget(self, action: #selector(openins), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
+        
         field.backgroundColor = .white
 //        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.inputView = datePickerInspection
@@ -323,11 +352,15 @@ class EditVehicleView: UIViewController {
         return field
     }()
     
+    @objc private func openins(){
+        vehicleInspectionExpDate.becomeFirstResponder()
+    }
+    
     
 //   MARK: - Next button
     private let nextButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Save Change", for: .normal)
+        loginButton.setTitle("Save Change".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor.gray
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.setTitleColor(.lightGray, for: .highlighted)
@@ -342,7 +375,7 @@ class EditVehicleView: UIViewController {
     //MARK:- vehiclePhotoLable
     lazy var vehiclePhotoLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Inspection Certificate Photo"
+        lable.text = "Vehicle Inspection Certificate Photo".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -351,7 +384,7 @@ class EditVehicleView: UIViewController {
     //MARK:- vehiclePhotoLable2
     lazy var vehiclePhotoLable2: UILabel = {
         let lable = UILabel()
-        lable.text = "Vehicle Photo"
+        lable.text = "Vehicle Photo".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -399,7 +432,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         let img = UIImageView()
         img.image = UIImage(named: "cameraIcon2")
-        lable.text = "Upload Foto"
+        lable.text = "Upload Foto".localiz()
         lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         lable.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
         lable.textAlignment = .center
@@ -610,7 +643,7 @@ class EditVehicleView: UIViewController {
     }
     
     private func configureNavigationBar(){
-        navigationItem.title = "Edit Vehicle Data"
+        navigationItem.title = "Edit Vehicle Data".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -725,20 +758,20 @@ class EditVehicleView: UIViewController {
 @available(iOS 13.0, *)
 extension EditVehicleView: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
 func presentPhotoActionSheet(){
-    let actionSheet = UIAlertController(title: "Profile Picture",
-                                        message: "How would you like to select a picture?",
+    let actionSheet = UIAlertController(title: "Profile Picture".localiz(),
+                                        message: "How would you like to select a picture?".localiz(),
                                         preferredStyle: .actionSheet)
     
-    actionSheet.addAction(UIAlertAction(title: "Cancel",
+    actionSheet.addAction(UIAlertAction(title: "Cancel".localiz(),
                                         style: .cancel,
                                         handler: nil))
-    actionSheet.addAction(UIAlertAction(title: "Take Photo",
+    actionSheet.addAction(UIAlertAction(title: "Take Photo".localiz(),
                                         style: .default,
                                         handler: { [weak self] _ in
                                             
                                             self?.presentCamera()
                                         }))
-    actionSheet.addAction(UIAlertAction(title: "Choose Photo",
+    actionSheet.addAction(UIAlertAction(title: "Choose Photo".localiz(),
                                         style: .default,
                                         handler: { [weak self] _ in
                                             self?.presetPhotoPicker()
@@ -824,7 +857,7 @@ extension EditVehicleView: UIPickerViewDelegate, UIPickerViewDataSource {
 extension EditVehicleView {
     @objc func editClick(){
         if change < 4 {
-            Helpers().showAlert(view: self, message: "Vehicle certification photo must be edit !")
+            Helpers().showAlert(view: self, message: "Vehicle certification photo must be edit !".localiz())
             return
         }
         
@@ -874,7 +907,7 @@ extension EditVehicleView {
         }
         
         guard let vCerPhotoTemp = self.vehicleCertifiateImage.image else {
-            Helpers().showAlert(view: self, message: "Vehicle certification photo must be entered !")
+            Helpers().showAlert(view: self, message: "Vehicle certification photo must be entered !".localiz())
             return}
         
         
@@ -882,7 +915,7 @@ extension EditVehicleView {
               let vPhotoTemp2 = self.vehicleImage2.image,
               let vPhotoTemp3 = self.vehicleImage3.image
               else {
-            Helpers().showAlert(view: self, message: "Vehicle photo must be entered !")
+            Helpers().showAlert(view: self, message: "Vehicle photo must be entered !".localiz())
             return}
         
         
@@ -917,12 +950,12 @@ extension EditVehicleView {
         ]
         
         spiner.dismiss()
-        let action1 = UIAlertAction(title: "Yes", style: .default) {[weak self] (_) in
+        let action1 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
             self?.submitEdit(data: dataToPost)
         }
-        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        Helpers().showAlert(view: self, message: "Continue to send data ?",
-                            customTitle: "The data is correct ?", customAction1: action2, customAction2: action1)
+        let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
+        Helpers().showAlert(view: self, message: "Continue to send data ?".localiz(),
+                            customTitle: "The data is correct ?".localiz(), customAction1: action2, customAction2: action1)
     }
     
     func submitEdit(data: [String: Any]){
@@ -933,10 +966,10 @@ extension EditVehicleView {
                 DispatchQueue.main.async {
                     if oke == true {
                         self.spiner.dismiss()
-                        let action = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+                        let action = UIAlertAction(title: "Oke".localiz(), style: .default) {[weak self] (_) in
                             self?.navigationController?.popViewController(animated: true)
                         }
-                        Helpers().showAlert(view: self, message: "Please wait for approval from Kasumi", customTitle: "Change vehicle data success",customAction1: action)
+                        Helpers().showAlert(view: self, message: "Please wait for approval from Kasumi".localiz(), customTitle: "Change vehicle data success".localiz(),customAction1: action)
                     }
                 }
             case .failure(let error):

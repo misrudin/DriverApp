@@ -11,6 +11,7 @@
 "Back" = "Back";
 "Finish Registration" = "Finish Registration";
 "Save" = "Save";
+"Edit" = "Edit";
 "Set Work Day" = "Set Work Day";
 "Set To DayOff" = "Set To DayOff";
 "Edit Shift Time" = "Edit Shift Time";
@@ -34,9 +35,9 @@
 ///top navigation
 "Registration" = "Registration";
 "Job List" = "Job List";
-"Job History" = "Job History";
-"tDay Off Driver" = "Day Off Driver";
-"lan Next Month" = "Plan Next Month";
+"Jobs History" = "Jobs History";
+"Day Off Driver" = "Day Off Driver";
+"Plan Next Month" = "Plan Next Month";
 "Customer Service" = "Customer Service";
 "My Profile" = "My Profile";
 "Notes" = "Notes";
@@ -82,7 +83,6 @@
 "Gender" = "Gender";
 "Language" = "Language";
 "Phone Number" = "Phone Number";
-"Email" = "Email";
 
 "DRIVER LICENSE" = "DRIVER LICENSE";
 "License Number" = "License Number";
@@ -110,6 +110,7 @@
 "Today" = "Today";
 
 //MARK: - JOB HISTORY
+
 
 //MARK: - DAY OFF
 "Shift on this date" = "Shift on this date";
@@ -166,3 +167,20 @@
 "Please check your email !" = "Please check your email !";
 "Success" = "Success";
 "Loading" = "Loading";
+
+
+
+//MARK: - MONTH
+"January" = "January";
+"February" = "February";
+"March" = "March";
+"April" = "April";
+"May" = "May";
+"June" = "June";
+"July" = "July";
+"August" = "August";
+"September" = "September";
+"October" = "October";
+"November" = "November";
+"December" = "December";
+

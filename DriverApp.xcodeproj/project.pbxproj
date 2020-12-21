@@ -30,7 +30,6 @@
 		B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0025434D73007BDD3A /* PopUpView.swift */; };
 		B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B092543747C007BDD3A /* ChatViewModel.swift */; };
 		B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0C2543748A007BDD3A /* ChatModel.swift */; };
-		B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0F2543775B007BDD3A /* ChatCell.swift */; };
 		B33DFEB72563A00A006AF898 /* RegisterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33DFEB62563A00A006AF898 /* RegisterModel.swift */; };
 		B33DFEBA2563A01D006AF898 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33DFEB92563A01D006AF898 /* RegisterViewModel.swift */; };
 		B345DE2E258B349C00AE87B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B345DE30258B349C00AE87B0 /* Localizable.strings */; };
@@ -85,6 +84,8 @@
 		B3B9D596256E107A0056D867 /* ShiftTimeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D595256E107A0056D867 /* ShiftTimeCell.swift */; };
 		B3B9D59B256E41910056D867 /* ForgotView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D599256E41910056D867 /* ForgotView.swift */; };
 		B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D59A256E41910056D867 /* ForgotView.xib */; };
+		B3CEF63C25904829004F0343 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF63B25904829004F0343 /* Response.swift */; };
+		B3CEF6572590954E004F0343 /* PendingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF6562590954E004F0343 /* PendingListView.swift */; };
 		B3DE97982555364400A30892 /* DayOffVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97972555364400A30892 /* DayOffVc.swift */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
@@ -127,7 +128,6 @@
 		B33B1B0025434D73007BDD3A /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		B33B1B092543747C007BDD3A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B33B1B0C2543748A007BDD3A /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
-		B33B1B0F2543775B007BDD3A /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		B33DFEB62563A00A006AF898 /* RegisterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterModel.swift; sourceTree = "<group>"; };
 		B33DFEB92563A01D006AF898 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		B345DE2F258B349C00AE87B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -185,6 +185,8 @@
 		B3B9D595256E107A0056D867 /* ShiftTimeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftTimeCell.swift; sourceTree = "<group>"; };
 		B3B9D599256E41910056D867 /* ForgotView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotView.swift; sourceTree = "<group>"; };
 		B3B9D59A256E41910056D867 /* ForgotView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgotView.xib; sourceTree = "<group>"; };
+		B3CEF63B25904829004F0343 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		B3CEF6562590954E004F0343 /* PendingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingListView.swift; sourceTree = "<group>"; };
 		B3DE97972555364400A30892 /* DayOffVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffVc.swift; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
@@ -249,7 +251,6 @@
 				B3544F25253D572700B6A001 /* CardViewController.swift */,
 				B32944CD254205330040E90C /* NoteCell.swift */,
 				B33B1B0025434D73007BDD3A /* PopUpView.swift */,
-				B33B1B0F2543775B007BDD3A /* ChatCell.swift */,
 				B328BB9A2550168C00FACA03 /* ActionCell.swift */,
 				B3DE97A22555611B00A30892 /* ShiftCell.swift */,
 				B37431F4256219FC0010E0E4 /* PlanCell.swift */,
@@ -334,6 +335,7 @@
 				B353094D255A76DF00B68347 /* EditNoteView.swift */,
 				B3530950255A898F00B68347 /* PreviewNoteView.swift */,
 				B326FF702560F0D00067C0DE /* CheckoutNoteView.swift */,
+				B3CEF6562590954E004F0343 /* PendingListView.swift */,
 			);
 			path = Notes;
 			sourceTree = "<group>";
@@ -419,6 +421,7 @@
 				B38C1B10255E6B360078EE83 /* InOutModel.swift */,
 				B33DFEB62563A00A006AF898 /* RegisterModel.swift */,
 				B3DFFD82256D01F700B3C2D0 /* ShiftTimeModel.swift */,
+				B3CEF63B25904829004F0343 /* Response.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 				B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */,
 				B3544F26253D572700B6A001 /* CardViewController.swift in Sources */,
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
+				B3CEF6572590954E004F0343 /* PendingListView.swift in Sources */,
 				B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */,
 				B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */,
 				B3B9D593256E07260056D867 /* PresentationController.swift in Sources */,
@@ -749,7 +753,6 @@
 				B354B121253B8B3E00B5798B /* LiveTrackingVC.swift in Sources */,
 				B3F79C922573E3C0003455D1 /* ForgotPassword.swift in Sources */,
 				B33DFEBA2563A01D006AF898 /* RegisterViewModel.swift in Sources */,
-				B33B1B102543775B007BDD3A /* ChatCell.swift in Sources */,
 				B384A3DE256F624900D237CC /* OrderCell.swift in Sources */,
 				B326FF712560F0D00067C0DE /* CheckoutNoteView.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
@@ -776,6 +779,7 @@
 				B348E8EA2588B0FE00133CB8 /* CustomCellChat.swift in Sources */,
 				B3530946255A631700B68347 /* RegisterView.swift in Sources */,
 				B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */,
+				B3CEF63C25904829004F0343 /* Response.swift in Sources */,
 				B33DFEB72563A00A006AF898 /* RegisterModel.swift in Sources */,
 				B3DFFD86256D02E000B3C2D0 /* ShiftTimeViewModel.swift in Sources */,
 				B335EC1E257104230082DF1D /* TabBarView.swift in Sources */,

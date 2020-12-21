@@ -89,6 +89,7 @@ class ForgotView: UIViewController {
         submit.setTitleColor(.white, for: .normal)
         submit.layer.cornerRadius = 5
         submit.addTarget(self, action: #selector(didSubmit), for: .touchUpInside)
+        submit.setTitle("Submit".localiz(), for: .normal)
         
         email.becomeFirstResponder()
         

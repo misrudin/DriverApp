@@ -11,6 +11,7 @@
 "Back" = "バック";
 "Finish Registration" = "登録を完了する";
 "Save" = "保存する";
+"Edit" = "編集";
 "Set Work Day" = "就業日を設定する";
 "Set To DayOff" = "休日に設定";
 "Edit Shift Time" = "シフトタイムの編集";
@@ -24,9 +25,9 @@
 ///top navigation
 "Registration" = "登録";
 "Job List" = "ジョブリスト";
-"Job History" = "職歴";
-"tDay Off Driver" = "休日ドライバー";
-"lan Next Month" = "来月の計画";
+"Jobs History" = "職歴";
+"Day Off Driver" = "休日ドライバー";
+"Plan Next Month" = "来月の計画";
 "Customer Service" = "顧客サービス";
 "My Profile" = "私のプロフィール";
 "Notes" = "ノート";
@@ -72,7 +73,6 @@
 "Gender" = "Gender";
 "Language" = "Language";
 "Phone Number" = "Phone Number";
-"Email" = "Email";
 
 "DRIVER LICENSE" = "DRIVER LICENSE";
 "License Number" = "License Number";
@@ -100,8 +100,9 @@
 
 //MARK: - JOB HISTORY
 
+
 //MARK: - DAY OFF
-"Shift on this date" = "Shift on this date";
+"Shift on this date" = "この日付にシフト";
 
 
 //MARK: - PLAN NEXT MONTH
@@ -132,3 +133,23 @@
 //MARK: - SEND NOTES
 
 //MARK: - CHANGE VEHICLE DATA
+
+
+
+"Pull to refresh" = "引っ張ってリフレッシュ";
+"Loading" = "読み込み中";
+
+
+//MARK: - MONTH
+"January" = "一月";
+"February" = "二月";
+"March" = "二月";
+"April" = "四月";
+"May" = "五月";
+"June" = "六月";
+"July" = "七月";
+"August" = "八月";
+"September" = "九月";
+"October" = "十月";
+"November" = "十一月";
+"December" = "十二月";

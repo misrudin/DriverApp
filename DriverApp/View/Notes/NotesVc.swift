@@ -7,6 +7,7 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class NotesVc: UIViewController {
@@ -41,7 +42,7 @@ class NotesVc: UIViewController {
     var noteViewModel = NoteViewModel()
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -157,7 +158,7 @@ class NotesVc: UIViewController {
     
     
     func configureNavigationBar(){
-        navigationItem.title = "Notes"
+        navigationItem.title = "Notes".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -204,7 +205,7 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
         
         let editAction = UIContextualAction(
                style: .normal,
-               title: "Edit",
+            title: "Edit".localiz(),
                handler: {[weak self] (action, view, completion) in
                    completion(true)
                 let vc =  EditNoteView()
@@ -217,7 +218,7 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
            })
         let deleteAction = UIContextualAction(
             style: .normal,
-               title: "Delete",
+            title: "Delete".localiz(),
             handler: {[weak self](action, view, completion) in
                    completion(true)
                 if self?.display == "CHECKOUT" {
@@ -227,7 +228,7 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
                             self?.checkoutData.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .automatic)
                         case .failure(_):
-                            Helpers().showAlert(view: self!, message: "Failed to delete note !")
+                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
                         }
                     })
                 }else {
@@ -237,7 +238,7 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
                             self?.pendingData.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .automatic)
                         case .failure(_):
-                            Helpers().showAlert(view: self!, message: "Failed to delete note !")
+                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
                         }
                     })
                 }

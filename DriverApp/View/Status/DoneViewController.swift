@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 class DoneViewController: UIViewController {
     
@@ -17,13 +18,13 @@ class DoneViewController: UIViewController {
         return iv
     }()
     
-    lazy var titleLabel = Reusable.makeLabel(text: "SUCCESS", font: .systemFont(ofSize: 20, weight: .semibold), color: .black, alignment: .center)
+    lazy var titleLabel = Reusable.makeLabel(text: "SUCCESS".localiz(), font: .systemFont(ofSize: 20, weight: .semibold), color: .black, alignment: .center)
     
-    lazy var subTitleLabel = Reusable.makeLabel(text: "Your Delivery Task Done", font: .systemFont(ofSize: 16, weight: .medium), color: .black, alignment: .center)
+    lazy var subTitleLabel = Reusable.makeLabel(text: "Your Delivery Task Done".localiz(), font: .systemFont(ofSize: 16, weight: .medium), color: .black, alignment: .center)
 
     let submitButton: UIButton={
         let button = UIButton()
-        button.setTitle("Back to Homescreen", for: .normal)
+        button.setTitle("Back to Homescreen".localiz(), for: .normal)
         button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -77,7 +78,7 @@ class DoneViewController: UIViewController {
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Done Delivery"
+        navigationItem.title = "Done Delivery".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()

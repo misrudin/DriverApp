@@ -32,7 +32,7 @@ target 'DriverApp' do
   
     pod 'CryptoSwift'
 
-	pod 'LanguageManager-iOS'
+    pod 'LanguageManager-iOS'
 
 end
 

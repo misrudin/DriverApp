@@ -7,13 +7,14 @@
 
 import UIKit
 import JGProgressHUD
+import LanguageManager_iOS
 
 class ChangePasswordVC: UIViewController {
     
     var codeDriver: String = ""
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -26,7 +27,7 @@ class ChangePasswordVC: UIViewController {
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "Current Password ..."
+        field.placeholder = "Current Password ...".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
@@ -43,7 +44,7 @@ class ChangePasswordVC: UIViewController {
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "New Password ..."
+        field.placeholder = "New Password ...".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
@@ -60,7 +61,7 @@ class ChangePasswordVC: UIViewController {
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "Confirm New Password ..."
+        field.placeholder = "Confirm New Password ...".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
@@ -71,7 +72,7 @@ class ChangePasswordVC: UIViewController {
     
     private let submitButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Submit New Password", for: .normal)
+        loginButton.setTitle("Submit New Password".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 5
@@ -99,7 +100,7 @@ class ChangePasswordVC: UIViewController {
     }
     
     func configureNavigationBar(){
-        navigationItem.title = "Change Password"
+        navigationItem.title = "Change Password".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -122,13 +123,13 @@ class ChangePasswordVC: UIViewController {
             let data = PasswordModel(code_driver: codeDriver, old_password: oldP, password: newP)
             
             
-            let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+            let action = UIAlertAction(title: "Oke".localiz(), style: .default) { (_) in
                 self.editStart(data: data)
             }
-            let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            Helpers().showAlert(view: self, message:"Continue to change password ?", customTitle: "Are you sure", customAction1: action, customAction2: action2)
+            let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
+            Helpers().showAlert(view: self, message:"Continue to change password ?".localiz(), customTitle: "Are you sure".localiz(), customAction1: action, customAction2: action2)
         }else {
-            Helpers().showAlert(view: self, message: "New password not match !")
+            Helpers().showAlert(view: self, message: "New password not match !".localiz())
         }
         
     }
@@ -141,10 +142,10 @@ class ChangePasswordVC: UIViewController {
                 DispatchQueue.main.async {
                     self?.spiner.dismiss()
                     if oke {
-                        let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+                        let action = UIAlertAction(title: "Oke".localiz(), style: .default) { (_) in
                             self?.navigationController?.popViewController(animated: true)
                         }
-                        Helpers().showAlert(view: self!, message:"Success edit password", customTitle: "Success", customAction1: action)
+                        Helpers().showAlert(view: self!, message:"Success edit password".localiz(), customTitle: "Success".localiz(), customAction1: action)
                     }
                 }
                 

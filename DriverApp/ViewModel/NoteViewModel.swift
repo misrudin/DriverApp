@@ -9,9 +9,12 @@ import Foundation
 
 import Foundation
 import Alamofire
-
+import RxSwift
+import RxCocoa
 
 struct NoteViewModel {
+    let items = PublishSubject<[Note]>()
+    
     //MARK: - GET DATA NOTE CHECKOUT DRIVER
     func getDataNoteCheckout(codeDriver: String, completion: @escaping (Result<[Note],Error>)-> Void){
         AF.request("\(Base.urlDriver)detail/note/checkout/\(codeDriver)/1/10",headers: Base.headers).response { response in
@@ -21,7 +24,7 @@ struct NoteViewModel {
                     if let dataNotes = self.parseJson(data: data){
                         completion(.success(dataNotes))
                     }else {
-                        completion(.failure(DataError.failedTodecode))
+                        completion(.failure(NotesError.failedTodecode))
                     }
                 }
             case let .failure(error):
@@ -36,15 +39,48 @@ struct NoteViewModel {
         AF.request("\(Base.urlDriver)detail/note/pending/\(codeDriver)/1/10",headers: Base.headers).response { response in
             switch response.result {
             case .success:
-                if let data = response.data {
-                    if let pendingData = self.parseJson(data: data){
-                        completion(.success(pendingData))
-                    }else {
-                        completion(.failure(DataError.failedTodecode))
+                if response.response?.statusCode == 200 {
+                    if let data = response.data {
+                        if let pendingData = self.parseJson(data: data){
+                            completion(.success(pendingData))
+                        }else {
+                            completion(.failure(NotesError.failedTodecode))
+                        }
+                    }
+                }else {
+                    if let data = response.data {
+                        if let er = Helpers().decodeError(data: data) {
+                            completion(.failure(NotesError.failedToFetch(er.Message)))
+                        }
                     }
                 }
             case let .failure(error):
                 completion(.failure(error))
+            }
+        }
+    }
+    
+    //MARK: GET DATA NOTE PENDING DRIVER
+    func getNote(codeDriver: String){
+        AF.request("\(Base.urlDriver)detail/note/pending/\(codeDriver)/1/10",headers: Base.headers).response { response in
+            switch response.result {
+            case .success:
+                if response.response?.statusCode == 200 {
+                    if let data = response.data {
+                        if let pendingData = self.parseJson(data: data){
+                            items.onNext(pendingData)
+                            items.onCompleted()
+                        }
+                    }
+                }else {
+                    if let data = response.data {
+                        if let er = Helpers().decodeError(data: data) {
+                            print(er.Message)
+                        }
+                    }
+                }
+            case let .failure(error):
+               print(error)
             }
         }
     }
@@ -61,7 +97,7 @@ struct NoteViewModel {
                         if response.response?.statusCode == 200 {
                             completion(.success(true))
                         }else{
-                            completion(.failure(DataError.failedToSendingNote))
+                            completion(.failure(NotesError.failedToSendingNote))
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -82,7 +118,7 @@ struct NoteViewModel {
                         if response.response?.statusCode == 200 {
                             completion(.success(true))
                         }else{
-                            completion(.failure(DataError.failedToSendingNote))
+                            completion(.failure(NotesError.failedToSendingNote))
                         }
                     case .failure(let error):
                         completion(.failure(error))
@@ -106,7 +142,7 @@ struct NoteViewModel {
                         if response.response?.statusCode == 200 {
                             completion(.success(true))
                         } else {
-                            completion(.failure(DataError.failedToDeleteNote))
+                            completion(.failure(NotesError.failedToDeleteNote))
                         }
                     case.failure(let error):
                         completion(.failure(error))
@@ -129,7 +165,7 @@ struct NoteViewModel {
                         if response.response?.statusCode == 200 {
                             completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToSendingNote))
+                            completion(.failure(NotesError.failedToSendingNote))
                         }
                     case.failure(let error):
                        print(error)
@@ -151,7 +187,7 @@ struct NoteViewModel {
                         if response.response?.statusCode == 200 {
                             completion(.success(true))
                         }else {
-                            completion(.failure(DataError.failedToSendingNote))
+                            completion(.failure(NotesError.failedToSendingNote))
                         }
                     case.failure(let error):
                        print(error)
@@ -174,15 +210,42 @@ struct NoteViewModel {
             
         }
     }
+
     
-    
-    //MARK: - ENUM - ERROR
-    enum DataError: Error{
-        case failedToFetch
-        case failedToSendingNote
-        case failedToDeleteNote
-        case failedTodecode
+}
+
+//MARK: - ENUM - ERROR
+enum NotesError: Error{
+    case failedToFetch(_ message: String)
+    case failedToSendingNote
+    case failedToDeleteNote
+    case failedTodecode
+}
+
+extension NotesError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        
+        case .failedToFetch(let message):
+            return NSLocalizedString(
+                message,
+                comment: ""
+            )
+        case .failedToSendingNote:
+            return NSLocalizedString(
+                "Failed to sending note",
+                comment: ""
+            )
+        case .failedToDeleteNote:
+            return NSLocalizedString(
+                "Failed to delete note",
+                comment: ""
+            )
+        case .failedTodecode:
+            return NSLocalizedString(
+                "Failed to parse data",
+                comment: ""
+            )
+        }
     }
-    
-    
 }

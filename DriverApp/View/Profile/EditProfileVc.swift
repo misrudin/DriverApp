@@ -9,6 +9,7 @@ import UIKit
 import AlamofireImage
 import JGProgressHUD
 import AutoKeyboard
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class EditProfileVc: UIViewController {
@@ -18,7 +19,7 @@ class EditProfileVc: UIViewController {
     var profileVm = ProfileViewModel()
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -32,7 +33,7 @@ class EditProfileVc: UIViewController {
         tool.barStyle = .default
         tool.isTranslucent = true
         let space = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(onClickDoneButton))
+        let doneButton = UIBarButtonItem(title: "Done".localiz(), style: .done, target: self, action: #selector(onClickDoneButton))
         tool.setItems([space, doneButton], animated: false)
         tool.isUserInteractionEnabled = true
         tool.sizeToFit()
@@ -42,7 +43,7 @@ class EditProfileVc: UIViewController {
     //MARK: - personal data
     lazy var personalLabel: UILabel = {
         let lable = UILabel()
-        lable.text = "PERSONAL INFORMATION"
+        lable.text = "PERSONAL INFORMATION".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -50,7 +51,7 @@ class EditProfileVc: UIViewController {
     
     lazy var dLicenseLable: UILabel = {
         let lable = UILabel()
-        lable.text = "DRIVER LICENSE"
+        lable.text = "DRIVER LICENSE".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor(named: "orangeKasumi")
         return lable
@@ -71,7 +72,7 @@ class EditProfileVc: UIViewController {
     //MARK: - Name
     lazy var firstNameLable: UILabel = {
         let lable = UILabel()
-        lable.text = "First Name"
+        lable.text = "First Name".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -91,7 +92,7 @@ class EditProfileVc: UIViewController {
     
     lazy var lastNameLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Last Name"
+        lable.text = "Last Name".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -112,7 +113,7 @@ class EditProfileVc: UIViewController {
     //MARK:- Email
     lazy var emailLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Email"
+        lable.text = "Email".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -133,7 +134,7 @@ class EditProfileVc: UIViewController {
     //MARK:- PhoneNumber
     lazy var phoneNumberLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Phone Number"
+        lable.text = "Phone Number".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -154,7 +155,7 @@ class EditProfileVc: UIViewController {
     //MARK:- Driver icense number
     lazy var licenseLable: UILabel = {
         let lable = UILabel()
-        lable.text = "Driver License Number"
+        lable.text = "Driver License Number".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -173,7 +174,7 @@ class EditProfileVc: UIViewController {
     //MARK:- Driver icense Exp Date
     lazy var expDateLable: UILabel = {
         let lable = UILabel()
-        lable.text = "License Expiration Date"
+        lable.text = "License Expiration Date".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         lable.textColor = UIColor.black
         return lable
@@ -364,11 +365,11 @@ class EditProfileVc: UIViewController {
         
         let dataTopost: UpdatePersonal = UpdatePersonal(bio: bio, code_driver: dataDriver!.code_driver)
         
-        let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+        let action = UIAlertAction(title: "Oke".localiz(), style: .default) { (_) in
             self.startsubmit(data: dataTopost)
         }
-        let action2 = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        Helpers().showAlert(view: self, message:"Continue to edit profile ?", customTitle: "Are Sure", customAction1: action, customAction2: action2)
+        let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
+        Helpers().showAlert(view: self, message:"Continue to edit profile ?".localiz(), customTitle: "Are you sure ?".localiz(), customAction1: action, customAction2: action2)
     }
     
     
@@ -380,14 +381,14 @@ class EditProfileVc: UIViewController {
                 DispatchQueue.main.async {
                     self.spiner.dismiss()
                     if oke {
-                        let action = UIAlertAction(title: "Oke", style: .default) { (_) in
+                        let action = UIAlertAction(title: "Oke".localiz(), style: .default) { (_) in
                             self.navigationController?.popViewController(animated: true)
                         }
-                        Helpers().showAlert(view: self, message:"Succes edit profile", customTitle: "Sucess", customAction1: action)
+                        Helpers().showAlert(view: self, message:"Success edit profile".localiz(), customTitle: "Success".localiz(), customAction1: action)
                     }
                 }
             case .failure(let err):
-                Helpers().showAlert(view: self, message: err.localizedDescription, customTitle: "Error")
+                Helpers().showAlert(view: self, message: err.localizedDescription, customTitle: "Error".localiz())
                 self.spiner.dismiss()
             }
         }
@@ -453,12 +454,12 @@ class EditProfileVc: UIViewController {
     
 
     func configureNavigationBar(){
-        navigationItem.title = "Edit Profile"
+        navigationItem.title = "Edit Profile".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(updateProfile))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save".localiz(), style: .plain, target: self, action: #selector(updateProfile))
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
         

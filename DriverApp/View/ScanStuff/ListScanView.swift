@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 import AVFoundation
+import LanguageManager_iOS
 
 class ListScanView: UIViewController {
     
@@ -28,7 +29,7 @@ class ListScanView: UIViewController {
     //MARK: - LOADING
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -39,7 +40,7 @@ class ListScanView: UIViewController {
         let baru = image?.resizeImage(CGSize(width: 15, height: 15))
         
         b.setImage(baru, for: .normal)
-        b.setTitle("Scan QR Code to Verify", for: .normal)
+        b.setTitle("Scan QR Code to Verify".localiz(), for: .normal)
         b.setTitleColor(.white, for: .normal)
         b.backgroundColor = UIColor(named: "orangeKasumi")
         b.layer.cornerRadius = 5
@@ -53,7 +54,7 @@ class ListScanView: UIViewController {
     
     lazy var finishButton:UIButton = {
         let b = UIButton()
-        b.setTitle("Finish", for: .normal)
+        b.setTitle("Finish".localiz(), for: .normal)
         b.setTitleColor(.white, for: .normal)
         b.backgroundColor = UIColor(named: "orangeKasumi")
         b.layer.cornerRadius = 5
@@ -70,7 +71,7 @@ class ListScanView: UIViewController {
         let baru = image?.resizeImage(CGSize(width: 15, height: 15))
         
         b.setImage(baru, for: .normal)
-        b.setTitle("Add  Code Manually", for: .normal)
+        b.setTitle("Add  Code Manually".localiz(), for: .normal)
         b.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         b.layer.cornerRadius = 5
         b.layer.masksToBounds = true
@@ -144,7 +145,7 @@ class ListScanView: UIViewController {
                     }
                 case .failure(let err):
                     print(err)
-                    Helpers().showAlert(view: self, message: "Something when wrong !")
+                    Helpers().showAlert(view: self, message: "Something when wrong !".localiz())
                 }
             }
         }else {
@@ -166,8 +167,8 @@ class ListScanView: UIViewController {
                         }
                     }
                 case .failure(let err):
-                    let action1 = UIAlertAction(title: "Try again", style: .default, handler: nil)
-                    Helpers().showAlert(view: self!, message: "Something when wrong !", customAction1: action1)
+                    let action1 = UIAlertAction(title: "Try again".localiz(), style: .default, handler: nil)
+                    Helpers().showAlert(view: self!, message: "Something when wrong !".localiz(), customAction1: action1)
                     print(err)
                 }
             }
@@ -185,7 +186,7 @@ class ListScanView: UIViewController {
     //MARK: - LIFECYCLES
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Delivery Order List"
+        title = "Delivery Order List".localiz()
 
         view.backgroundColor = .white
         
@@ -259,7 +260,7 @@ class ListScanView: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
-        navigationController?.title = "Delivery Order List"
+        navigationController?.title = "Delivery Order List".localiz()
     }
     
     func updateList(code: String){
