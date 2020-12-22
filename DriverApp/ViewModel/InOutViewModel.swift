@@ -57,6 +57,7 @@ struct InOutViewModel {
                    method: .post,
                    parameters: dataToPost,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
                     switch response.result {
                     case .success:
                         if let statusCode = response.response?.statusCode {
@@ -70,7 +71,7 @@ struct InOutViewModel {
                         
                     case.failure(let error):
                         print(error)
-                        completion(.failure(ErrorDriver.failedToPost))
+                        completion(.failure(ErrorDriver.failedToFetch))
                     }
                     
             })

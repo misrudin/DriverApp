@@ -54,7 +54,7 @@ class HistoryViewController: UIViewController {
 
     private let tableView: UITableView = {
        let table = UITableView()
-        table.register(UINib(nibName: "HistoryCell", bundle: nil), forCellReuseIdentifier: HistoryCell.id)
+        
         table.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
         return table
@@ -72,6 +72,8 @@ class HistoryViewController: UIViewController {
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
+//        tableView.register(UINib(nibName: "HistoryCell", bundle: nil), forCellReuseIdentifier: "cellid")
+        tableView.register(UINib(nibName: "OrderHistoryCell", bundle: nil), forCellReuseIdentifier: OrderHistoryCell.id)
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh".localiz())
         refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
@@ -223,8 +225,8 @@ extension HistoryViewController: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: HistoryCell.id, for: indexPath) as! HistoryCell
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: OrderHistoryCell.id, for: indexPath) as! OrderHistoryCell
+
         if let orderData = orderData {
             cell.item = orderData[indexPath.row]
         }
@@ -242,44 +244,44 @@ extension HistoryViewController: UITableViewDelegate,UITableViewDataSource {
 //        }
 //    }
     
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
- 
-        let deleteAction = UIContextualAction(
-            style: .normal,
-               title: "Delete",
-            handler: {[weak self](action, view, completion) in
-                   completion(true)
-                guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                      let codeDriver = userData["codeDriver"] as? String, let order = self?.orderData else {
-                    print("No user data")
-                    return
-                }
-                let orderNo = order[indexPath.row].order_number
-                
-                let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver)
-                OrderViewModel().deleteOrder(data: data) { (res) in
-                    switch res {
-                    case .success(let oke):
-                        if oke {
-                            self?.orderData?.remove(at: indexPath.row)
-                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        }
-                    case .failure(let err):
-                        print(err)
-                        Helpers().showAlert(view: self!, message: "Failed to delete history !")
-                    }
-                }
-           })
-
-
-        let imageDelete = UIImage(named: "deleteIcon")
-        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
-    
-        deleteAction.image = delete
-        deleteAction.backgroundColor = .red
-           let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
-           configuration.performsFirstActionWithFullSwipe = false
-           return configuration
-    }
+//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//
+//
+//        let deleteAction = UIContextualAction(
+//            style: .normal,
+//               title: "Delete",
+//            handler: {[weak self](action, view, completion) in
+//                   completion(true)
+//                guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+//                      let codeDriver = userData["codeDriver"] as? String, let order = self?.orderData else {
+//                    print("No user data")
+//                    return
+//                }
+//                let orderNo = order[indexPath.row].order_number
+//
+//                let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver)
+//                OrderViewModel().deleteOrder(data: data) { (res) in
+//                    switch res {
+//                    case .success(let oke):
+//                        if oke {
+//                            self?.orderData?.remove(at: indexPath.row)
+//                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+//                        }
+//                    case .failure(let err):
+//                        print(err)
+//                        Helpers().showAlert(view: self!, message: "Failed to delete history !")
+//                    }
+//                }
+//           })
+//
+//
+//        let imageDelete = UIImage(named: "deleteIcon")
+//        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
+//
+//        deleteAction.image = delete
+//        deleteAction.backgroundColor = .red
+//           let configuration = UISwipeActionsConfiguration(actions: [deleteAction])
+//           configuration.performsFirstActionWithFullSwipe = false
+//           return configuration
+//    }
 }

@@ -158,6 +158,7 @@ class ListScanView: UIViewController {
         if scanedData.count == store.pickup_item.count {
             let codes: [String] = scanedData.map({$0.qr_code_raw})
             let data: Scan = Scan(order_number: orderNo, qr_code_raw: codes)
+            spiner.show(in: view)
             orderVm.changeStatusItems(data: data) {[weak self] (res) in
                 switch res {
                 case .success(let oke):
@@ -165,11 +166,13 @@ class ListScanView: UIViewController {
                         if oke == true {
                             self?.navigationController?.popViewController(animated: true)
                         }
+                        self?.spiner.dismiss()
                     }
                 case .failure(let err):
                     let action1 = UIAlertAction(title: "Try again".localiz(), style: .default, handler: nil)
                     Helpers().showAlert(view: self!, message: "Something when wrong !".localiz(), customAction1: action1)
                     print(err)
+                    self?.spiner.dismiss()
                 }
             }
         }
@@ -198,7 +201,7 @@ class ListScanView: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        cekStatusDriver()
 //        cekStatusItems()
     }
 

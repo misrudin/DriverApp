@@ -123,15 +123,15 @@
                                 <color key="textColor" name="darkKasumi"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Jalan pos pengimbern" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMC-rO-DFx">
-                                <rect key="frame" x="34" y="103" width="360" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOo-2O-KVP">
                                 <rect key="frame" x="34" y="171" width="358" height="18"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" name="darkKasumi"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Jalan pos pengimbern" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" enabled="NO" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMC-rO-DFx">
+                                <rect key="frame" x="34" y="105" width="360" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" name="darkKasumi"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -206,6 +206,9 @@
                 <outlet property="addressLabel" destination="QMC-rO-DFx" id="YOE-RE-jf7"/>
                 <outlet property="container" destination="a3Y-1F-ekD" id="a7G-eM-0Db"/>
                 <outlet property="date" destination="J5X-yz-xoR" id="DP3-j7-H74"/>
+                <outlet property="dateLabel" destination="7o4-G2-s2o" id="oC0-ID-4hz"/>
+                <outlet property="deliverTo" destination="a4x-WK-Rg7" id="dSD-VJ-5or"/>
+                <outlet property="deliveryTime" destination="JuN-BP-Wnb" id="Noy-M9-34t"/>
                 <outlet property="marker" destination="f1V-w4-Y6G" id="y6j-e6-azy"/>
                 <outlet property="nameLabel" destination="RSc-xs-ae4" id="Jna-c4-HWk"/>
                 <outlet property="orderNo" destination="Nii-bF-acz" id="a8R-1l-T8g"/>

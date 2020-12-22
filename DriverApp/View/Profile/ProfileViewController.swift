@@ -25,9 +25,9 @@ class ProfileViewController: UIViewController {
     var idDriver: Int? = nil
     var user: UserModel? = nil
     var bioData: Bio? = nil
-    var vehicleData: VehicleData? = nil
+    var vehicleData: VehicleData? = nil 
     
-    var checkin: Bool = false
+    var checkout: Bool = true
     
     lazy var containerView: UIView = {
         let container = UIView()
@@ -269,13 +269,15 @@ class ProfileViewController: UIViewController {
                     if status.isCheckin == true && status.isCheckout == true {
                         print("sudah out")
                         self?.button3.isHidden = true //hide
-                        
+                        self?.checkout = true
                     }else {
                         if status.isCheckin == true {
                             print("baru in")
                             self?.button3.isHidden = false //muncul
+                            self?.checkout = false
                         }else {
                             self?.button3.isHidden = true
+                            self?.checkout = true
                         }
                     }
                 }
@@ -340,6 +342,16 @@ class ProfileViewController: UIViewController {
     //MARK: - Logout
     @objc
     private func didTapLogout(){
+        if(!checkout){
+            let action1 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
+            let action2 = UIAlertAction(title: "Yes, Checkout".localiz(), style: .default) {[weak self] (_) in
+                self?.didCheckout(true)
+            }
+            
+            Helpers().showAlert(view: self, message: "Before logout, you must checkout.".localiz(), customTitle: "You already checkin".localiz(), customAction1: action1, customAction2: action2)
+            return
+        }
+        
         let confirmationAlert = UIAlertController(title: "Are you sure ?".localiz(),
                                                   message: "Do you want to logout ?".localiz(),
                                                   preferredStyle: .alert)
@@ -357,13 +369,13 @@ class ProfileViewController: UIViewController {
     private func didTapCheckout(){
         let action1 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
         let action2 = UIAlertAction(title: "Yes, Checkout".localiz(), style: .default) {[weak self] (_) in
-            self?.didCheckout()
+            self?.didCheckout(false)
         }
         
         Helpers().showAlert(view: self, message: "Do you want to checkout now".localiz(), customTitle: "Are you sure ?".localiz(), customAction1: action1, customAction2: action2)
     }
     
-    private func didCheckout(){
+    private func didCheckout(_ logout: Bool){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
@@ -376,6 +388,10 @@ class ProfileViewController: UIViewController {
             case .success(_):
                 DispatchQueue.main.async {
                         self?.spiner.dismiss()
+                    if(logout){
+                        UserDefaults.standard.removeObject(forKey: "userData")
+                        self?.dismiss(animated: true, completion: nil)
+                    }
                 }
             case .failure(let err):
                 print(err)
