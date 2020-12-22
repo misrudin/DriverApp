@@ -396,7 +396,7 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             }
             
             //MARK: -   DATA UPDATE LOCATION TO FIREBASE
-            let status: String = "Out for delivery".localiz()
+            let status: String = "active"
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                   let codeDriver = userData["codeDriver"] as? String,
                   let idDriver = userData["idDriver"] as? Int else {

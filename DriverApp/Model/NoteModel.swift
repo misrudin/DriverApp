@@ -34,13 +34,9 @@ struct Pending: Codable {
 
 struct Notes: Decodable {
     let data: [Note]
-    let totalData: Int
-    let totalPage: Int
     
     enum CodingKeys: String, CodingKey {
         case data
-        case totalData
-        case totalPage
     }
 }
 
@@ -55,6 +51,12 @@ struct Note: Decodable {
     let created_time: String
     let id_note: Int
     let created_date: String
+    let detail_order: NoteOrderDetail?
+}
+
+
+struct NoteOrderDetail: Decodable {
+    let user_info: String?
 }
 
 

@@ -39,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window!.makeKeyAndVisible()
             self.window!.backgroundColor = .red
         }
-        updateStatus(status: "idle")
+        updateStatus(status: "active")
         
         return true
     }

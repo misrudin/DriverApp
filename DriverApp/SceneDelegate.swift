@@ -34,7 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         print("sceneDidBecomeActive")
-        updateStatus(status: "idle")
+        updateStatus(status: "active")
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -44,7 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillEnterForeground(_ scene: UIScene) {
         print("sceneWillEnterForeground")
-        updateStatus(status: "idle")
+        updateStatus(status: "active")
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

@@ -49,7 +49,7 @@ class HomeVc: UIViewController {
     private let tableView: UITableView = {
         let table = UITableView(frame: CGRect.zero, style: .grouped)
         table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
-        table.register(UINib(nibName: "PendingCell", bundle: nil), forCellReuseIdentifier: PendingCell.id)
+        table.register(UINib(nibName: "CustomNoteCell", bundle: nil), forCellReuseIdentifier: CustomNoteCell.id)
         table.backgroundColor = UIColor(named: "grayKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
@@ -446,9 +446,10 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         
         if indexPath.section == 0 {
             
-            let cell = tableView.dequeueReusableCell(withIdentifier: PendingCell.id, for: indexPath) as! PendingCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: CustomNoteCell.id, for: indexPath) as! CustomNoteCell
             if let pending = pendingNotes {
-                cell.pendingData = pending[indexPath.row]
+                cell.item = pending[indexPath.row]
+                cell.backgroundColor = .clear
             }
             
             return cell
@@ -639,7 +640,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         pendingAction.image = edit
         pendingAction.backgroundColor = UIColor(named: "grayKasumi")
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any], let statusDriver = userData["status"] as? String  else {return nil}
-        let actions = statusDriver == "freelance" && allowReject ? [rejectAction, pendingAction] : [pendingAction]
+        let actions = statusDriver == "freelance" && allowReject ? [rejectAction] : []
         
         
         let configuration = UISwipeActionsConfiguration(actions: actions)
@@ -665,7 +666,7 @@ extension HomeVc: CLLocationManagerDelegate {
                   let idDriver = userData["idDriver"] as? Int else {
                 return
             }
-            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: "idle",bearing: location.course) {[weak self] (res) in
+            databaseManager.updateData(idDriver: String(idDriver), codeDriver: codeDriver, lat: coordinate.latitude, lng: coordinate.longitude, status: "active",bearing: location.course) {[weak self] (res) in
                 switch res {
                 case .failure(let err):
                     print(err)

@@ -54,7 +54,7 @@ class NotesVc: UIViewController {
     
     lazy var tableView: UITableView = {
        let table = UITableView()
-        table.register(NoteCell.self, forCellReuseIdentifier: NoteCell.id)
+        table.register(UINib(nibName: "CustomNoteCell", bundle: nil), forCellReuseIdentifier: CustomNoteCell .id)
         
        return table
     }()
@@ -176,88 +176,76 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: NoteCell.id, for: indexPath) as! NoteCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CustomNoteCell.id, for: indexPath) as! CustomNoteCell
         
-        
-        cell.labelNote.text = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
-        cell.labelTime.text = display == "CHECKOUT" ? "\(checkoutData[indexPath.row].created_date), \(checkoutData[indexPath.row].created_time[...4])" : "\(pendingData[indexPath.row].created_date), \(pendingData[indexPath.row].created_time[...4])"
+        cell.item = pendingData[indexPath.row]
         
         return cell
         
     }
     
-    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            print(indexPath.row)
-        }
-    }
     
     
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let note = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
-        let id:Int = display == "CHECKOUT" ? checkoutData[indexPath.row].id_note : pendingData[indexPath.row].id_note
-        
-        let editAction = UIContextualAction(
-               style: .normal,
-            title: "Edit".localiz(),
-               handler: {[weak self] (action, view, completion) in
-                   completion(true)
-                let vc =  EditNoteView()
-                vc.id = id
-                vc.note = note
-                vc.type = self?.display
-                vc.hidesBottomBarWhenPushed = true
-                self?.navigationController?.pushViewController(vc, animated: true)
-                
-           })
-        let deleteAction = UIContextualAction(
-            style: .normal,
-            title: "Delete".localiz(),
-            handler: {[weak self](action, view, completion) in
-                   completion(true)
-                if self?.display == "CHECKOUT" {
-                    self?.noteViewModel.deleteNote(id: id, completion: { (response) in
-                        switch response {
-                        case .success(_):
-                            self?.checkoutData.remove(at: indexPath.row)
-                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        case .failure(_):
-                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
-                        }
-                    })
-                }else {
-                    self?.noteViewModel.deleteNote(id: id, completion: {[weak self] (response) in
-                        switch response {
-                        case .success(_):
-                            self?.pendingData.remove(at: indexPath.row)
-                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-                        case .failure(_):
-                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
-                        }
-                    })
-                }
-           })
-
-        let imageEdit = UIImage(named: "editIcon")
-        let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
-        
-        let imageDelete = UIImage(named: "deleteIcon")
-        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
-        
-        editAction.image = edit
-        editAction.backgroundColor = UIColor(named: "yellowKasumi")
-        deleteAction.image = delete
-        deleteAction.backgroundColor = .red
-           let configuration = UISwipeActionsConfiguration(actions: [deleteAction,editAction])
-           configuration.performsFirstActionWithFullSwipe = false
-           return configuration
-    }
+//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//
+//        let note = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
+//        let id:Int = display == "CHECKOUT" ? checkoutData[indexPath.row].id_note : pendingData[indexPath.row].id_note
+//
+//        let editAction = UIContextualAction(
+//               style: .normal,
+//            title: "Edit".localiz(),
+//               handler: {[weak self] (action, view, completion) in
+//                   completion(true)
+//                let vc =  EditNoteView()
+//                vc.id = id
+//                vc.note = note
+//                vc.type = self?.display
+//                vc.hidesBottomBarWhenPushed = true
+//                self?.navigationController?.pushViewController(vc, animated: true)
+//
+//           })
+//        let deleteAction = UIContextualAction(
+//            style: .normal,
+//            title: "Delete".localiz(),
+//            handler: {[weak self](action, view, completion) in
+//                   completion(true)
+//                if self?.display == "CHECKOUT" {
+//                    self?.noteViewModel.deleteNote(id: id, completion: { (response) in
+//                        switch response {
+//                        case .success(_):
+//                            self?.checkoutData.remove(at: indexPath.row)
+//                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+//                        case .failure(_):
+//                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
+//                        }
+//                    })
+//                }else {
+//                    self?.noteViewModel.deleteNote(id: id, completion: {[weak self] (response) in
+//                        switch response {
+//                        case .success(_):
+//                            self?.pendingData.remove(at: indexPath.row)
+//                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
+//                        case .failure(_):
+//                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
+//                        }
+//                    })
+//                }
+//           })
+//
+//        let imageEdit = UIImage(named: "editIcon")
+//        let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
+//
+//        let imageDelete = UIImage(named: "deleteIcon")
+//        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
+//
+//        editAction.image = edit
+//        editAction.backgroundColor = UIColor(named: "yellowKasumi")
+//        deleteAction.image = delete
+//        deleteAction.backgroundColor = .red
+//           let configuration = UISwipeActionsConfiguration(actions: [deleteAction,editAction])
+//           configuration.performsFirstActionWithFullSwipe = false
+//           return configuration
+//    }
     
     
 }
