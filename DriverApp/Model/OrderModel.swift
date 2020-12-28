@@ -168,7 +168,7 @@ struct NewOrderData: Decodable {
     let active_date: String
     let id_order: Int
     let id_shift_time: Int
-//    let distance: Double
+    let another_pickup: [AnotherPickup]?
     
     enum CodingKeys: String, CodingKey {
         case user_info
@@ -180,7 +180,20 @@ struct NewOrderData: Decodable {
         case id_order
         case id_shift_time
         case detail_shift
+        case another_pickup
     }
+}
+
+//another pickup
+struct AnotherPickup: Decodable {
+    let pickup_store_name: String
+    var pickup_list: [PickupList]?
+}
+
+//pickup list
+struct PickupList: Decodable {
+    let order_no: String
+    var pickup_item: [PickupItem]?
 }
 
 //detail shift

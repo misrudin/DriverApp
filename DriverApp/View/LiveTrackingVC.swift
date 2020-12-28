@@ -148,10 +148,8 @@ class LiveTrackingVC: UIViewController {
         
         mapsButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 20, paddingRight: 16, width: 50, height: 50)
         directionButton.anchor(top: mapsButton.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingRight: 16, width: 50, height: 50)
+
         
-        DispatchQueue.main.async {
-            self.setupCard()
-        }
         
         guard let orderDetailString = order?.order_detail,
               let orderNo = order?.order_number,
@@ -159,6 +157,22 @@ class LiveTrackingVC: UIViewController {
               let statusOrder = order?.status_tracking else {
             
             return
+        }
+        
+        //MARK: - GET DETAIL ORDER
+        spiner.show(in: view)
+        orderViewModel.getDetailOrder(orderNo: orderNo) {[weak self] (result) in
+            switch result {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self?.order = data
+                    self?.setupCard()
+                    self?.spiner.dismiss()
+                    print(data)
+                }
+            case .failure(_):
+                self?.spiner.dismiss()
+            }
         }
         
         let orderDestinationLat = orderDetail.delivery_destination.lat
@@ -577,7 +591,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         CATransaction.commit()
     }
     
-    func scan(_ viewC: CardViewController, store: PickupDestination?) {
+    func scan(_ viewC: CardViewController, store: PickupDestination?, extra: AnotherPickup?) {
         guard let orderNo = order?.order_number else {
             return
         }
@@ -585,6 +599,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
         vc.store = store
         vc.orderNo = orderNo
         vc.origin = origin
+        vc.extraItem = extra
         navigationController?.pushViewController(vc, animated: true)
     }
     

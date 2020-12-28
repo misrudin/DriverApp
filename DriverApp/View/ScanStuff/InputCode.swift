@@ -12,6 +12,8 @@ class InputCode: UIViewController {
     var orderNo: String = ""
     var orderVm = OrderViewModel()
     var list: [PickupItem]!
+    var codeQr: String = ""
+    var extra: Bool = false
     weak var delegate: ListScanView!
     
     lazy var titleLable = Reusable.makeLabel(text: "Add Order Code".localiz(), font: UIFont.systemFont(ofSize: 16, weight: .semibold), color: UIColor(named: "orangeKasumi")!)
@@ -84,12 +86,16 @@ class InputCode: UIViewController {
             return
         }
         
-        let find = list.filter({ $0.qr_code_raw == code })
-        if find.count == 0 {
+//        let find = list.filter({ $0.qr_code_raw == code })
+        if code != codeQr {
             let action1 = UIAlertAction(title: "Try Again".localiz(), style: .default, handler: nil)
             Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
-            delegate.updateList(code: code)
+            if extra {
+                delegate.updateListExtra(code: code, orderNo: orderNo)
+            }else {
+                delegate.updateList(code: code)
+            }
             navigationController?.popViewController(animated: true)
         }
         

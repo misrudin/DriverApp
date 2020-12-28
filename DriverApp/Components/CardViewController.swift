@@ -9,7 +9,7 @@ import UIKit
 
 protocol CardViewControllerDelegate {
     func didTapButton(_ viewModel: CardViewController, type: TypeDelivery)
-    func scan(_ viewC: CardViewController, store: PickupDestination?)
+    func scan(_ viewC: CardViewController, store: PickupDestination?, extra: AnotherPickup?)
     func next(_ viewC: CardViewController, store: PickupDestination?)
     func seeDetail(_ viewC: CardViewController, order: NewOrderDetail?, userInfo: NewUserInfo?)
 }
@@ -213,6 +213,9 @@ class CardViewController: UIViewController {
             return
         }
         
+        print(orderData)
+        print(orderDetail)
+        
         lableText.text = orderNo
         
         storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
@@ -251,7 +254,15 @@ class CardViewController: UIViewController {
         case .pending:
             delegate?.didTapButton(self, type: .start_delivery)
         case .scan:
-            delegate?.scan(self, store: orderDetail.pickup_destination[currentIndex])
+
+            let currentItem = orderDetail.pickup_destination[currentIndex]
+            if let extraPickup = orderData?.another_pickup {
+                let currentExtra = extraPickup.filter({ $0.pickup_store_name == currentItem.pickup_store_name })
+                delegate?.scan(self, store: currentItem, extra: currentExtra[0])
+            }else {
+                delegate?.scan(self, store: currentItem, extra: nil)
+            }
+            
         default:
             print("undefined !")
         }

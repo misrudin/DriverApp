@@ -98,12 +98,6 @@ class OrderCell: UITableViewCell {
         deliveryLable.translatesAutoresizingMaskIntoConstraints = false
         deliveyAddress.translatesAutoresizingMaskIntoConstraints = false
         
-//        lableOrderNo.topLeft(toView: container, top: 5, left: 5)
-//        orderNo.top(toView: container)
-//
-//        originMarker.top(toView: lableOrderNo, space: 10)
-//        originMarker.left(toView: container, space: 5)
-        
     }
     
     

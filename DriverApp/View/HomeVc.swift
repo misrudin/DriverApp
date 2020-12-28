@@ -565,7 +565,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            print(indexPath.row)
+//            print(indexPath.row)
         }
     }
     

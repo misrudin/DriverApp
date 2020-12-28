@@ -15,6 +15,8 @@ class CameraScanView: UIViewController {
     var orderVm = OrderViewModel()
     
     var list: [PickupItem]!
+    var codeQr: String = ""
+    var extra: Bool = false
     weak var delegate: ListScanView!
     
     //scan camera
@@ -95,9 +97,16 @@ class CameraScanView: UIViewController {
     
     func failed() {
         let ac = UIAlertController(title: "Scanner not supported".localiz(), message: "Please use a device with a camera. Because this device does not support scanning a code".localiz(), preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        ac.addAction(UIAlertAction(title: "Back", style: .cancel, handler: { _ in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        ac.addAction(UIAlertAction(title: "Input Manual", style: .default, handler: {_ in
+            self.navigationController?.popViewController(animated: true)
+            self.delegate.useManualInput(orderNo: self.orderNo, codeQr: self.codeQr, extra: self.extra)
+        }))
         present(ac, animated: true)
         avCaptureSession = nil
+        
     }
     
 //    override var prefersStatusBarHidden: Bool {
@@ -124,14 +133,18 @@ extension CameraScanView: AVCaptureMetadataOutputObjectsDelegate {
     
     func found(code: String) {
         
-        let find = list.filter({ $0.qr_code_raw == code })
-        if find.count == 0 {
+//        let find = list.filter({ $0.qr_code_raw == code })
+        if code != codeQr {
             let action1 = UIAlertAction(title: "Try again", style: .default) {[weak self]  (_) in
                 self?.avCaptureSession.startRunning()
             }
             Helpers().showAlert(view: self, message: "Something when wrong !, Item code not found.".localiz(), customAction1: action1)
         }else {
-            delegate.updateList(code: code)
+            if extra {
+                delegate.updateListExtra(code: code, orderNo: orderNo)
+            }else {
+                delegate.updateList(code: code)
+            }
             navigationController?.popViewController(animated: true)
         }
         
