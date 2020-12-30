@@ -216,8 +216,10 @@ class LiveTrackingVC: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if cardViewController != nil {
+            cardViewController.status = !cardViewController.status
+        }
         
-        self.cardViewController.status = !self.cardViewController.status
         
         
         mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)

@@ -103,12 +103,39 @@ class CardViewController: UIViewController {
         return button
     }()
     
+    let titleLabelItemName: UILabel = {
+        let label = UILabel()
+        label.text = "Item Name"
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        
+        return label
+    }()
+    
+    let itemLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = UIColor(named: "darkKasumi")
+        label.numberOfLines = 1
+        
+        return label
+    }()
+    
+    let detailItem: UILabel = {
+        let label = UILabel()
+        label.text = "See Details"
+        label.textColor = UIColor(named: "orangeKasumi")
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textAlignment = .center
+        
+        return label
+    }()
+    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "PickUp Store"
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        
         
         return label
     }()
@@ -186,6 +213,19 @@ class CardViewController: UIViewController {
     @objc private func details(){
         delegate?.didTapButton(self, type: .pending)
     }
+    @objc private func didSeeDetail(){
+        if itemLabel.numberOfLines == 0 {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.itemLabel.numberOfLines = 1
+                self.detailItem.text = "See Details"
+            })
+        }else {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.itemLabel.numberOfLines = 0
+                self.detailItem.text = "Hide"
+            })
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -201,6 +241,11 @@ class CardViewController: UIViewController {
         view.addSubview(seeDetailButton)
         view.addSubview(orderNoLable)
         view.addSubview(orderButton2)
+        view.addSubview(titleLabelItemName)
+        view.addSubview(itemLabel)
+        view.addSubview(detailItem)
+        detailItem.isUserInteractionEnabled = true
+        detailItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didSeeDetail)))
         view.backgroundColor = UIColor(named: "whiteKasumi")
         configureLayout()
         
@@ -213,15 +258,32 @@ class CardViewController: UIViewController {
             return
         }
         
-        print(orderData)
-        print(orderDetail)
-        
         lableText.text = orderNo
         
         storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
         destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) 〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.phone_number)"
         destinationLabel.numberOfLines = 0
         
+        let dataN = orderDetail.pickup_destination.compactMap({$0.pickup_item.map({$0.item_name})})
+        var data = [String]()
+            
+        dataN.map { e in
+            for i in e {
+                data.append(i)
+            }
+        }
+        
+        let textArray = data.enumerated().map({(index, element) in
+            return "\(index+1). \(element)"
+        })
+        if(textArray.count < 2){
+            detailItem.isHidden = true
+            titleLabel.topAnchor.constraint(equalTo: itemLabel.bottomAnchor, constant: 16).isActive = true
+        }else{
+            detailItem.isHidden = false
+            titleLabel.topAnchor.constraint(equalTo: detailItem.bottomAnchor, constant: 16).isActive = true
+        }
+        itemLabel.text = textArray.joined(separator: "\n")
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -284,7 +346,13 @@ class CardViewController: UIViewController {
         
         orderNoLable.anchor(top: orderButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 30)
         
-        titleLabel.anchor(top: orderNoLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20)
+        titleLabelItemName.anchor(top: orderNoLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20)
+        
+        itemLabel.anchor(top: titleLabelItemName.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
+        
+        detailItem.anchor(top: itemLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
+        
+        titleLabel.anchor(top: detailItem.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20)
         storeLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 12)
         
         pendingButton.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
@@ -295,6 +363,7 @@ class CardViewController: UIViewController {
         orderButton2.isHidden = true
         
         seeDetailButton.anchor(top: destinationLabel.bottomAnchor ,left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 45)
+        
     }
     
     private func setupButton(){
