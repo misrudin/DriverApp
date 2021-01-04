@@ -51,10 +51,10 @@ class OrderCell: UITableViewCell {
             
             if timeNow <= end && timeNow > start && orderData.active_date == dateNow {
                 container.backgroundColor = .white
-//                isUserInteractionEnabled = true
+                isUserInteractionEnabled = true
             }else {
                 container.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
-//                isUserInteractionEnabled = false
+                isUserInteractionEnabled = false
             }
 
             date.text = "\(start) - \(end)"

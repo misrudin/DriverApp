@@ -19,7 +19,8 @@ struct Base {
     static let paswordEncKey = "a421a5080c9738e13f75941b6a0574c1e256ab5c2ac0988fcfe3b6dd9837d53ed280471be0fe462ddeb5856468d6d17da0d8175ddb641e5777cad887db195d0d"
     static let mapsApiKey = "AIzaSyCd86hl5oFNB9zwVFZ2YXJy4EYx_oWgD54"
     
-    static let baseUrlResetPassword: String = "https://usmh-user-livetracking.azurewebsites.net/reset-password"
+    static let baseUrlResetPassword: String =
+        "https://usmh-user-livetracking.azurewebsites.net/reset-password"
 }
 
 
