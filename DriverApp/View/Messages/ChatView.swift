@@ -40,12 +40,15 @@ class ChatView: UIViewController {
     var anchor2: NSLayoutConstraint!
     var keyboardH: CGFloat = 0
     
-    var showQuickChat: Bool = false
-    var sendCount: Int = 0
+//    var showQuickChat: Bool = false
+//    var sendCount: Int = 0
+    var showQuickChat: Bool = true
+    var sendCount: Int = 1
     
     var layout: NSLayoutConstraint?
 
     private var chatObserver: NSObjectProtocol?
+    private var otherObserver: NSObjectProtocol?
     
     var chatMessages = [[ChatMessage]]()
     
@@ -59,6 +62,7 @@ class ChatView: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        field.isEnabled = false
         return field
     }()
     
@@ -153,6 +157,13 @@ class ChatView: UIViewController {
                 self?.hideQuickChat()
             })
 
+        otherObserver = NotificationCenter.default.addObserver(forName: .didOtherClick,
+                                                               object: nil,
+                                                               queue: .main,
+                                                               using: { [weak self] _ in
+                                                                self?.otherClick()
+                                                               })
+        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillHideNotification, object: nil)
         
@@ -205,7 +216,15 @@ class ChatView: UIViewController {
             NotificationCenter.default.removeObserver(observer)
         }
 
-        showQuickChat = false
+//        showQuickChat = false
+        showQuickChat = true
+    }
+    
+    private func otherClick(){
+        inputField.isEnabled = true
+        inputField.becomeFirstResponder()
+        let indexPath = NSIndexPath(item: chatMessages.last!.count-1, section: chatMessages.count-1)
+        self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
     }
     
     func sendFotoMessage(image: UIImage){

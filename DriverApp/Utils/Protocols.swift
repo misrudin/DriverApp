@@ -22,4 +22,5 @@ protocol ProfileViewModelDelegate {
 
 extension Notification.Name {
     static let didSendMessage = Notification.Name("didSendMessage")
+    static let didOtherClick = Notification.Name("didOtherClick")
 }

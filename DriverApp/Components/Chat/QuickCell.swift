@@ -18,6 +18,7 @@ class QuickCell: UITableViewCell {
     @IBOutlet weak var item4: UIView!
     @IBOutlet weak var item5: UIView!
     @IBOutlet weak var lastItem: UIView!
+    @IBOutlet weak var item6: UIView!
     
     var vi = ChatView()
     
@@ -38,6 +39,7 @@ class QuickCell: UITableViewCell {
         item3.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item4.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item5.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
+        item6.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         
         container.dropShadow(color: UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1), opacity: 0.1, offSet: CGSize(width: 0, height: 0), radius: 5, scale: true)
         
@@ -50,6 +52,13 @@ class QuickCell: UITableViewCell {
             e?.addGestureRecognizer(tap)
         }
         
+        item6.isUserInteractionEnabled = true
+        item6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(otherClick)))
+        
+    }
+    
+    @objc private func otherClick(){
+        NotificationCenter.default.post(name: .didOtherClick, object: nil)
     }
     
     @objc func tapQuickChat(sender: CustomTap){

@@ -49,13 +49,18 @@ class OrderCell: UITableViewCell {
             let dateNow = dateFormater.string(from: Date())
              
             
-            if timeNow <= end && timeNow > start && orderData.active_date == dateNow {
-                container.backgroundColor = .white
-                isUserInteractionEnabled = true
-            }else {
-                container.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
-                isUserInteractionEnabled = false
+            DispatchQueue.main.async {
+                if timeNow <= end && timeNow > start && self.orderData.active_date == dateNow {
+                    self.container.backgroundColor = .white
+                }
+                
+                if timeNow > end && timeNow < start && self.orderData.active_date != dateNow {
+                    self.container.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+                }
             }
+            
+//          timeNow <= end &&
+            self.isUserInteractionEnabled = timeNow > start && self.orderData.active_date == dateNow
 
             date.text = "\(start) - \(end)"
 
@@ -81,6 +86,7 @@ class OrderCell: UITableViewCell {
         container.layer.cornerRadius = 5
         container.backgroundColor = .white
         backgroundColor = UIColor(named: "grayKasumi")
+        container.isUserInteractionEnabled = false
         
         
     }

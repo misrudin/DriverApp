@@ -168,7 +168,6 @@ class LiveTrackingVC: UIViewController {
                     self?.order = data
                     self?.setupCard()
                     self?.spiner.dismiss()
-                    print(data)
                 }
             case .failure(_):
                 self?.spiner.dismiss()
@@ -221,7 +220,6 @@ class LiveTrackingVC: UIViewController {
         }
         
         
-        
         mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
         directionButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
     }
@@ -268,22 +266,8 @@ class LiveTrackingVC: UIViewController {
             switch recognizer.direction{
             case .topToBottom:
                 print("top to botom")
-//                if cardFull {
-//                    cardFull = false
-//                    cardVisible = true
-//                }else {
-//                    cardVisible = true
-//                    cardFull = false
-//                }
             case .bottomToTop:
                 print("btm to top")
-//                if cardVisible {
-//                    cardFull = true
-//                    cardVisible = false
-//                }else {
-//                    cardVisible = false
-//                    cardFull = false
-//                }
             default:
                 print("default")
             }

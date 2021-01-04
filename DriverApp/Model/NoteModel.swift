@@ -51,12 +51,21 @@ struct Note: Decodable {
     let created_time: String
     let id_note: Int
     let created_date: String
-    let detail_order: NoteOrderDetail?
+    let detail_order: NoteOrderDetail
 }
 
 
 struct NoteOrderDetail: Decodable {
-    let user_info: String?
+    let user_info: String
+    let detail_shift: DetailShift
+    let status_tracking: String
+    let order_number: String
+    let order_detail: String
+    let another_pickup: [AnotherPickup]?
+    let code_driver: String
+    let active_date: String
+    let id_shift_time: Int
+    let id_order: Int
 }
 
 

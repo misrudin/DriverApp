@@ -15,43 +15,49 @@ struct ChatViewModel {
     let idAdmin = "17257"
     
     func getAllMsssages(codeDriver: String, completion: @escaping (Result<[[ChatMessage]],Error>)-> Void){
-            let urlFirebase = "chatting/\(codeDriver)_\(idAdmin)/allChat"
-            database.child(urlFirebase).observe(.value) { (snapshot) in
-                
-                guard let data = snapshot.value as? [String: [String: Any]] else{
-                                completion(.failure(DatabaseError.failedToFetch))
-                                return
-                            }
-                
+        let urlFirebase = "chatting/\(codeDriver)_\(idAdmin)/allChat"
+        database.child(urlFirebase).observe(.value) { (snapshot) in
+            
+            guard let data = snapshot.value as? [String: [String: Any]] else{
+                //                                completion(.failure(DatabaseError.failedToFetch))
                 var tempData = [[ChatMessage]]()
-                let sortedKeyDate = data.keys.sorted()
-                sortedKeyDate.forEach { (e) in
-                    let values = data[e] as! [String: [String: Any]]
-                    var newValues = [ChatMessage]()
-                    let sortedValues = values.keys.sorted()
-                    
-                    sortedValues.forEach({ (key) in
-
-                        let value = values[key]!
-                        
-                        guard let sender = value["sendBy"] else {return}
-                        let isMe = "\(sender)" == codeDriver
-                        
-                        let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")", photo: "\(value["file"] ?? "")")
-                        
-                        newValues.append(newDic)
-                    })
-                    tempData.append(newValues)
-                }
-                
                 let boot = [
                     ChatMessage(text: nil, isIncoming: true, date: Date(), time: "", photo: nil)
                 ]
                 tempData.append(boot)
-                 
                 completion(.success(tempData))
+                return
             }
+            
+            var tempData = [[ChatMessage]]()
+            let sortedKeyDate = data.keys.sorted()
+            sortedKeyDate.forEach { (e) in
+                let values = data[e] as! [String: [String: Any]]
+                var newValues = [ChatMessage]()
+                let sortedValues = values.keys.sorted()
+                
+                sortedValues.forEach({ (key) in
+                    
+                    let value = values[key]!
+                    
+                    guard let sender = value["sendBy"] else {return}
+                    let isMe = "\(sender)" == codeDriver
+                    
+                    let newDic = ChatMessage(text: "\(value["chatContent"] ?? "")", isIncoming: isMe, date: Date.dateFromCustomString(customString: e), time: "\(value["chatTime"] ?? "")", photo: "\(value["file"] ?? "")")
+                    
+                    newValues.append(newDic)
+                })
+                tempData.append(newValues)
+            }
+            
+            let boot = [
+                ChatMessage(text: nil, isIncoming: true, date: Date(), time: "", photo: nil)
+            ]
+            tempData.append(boot)
+            
+            completion(.success(tempData))
         }
+    }
     
     func getNewMessageValue(codeDriver: String, completion: @escaping (Int)->Void){
         let urlFirebase = "messages/\(idAdmin)/\(codeDriver)_\(idAdmin)"
@@ -87,9 +93,9 @@ struct ChatViewModel {
         
         
         let chatdData:Message = Message(chatContent: chat,
-                                       chatDate: dateString,
-                                       sendBy: codeDriver,
-                                       chatTime: timeString)
+                                        chatDate: dateString,
+                                        sendBy: codeDriver,
+                                        chatTime: timeString)
         let historyChat: HistoryMessage = HistoryMessage(lastContentChat: chat,
                                                          lastFileSend: "",
                                                          lastChatDate: dateString,
@@ -202,7 +208,7 @@ struct ChatViewModel {
     
     
     public enum DatabaseError: Error{
-            case failedToFetch
+        case failedToFetch
     }
 }
 

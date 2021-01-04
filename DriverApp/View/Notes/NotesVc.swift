@@ -39,6 +39,8 @@ class NotesVc: UIViewController {
         return view
     }()
     
+    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: .black, numberOfLines: 0, alignment: .center)
+    
     var noteViewModel = NoteViewModel()
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -59,32 +61,12 @@ class NotesVc: UIViewController {
        return table
     }()
     
-    
-//    lazy var segmentC: UISegmentedControl = {
-//        let segment = UISegmentedControl(items: ["Checkout", "Pending"])
-//        segment.layer.cornerRadius = 5
-//        segment.selectedSegmentIndex = 0
-//        segment.addTarget(self, action: #selector(changeColor(sender:)), for: .valueChanged)
-//        return segment
-//    }()
-    
     var containerButton: UIView = {
        let container = UIView()
         container.backgroundColor = UIColor(named: "orangeKasumi")
 
        return container
     }()
-    
-//    @objc func changeColor(sender: UISegmentedControl) {
-//          switch sender.selectedSegmentIndex {
-//          case 0:
-//            didTapCheckout()
-//          case 1:
-//            didTapPending()
-//          default:
-//            didTapCheckout()
-//          }
-//      }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,14 +82,11 @@ class NotesVc: UIViewController {
         configureLayout()
         
         view.addSubview(emptyImage)
+        view.addSubview(labelEmpty)
         emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: false)
+        labelEmpty.anchor(top: emptyImage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        labelEmpty.isHidden = true
     }
     
     
@@ -138,14 +117,16 @@ class NotesVc: UIViewController {
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.emptyImage.isHidden = true
+                    self?.labelEmpty.isHidden = true
                 }
             case .failure(let error):
-                print(error)
                 DispatchQueue.main.async {
                     self?.pendingData = []
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.emptyImage.isHidden = false
+                    self?.labelEmpty.isHidden = false
+                    self?.labelEmpty.text = error.localizedDescription
                 }
             }
         }
@@ -183,69 +164,5 @@ extension NotesVc: UITableViewDelegate, UITableViewDataSource {
         return cell
         
     }
-    
-    
-    
-//    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//
-//        let note = display == "CHECKOUT" ? checkoutData[indexPath.row].note : pendingData[indexPath.row].note
-//        let id:Int = display == "CHECKOUT" ? checkoutData[indexPath.row].id_note : pendingData[indexPath.row].id_note
-//
-//        let editAction = UIContextualAction(
-//               style: .normal,
-//            title: "Edit".localiz(),
-//               handler: {[weak self] (action, view, completion) in
-//                   completion(true)
-//                let vc =  EditNoteView()
-//                vc.id = id
-//                vc.note = note
-//                vc.type = self?.display
-//                vc.hidesBottomBarWhenPushed = true
-//                self?.navigationController?.pushViewController(vc, animated: true)
-//
-//           })
-//        let deleteAction = UIContextualAction(
-//            style: .normal,
-//            title: "Delete".localiz(),
-//            handler: {[weak self](action, view, completion) in
-//                   completion(true)
-//                if self?.display == "CHECKOUT" {
-//                    self?.noteViewModel.deleteNote(id: id, completion: { (response) in
-//                        switch response {
-//                        case .success(_):
-//                            self?.checkoutData.remove(at: indexPath.row)
-//                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-//                        case .failure(_):
-//                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
-//                        }
-//                    })
-//                }else {
-//                    self?.noteViewModel.deleteNote(id: id, completion: {[weak self] (response) in
-//                        switch response {
-//                        case .success(_):
-//                            self?.pendingData.remove(at: indexPath.row)
-//                            self?.tableView.deleteRows(at: [indexPath], with: .automatic)
-//                        case .failure(_):
-//                            Helpers().showAlert(view: self!, message: "Failed to delete note !".localiz())
-//                        }
-//                    })
-//                }
-//           })
-//
-//        let imageEdit = UIImage(named: "editIcon")
-//        let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
-//
-//        let imageDelete = UIImage(named: "deleteIcon")
-//        let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
-//
-//        editAction.image = edit
-//        editAction.backgroundColor = UIColor(named: "yellowKasumi")
-//        deleteAction.image = delete
-//        deleteAction.backgroundColor = .red
-//           let configuration = UISwipeActionsConfiguration(actions: [deleteAction,editAction])
-//           configuration.performsFirstActionWithFullSwipe = false
-//           return configuration
-//    }
-    
     
 }

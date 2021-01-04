@@ -26,8 +26,8 @@ class CustomNoteCell: UITableViewCell {
     
     var item: Note! {
         didSet{
+            let user = item.detail_order.user_info
             guard let orderNo = item.meta_data?.order_number,
-                  let user = item.detail_order?.user_info,
                   let userInfo = orderVm.decryptUserInfo(data: user, OrderNo: orderNo) else {
                 return
             }

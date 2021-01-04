@@ -163,13 +163,6 @@ class HomeVc: UIViewController {
     }
     
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-//        bottomCustom.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 0, height: -1), radius: 0, scale: true)
-//        emptyImage.dropShadow(color: UIColor(named: "orangeKasumi")!, opacity: 0.3, offSet: CGSize(width: 0, height: 0), radius: 120/2, scale: true)
-    }
-    
-    
     private func getPendingNote(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
@@ -541,7 +534,35 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0 {
-            print("pending Data")
+            if let pending = pendingNotes {
+                let order = pending[indexPath.row]
+                print(order)
+                    let userInfo = order.detail_order.user_info
+                      let shiftDetail = order.detail_order.detail_shift
+                      let orderDetail = order.detail_order.order_detail
+                      let orderNo = order.detail_order.order_number
+                      let status = order.detail_order.status_tracking
+                      let codeDriver = order.detail_order.code_driver
+                      let activeDate = order.detail_order.active_date
+                      let idOrder = order.detail_order.id_order
+                      let idShift = order.detail_order.id_shift_time
+                      let extra = order.detail_order.another_pickup
+          
+                
+                let vc = LiveTrackingVC()
+                vc.order = NewOrderData(user_info: userInfo,
+                                        detail_shift: shiftDetail,
+                                        order_detail: orderDetail,
+                                        status_tracking: status,
+                                        order_number: orderNo,
+                                        code_driver: codeDriver,
+                                        active_date: activeDate,
+                                        id_order: idOrder,
+                                        id_shift_time: idShift,
+                                        another_pickup: extra)
+                vc.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }else {
             if let orderData = orderData {
                 let order = orderData[indexPath.section-1].order_list![indexPath.row]
@@ -550,7 +571,6 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 vc.order = order
                 vc.hidesBottomBarWhenPushed = true
                 navigationController?.pushViewController(vc, animated: true)
-                
             }
         }
     }

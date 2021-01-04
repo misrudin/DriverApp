@@ -116,7 +116,7 @@ class CardViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = UIColor(named: "darkKasumi")
-        label.numberOfLines = 1
+        label.numberOfLines = 3
         
         return label
     }()
@@ -216,7 +216,7 @@ class CardViewController: UIViewController {
     @objc private func didSeeDetail(){
         if itemLabel.numberOfLines == 0 {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.itemLabel.numberOfLines = 1
+                self.itemLabel.numberOfLines = 3
                 self.detailItem.text = "See Details"
             })
         }else {
@@ -276,7 +276,7 @@ class CardViewController: UIViewController {
         let textArray = data.enumerated().map({(index, element) in
             return "\(index+1). \(element)"
         })
-        if(textArray.count < 2){
+        if(textArray.count < 4){
             detailItem.isHidden = true
             titleLabel.topAnchor.constraint(equalTo: itemLabel.bottomAnchor, constant: 16).isActive = true
         }else{
@@ -316,11 +316,14 @@ class CardViewController: UIViewController {
         case .pending:
             delegate?.didTapButton(self, type: .start_delivery)
         case .scan:
-
             let currentItem = orderDetail.pickup_destination[currentIndex]
             if let extraPickup = orderData?.another_pickup {
                 let currentExtra = extraPickup.filter({ $0.pickup_store_name == currentItem.pickup_store_name })
-                delegate?.scan(self, store: currentItem, extra: currentExtra[0])
+                if currentExtra.count != 0 {
+                    delegate?.scan(self, store: currentItem, extra: currentExtra[0])
+                }else {
+                    delegate?.scan(self, store: currentItem, extra: nil)
+                }
             }else {
                 delegate?.scan(self, store: currentItem, extra: nil)
             }
@@ -346,7 +349,7 @@ class CardViewController: UIViewController {
         
         orderNoLable.anchor(top: orderButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 30)
         
-        titleLabelItemName.anchor(top: orderNoLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20)
+        titleLabelItemName.anchor(top: orderNoLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
         
         itemLabel.anchor(top: titleLabelItemName.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
         
@@ -369,6 +372,9 @@ class CardViewController: UIViewController {
     private func setupButton(){
         pendingButton.isHidden = false
         orderButton2.isHidden = false
+        pendingButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 45).isActive = true
+        orderButton2.heightAnchor.constraint(greaterThanOrEqualToConstant: 45).isActive = true
+        
         
         seeDetailButton.isHidden = true
         
@@ -380,6 +386,7 @@ class CardViewController: UIViewController {
         titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: -40, paddingLeft: 20, paddingRight: 20)
         destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
         destinationLabel.numberOfLines = 0
+        titleLabelItemName.anchor(top: orderNoLable.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 30, paddingLeft: 20, paddingRight: 20)
     }
     
     private func setupDefaultButton(){
@@ -460,6 +467,24 @@ class CardViewController: UIViewController {
     }
     
     
+    private func hideDetail(){
+        DispatchQueue.main.async {
+            self.detailItem.isHidden = true
+            self.itemLabel.isHidden = true
+            self.titleLabelItemName.isHidden = true
+            self.titleLabel.topAnchor.constraint(equalTo: self.orderNoLable.bottomAnchor, constant: 16).isActive = true
+        }
+    }
+    
+    private func showDetail(){
+        DispatchQueue.main.async {
+            self.detailItem.isHidden = false
+            self.itemLabel.isHidden = false
+            self.titleLabelItemName.isHidden = false
+            self.titleLabel.topAnchor.constraint(equalTo: self.detailItem.bottomAnchor, constant: 16).isActive = true
+        }
+    }
+    
     private func getDetailOrder(orderNo: String){
         OrderViewModel().getDetailOrder(orderNo: orderNo) {[weak self] (result) in
             switch result {
@@ -471,23 +496,29 @@ class CardViewController: UIViewController {
                         self?.titleButton = "Pickup Order"
                         self?.setupDefaultButton()
                         self?.statusDelivery = .start_pickup
+                        self?.hideDetail()
                     }else if statusTracking == "on pickup process" {
                         self?.titleButton = "Loading ..."
                         self?.statusDelivery = .nostatus
                         self?.cekScaned()
                         self?.setupDefaultButton()
+                        self?.hideDetail()
                     }else if statusTracking == "waiting delivery" {
                         self?.titleButton = "Start Delivery"
                         self?.setupDefaultButton()
                         self?.statusDelivery = .start_delivery
+                        self?.showDetail()
                     }else if statusTracking == "on delivery" {
                         self?.titleButton = "Done Delivery"
                         self?.setupButton()
                         self?.statusDelivery = .done_delivery
+                        self?.showDetail()
                     }else {
                         self?.titleButton = "Start Delivery"
                         self?.setupDefaultButton()
                         self?.statusDelivery = .start_delivery
+                        self?.showDetail()
+                        self?.seeDetailButton.isHidden = true
                     }
                     self?.orderButton.setTitle(self?.titleButton, for: .normal)
                     self?.orderButton2.setTitle(self?.titleButton, for: .normal)
