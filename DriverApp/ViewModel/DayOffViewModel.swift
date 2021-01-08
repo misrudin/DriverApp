@@ -31,24 +31,65 @@ struct DayOffViewModel {
     
     
     
-    //MARK: - set plan day off
+    //MARK: - RQUEST NEXT MONTH DAYOFF
     func setPlanDayOff(data: [String: Any], codeDriver: String, completion: @escaping (Result<Bool,Error>)-> Void){
         let parameters:[String: Any] = [
             "code_driver" : codeDriver,
-            "day_off_status_plan": data
+            "day_off_status": data
         ]
         
-//        print(parameters)
-        
 
-        AF.request("\(Base.urlDriver)plan/days-off",
-                   method: .patch,
+        AF.request("\(Base.urlDriver)validate/days-off/next",
+                   method: .post,
                    parameters: parameters,
                    encoding: JSONEncoding.default, headers: Base.headers).response(completionHandler: {(response) in
                     debugPrint(response)
                     switch response.result {
                     case .success:
-                        completion(.success(true))
+                        if let statusCode = response.response?.statusCode {
+                            if statusCode != 200 {
+                                if let data = response.data {
+                                    if let re = Helpers().decodeError(data: data){
+                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                    }
+                                }
+                            }else {
+                                completion(.success(true))
+                            }
+                        }
+                        
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+            })
+    }
+    
+    //MARK: - REQUEST CHANGE CURRENT DAYOFF
+    func reqChangeDayoff(data: [String: Any], codeDriver: String, completion: @escaping (Result<Bool,Error>)-> Void){
+        let parameters:[String: Any] = [
+            "code_driver" : codeDriver,
+            "day_off_status": data
+        ]
+        
+        AF.request("\(Base.urlDriver)validate/days-off/now",
+                   method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        if let statusCode = response.response?.statusCode {
+                            if statusCode != 200 {
+                                if let data = response.data {
+                                    if let re = Helpers().decodeError(data: data){
+                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                    }
+                                }
+                            }else {
+                                completion(.success(true))
+                            }
+                        }
+                        
                     case let .failure(error):
                         completion(.failure(error))
                     }

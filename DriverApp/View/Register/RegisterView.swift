@@ -982,6 +982,34 @@ class RegisterView: UIViewController {
         //We make a call to our keyboard handling function as soon as the view is loaded.
         initializeHideKeyboard()
         
+        //dummy
+        
+        firstName.text = "First"
+        lastName.text = "Last"
+        firstNameHiragana.text = "Hira"
+              lastNameHiragana.text = "Gana"
+              brithDate.text = "15-05-2000"
+              postalCode.text = "1243"
+              prefecture.text = "Prefecture"
+              municipal.text = "municipal"
+              chome.text = "Come"
+              municipalityKana.text = "muniKana"
+              kanaAfterAddress.text = "Kana afterAddress"
+              gender.text = "Male"
+              phoneNumber.text = "123123123"
+              email.text = "misrudinz@gmail.com"
+              password.text = "123"
+              licenseNumber.text = "12321"
+              licenseExpiration.text = "2020"
+              insuranceCompany.text = "234234"
+              personalCoverage.text = "232"
+              compensation.text = "214234"
+              insuranceExpirationDate.text = "24324"
+              vehicleName.text = "234234"
+              vehicleNumberPlate.text = "23424"
+              vehicleYear.text = "23424"
+              vehicleOwnership.text = "234234"
+              vehicleInspectionExpDate.text = "@3444"
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -1018,15 +1046,10 @@ class RegisterView: UIViewController {
 
         stakView.addSubview(lableTitleRegister)
         lableTitleRegister.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
-        
-//        stakView.addSubview(subTableTitleRegister)
-//        subTableTitleRegister.anchor(top: lableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, paddingLeft: 0, paddingRight: 0)
-        
+
         stakView.addSubview(personalLabel)
         personalLabel.anchor(top: lableTitleRegister.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15, paddingLeft: 0, paddingRight: 0)
-        
-//        stakView.addSubview(profileFoto)
-//        profileFoto.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10)
+
         
         stakView.addSubview(profilePhotoImage)
         profilePhotoImage.anchor(top: personalLabel.bottomAnchor, paddingTop: 20, width: 80, height: 80)
@@ -1040,12 +1063,6 @@ class RegisterView: UIViewController {
         
         stakView.addSubview(profilePhotoLable)
         profilePhotoLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 10)
-        
-//        stakView.addSubview(imgName)
-//        imgName.anchor(top: profilePhotoImage.topAnchor, left: profilePhotoImage.rightAnchor, right: stakView.rightAnchor, paddingTop: 10, paddingLeft: 10)
-//
-//        stakView.addSubview(selecImage)
-//        selecImage.anchor(left: profilePhotoImage.rightAnchor, bottom: profilePhotoImage.bottomAnchor, paddingBottom: 10, paddingLeft: 10, height: 30)
         
         stakView.addSubview(firstNameLable)
         firstNameLable.anchor(top: profilePhotoLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 20,width: view.frame.width/2-20)
@@ -1114,13 +1131,13 @@ class RegisterView: UIViewController {
         stakView.addSubview(gender)
         gender.anchor(top: genderLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
-        stakView.addSubview(languageLable)
-        languageLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
-        stakView.addSubview(language)
-        language.anchor(top: languageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+//        stakView.addSubview(languageLable)
+//        languageLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
+//        stakView.addSubview(language)
+//        language.anchor(top: languageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
         stakView.addSubview(phoneNumberLable)
-        phoneNumberLable.anchor(top: language.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 10)
+        phoneNumberLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 10)
         
         stakView.addSubview(viewCc)
         viewCc.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 60, height: 45)
@@ -1426,7 +1443,6 @@ extension RegisterView {
               let municKana = self.municipalityKana.text,
               let kanaAfterAddress = self.kanaAfterAddress.text,
               let gender = self.gender.text,
-              let language =  self.language.text,
               let phoneNumber = self.phoneNumber.text,
               let email = self.email.text,
               let password = self.password.text,
@@ -1450,7 +1466,7 @@ extension RegisterView {
         
         let data: RegisterDataTemp = RegisterDataTemp(first_name: firstName,
                                                       last_name: lastName,
-                                                      first_name_hisragana: firstNameHiragana,
+                                                      first_name_hiragana: firstNameHiragana,
                                                       last_name_hiragana: lastNameHiragana,
                                                       date_of_birth: dateOfBirth,
                                                       postal_code: postalCode,
@@ -1459,8 +1475,8 @@ extension RegisterView {
                                                       chome: chome,
                                                       municipality_kana: municKana,
                                                       kana_after_address: kanaAfterAddress,
-                                                      gender: gender,
-                                                      language: language,
+                                                      gender: gender.lowercased(),
+                                                      language: "jp",
                                                       phone_number: phoneNumber,
                                                       email: email,
                                                       password: password,
@@ -1511,35 +1527,35 @@ extension RegisterView {
         formater.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateAdd = formater.string(from: Date())
         
-        let dataToPost: RegisterData = RegisterData(user_image: userImage,
+        let dataToPost: RegisterData = RegisterData(photo: "userImage",
                                                     first_name: firstName,
                                                     last_name: lastName,
-                                                    first_name_hisragana: firstNameHiragana,
+                                                    first_name_hiragana: firstNameHiragana,
                                                     last_name_hiragana: lastNameHiragana,
-                                                    date_of_birth: dateOfBirth,
+                                                    birthday_date: dateOfBirth,
                                                     postal_code: postalCode,
-                                                    prefectures: prefectures,
+                                                    prefecture: prefectures,
                                                     municipal_district: municipalDis,
                                                     chome: chome,
                                                     municipality_kana: municKana,
                                                     kana_after_address: kanaAfterAddress,
-                                                    gender: gender,
-                                                    language: language,
+                                                    sex: gender.lowercased(),
+                                                    language: "jp",
                                                     phone_number: phoneNumber,
                                                     email: email,
                                                     password: password,
-                                                    license_number: licenseNumber,
-                                                    license_expired_date: licenseExpDate,
-                                                    insurance_company: insuranceCom,
-                                                    personal_coverage: personalCov,
-                                                    compensation_range_object: comRangeObj,
-                                                    insurance_expired_date: insuranceExpDate,
+                                                    driver_license_number: licenseNumber,
+                                                    driver_license_expired_date: licenseExpDate,
+                                                    insurance_company_name: insuranceCom,
+                                                    coverage_personal: personalCov,
+                                                    compensation_range_objective: comRangeObj,
+                                                    insurance_expiration_date: insuranceExpDate,
                                                     vehicle_name: vName,
                                                     vehicle_number_plate: vPlate,
                                                     vehicle_year: vYear,
                                                     vehicle_ownership: vOwner,
-                                                    vehicle_certificate_exp: vCerExp,
-                                                    vehicle_certification_photo: vCerPhoto,
+                                                    vehicle_inspection_certificate_expiration_date: vCerExp,
+                                                    vehicle_inspection_certificate_photo: vCerPhoto,
                                                     vehicle_photo_1: vPhoto1,
                                                     vehicle_photo_2: vPhoto2,
                                                     vehicle_photo_3: vPhoto3,

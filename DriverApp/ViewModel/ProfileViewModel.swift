@@ -228,15 +228,32 @@ struct ProfileViewModel {
         }
     }
     
-    func editVehicleData(data: [String: Any], completion: @escaping (Result<Bool, Error>)-> Void){
-        let urlFirebase = "vehicle_update"
-        database.child(urlFirebase).childByAutoId().setValue(data) { (error, _) in
-            guard error == nil else {
-                completion(.failure(DataError.failedToEdit))
-                return
-            }
-            completion(.success(true))
-        }
+    func editVehicleData(data: VehicleEditData, completion: @escaping (Result<Bool, Error>)-> Void){
+        AF.request("\(Base.urlDriver)validate/vehicle",
+                   method: .post,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        if let statusCode = response.response?.statusCode {
+                            if statusCode != 200 {
+                                if let data = response.data {
+                                    if let re = Helpers().decodeError(data: data){
+                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                    }
+                                }
+                            }else {
+                                completion(.success(true))
+                            }
+                        }
+                        
+                    case.failure(_):
+                        completion(.failure(ErrorDriver.failedToFetch))
+                    }
+                    
+            })
+        
     }
     
     

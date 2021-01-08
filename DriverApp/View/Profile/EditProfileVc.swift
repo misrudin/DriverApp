@@ -260,6 +260,7 @@ class EditProfileVc: UIViewController {
         
         guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {
             return}
+        
         if let urlString = URL(string: "\(photoUrl)\(photoName)") {
             let placeholderImage = UIImage(named: "personCircle")
             self.profilePhotoImage.af.setImage(withURL: urlString, placeholderImage: placeholderImage)

@@ -39,6 +39,10 @@ class CardViewController: UIViewController {
     var currentIndex: Int = 0
     var statusDelivery: TypeDelivery!
     
+    var detailContstaint1: NSLayoutConstraint!
+    var detailContstaint2: NSLayoutConstraint!
+    var count: Int = 0
+    
     var status: Bool = false {
         didSet {
             if status {
@@ -267,7 +271,7 @@ class CardViewController: UIViewController {
         let dataN = orderDetail.pickup_destination.compactMap({$0.pickup_item.map({$0.item_name})})
         var data = [String]()
             
-        dataN.map { e in
+        _ = dataN.map { e in
             for i in e {
                 data.append(i)
             }
@@ -276,6 +280,7 @@ class CardViewController: UIViewController {
         let textArray = data.enumerated().map({(index, element) in
             return "\(index+1). \(element)"
         })
+        count = textArray.count
         if(textArray.count < 4){
             detailItem.isHidden = true
             titleLabel.topAnchor.constraint(equalTo: itemLabel.bottomAnchor, constant: 16).isActive = true
@@ -284,11 +289,17 @@ class CardViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: detailItem.bottomAnchor, constant: 16).isActive = true
         }
         itemLabel.text = textArray.joined(separator: "\n")
+        
+        detailContstaint1 = titleLabel.topAnchor.constraint(equalTo: detailItem.bottomAnchor, constant: 20)
+        detailContstaint2 = titleLabel.topAnchor.constraint(equalTo: orderNoLable.bottomAnchor, constant: 20)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         view.roundCorners([.topLeft, .topRight], radius: 21)
+        
+        self.detailContstaint1.isActive = false
+        self.detailContstaint2.isActive = true
     }
     
     @objc
@@ -355,7 +366,7 @@ class CardViewController: UIViewController {
         
         detailItem.anchor(top: itemLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
         
-        titleLabel.anchor(top: detailItem.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20)
+        titleLabel.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 20, paddingRight: 20)
         storeLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 12)
         
         pendingButton.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
@@ -365,7 +376,7 @@ class CardViewController: UIViewController {
         orderButton2.heightAnchor.constraint(equalToConstant: 45).isActive = true
         orderButton2.isHidden = true
         
-        seeDetailButton.anchor(top: destinationLabel.bottomAnchor ,left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 45)
+        seeDetailButton.anchor(top: destinationLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 45)
         
     }
     
@@ -472,16 +483,22 @@ class CardViewController: UIViewController {
             self.detailItem.isHidden = true
             self.itemLabel.isHidden = true
             self.titleLabelItemName.isHidden = true
-            self.titleLabel.topAnchor.constraint(equalTo: self.orderNoLable.bottomAnchor, constant: 16).isActive = true
+            self.detailContstaint1.isActive = false
+            self.detailContstaint2.isActive = true
         }
     }
     
     private func showDetail(){
         DispatchQueue.main.async {
-            self.detailItem.isHidden = false
+            if(self.count < 4){
+                self.detailItem.isHidden = true
+            }else {
+                self.detailItem.isHidden = false
+            }
             self.itemLabel.isHidden = false
             self.titleLabelItemName.isHidden = false
-            self.titleLabel.topAnchor.constraint(equalTo: self.detailItem.bottomAnchor, constant: 16).isActive = true
+            self.detailContstaint1.isActive = true
+            self.detailContstaint2.isActive = false
         }
     }
     
@@ -514,10 +531,10 @@ class CardViewController: UIViewController {
                         self?.statusDelivery = .done_delivery
                         self?.showDetail()
                     }else {
-                        self?.titleButton = "Start Delivery"
+                        self?.titleButton = "Pickup Order"
                         self?.setupDefaultButton()
-                        self?.statusDelivery = .start_delivery
-                        self?.showDetail()
+                        self?.statusDelivery = .start_pickup
+                        self?.hideDetail()
                         self?.seeDetailButton.isHidden = true
                     }
                     self?.orderButton.setTitle(self?.titleButton, for: .normal)

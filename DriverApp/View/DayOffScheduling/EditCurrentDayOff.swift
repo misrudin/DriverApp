@@ -1,8 +1,8 @@
 //
-//  DayOffViewController.swift
+//  EditCurrentDayOff.swift
 //  DriverApp
 //
-//  Created by BMG MacbookPro on 15/10/20.
+//  Created by Indo Office4 on 08/01/21.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import JGProgressHUD
 import LanguageManager_iOS
 
 @available(iOS 13.0, *)
-class PlanVc: UIViewController {
+class EditCurrentDayOff: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -23,7 +23,7 @@ class PlanVc: UIViewController {
     private let emptyImage: UIView = {
         let view = UIView()
         let imageView: UIImageView = {
-           let img = UIImageView()
+            let img = UIImageView()
             img.image = UIImage(named: "emptyImage")
             img.tintColor = UIColor(named: "orangeKasumi")
             img.clipsToBounds = true
@@ -146,7 +146,7 @@ class PlanVc: UIViewController {
         label.textAlignment = .center
         return label
     }()
-
+    
     
     lazy var subTitleLabel: UILabel = {
         let label = UILabel()
@@ -210,9 +210,9 @@ class PlanVc: UIViewController {
     }()
     
     private let tableView: UITableView = {
-       let table = UITableView()
+        let table = UITableView()
         table.register(ShiftCell.self, forCellReuseIdentifier: ShiftCell.id)
-//        table.isScrollEnabled = false
+        //        table.isScrollEnabled = false
         table.showsVerticalScrollIndicator = false
         table.separatorStyle = .none
         return table
@@ -328,8 +328,8 @@ class PlanVc: UIViewController {
     }
     
     
-        //MARK:- Get day off plan
-    func getDataDayOffPlan(){
+    //MARK:- Get day off plan
+    private func getDataDayOffPlan(){
         guard let data = dayOffPlanData else {
             self.dayOffPlan = [
                 "1": self.week1,
@@ -360,7 +360,7 @@ class PlanVc: UIViewController {
             setWorkButton.isHidden = false
         }
         
-        if data.dayOfStatusPlan == nil {
+        if data.dayOfStatus == nil {
             self.dayOffPlan = [
                 "1": self.week1,
                 "2": self.week2,
@@ -374,11 +374,11 @@ class PlanVc: UIViewController {
             var week3: [String: Any] = NSMutableDictionary() as! [String : Any]
             var week4: [String: Any] = NSMutableDictionary() as! [String : Any]
             var week5: [String: Any] = NSMutableDictionary() as! [String : Any]
-            let dataWeek1 = data.dayOfStatusPlan?.week1
-            let dataWeek2 = data.dayOfStatusPlan?.week2
-            let dataWeek3 = data.dayOfStatusPlan?.week3
-            let dataWeek4 = data.dayOfStatusPlan?.week4
-            let dataWeek5 = data.dayOfStatusPlan?.week5
+            let dataWeek1 = data.dayOfStatus?.week1
+            let dataWeek2 = data.dayOfStatus?.week2
+            let dataWeek3 = data.dayOfStatus?.week3
+            let dataWeek4 = data.dayOfStatus?.week4
+            let dataWeek5 = data.dayOfStatus?.week5
             week1["Sunday"] = dataWeek1?.Sun == nil || dataWeek1?.Sun?.count == 0 ? NSNull() : dataWeek1?.Sun
             week1["Monday"] = dataWeek1?.Mon == nil || dataWeek1?.Sun?.count == 0 ? NSNull() : dataWeek1?.Mon
             week1["Tuesday"] = dataWeek1?.Tue == nil || dataWeek1?.Tue?.count == 0 ? NSNull() : dataWeek1?.Tue
@@ -453,9 +453,10 @@ class PlanVc: UIViewController {
         emptyImage.centerXAnchor.constraint(equalTo: contrainerView.centerXAnchor).isActive = true
     }
     
-
+    
+    //MARK: - Navigation bar
     func configureNavigationBar(){
-        navigationItem.title = "Plan Next Month".localiz()
+        navigationItem.title = "Edit Day Off".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
@@ -493,7 +494,7 @@ class PlanVc: UIViewController {
             "Friday": dataWeek1["Friday"] as? [Int],
             "Saturday": dataWeek1["Saturday"] as? [Int],
         ]
-
+        
         let filtered = newData.filter { $0.value != nil }
         
         var week1Count = 0
@@ -541,11 +542,11 @@ class PlanVc: UIViewController {
         }
         
         
-//        if week1Count < 1 {
-//            showAlert(text: "Minimal select 1 shift to work in week 1 !")
-//            return
-//        }
- 
+        //        if week1Count < 1 {
+        //            showAlert(text: "Minimal select 1 shift to work in week 1 !")
+        //            return
+        //        }
+        
         //cek week 2 minimal 1 work
         let dataWeek2 = dayOffPlan["2"] as! [String: Any]
         
@@ -558,7 +559,7 @@ class PlanVc: UIViewController {
             "Friday": dataWeek2["Friday"] as? [Int],
             "Saturday": dataWeek2["Saturday"] as? [Int],
         ]
-
+        
         let filtered2 = newData2.filter { $0.value != nil }
         var week2Count = 0
         
@@ -603,11 +604,11 @@ class PlanVc: UIViewController {
                 week2Count += sat
             }
         }
-//        if week2Count < 1 {
-//            showAlert(text: "Minimal select 1 shift to work in week 2 !")
-//            return
-//        }
-//
+        //        if week2Count < 1 {
+        //            showAlert(text: "Minimal select 1 shift to work in week 2 !")
+        //            return
+        //        }
+        //
         //cek week minimal 1 work
         let dataWeek3 = dayOffPlan["3"] as! [String: Any]
         
@@ -620,7 +621,7 @@ class PlanVc: UIViewController {
             "Friday": dataWeek3["Friday"] as? [Int],
             "Saturday": dataWeek3["Saturday"] as? [Int],
         ]
-
+        
         let filtered3 = newData3.filter { $0.value != nil }
         var week3Count = 0
         
@@ -665,10 +666,10 @@ class PlanVc: UIViewController {
                 week3Count += sat
             }
         }
-//        if week3Count < 1 {
-//            showAlert(text: "Minimal select 1 shift to work in week 3 !")
-//            return
-//        }
+        //        if week3Count < 1 {
+        //            showAlert(text: "Minimal select 1 shift to work in week 3 !")
+        //            return
+        //        }
         //cek week minimal 1 work
         let dataWeek4 = dayOffPlan["4"] as! [String: Any]
         
@@ -681,7 +682,7 @@ class PlanVc: UIViewController {
             "Friday": dataWeek4["Friday"] as? [Int],
             "Saturday": dataWeek4["Saturday"] as? [Int],
         ]
-
+        
         let filtered4 = newData4.filter { $0.value != nil }
         var week4Count = 0
         
@@ -726,12 +727,12 @@ class PlanVc: UIViewController {
                 week4Count += sat
             }
         }
-//        if week4Count < 1 {
-//            showAlert(text: "Minimal select 1 day to work in week 4 !")
-//            return
-//        }
-     
-//       MARK: - SIMPAN DATA
+        //        if week4Count < 1 {
+        //            showAlert(text: "Minimal select 1 day to work in week 4 !")
+        //            return
+        //        }
+        
+        //       MARK: - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
@@ -740,7 +741,7 @@ class PlanVc: UIViewController {
         
         spiner.show(in: view)
         
-        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) {[weak self] (response) in
+        dayOfVm.reqChangeDayoff(data: dayOffPlan, codeDriver: codeDriver) {[weak self] (response) in
             switch response {
             case .success(_):
                 DispatchQueue.main.async {
@@ -772,13 +773,13 @@ class PlanVc: UIViewController {
             "Friday": dataWeek1["Friday"] as? [Int],
             "Saturday": dataWeek1["Saturday"] as? [Int],
         ]
-
+        
         let filtered = newData.filter { $0.value != nil }
         if filtered.count != 5 {
             showAlert(text: "Select 2 day off in week 1")
             return
         }
- 
+        
         //cek week 2 libur min max 2
         let dataWeek2 = dayOffPlan["2"] as! [String: Any]
         
@@ -791,7 +792,7 @@ class PlanVc: UIViewController {
             "Friday": dataWeek2["Friday"] as? [Int],
             "Saturday": dataWeek2["Saturday"] as? [Int],
         ]
-
+        
         let filtered2 = newData2.filter { $0.value != nil }
         if filtered2.count != 5 {
             showAlert(text: "Select 2 day off in week 2")
@@ -810,7 +811,7 @@ class PlanVc: UIViewController {
             "Friday": dataWeek3["Friday"] as? [Int],
             "Saturday": dataWeek3["Saturday"] as? [Int],
         ]
-
+        
         let filtered3 = newData3.filter { $0.value != nil }
         if filtered3.count != 5 {
             showAlert(text: "Select 2 day off in week 3")
@@ -828,15 +829,15 @@ class PlanVc: UIViewController {
             "Friday": dataWeek4["Friday"] as? [Int],
             "Saturday": dataWeek4["Saturday"] as? [Int],
         ]
-
+        
         let filtered4 = newData4.filter { $0.value != nil }
         if filtered4.count != 5 {
             showAlert(text: "Select 2 day off in week 4")
             return
         }
         //cek week 5 cek ada berapa hari dulu
-     
-//       MARK: - SIMPAN DATA
+        
+        //       MARK: - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
@@ -845,7 +846,7 @@ class PlanVc: UIViewController {
         
         spiner.show(in: view)
         
-        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) {[weak self] (response) in
+        dayOfVm.reqChangeDayoff(data: dayOffPlan, codeDriver: codeDriver) {[weak self] (response) in
             switch response {
             case .success(_):
                 DispatchQueue.main.async {
@@ -868,7 +869,7 @@ class PlanVc: UIViewController {
     }
     
     
-//    MARK: - Set button
+    //    MARK: - Set button
     @objc func setWorkClick(){
         guard let selectedWeek = selectedWeek, let selectedDay = selectedDay else {
             return
@@ -904,7 +905,7 @@ class PlanVc: UIViewController {
     }
     
     //MARK: - On select day in list
-   private func btnTouch(tanggal: String, day: String, index: Int){
+    private func btnTouch(tanggal: String, day: String, index: Int){
         let date = Date.dayStringFromStringDate(customDate: tanggal)
         dateLabel.text = date
         
@@ -1069,7 +1070,7 @@ class PlanVc: UIViewController {
 //MARK: - table view
 
 @available(iOS 13.0, *)
-extension PlanVc: UITableViewDelegate, UITableViewDataSource {
+extension EditCurrentDayOff: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let data = listShift {
             return data.count
@@ -1097,7 +1098,7 @@ extension PlanVc: UITableViewDelegate, UITableViewDataSource {
 
 //MARK:- colection view
 @available(iOS 13.0, *)
-extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 80, height: 100)
     }
@@ -1658,20 +1659,20 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         
         selectedIndex = i
         colectionView.reloadData()
-
+        
         btnTouch(tanggal: date, day: dayName, index: i)
     }
 }
 
 @available(iOS 13.0, *)
-extension PlanVc: UIViewControllerTransitioningDelegate {
+extension EditCurrentDayOff: UIViewControllerTransitioningDelegate {
     func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         PresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
 
 @available(iOS 13.0, *)
-extension PlanVc: SelectShiftDelegate {
+extension EditCurrentDayOff: SelectShiftDelegate {
     func onSelectShift(_ vm: SelectShift, idShift: [Int]) {
         guard let selectedWeek = selectedWeek, let selectedDay = selectedDay else {
             return

@@ -928,37 +928,55 @@ extension EditVehicleView {
         formater.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateAdd = formater.string(from: Date())
         
-        let dataToPost: [String:Any] = [
-            "code_driver": codeDriver,
-            "vehicle_name": vName,
-            "vehicle_number_plate": vPlate,
-            "vehicle_year": vYear,
-            "vehicle_ownership": vOwner,
-            "vehicle_inspection_certificate_expiration_date": vCerExp,
-            "vehicle_inspection_certificate_photo": vCerPhoto,
-            "insurance_company_name": insuranceCom,
-            "coverage_personal": personalCov,
-            "compensation_range_objective": comRangeObj,
-            "insurance_expiration_date": insuranceExpDate,
-            "date_edit": dateAdd,
-            "vehicle_photo1": vPhoto1,
-            "vehicle_photo2": vPhoto2,
-            "vehicle_photo3": vPhoto3,
-            "first_name": firstName,
-            "last_name": lastName,
-            "email": email
-        ]
-        
+//        let dataToPost: [String:Any] = [
+//            "code_driver": codeDriver,
+//            "vehicle_name": vName,
+//            "vehicle_number_plate": vPlate,
+//            "vehicle_year": vYear,
+//            "vehicle_ownership": vOwner,
+//            "vehicle_inspection_certificate_expiration_date": vCerExp,
+//            "vehicle_inspection_certificate_photo": vCerPhoto,
+//            "insurance_company_name": insuranceCom,
+//            "coverage_personal": personalCov,
+//            "compensation_range_objective": comRangeObj,
+//            "insurance_expiration_date": insuranceExpDate,
+//            "date_edit": dateAdd,
+//            "vehicle_photo1": vPhoto1,
+//            "vehicle_photo2": vPhoto2,
+//            "vehicle_photo3": vPhoto3,
+//            "first_name": firstName,
+//            "last_name": lastName,
+//            "email": email
+//        ]
+//
+        let dataEdit: VehicleEditData = VehicleEditData(code_driver: codeDriver,
+                                                        vehicle_name: vName,
+                                                        vehicle_number_plate: vPlate,
+                                                        vehicle_year: vYear,
+                                                        vehicle_ownership: vOwner,
+                                                        vehicle_inspection_certificate_expiration_date: vCerExp,
+                                                        vehicle_inspection_certificate_photo: vCerPhoto,
+                                                        insurance_company_name: insuranceCom,
+                                                        coverage_personal: personalCov,
+                                                        compensation_range_objective: comRangeObj,
+                                                        insurance_expiration_date: insuranceExpDate,
+                                                        date_edit: dateAdd,
+                                                        vehicle_photo1: vPhoto1,
+                                                        vehicle_photo2: vPhoto2,
+                                                        vehicle_photo3: vPhoto3,
+                                                        first_name: firstName,
+                                                        last_name: lastName,
+                                                        email: email)
         spiner.dismiss()
         let action1 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
-            self?.submitEdit(data: dataToPost)
+            self?.submitEdit(data: dataEdit)
         }
         let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
         Helpers().showAlert(view: self, message: "Continue to send data ?".localiz(),
                             customTitle: "The data is correct ?".localiz(), customAction1: action2, customAction2: action1)
     }
     
-    func submitEdit(data: [String: Any]){
+    func submitEdit(data: VehicleEditData){
         spiner.show(in: view)
         profileVm.editVehicleData(data: data) { (res) in
             switch res {

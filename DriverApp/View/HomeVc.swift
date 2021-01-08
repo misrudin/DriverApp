@@ -21,8 +21,8 @@ class HomeVc: UIViewController {
     var inOutVm = InOutViewModel()
     var origin: Origin? = nil
     
-    var noteVm = NoteViewModel()
-    var pendingNotes: [Note]!
+//    var noteVm = NoteViewModel()
+//    var pendingNotes: [Note]!
     
     var allowReject: Bool = true
     var totalReject: Int = 0
@@ -49,7 +49,7 @@ class HomeVc: UIViewController {
     private let tableView: UITableView = {
         let table = UITableView(frame: CGRect.zero, style: .grouped)
         table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
-        table.register(UINib(nibName: "CustomNoteCell", bundle: nil), forCellReuseIdentifier: CustomNoteCell.id)
+//        table.register(UINib(nibName: "CustomNoteCell", bundle: nil), forCellReuseIdentifier: CustomNoteCell.id)
         table.backgroundColor = UIColor(named: "grayKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
@@ -158,29 +158,29 @@ class HomeVc: UIViewController {
         }
         
         //get pending note
-        getPendingNote()
+//        getPendingNote()
         cekStatusReject()
     }
     
     
-    private func getPendingNote(){
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
-            print("No user data")
-            return
-        }
-        
-        noteVm.getDataNotePending(codeDriver: codeDriver) { (res) in
-            switch res {
-            case .failure(let error): print(error)
-            case .success(let notes):
-                DispatchQueue.main.async {
-                    self.pendingNotes = notes
-                    self.tableView.reloadData()
-                }
-            }
-        }
-    }
+//    private func getPendingNote(){
+//        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+//              let codeDriver = userData["codeDriver"] as? String else {
+//            print("No user data")
+//            return
+//        }
+//
+//        noteVm.getDataNotePending(codeDriver: codeDriver) { (res) in
+//            switch res {
+//            case .failure(let error): print(error)
+//            case .success(let notes):
+//                DispatchQueue.main.async {
+//                    self.pendingNotes = notes
+//                    self.tableView.reloadData()
+//                }
+//            }
+//        }
+//    }
     
     private func upateLocation(){
         print("update Location")
@@ -348,33 +348,33 @@ class HomeVc: UIViewController {
 //MARK: - TABLE VIEW ORDER
 @available(iOS 13.0, *)
 extension HomeVc: UITableViewDelegate,UITableViewDataSource {
-    @objc func colapsibleHeaderPending(){
-        if pendingNotes == nil {return}
-        var indexPaths = [IndexPath]()
-        for row in pendingNotes.indices {
-            let indexPath = IndexPath(row: row, section: 0)
-            indexPaths.append(indexPath)
-        }
-        
-        expanded = !expanded
-        
-        
-        if !expanded {
-            tableView.deleteRows(at: indexPaths, with: .fade)
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.arrowRight.transform = .identity
-            })
-        } else {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.arrowRight.rotate(angle: 90)
-            })
-            tableView.insertRows(at: indexPaths, with: .fade)
-        }
-    }
-    
+//    @objc func colapsibleHeaderPending(){
+//        if pendingNotes == nil {return}
+//        var indexPaths = [IndexPath]()
+//        for row in pendingNotes.indices {
+//            let indexPath = IndexPath(row: row, section: 0)
+//            indexPaths.append(indexPath)
+//        }
+//
+//        expanded = !expanded
+//
+//
+//        if !expanded {
+//            tableView.deleteRows(at: indexPaths, with: .fade)
+//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+//                self.arrowRight.transform = .identity
+//            })
+//        } else {
+//            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+//                self.arrowRight.rotate(angle: 90)
+//            })
+//            tableView.insertRows(at: indexPaths, with: .fade)
+//        }
+//    }
+//
     func numberOfSections(in tableView: UITableView) -> Int {
         if let orderData = orderData {
-            return orderData.count+1
+            return orderData.count
         }
         
         
@@ -386,9 +386,9 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section == 0{
-            return 30
-        }
+//        if section == 0{
+//            return 30
+//        }
         return 0
     }
     
@@ -411,55 +411,71 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
 
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            if let pending = pendingNotes {
-                if expanded {
-                    return pending.count
-                }else {
-                    return 0
-                }
+//        if section == 0 {
+//            if let pending = pendingNotes {
+//                if expanded {
+//                    return pending.count
+//                }else {
+//                    return 0
+//                }
+//            }else {
+//                return 0
+//            }
+//        }else {
+//            if let orderData = orderData {
+//                if orderData[section-1].order_list != nil {
+//                    return orderData[section-1].order_list!.filter({$0.status_tracking != "pending"}).count
+//    //                return orderData[section].order_list!.count
+//                }else {
+//                    return 0
+//                }
+//            }
+//        }
+//
+//        return 0
+        if let orderData = orderData {
+            if orderData[section].order_list != nil {
+                return orderData[section].order_list!.count
             }else {
                 return 0
             }
-        }else {
-            if let orderData = orderData {
-                if orderData[section-1].order_list != nil {
-                    return orderData[section-1].order_list!.filter({$0.status_tracking != "pending"}).count
-    //                return orderData[section].order_list!.count
-                }else {
-                    return 0
-                }
-            }
         }
-        
         return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.section == 0 {
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: CustomNoteCell.id, for: indexPath) as! CustomNoteCell
-            if let pending = pendingNotes {
-                cell.item = pending[indexPath.row]
-                cell.backgroundColor = .clear
-            }
-            
-            return cell
-        }else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: OrderCell.id, for: indexPath) as! OrderCell
-            
-            if let order = orderData {
-                let data = order[indexPath.section-1].order_list?.filter({$0.status_tracking != "pending" })
-                if data != nil {
-                    //                cell.orderData = order[indexPath.section].order_list![indexPath.row]
-                    cell.orderData = data![indexPath.row]
-                }
-            }
-            
-            
-            return cell
+//        if indexPath.section == 0 {
+//
+//            let cell = tableView.dequeueReusableCell(withIdentifier: CustomNoteCell.id, for: indexPath) as! CustomNoteCell
+//            if let pending = pendingNotes {
+//                cell.item = pending[indexPath.row]
+//                cell.backgroundColor = .clear
+//            }
+//
+//            return cell
+//        }else {
+//            let cell = tableView.dequeueReusableCell(withIdentifier: OrderCell.id, for: indexPath) as! OrderCell
+//
+//            if let order = orderData {
+//                let data = order[indexPath.section-1].order_list?.filter({$0.status_tracking != "pending" })
+//                if data != nil {
+//                    //                cell.orderData = order[indexPath.section].order_list![indexPath.row]
+//                    cell.orderData = data![indexPath.row]
+//                }
+//            }
+//
+//
+//            return cell
+//        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: OrderCell.id, for: indexPath) as! OrderCell
+        
+        if let order = orderData {
+            cell.orderData = order[indexPath.section].order_list![indexPath.row]
         }
+        
+        
+        return cell
     }
     
     class DateHeaderHome: UILabel {
@@ -493,37 +509,55 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10)
         
 
-        if section == 0 {
-            if let pending = pendingNotes {
-                label.text = "\("Pending List Order".localiz()) (\(pending.count))"
-            }else {
-                label.text = "\("Pending List Order".localiz()) (0)"
-            }
-            containerLabel.addSubview(arrowRight)
+//        if section == 0 {
+//            if let pending = pendingNotes {
+//                label.text = "\("Pending List Order".localiz()) (\(pending.count))"
+//            }else {
+//                label.text = "\("Pending List Order".localiz()) (0)"
+//            }
+//            containerLabel.addSubview(arrowRight)
+//
+//
+//            arrowRight.anchor(top: containerLabel.topAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 20)
+//
+//            containerLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(colapsibleHeaderPending)))
+//            return containerLabel
+//        }else {
+//            if let order = orderData {
+//                let dateFormater = DateFormatter()
+//                dateFormater.dateFormat = "yyyy/MM/dd"
+//                let date = dateFormater.date(from: order[section-1].date)
+//                let dateString = dateFormater.string(from: date!)
+//
+//                let dateStringNow = dateFormater.string(from: Date())
+//
+//                let value = dateString == dateStringNow ? "Today".localiz() : dateString
+//
+//                let totalOrderList = order[section-1].order_list?.filter({$0.status_tracking != "pending"})
+//
+//                label.text = "\(value) (\(totalOrderList?.count ?? 0))"
+//
+//
+//                return containerLabel
+//            }
+//        }
+        
+        if let order = orderData {
+            let dateFormater = DateFormatter()
+            dateFormater.dateFormat = "yyyy/MM/dd"
+            let date = dateFormater.date(from: order[section].date)
+            let dateString = dateFormater.string(from: date!)
+            
+            let dateStringNow = dateFormater.string(from: Date())
+            
+            let value = dateString == dateStringNow ? "Today".localiz() : dateString
+            
+            let totalOrderList = order[section].order_list
+            
+            label.text = "\(value) (\(totalOrderList?.count ?? 0))"
             
             
-            arrowRight.anchor(top: containerLabel.topAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingRight: 16, width: 20)
-            
-            containerLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(colapsibleHeaderPending)))
             return containerLabel
-        }else {
-            if let order = orderData {
-                let dateFormater = DateFormatter()
-                dateFormater.dateFormat = "yyyy/MM/dd"
-                let date = dateFormater.date(from: order[section-1].date)
-                let dateString = dateFormater.string(from: date!)
-                
-                let dateStringNow = dateFormater.string(from: Date())
-                
-                let value = dateString == dateStringNow ? "Today".localiz() : dateString
-                
-                let totalOrderList = order[section-1].order_list?.filter({$0.status_tracking != "pending"})
-                
-                label.text = "\(value) (\(totalOrderList?.count ?? 0))"
-                
-                
-                return containerLabel
-            }
         }
   
         return nil
@@ -533,45 +567,54 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.section == 0 {
-            if let pending = pendingNotes {
-                let order = pending[indexPath.row]
-                print(order)
-                    let userInfo = order.detail_order.user_info
-                      let shiftDetail = order.detail_order.detail_shift
-                      let orderDetail = order.detail_order.order_detail
-                      let orderNo = order.detail_order.order_number
-                      let status = order.detail_order.status_tracking
-                      let codeDriver = order.detail_order.code_driver
-                      let activeDate = order.detail_order.active_date
-                      let idOrder = order.detail_order.id_order
-                      let idShift = order.detail_order.id_shift_time
-                      let extra = order.detail_order.another_pickup
-          
-                
-                let vc = LiveTrackingVC()
-                vc.order = NewOrderData(user_info: userInfo,
-                                        detail_shift: shiftDetail,
-                                        order_detail: orderDetail,
-                                        status_tracking: status,
-                                        order_number: orderNo,
-                                        code_driver: codeDriver,
-                                        active_date: activeDate,
-                                        id_order: idOrder,
-                                        id_shift_time: idShift,
-                                        another_pickup: extra)
-                vc.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(vc, animated: true)
-            }
-        }else {
-            if let orderData = orderData {
-                let order = orderData[indexPath.section-1].order_list![indexPath.row]
-                
-                let vc = LiveTrackingVC()
-                vc.order = order
-                vc.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(vc, animated: true)
-            }
+//        if indexPath.section == 0 {
+//            if let pending = pendingNotes {
+//                let order = pending[indexPath.row]
+//                print(order)
+//                    let userInfo = order.detail_order.user_info
+//                      let shiftDetail = order.detail_order.detail_shift
+//                      let orderDetail = order.detail_order.order_detail
+//                      let orderNo = order.detail_order.order_number
+//                      let status = order.detail_order.status_tracking
+//                      let codeDriver = order.detail_order.code_driver
+//                      let activeDate = order.detail_order.active_date
+//                      let idOrder = order.detail_order.id_order
+//                      let idShift = order.detail_order.id_shift_time
+//                      let extra = order.detail_order.another_pickup
+//
+//
+//                let vc = LiveTrackingVC()
+//                vc.order = NewOrderData(user_info: userInfo,
+//                                        detail_shift: shiftDetail,
+//                                        order_detail: orderDetail,
+//                                        status_tracking: status,
+//                                        order_number: orderNo,
+//                                        code_driver: codeDriver,
+//                                        active_date: activeDate,
+//                                        id_order: idOrder,
+//                                        id_shift_time: idShift,
+//                                        another_pickup: extra)
+//                vc.hidesBottomBarWhenPushed = true
+//                navigationController?.pushViewController(vc, animated: true)
+//            }
+//        }else {
+//            if let orderData = orderData {
+//                let order = orderData[indexPath.section-1].order_list![indexPath.row]
+//
+//                let vc = LiveTrackingVC()
+//                vc.order = order
+//                vc.hidesBottomBarWhenPushed = true
+//                navigationController?.pushViewController(vc, animated: true)
+//            }
+//        }
+        
+        if let orderData = orderData {
+            let order = orderData[indexPath.section].order_list![indexPath.row]
+            
+            let vc = LiveTrackingVC()
+            vc.order = order
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -599,7 +642,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                    completion(true)
                 
                 guard let allorder = self?.orderData,
-                      let dateOrder = allorder[indexPath.section-1].order_list,
+                      let dateOrder = allorder[indexPath.section].order_list,
                       let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                             let codeDriver = userData["codeDriver"] as? String  else {return}
                 
@@ -617,7 +660,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                         Helpers().showAlert(view: self!, message: "Failed to decline this order !".localiz())
                     case .success(let oke):
                         if oke {
-                            self?.orderData![indexPath.section-1].order_list?.remove(at: indexPath.row)
+                            self?.orderData![indexPath.section].order_list?.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .middle)
                             self?.totalReject += 1
                             if self!.totalReject >= 2{
@@ -638,8 +681,8 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                    completion(true)
                 let vc = PendingNoteVc()
                 if let order = self?.orderData {
-                    if order[indexPath.section-1].order_list != nil {
-                        let orderList = order[indexPath.section-1].order_list
+                    if order[indexPath.section].order_list != nil {
+                        let orderList = order[indexPath.section].order_list
                         vc.orderData = orderList![indexPath.row]
                     }
                 }

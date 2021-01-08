@@ -25,7 +25,8 @@ class ProfileViewController: UIViewController {
     var idDriver: Int? = nil
     var user: UserModel? = nil
     var bioData: Bio? = nil
-    var vehicleData: VehicleData? = nil 
+    var vehicleData: VehicleData? = nil
+    var dataBaseManager = DatabaseManager()
     
     var checkout: Bool = true
     
@@ -357,12 +358,30 @@ class ProfileViewController: UIViewController {
                                                   preferredStyle: .alert)
         confirmationAlert.addAction(UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil))
         confirmationAlert.addAction(UIAlertAction(title: "Yes".localiz(), style: .default, handler: {[weak self] (_) in
+            self?.updateStatus(status: "inactive")
             UserDefaults.standard.removeObject(forKey: "userData")
             self?.dismiss(animated: true, completion: nil)
         }))
         
         present(confirmationAlert, animated: true, completion: nil)
     }
+    
+//    MARK: - UPDATE STATUS
+    private func updateStatus(status: String){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            return
+        }
+        
+        dataBaseManager.updateStatus(codeDriver: codeDriver, status: status) { (res) in
+            switch res {
+            case .failure(let err): print(err)
+            case .success(_): print("succes update status driver")
+            }
+        }
+        
+    }
+
     
     //MARK: - Checkout
     @objc

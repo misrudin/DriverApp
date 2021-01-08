@@ -8,9 +8,10 @@
 import Foundation
 import UIKit
 import FirebaseDatabase
+import Alamofire
 
 struct RegisterViewModel {
-    private let database = Database.database().reference()
+//    private let database = Database.database().reference()
     
     func cekValidation(data: RegisterDataTemp, completion: @escaping (Result<Bool, Error>)-> Void){
         
@@ -26,7 +27,7 @@ struct RegisterViewModel {
             return
         }
         
-        if data.first_name_hisragana == "" {
+        if data.first_name_hiragana == "" {
             completion(.failure(ErrorRegister.firstNameHiragana))
             return
         }
@@ -170,52 +171,32 @@ struct RegisterViewModel {
         
     }
     
+    //MARK: - Register function
     func register(data: RegisterData, completion: @escaping (Result<Bool, Error>)->Void){
-        //push data
-        let urlFirebase = "registration"
-        let dataToPost:[String: Any] = [
-            "photo" : data.user_image,
-            "first_name" : data.first_name,
-            "last_name" : data.last_name,
-            "first_name_hiragana" : data.first_name_hisragana,
-            "last_name_hiragana" : data.last_name_hiragana,
-            "birthday_date" : data.date_of_birth,
-            "postal_code" : data.postal_code,
-            "prefecture" : data.prefectures,
-            "municipal_district" : data.municipal_district,
-            "chome" : data.chome,
-            "municipality_kana" : data.municipality_kana,
-            "kana_after_address" : data.kana_after_address,
-            "sex" : data.gender.lowercased(),
-            "language" : data.language.lowercased(),
-            "phone_number" : data.phone_number,
-            "email" : data.email,
-            "password" : data.password,
-            "driver_license_number" : data.license_number,
-            "driver_license_expired_date" : data.license_expired_date,
-            "insurance_company_name" : data.insurance_company,
-            "coverage_personal" : data.personal_coverage,
-            "compensation_range_objective" : data.compensation_range_object,
-            "insurance_expiration_date" : data.insurance_expired_date,
-            "vehicle_name" : data.vehicle_name,
-            "vehicle_number_plate": data.vehicle_number_plate,
-            "vehicle_year" : data.vehicle_year,
-            "vehicle_ownership" : data.vehicle_ownership,
-            "vehicle_inspection_certificate_expiration_date" : data.vehicle_certificate_exp,
-            "vehicle_inspection_certificate_photo" : data.vehicle_certification_photo,
-            "vehicle_photo_1" : data.vehicle_photo_1,
-            "vehicle_photo_2" : data.vehicle_photo_2,
-            "vehicle_photo_3" : data.vehicle_photo_3,
-            "date_add" : data.date_add
-        ]
-        
-        database.child(urlFirebase).childByAutoId().setValue(dataToPost) { (error, _) in
-            guard error == nil else {
-                completion(.failure(ErrorRegister.failedToRegister))
-                return
-            }
-            completion(.success(true))
-        }
+        AF.request("\(Base.urlDriver)validate/register",
+                   method: .post,
+                   parameters: data,
+                   encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        if let statusCode = response.response?.statusCode {
+                            if statusCode != 200 {
+                                if let data = response.data {
+                                    if let re = Helpers().decodeError(data: data){
+                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                    }
+                                }
+                            }else {
+                                completion(.success(true))
+                            }
+                        }
+                        
+                    case.failure(_):
+                        completion(.failure(ErrorDriver.failedToFetch))
+                    }
+                    
+            })
     }
 }
 
@@ -432,3 +413,50 @@ extension ErrorRegister: LocalizedError {
         }
     }
 }
+
+
+//push data
+//        let urlFirebase = "registration"
+//        let dataToPost:[String: Any] = [
+//            "photo" : data.photo,
+//            "first_name" : data.first_name,
+//            "last_name" : data.last_name,
+//            "first_name_hiragana" : data.first_name_hisragana,
+//            "last_name_hiragana" : data.last_name_hiragana,
+//            "birthday_date" : data.birthday_date,
+//            "postal_code" : data.postal_code,
+//            "prefecture" : data.prefecture,
+//            "municipal_district" : data.municipal_district,
+//            "chome" : data.chome,
+//            "municipality_kana" : data.municipality_kana,
+//            "kana_after_address" : data.kana_after_address,
+//            "sex" : data.sex.lowercased(),
+//            "language" : data.language.lowercased(),
+//            "phone_number" : data.phone_number,
+//            "email" : data.email,
+//            "password" : data.password,
+//            "driver_license_number" : data.driver_license_number,
+//            "driver_license_expired_date" : data.driver_license_expired_date,
+//            "insurance_company_name" : data.insurance_company_name,
+//            "coverage_personal" : data.coverage_personal,
+//            "compensation_range_objective" : data.compensation_range_objective,
+//            "insurance_expiration_date" : data.insurance_expiration_date,
+//            "vehicle_name" : data.vehicle_name,
+//            "vehicle_number_plate": data.vehicle_number_plate,
+//            "vehicle_year" : data.vehicle_year,
+//            "vehicle_ownership" : data.vehicle_ownership,
+//            "vehicle_inspection_certificate_expiration_date" : data.vehicle_inspection_certificate_expiration_date,
+//            "vehicle_inspection_certificate_photo" : data.vehicle_inspection_certificate_photo,
+//            "vehicle_photo_1" : data.vehicle_photo_1,
+//            "vehicle_photo_2" : data.vehicle_photo_2,
+//            "vehicle_photo_3" : data.vehicle_photo_3,
+//            "date_add" : data.date_add
+//        ]
+//
+//        database.child(urlFirebase).childByAutoId().setValue(dataToPost) { (error, _) in
+//            guard error == nil else {
+//                completion(.failure(ErrorRegister.failedToRegister))
+//                return
+//            }
+//            completion(.success(true))
+//        }

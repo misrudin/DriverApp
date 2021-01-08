@@ -92,6 +92,7 @@ struct NoteViewModel {
                    method: .post,
                    parameters: data,
                    encoder: JSONParameterEncoder.default, headers: Base.headers).responseJSON(completionHandler: {(response) in
+                    debugPrint(response)
                     switch response.result {
                     case .success:
                         if response.response?.statusCode == 200 {

@@ -67,6 +67,8 @@
 		B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37431F4256219FC0010E0E4 /* PlanCell.swift */; };
 		B37BF2D52570B4DA00421DEB /* ScanCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37BF2D32570B4DA00421DEB /* ScanCell.swift */; };
 		B37BF2D62570B4DA00421DEB /* ScanCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B37BF2D42570B4DA00421DEB /* ScanCell.xib */; };
+		B38330A625A6E7DB00986300 /* PendingInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38330A425A6E7DB00986300 /* PendingInputView.swift */; };
+		B38330A725A6E7DB00986300 /* PendingInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B38330A525A6E7DB00986300 /* PendingInputView.xib */; };
 		B384A3DE256F624900D237CC /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3DC256F624900D237CC /* OrderCell.swift */; };
 		B384A3DF256F624900D237CC /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B384A3DD256F624900D237CC /* OrderCell.xib */; };
 		B384A3E4256F9C2000D237CC /* ListScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3E3256F9C2000D237CC /* ListScanView.swift */; };
@@ -74,6 +76,7 @@
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
+		B392EC6125A84FE100AF110D /* EditCurrentDayOff.swift in Sources */ = {isa = PBXBuildFile; fileRef = B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */; };
 		B3A0521725773CBD00BC6FE0 /* Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521625773CBD00BC6FE0 /* Encrypt.swift */; };
 		B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521A2577794A00BC6FE0 /* Preview.swift */; };
 		B3ABAF0325748EB100A7B80B /* CameraScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ABAF0225748EB100A7B80B /* CameraScanView.swift */; };
@@ -171,6 +174,8 @@
 		B37431F4256219FC0010E0E4 /* PlanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanCell.swift; sourceTree = "<group>"; };
 		B37BF2D32570B4DA00421DEB /* ScanCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanCell.swift; sourceTree = "<group>"; };
 		B37BF2D42570B4DA00421DEB /* ScanCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScanCell.xib; sourceTree = "<group>"; };
+		B38330A425A6E7DB00986300 /* PendingInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingInputView.swift; sourceTree = "<group>"; };
+		B38330A525A6E7DB00986300 /* PendingInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingInputView.xib; sourceTree = "<group>"; };
 		B384A3DC256F624900D237CC /* OrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
 		B384A3DD256F624900D237CC /* OrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
 		B384A3E3256F9C2000D237CC /* ListScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScanView.swift; sourceTree = "<group>"; };
@@ -178,6 +183,7 @@
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
+		B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCurrentDayOff.swift; sourceTree = "<group>"; };
 		B3A0521625773CBD00BC6FE0 /* Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encrypt.swift; sourceTree = "<group>"; };
 		B3A0521A2577794A00BC6FE0 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		B3ABAF0225748EB100A7B80B /* CameraScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScanView.swift; sourceTree = "<group>"; };
@@ -337,6 +343,7 @@
 		B3544F2D253D894800B6A001 /* Notes */ = {
 			isa = PBXGroup;
 			children = (
+				B38330A325A6E7B200986300 /* Pending */,
 				B3544F30253D899B00B6A001 /* NotesVC.swift */,
 				B34F7A7425460932004AB82B /* PendingNoteVc.swift */,
 				B353094D255A76DF00B68347 /* EditNoteView.swift */,
@@ -474,6 +481,15 @@
 			path = Scan;
 			sourceTree = "<group>";
 		};
+		B38330A325A6E7B200986300 /* Pending */ = {
+			isa = PBXGroup;
+			children = (
+				B38330A425A6E7DB00986300 /* PendingInputView.swift */,
+				B38330A525A6E7DB00986300 /* PendingInputView.xib */,
+			);
+			path = Pending;
+			sourceTree = "<group>";
+		};
 		B384A3DB256F622400D237CC /* Order */ = {
 			isa = PBXGroup;
 			children = (
@@ -518,6 +534,7 @@
 			children = (
 				B3DE97972555364400A30892 /* DayOffVc.swift */,
 				B308DB5E255794B30088D741 /* PlanVc.swift */,
+				B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */,
 			);
 			path = DayOffScheduling;
 			sourceTree = "<group>";
@@ -632,6 +649,7 @@
 				B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */,
 				B3E256482589B56900CDED81 /* QuickCell.xib in Resources */,
 				B3F8435A259196ED008950E8 /* CustomNoteCell.xib in Resources */,
+				B38330A725A6E7DB00986300 /* PendingInputView.xib in Resources */,
 				B3F79C8D2573BD31003455D1 /* HistoryCell.xib in Resources */,
 				B384A3DF256F624900D237CC /* OrderCell.xib in Resources */,
 				B3F8435F2591CA83008950E8 /* OrderHistoryCell.xib in Resources */,
@@ -741,6 +759,7 @@
 				B36F8CB52564BB7700B0D209 /* Validation.swift in Sources */,
 				B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */,
 				B3ABAF0325748EB100A7B80B /* CameraScanView.swift in Sources */,
+				B38330A625A6E7DB00986300 /* PendingInputView.swift in Sources */,
 				B36E099B25371D7000F1B421 /* HomeVc.swift in Sources */,
 				B36E09A2253723E700F1B421 /* Protocols.swift in Sources */,
 				B36E09932536E6CC00F1B421 /* MainVc.swift in Sources */,
@@ -806,6 +825,7 @@
 				B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */,
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
 				B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */,
+				B392EC6125A84FE100AF110D /* EditCurrentDayOff.swift in Sources */,
 				B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */,
 				B384A3E7256F9C6700D237CC /* InputCode.swift in Sources */,
 				B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */,
@@ -965,14 +985,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 8B6B66279C;
+				DEVELOPMENT_TEAM = JUU4Y84U39;
 				INFOPLIST_FILE = DriverApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bmg.DriverApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.kasumi-driver";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -987,14 +1007,14 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 8B6B66279C;
+				DEVELOPMENT_TEAM = JUU4Y84U39;
 				INFOPLIST_FILE = DriverApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bmg.DriverApp;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.kasumi-driver";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

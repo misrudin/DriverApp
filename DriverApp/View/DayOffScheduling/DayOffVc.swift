@@ -106,6 +106,8 @@ class DayOffVc: UIViewController {
         return button
     }()
     
+    lazy var imageEdit = Reusable.makeImageView(image: UIImage(named: "editIconGray")!, contentMode: .scaleAspectFit)
+    
     //MARK:- Colection view
     
     private let colectionViewDayoff: UICollectionView = {
@@ -209,7 +211,7 @@ class DayOffVc: UIViewController {
                     if data.currentWeek == "3" {
                         self?.planButotn.isHidden = false
                     }else {
-                        self?.planButotn.isHidden = true
+                        self?.planButotn.isHidden = false
                     }
                 }
             case .failure(let error):
@@ -256,6 +258,16 @@ class DayOffVc: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
+        
+        imageEdit.isUserInteractionEnabled = true
+        imageEdit.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(editDayOff)))
+    }
+    
+    @objc private func editDayOff(){
+        let vc = EditCurrentDayOff()
+        vc.dayOffPlanData = dayOffPlan
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     
@@ -391,9 +403,14 @@ class DayOffVc: UIViewController {
    
     
     func configureLayout(){
-        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: planButotn.leftAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        titleLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, paddingTop: 16, paddingLeft: 16)
         
-        planButotn.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 16, paddingRight: 16,width: 200, height: 30)
+        view.addSubview(imageEdit)
+        imageEdit.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor).isActive = true
+        imageEdit.anchor(width: 20, height: 20)
+        imageEdit.left(toAnchor: titleLabel.rightAnchor, space: 10)
+        
+        planButotn.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 16, paddingRight: 16,width: 180, height: 30)
         
         colectionViewDayoff.anchor(top: planButotn.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, height: 100)
         
