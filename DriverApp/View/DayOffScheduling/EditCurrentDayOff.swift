@@ -112,7 +112,8 @@ class EditCurrentDayOff: UIViewController {
         "Saturday": NSNull(),
     ]
     
-    var montnNumber = Date.monthNumber() + 1
+    var montnNumber = Date.monthNumber()
+    let daysInMounth = Date().daysInMonth()
     
     var dayOffPlan:[String: Any]!
     
@@ -131,8 +132,7 @@ class EditCurrentDayOff: UIViewController {
     
     lazy var titleLabel: UILabel = {
         let label = UILabel()
-        let index = Calendar.current.component(.month, from: Date()) < 12 ? Calendar.current.component(.month, from: Date()) : 0
-        label.text = months[index]
+        label.text = months[Calendar.current.component(.month, from: Date())-1]
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 20,weight: .bold)
         label.textAlignment = .center
@@ -749,7 +749,7 @@ class EditCurrentDayOff: UIViewController {
                     let action1 = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
                         self?.navigationController?.popViewController(animated: true)
                     }
-                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Success to set plan next month!", customAction1: action1)
+                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Successfully submitted new schedule!", customAction1: action1)
                 }
             case .failure(let e):
                 self?.spiner.dismiss()
@@ -854,7 +854,7 @@ class EditCurrentDayOff: UIViewController {
                     let action1 = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
                         self?.navigationController?.popViewController(animated: true)
                     }
-                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Success to set plan next month!", customAction1: action1)
+                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Successfully submitted new schedule!", customAction1: action1)
                 }
             case .failure(let e):
                 self?.spiner.dismiss()
@@ -1103,24 +1103,31 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
         return CGSize(width: 80, height: 100)
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let month = montnNumber <= 12 ? Date.monthNumber() + 1 : Date.monthNumber()
-        let year = montnNumber <= 12 ? Date.yearNumber() : Date.yearNumber()+1
-        let daysInMounth = Date().daysInMonth(month, year)
         return daysInMounth
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
-        let month = montnNumber < 12 ? Date.monthNumber() + 1 : 1
-        let year = montnNumber <= 12 ? Date.yearNumber() : Date.yearNumber()+1
+        
+        let date = Date()
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "dd"
+        
+        let dateToday = dateFor.string(from: date)
+        
         let i = indexPath.row + 1
-        let dayName = Date.dayNameFromCustomDate(customDate: i, year: year, month: month)
+        let dayName = Date.dayNameFromCustomDate(customDate: i)
         let dateLable = "\(i < 10 ? "\(0)\(i)" : "\(i)")"
         
         cell.dayLable.text = dayName
         cell.dateLable.text = dateLable
         
-        //border color on select day
+        if "\(i < 10 ? "\(0)\(i)" : "\(i)")" == "\(dateToday)" {
+            cell.borderBotom.isHidden = false
+        }else {
+            cell.borderBotom.isHidden = true
+        }
+        
         if selectedIndex != nil && selectedIndex == i {
             cell.borderBotomSelected.isHidden = false
         }else {

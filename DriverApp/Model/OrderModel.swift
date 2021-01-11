@@ -169,6 +169,7 @@ struct NewOrderData: Decodable {
     let id_order: Int
     let id_shift_time: Int
     let another_pickup: [AnotherPickup]?
+    let pending_by_system: Bool?
     
     enum CodingKeys: String, CodingKey {
         case user_info
@@ -181,6 +182,7 @@ struct NewOrderData: Decodable {
         case id_shift_time
         case detail_shift
         case another_pickup
+        case pending_by_system
     }
 }
 

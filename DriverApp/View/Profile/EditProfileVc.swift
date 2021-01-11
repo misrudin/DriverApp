@@ -17,6 +17,7 @@ class EditProfileVc: UIViewController {
     var dataDriver: UserModel? = nil
     var bio: Bio? = nil
     var profileVm = ProfileViewModel()
+    var editFoto: Bool = false
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
         spin.textLabel.text = "Loading".localiz()
@@ -62,7 +63,7 @@ class EditProfileVc: UIViewController {
         img.clipsToBounds = true
         img.layer.masksToBounds = true
         img.contentMode = .scaleAspectFit
-        img.layer.cornerRadius = 80/2
+        img.layer.cornerRadius = 120/2
         img.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
         return img
     }()
@@ -216,6 +217,19 @@ class EditProfileVc: UIViewController {
         return field
     }()
     
+    private let buttonEditFoto: UIView = {
+       let view = UIView()
+        let imageEditFoto = Reusable.makeImageView(image: UIImage(named: "editIcon")!, contentMode: .scaleAspectFit)
+        view.backgroundColor = UIColor(named: "orangeKasumi")
+        view.layer.cornerRadius = 30/2
+        view.addSubview(imageEditFoto)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        imageEditFoto.translatesAutoresizingMaskIntoConstraints = false
+        imageEditFoto.height(15)
+        imageEditFoto.width(15)
+        imageEditFoto.center(toView: view)
+        return view
+    }()
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -256,6 +270,9 @@ class EditProfileVc: UIViewController {
         phoneNumber.text = bio?.phone_number
         license.text = bio?.driver_license_number
         expDate.text = bio?.driver_license_expiration_date
+        
+        buttonEditFoto.isUserInteractionEnabled = true
+        buttonEditFoto.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEditPhoto)))
         
         
         guard let photoUrl = bio?.photo_url, let photoName = bio?.photo_name else {
@@ -324,6 +341,10 @@ class EditProfileVc: UIViewController {
         unRegisterAutoKeyboard()
     }
     
+    @objc private func didTapEditPhoto(){
+        presentPhotoActionSheet()
+    }
+    
     @objc
     func updateProfile(){
         guard let phoneNumber = self.phoneNumber.text,
@@ -345,6 +366,8 @@ class EditProfileVc: UIViewController {
             return
         }
         
+        let profilePhoto = !editFoto ? nil : Helpers().convertImageToBase64String(img: profilePhotoImage.image!)
+        
         let personalData: PersonalData = PersonalData(first_name: firstName,
                                                       last_name: lastName,
                                                       birthday_date: brith,
@@ -359,7 +382,7 @@ class EditProfileVc: UIViewController {
                                                       driver_license_expiration_date: driverExp,
                                                       photo_url: driverPhotourl,
                                                       photo_name: photoName,
-                                                      photo: nil,
+                                                      photo: profilePhoto,
                                                       phone_number: phoneNumber)
         
         guard let bio: String = profileVm.encryptBio(data: personalData, codeDriver: dataDriver!.code_driver) else {return}
@@ -412,7 +435,15 @@ class EditProfileVc: UIViewController {
         personalLabel.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
         
         stakView.addSubview(profilePhotoImage)
-        profilePhotoImage.anchor(top: personalLabel.bottomAnchor, left: stakView.leftAnchor, paddingTop: 15, width: 80, height: 80)
+        profilePhotoImage.anchor(top: personalLabel.bottomAnchor, paddingTop: 15, width: 120, height: 120)
+        profilePhotoImage.centerX(toAnchor: view.centerXAnchor)
+        profilePhotoImage.isUserInteractionEnabled = true
+        profilePhotoImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEditPhoto)))
+        stakView.addSubview(buttonEditFoto)
+        buttonEditFoto.bottom(toAnchor: profilePhotoImage.bottomAnchor, space: -5)
+        buttonEditFoto.right(toAnchor: profilePhotoImage.rightAnchor, space: -5)
+        buttonEditFoto.height(30)
+        buttonEditFoto.width(30)
         
         stakView.addSubview(firstNameLable)
         firstNameLable.anchor(top: profilePhotoImage.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
@@ -448,8 +479,6 @@ class EditProfileVc: UIViewController {
         
         stakView.addSubview(expDate)
         expDate.anchor(top: expDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
-        
-        
     
     }
     
@@ -465,4 +494,65 @@ class EditProfileVc: UIViewController {
         navigationController?.navigationBar.tintColor = .white
         
     }
+}
+
+
+@available(iOS 13.0, *)
+extension EditProfileVc: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+func presentPhotoActionSheet(){
+    let actionSheet = UIAlertController(title: "Profile Picture".localiz(),
+                                        message: "How would you like to select a picture?".localiz(),
+                                        preferredStyle: .actionSheet)
+    
+    actionSheet.addAction(UIAlertAction(title: "Cancel".localiz(),
+                                        style: .cancel,
+                                        handler: nil))
+    actionSheet.addAction(UIAlertAction(title: "Take Photo".localiz(),
+                                        style: .default,
+                                        handler: { [weak self] _ in
+                                            
+                                            self?.presentCamera()
+                                        }))
+    actionSheet.addAction(UIAlertAction(title: "Choose Photo".localiz(),
+                                        style: .default,
+                                        handler: { [weak self] _ in
+                                            self?.presetPhotoPicker()
+                                        }))
+    
+    present(actionSheet, animated: true)
+}
+
+func presentCamera(){
+    let vc = UIImagePickerController()
+    vc.sourceType = .camera
+    vc.delegate = self
+    vc.allowsEditing = true
+    present(vc,animated: true)
+}
+
+func presetPhotoPicker(){
+    let vc = UIImagePickerController()
+    vc.sourceType = .photoLibrary
+    vc.delegate = self
+    vc.allowsEditing = true
+    present(vc,animated: true)
+    
+}
+
+func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    print(picker)
+    picker.dismiss(animated: true, completion: nil)
+    guard let selectdedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else {
+        return
+    }
+    
+    
+    let hasil = Helpers().resizeImageUpload(image: selectdedImage)
+    profilePhotoImage.image = hasil
+    editFoto = true
+}
+
+func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+    picker.dismiss(animated: true, completion: nil)
+}
 }

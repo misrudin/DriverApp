@@ -14,7 +14,6 @@ class OrderCell: UITableViewCell {
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var lableOrderNo: UILabel!
     @IBOutlet weak var orderNo: UILabel!
-    @IBOutlet weak var lableDate: UILabel!
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var originMarker: UIImageView!
     @IBOutlet weak var destinationMarker: UIImageView!
@@ -51,16 +50,16 @@ class OrderCell: UITableViewCell {
             
             DispatchQueue.main.async {
                 if timeNow <= end && timeNow > start && self.orderData.active_date == dateNow {
-                    self.container.backgroundColor = .white
+                    self.container.backgroundColor = UIColor(named: "colorGray")
                 }
                 
                 if timeNow > end && timeNow < start && self.orderData.active_date != dateNow {
-                    self.container.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+                    self.container.backgroundColor = UIColor(named: "colorDisabled")
                 }
             }
             
 //          timeNow <= end &&
-//            self.isUserInteractionEnabled = timeNow > start && self.orderData.active_date == dateNow
+            self.isUserInteractionEnabled = timeNow >= start && self.orderData.active_date == dateNow
 
             date.text = "\(start) - \(end)"
 
@@ -84,8 +83,8 @@ class OrderCell: UITableViewCell {
        
         selectionStyle = .none
         container.layer.cornerRadius = 5
-        container.backgroundColor = .white
-        backgroundColor = UIColor(named: "grayKasumi")
+        container.backgroundColor = UIColor(named: "colorGray")
+        backgroundColor = .clear
         container.isUserInteractionEnabled = false
         
         
@@ -93,7 +92,6 @@ class OrderCell: UITableViewCell {
     
     
     private func configureLayout(){
-        lableDate.translatesAutoresizingMaskIntoConstraints = false
         date.translatesAutoresizingMaskIntoConstraints = false
         lableOrderNo.translatesAutoresizingMaskIntoConstraints = false
         orderNo.translatesAutoresizingMaskIntoConstraints = false

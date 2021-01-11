@@ -77,6 +77,8 @@ class PendingInputView: UIViewController {
         note.textAlignment = .left
         note.font = UIFont.systemFont(ofSize: 16)
         note.isEditable = true
+        note.isUserInteractionEnabled = true
+        note.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapView)))
         
         submit.backgroundColor = UIColor(named: "orangeKasumi")
         submit.setTitleColor(.white, for: .normal)
@@ -93,6 +95,9 @@ class PendingInputView: UIViewController {
         cancel.addTarget(self, action: #selector(didTapCancel), for: .touchUpInside)
         
         configureNavigationBar()
+        
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapView)))
     }
 
     func configureNavigationBar(){
@@ -109,6 +114,10 @@ class PendingInputView: UIViewController {
         note.text = ""
     }
     
+    @objc private func didTapView(){
+        view.endEditing(true)
+    }
+    
     @objc func tapQuickChat(sender: CustomTap){
         let messages:[String] = [
         "Address cannot be found", "Person not at home", "Package not correct", "I have an accidents"
@@ -117,9 +126,10 @@ class PendingInputView: UIViewController {
         guard let index = sender.ourCustomValue as? Int else {
             return
         }
-        
+        didTapView()
         note.text = messages[index]
     }
+    
     
 
 }
