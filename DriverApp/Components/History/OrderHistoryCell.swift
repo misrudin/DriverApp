@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 class OrderHistoryCell: UITableViewCell {
     
@@ -138,6 +139,16 @@ class OrderHistoryCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        
+//        MARK: - Value
+        orderNoLabel.text = "Order No".localiz()
+        dateLabel.text = "Date".localiz()
+        statusLabel.text = "Status".localiz()
+        timeLabel.text = "Delivery Time".localiz()
+        deliveryTo.text = "Delivery To".localiz()
+        rnr.text = "Rating and Review".localiz()
+        nothing.text = "has not reviewed by admin".localiz()
+        
         
         container.backgroundColor = UIColor(named: "bgKasumi")
         container.layer.cornerRadius = 5

@@ -55,6 +55,8 @@ class SelectShift: UIViewController {
         super.viewDidLoad()
         titleLable.text = "Select Shift".localiz()
         descriptionLable.text = "Select shift you want to add".localiz()
+        dayOffButton.setTitle("Day Off".localiz(), for: .normal)
+        addButton.setTitle("Add", for: .normal)
         
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
         view.addGestureRecognizer(panGesture)

@@ -24,7 +24,6 @@
 		B32944CE254205330040E90C /* NoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32944CD254205330040E90C /* NoteCell.swift */; };
 		B32944D1254213520040E90C /* EditProfileVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32944D0254213520040E90C /* EditProfileVc.swift */; };
 		B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A388625383207000EFBB6 /* HistoryViewController.swift */; };
-		B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */; };
 		B32A389525386C2E000EFBB6 /* AesEverywhere in Frameworks */ = {isa = PBXBuildFile; productRef = B32A389425386C2E000EFBB6 /* AesEverywhere */; };
 		B335EC1E257104230082DF1D /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335EC1D257104230082DF1D /* TabBarView.swift */; };
 		B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0025434D73007BDD3A /* PopUpView.swift */; };
@@ -69,7 +68,6 @@
 		B38330A625A6E7DB00986300 /* PendingInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38330A425A6E7DB00986300 /* PendingInputView.swift */; };
 		B38330A725A6E7DB00986300 /* PendingInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B38330A525A6E7DB00986300 /* PendingInputView.xib */; };
 		B384A3DE256F624900D237CC /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3DC256F624900D237CC /* OrderCell.swift */; };
-		B384A3DF256F624900D237CC /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B384A3DD256F624900D237CC /* OrderCell.xib */; };
 		B384A3E4256F9C2000D237CC /* ListScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3E3256F9C2000D237CC /* ListScanView.swift */; };
 		B384A3E7256F9C6700D237CC /* InputCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = B384A3E6256F9C6700D237CC /* InputCode.swift */; };
 		B38C1B0B255E3EC10078EE83 /* ForgotViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */; };
@@ -102,8 +100,6 @@
 		B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8988256B5ECB00D1618D /* Constraint.swift */; };
 		B3F79C832573628E003455D1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3F79C822573628E003455D1 /* GoogleService-Info.plist */; };
 		B3F79C872573A542003455D1 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C862573A542003455D1 /* DatabaseManager.swift */; };
-		B3F79C8C2573BD31003455D1 /* HistoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C8A2573BD31003455D1 /* HistoryCell.swift */; };
-		B3F79C8D2573BD31003455D1 /* HistoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F79C8B2573BD31003455D1 /* HistoryCell.xib */; };
 		B3F79C922573E3C0003455D1 /* ForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C912573E3C0003455D1 /* ForgotPassword.swift */; };
 		B3F84359259196ED008950E8 /* CustomNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F84357259196ED008950E8 /* CustomNoteCell.swift */; };
 		B3F8435A259196ED008950E8 /* CustomNoteCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3F84358259196ED008950E8 /* CustomNoteCell.xib */; };
@@ -129,7 +125,6 @@
 		B32944CD254205330040E90C /* NoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCell.swift; sourceTree = "<group>"; };
 		B32944D0254213520040E90C /* EditProfileVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVc.swift; sourceTree = "<group>"; };
 		B32A388625383207000EFBB6 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
-		B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderTableViewCell.swift; sourceTree = "<group>"; };
 		B335EC1D257104230082DF1D /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		B33B1B0025434D73007BDD3A /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		B33B1B092543747C007BDD3A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
@@ -176,7 +171,6 @@
 		B38330A425A6E7DB00986300 /* PendingInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingInputView.swift; sourceTree = "<group>"; };
 		B38330A525A6E7DB00986300 /* PendingInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PendingInputView.xib; sourceTree = "<group>"; };
 		B384A3DC256F624900D237CC /* OrderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
-		B384A3DD256F624900D237CC /* OrderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
 		B384A3E3256F9C2000D237CC /* ListScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListScanView.swift; sourceTree = "<group>"; };
 		B384A3E6256F9C6700D237CC /* InputCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputCode.swift; sourceTree = "<group>"; };
 		B38C1B0A255E3EC10078EE83 /* ForgotViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotViewModel.swift; sourceTree = "<group>"; };
@@ -209,8 +203,6 @@
 		B3EC8988256B5ECB00D1618D /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
 		B3F79C822573628E003455D1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B3F79C862573A542003455D1 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
-		B3F79C8A2573BD31003455D1 /* HistoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryCell.swift; sourceTree = "<group>"; };
-		B3F79C8B2573BD31003455D1 /* HistoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HistoryCell.xib; sourceTree = "<group>"; };
 		B3F79C912573E3C0003455D1 /* ForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassword.swift; sourceTree = "<group>"; };
 		B3F84357259196ED008950E8 /* CustomNoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNoteCell.swift; sourceTree = "<group>"; };
 		B3F84358259196ED008950E8 /* CustomNoteCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomNoteCell.xib; sourceTree = "<group>"; };
@@ -262,7 +254,6 @@
 				B37BF2CE2570B49700421DEB /* Scan */,
 				B384A3DB256F622400D237CC /* Order */,
 				B3B9D58C256E00C20056D867 /* Shift */,
-				B32A3890253836C7000EFBB6 /* OrderTableViewCell.swift */,
 				B3544F25253D572700B6A001 /* CardViewController.swift */,
 				B32944CD254205330040E90C /* NoteCell.swift */,
 				B33B1B0025434D73007BDD3A /* PopUpView.swift */,
@@ -496,7 +487,6 @@
 			isa = PBXGroup;
 			children = (
 				B384A3DC256F624900D237CC /* OrderCell.swift */,
-				B384A3DD256F624900D237CC /* OrderCell.xib */,
 				B36C4FB72578B7BB002C4D06 /* PendingCell.swift */,
 			);
 			path = Order;
@@ -543,8 +533,6 @@
 		B3F79C892573BD05003455D1 /* History */ = {
 			isa = PBXGroup;
 			children = (
-				B3F79C8A2573BD31003455D1 /* HistoryCell.swift */,
-				B3F79C8B2573BD31003455D1 /* HistoryCell.xib */,
 				B3F8435C2591CA83008950E8 /* OrderHistoryCell.swift */,
 				B3F8435D2591CA83008950E8 /* OrderHistoryCell.xib */,
 			);
@@ -651,8 +639,6 @@
 				B3E256482589B56900CDED81 /* QuickCell.xib in Resources */,
 				B3F8435A259196ED008950E8 /* CustomNoteCell.xib in Resources */,
 				B38330A725A6E7DB00986300 /* PendingInputView.xib in Resources */,
-				B3F79C8D2573BD31003455D1 /* HistoryCell.xib in Resources */,
-				B384A3DF256F624900D237CC /* OrderCell.xib in Resources */,
 				B3F8435F2591CA83008950E8 /* OrderHistoryCell.xib in Resources */,
 				B3E256432589AD0D00CDED81 /* ImageCell.xib in Resources */,
 				B37BF2D62570B4DA00421DEB /* ScanCell.xib in Resources */,
@@ -786,7 +772,6 @@
 				B3B9D596256E107A0056D867 /* ShiftTimeCell.swift in Sources */,
 				B32407FB25677A6D00BFF72D /* EditEmail.swift in Sources */,
 				B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */,
-				B3F79C8C2573BD31003455D1 /* HistoryCell.swift in Sources */,
 				B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */,
 				B3EC8985256B5E3C00D1618D /* Reusable.swift in Sources */,
 				B32944CE254205330040E90C /* NoteCell.swift in Sources */,
@@ -812,7 +797,6 @@
 				B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */,
 				B3544F1F253D3E0C00B6A001 /* ChangePasswordVC.swift in Sources */,
 				B31E53C5258741A8004875F2 /* ChatView.swift in Sources */,
-				B32A3891253836C7000EFBB6 /* OrderTableViewCell.swift in Sources */,
 				B35918302576079B005135A0 /* DetailView.swift in Sources */,
 				B384A3E4256F9C2000D237CC /* ListScanView.swift in Sources */,
 				B348E8EA2588B0FE00133CB8 /* CustomCellChat.swift in Sources */,

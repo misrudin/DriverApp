@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 class ScanCell: UITableViewCell {
     
@@ -14,9 +15,9 @@ class ScanCell: UITableViewCell {
     var item: PickupItem! {
         didSet {
             name.text = item.item_name
-            code.text = "Code : \(item.item_name)"
+            code.text = "Code".localiz() + " : \(item.item_name)"
             print(item.qr_code_raw)
-            status.text = item.scan != nil ? "Verified" : "Unverified"
+            status.text = item.scan != nil ? "Verified".localiz() : "Unverified".localiz()
             scanButton.isHidden = item.scan != nil
             let colorU = UIColor(named: "orangeKasumi")
             let colorV = UIColor(named: "colorGreen")
@@ -64,7 +65,7 @@ class ScanCell: UITableViewCell {
         scanButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         scanButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         scanButton.layer.cornerRadius = 15
-        scanButton.setTitle("Scan", for: .normal)
+        scanButton.setTitle("Scan".localiz(), for: .normal)
         scanButton.setTitleColor(.white, for: .normal)
         scanButton.isUserInteractionEnabled = false
     }

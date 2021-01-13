@@ -97,7 +97,7 @@ class CameraScanView: UIViewController {
     
     func failed() {
         let ac = UIAlertController(title: "Scanner not supported".localiz(), message: "Please use a device with a camera. Because this device does not support scanning a code".localiz(), preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Back", style: .cancel, handler: { _ in
+        ac.addAction(UIAlertAction(title: "Back".localiz(), style: .cancel, handler: { _ in
             self.navigationController?.popViewController(animated: true)
         }))
         ac.addAction(UIAlertAction(title: "Input Manual", style: .default, handler: {_ in
@@ -135,10 +135,10 @@ extension CameraScanView: AVCaptureMetadataOutputObjectsDelegate {
         
 //        let find = list.filter({ $0.qr_code_raw == code })
         if code != codeQr {
-            let action1 = UIAlertAction(title: "Try again", style: .default) {[weak self]  (_) in
+            let action1 = UIAlertAction(title: "Try again".localiz(), style: .default) {[weak self]  (_) in
                 self?.avCaptureSession.startRunning()
             }
-            Helpers().showAlert(view: self, message: "Something when wrong !, Item code not found.".localiz(), customAction1: action1)
+            Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
             if extra {
                 delegate.updateListExtra(code: code, orderNo: orderNo)

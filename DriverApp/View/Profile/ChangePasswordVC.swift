@@ -27,7 +27,7 @@ class ChangePasswordVC: UIViewController {
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "Current Password ...".localiz()
+        field.placeholder = "Current Password".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
@@ -44,7 +44,7 @@ class ChangePasswordVC: UIViewController {
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "New Password ...".localiz()
+        field.placeholder = "New Password".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
@@ -61,7 +61,7 @@ class ChangePasswordVC: UIViewController {
         field.layer.cornerRadius = 5
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
-        field.placeholder = "Confirm New Password ...".localiz()
+        field.placeholder = "Confirm New Password".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = .white
@@ -72,7 +72,7 @@ class ChangePasswordVC: UIViewController {
     
     private let submitButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Submit New Password".localiz(), for: .normal)
+        loginButton.setTitle("Save".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 5

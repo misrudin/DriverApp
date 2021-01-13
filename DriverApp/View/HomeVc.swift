@@ -48,7 +48,7 @@ class HomeVc: UIViewController {
     
     private let tableView: UITableView = {
         let table = UITableView(frame: CGRect.zero, style: .grouped)
-        table.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: OrderCell.id)
+        table.register(OrderCell.self, forCellReuseIdentifier: OrderCell.id)
         table.register(PendingCell.self, forCellReuseIdentifier: PendingCell.id)
         table.backgroundColor = .white
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
@@ -537,7 +537,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
     
         rejectAction.image = delete
-        rejectAction.backgroundColor = UIColor(named: "grayKasumi")
+        rejectAction.backgroundColor = UIColor(named: "darkKasumi")
         pendingAction.image = edit
         pendingAction.backgroundColor = UIColor(named: "grayKasumi")
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any], let statusDriver = userData["status"] as? String  else {return nil}

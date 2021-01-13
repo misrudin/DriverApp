@@ -360,7 +360,7 @@ class EditVehicleView: UIViewController {
 //   MARK: - Next button
     private let nextButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Save Change".localiz(), for: .normal)
+        loginButton.setTitle("Save".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor.gray
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.setTitleColor(.lightGray, for: .highlighted)

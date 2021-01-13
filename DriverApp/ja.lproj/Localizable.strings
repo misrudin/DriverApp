@@ -27,9 +27,11 @@
 "Continue to register ?" = "Continue to register ?";
 "Are you sure ?" = "Are you sure ?";
 "Pull to refresh" = "Pull to refresh";
+"Checkout" = "チェックアウト";
+"Add" = "Add";
 
 //MARK: - PLACEHOLDER
-"Email" = "Email";
+"Email" = "EMAIL";
 
 //MARK: - TITLE NAVIGATION
 ///top navigation
@@ -38,17 +40,21 @@
 "Jobs History" = "履歴";
 "Day Off Driver" = "シフト";
 "Plan Next Month" = "次月の予定";
-"Customer Service" = "Customer Service";
+"Customer Service" = "チャット";
 "My Profile" = "My Profile";
 "Notes" = "ノート";
 "Change Password" = "パスワード変更";
 "Change Vehicle Data" = "Change Vehicle Data";
 "Edit Profile" = "プロフィール編集";
+"Edit Day Off" = "Edit Day Off";
+"Live Tracking" = "お届け先詳細";
+"Edit Vehicle Data" = "Edit Vehicle Data";
+"Pending Delivery" = "Pending Delivery";
 
 ///bottom navigation
-"Jobs" = "Jobs";
-"History" = "History";
-"Day OFf" = "Day OFf";
+"Jobs" = "デリバリーリスト";
+"History" = "履歴";
+"Day Off" = "シフト";
 
 //MARK: - MAIN PAGE
 
@@ -115,6 +121,8 @@
 //MARK: - DAY OFF
 "Shift on this date" = "当日のシフト";
 "Plan Next Month" = "次月";
+"Select Shift" = "Select Shift";
+"Select shift you want to add" = "Select shift you want to add";
 
 
 //MARK: - PLAN NEXT MONTH
@@ -133,22 +141,49 @@
 "I have an accidents" = "I have an accidents";
 "Type your message here ..." = "Type your message here ...";
 
+//MARK: - Rest
+"Rest" = "Rest";
+"Activate rest now" = "Activate rest now";
+"Back To Work" = "Back To Work";
+"Start rest now ?" = "Start rest now ?";
+
 //MARK: - PROFILE
-"Note" = "Note";
-"Change Password" = "Change Password";
-"Change Vehicle Data" = "Change Vehicle Data";
-"Logout" = "Logout";
+"Note" = "ノート";
+"Change Password" = "パスワード変更";
+"Change Vehicle Data" = "車両情報変更";
+"Logout" = "ログアウト";
 
 //MARK: - CHANGE PROFILE
 
+//MARK: - CHANGE PASSWORD
+"Current Password" = "古いパスワード";
+"New Password" = "新しいパスワード";
+"Confirm New Password" = "新しいパスワード（確認）";
+
 //MARK: - NOTES
-"Checkout" = "Checkout";
-"Pending" = "Pending";
 "Failed to sending note" = "Failed to sending note";
 
 //MARK: - SEND NOTES
 
 //MARK: - CHANGE VEHICLE DATA
+
+//MARK: - Scan Stuff
+"Scan QR Code to Verify" = "Scan QR Code to Verify";
+"Finish" = "Finish";
+"Add  Code Manually" = "Add  Code Manually";
+"Delivery Order List" = "QR コードスキャン";
+"Item for this order" = "Item for this order";
+"Extra pickup item for Order No" = "Extra pickup item for Order No";
+"Try Again" = "Try Again";
+"Item code not found." = "Item code not found.";
+"Add code manual" =  "Add code manual";
+"Verify Package" = "Verify Package";
+"Input code here ..." = "Input code here ...";
+"Add Order Code" = "Add Order Code";
+
+"Scanner not supported" = "Scanner not supported";
+"Please use a device with a camera. Because this device does not support scanning a code" = "Please use a device with a camera. Because this device does not support scanning a code";
+"Input Manual" = "Input Manual";
 
 //MARK: - ERROR MESSAGE
 "Profile photo must be entered !" = "Profile photo must be entered !";
@@ -163,13 +198,16 @@
 "Failed to get data from server." = "Failed to get data from server.";
 "Failed to post data" = "Failed to post data";
 "Failed to decode json data" = "Failed to decode json data";
+"Failed to fetch data !" = "Failed to fetch data !";
+"Failed to checkout !" = "Failed to checkout !";
+"Something when wrong !" = "Something when wrong !";
 
 //MARK: - SUCCESS MESSAGE
 "Registration data has been sent please wait us to verification your data. We will contact you by email." = "Registration data has been sent please wait us to verification your data. We will contact you by email.";
 "Registration success" = "Registration success";
 "Please check your email !" = "Please check your email !";
 "Success" = "Success";
-"Loading" = "Loading";
+"Loading" = "読み込み中";
 
 //MARK: - OTHER MESSAGE
 "Please select profile picture !" = "Please select profile picture !";
@@ -204,8 +242,6 @@
 "Register failed !" = "Register failed !";
 "Please use a valid email !" = "Please use a valid email !";
 "Vehicle plate must be entered !" = "Vehicle plate must be entered !";
-"Failed to fetch data !" = "Failed to fetch data !";
-"Failed to checkout !" = "Failed to checkout !";
 "Vehicle inspection certificate expiration date must be entered !"  ="Vehicle inspection certificate expiration date must be entered !";
 "Insurance company name must be entered !" = "Insurance company name must be entered !";
 "Coverage personal must be entered !" = "Coverage personal must be entered !";
@@ -215,16 +251,58 @@
 
 
 //MARK: - MONTH
-"January" = "January";
-"February" = "February";
-"March" = "March";
-"April" = "April";
-"May" = "May";
-"June" = "June";
-"July" = "July";
-"August" = "August";
-"September" = "September";
-"October" = "October";
-"November" = "November";
-"December" = "December";
+"January" = "一月";
+"February" = "二月";
+"March" = "三月";
+"April" = "四月";
+"May" = "五月";
+"June" = "六月";
+"July" = "七月";
+"August" = "八月";
+"September" = "九月";
+"October" = "十月";
+"November" = "十一月";
+"December" = "十二月";
 
+//MARK: - Components
+"Pending by System" = "Pending by System";
+"Pending" = "再配達";
+"Order No" = "注文番号";
+"PickUp Address" = "ピックアップ店舗";
+"Delivery To" = "Delivery To";
+"Select Shift" = "Select Shift";
+"Select shift you want to add" = "Select shift you want to add";
+
+"Pickup Order" = "ピックアップする";
+"Item Name" = "Item Name";
+"See Details" = "See Details";
+"PickUp Store" = "ピックアップ店舗";
+"Receiver" = "お届け先";
+"Hide" = "Hide";
+"Scan Stuff" = "Scan Stuff";
+"Done Pickup" = "Done Pickup";
+"Next Store" = "次の店舗へ";
+"Start Delivery" = "配送開始";
+"Done Delivery" = "完了";
+
+"Scan" = "Scan";
+"Verified" = "Verified";
+"Unverified" = "待機中";
+"Code" = "Code";
+
+"Date" = "日付";
+"Status" = "対応状況";
+"Delivery Time" = "Delivery Time";
+"Delivery To" = "Delivery To";
+"Rating and Review" = "Rating and Review";
+"has not reviewed by admin" = "has not reviewed by admin";
+
+"Quick Chat" = "Quick Chat";
+"Hello" = "Hello";
+"Address cannot be found" = "Address cannot be found";
+"Person not at home" = "Person not at home";
+"Package not correct" = "Package not correct";
+"I have an accidents" = "I have an accidents";
+"Other" = "Other";
+
+"Tell Your Pending Delivery Reason" = "Tell Your Pending Delivery Reason";

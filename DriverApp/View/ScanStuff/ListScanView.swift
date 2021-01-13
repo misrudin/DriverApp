@@ -440,14 +440,14 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
         
         
         if section == 0 {
-            label.text = "Item for this order : \(orderNo)"
+            label.text = "Item for this order".localiz() + ": \(orderNo)"
             return containerLabel
         }else {
             if let extra = extraItem {
                 guard let pickupLits = extra.pickup_list else {
                     return nil
                 }
-                label.text = "Extra pickup item for Order No: \(pickupLits[section-1].order_no)"
+                label.text = "Extra pickup item for Order No" + ": \(pickupLits[section-1].order_no)"
                 return containerLabel
             }else {
                 return nil

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 class PendingCell: UITableViewCell {
     static let id  = "PendingCell"
@@ -21,7 +22,7 @@ class PendingCell: UITableViewCell {
                 return
             }
             
-            orderNo.text = orderData.order_number
+            orderNo.text = ": \(orderData.order_number)"
             
             let start = orderData.detail_shift.time_start_shift[...4]
             let end = orderData.detail_shift.time_end_shift[...4]
@@ -30,10 +31,10 @@ class PendingCell: UITableViewCell {
             DispatchQueue.main.async {
                 if self.orderData.pending_by_system! {
                     self.container.backgroundColor = UIColor(named: "colorGray")
-                    self.status.text = "Pending by System"
+                    self.status.text = "Pending by System".localiz()
                 }else {
                     self.container.backgroundColor = UIColor(named: "colorDisabled")
-                    self.status.text = "Pending"
+                    self.status.text = "Pending".localiz()
                 }
             }
 
@@ -56,7 +57,7 @@ class PendingCell: UITableViewCell {
     }
     
     //    MARK: - Components
-    let orderNoLabel = Reusable.makeLabel(text: "Order No :", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, alignment: .left)
+    let orderNoLabel = Reusable.makeLabel(text: "Order No".localiz(), font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, alignment: .left)
     let orderNo = Reusable.makeLabel(text: "1111", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "orangeKasumi")!, alignment: .left)
     
     let container: UIView = {
@@ -65,9 +66,9 @@ class PendingCell: UITableViewCell {
         view.layer.cornerRadius = 5
         return view
     }()
-    let statusLabel = Reusable.makeLabel(text: "Status :", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!)
-    let status = Reusable.makeLabel(text: "Pending", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!)
-//    let dateLabel = Reusable.makeLabel(text: "Date :", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!)
+    let statusLabel = Reusable.makeLabel(text: "Status".localiz(), font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!)
+    let status = Reusable.makeLabel(text: "Pending".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!)
+
     let date = Reusable.makeLabel(text: "2020-10-10", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!)
     
     let imageMarker: UIImageView = {
@@ -78,7 +79,7 @@ class PendingCell: UITableViewCell {
         return img
     }()
     
-    let pickupStore = Reusable.makeLabel(text: "Pickup From", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
+    let pickupStore = Reusable.makeLabel(text: "PickUp Address".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
     let pickupAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
     
     let imageMarker2: UIImageView = {
@@ -89,11 +90,9 @@ class PendingCell: UITableViewCell {
         return img
     }()
     
-    let delivaryLabel = Reusable.makeLabel(text: "Delivery To", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
+    let delivaryLabel = Reusable.makeLabel(text: "Delivery To".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
     let deliveryAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
-    
-//    let noteLabel = Reusable.makeLabel(text: "Note", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "grayKasumi2")!)
-//    let note = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFontItalic(size: 14, fontWeight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
+
     
     
     //    MARK: - Initialize
@@ -166,15 +165,5 @@ class PendingCell: UITableViewCell {
         deliveryAddress.right(toAnchor: container.rightAnchor, space: -5)
         delivaryLabel.right(toAnchor: container.rightAnchor, space: -5)
         deliveryAddress.bottom(toAnchor: container.bottomAnchor, space: -10)
-        
-//        noteLabel.translatesAutoresizingMaskIntoConstraints = false
-//        noteLabel.top(toAnchor: status.bottomAnchor, space: 10)
-//        noteLabel.left(toAnchor: container.leftAnchor, space: 10)
-//
-//        note.translatesAutoresizingMaskIntoConstraints = false
-//        note.top(toAnchor: noteLabel.bottomAnchor, space: 5)
-//        note.left(toAnchor: container.leftAnchor, space: 10)
-//        note.right(toAnchor: container.rightAnchor, space: -10)
-//        note.bottom(toAnchor: container.bottomAnchor, space: -10)
     }
 }

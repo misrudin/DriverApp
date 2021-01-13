@@ -32,7 +32,7 @@ class CustomNoteCell: UITableViewCell {
                 return
             }
             orderno.text = orderNo
-            status.text = "PENDING"
+            status.text = "Pending".localiz()
             date.text = item.created_date
             name.text = "\(userInfo.first_name) \(userInfo.last_name)"
             address.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.phone_number)"
@@ -47,9 +47,9 @@ class CustomNoteCell: UITableViewCell {
         container.backgroundColor = UIColor(named: "bgKasumi")
         container.layer.cornerRadius = 10
         orderNoLabel.text = "Order No".localiz()
-        statusLabel.text = "Status :".localiz()
+        statusLabel.text = "Status".localiz()
         dateLabel.text = "Date".localiz()
-        deliverTo.text = "Deliver to".localiz()
+        deliverTo.text = "Delivery To".localiz()
         
         
     }

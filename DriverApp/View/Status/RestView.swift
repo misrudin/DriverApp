@@ -32,7 +32,7 @@ class RestView: UIViewController {
     
     private let loginButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Go Work Again".localiz(), for: .normal)
+        loginButton.setTitle("Back To Work".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 5

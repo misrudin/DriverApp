@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 @available(iOS 13.0, *)
 class QuickCell: UITableViewCell {
@@ -23,6 +24,10 @@ class QuickCell: UITableViewCell {
     var vi = ChatView()
     
     var chatVm = ChatViewModel()
+    var messages:[String] = [
+        "Hello".localiz(), "Address cannot be found".localiz(), "Person not at home".localiz(), "Package not correct".localiz(), "I have an accidents".localiz()
+    ]
+    
     
 
     override func awakeFromNib() {
@@ -62,9 +67,6 @@ class QuickCell: UITableViewCell {
     }
     
     @objc func tapQuickChat(sender: CustomTap){
-        let messages:[String] = [
-        "Hello", "Address cannot be found", "Person not at home", "Package not correct", "I have an accidents"
-        ]
         
         guard let index = sender.ourCustomValue as? Int else {
             return
@@ -82,7 +84,7 @@ class QuickCell: UITableViewCell {
         
         chatVm.sendMessage(codeDriver: codeDriver, chat: chat) { (res) in
             if res {
-                print("Succes to sen \(messages[index])")
+                print("Succes to sen \(self.messages[index])")
             }else{
                 print("sen message falied")
             }

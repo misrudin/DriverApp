@@ -72,7 +72,6 @@ class HistoryViewController: UIViewController {
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 150
-//        tableView.register(UINib(nibName: "HistoryCell", bundle: nil), forCellReuseIdentifier: "cellid")
         tableView.register(UINib(nibName: "OrderHistoryCell", bundle: nil), forCellReuseIdentifier: OrderHistoryCell.id)
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh".localiz())

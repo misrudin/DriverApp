@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LanguageManager_iOS
 
 protocol CardViewControllerDelegate {
     func didTapButton(_ viewModel: CardViewController, type: TypeDelivery)
@@ -97,7 +98,7 @@ class CardViewController: UIViewController {
     
     let pendingButton: UIButton={
         let button = UIButton()
-        button.setTitle("Pending", for: .normal)
+        button.setTitle("Pending".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "darkKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 45/2
@@ -109,7 +110,7 @@ class CardViewController: UIViewController {
     
     let titleLabelItemName: UILabel = {
         let label = UILabel()
-        label.text = "Item Name"
+        label.text = "Item Name".localiz()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
@@ -127,7 +128,7 @@ class CardViewController: UIViewController {
     
     let detailItem: UILabel = {
         let label = UILabel()
-        label.text = "See Details"
+        label.text = "See Details".localiz()
         label.textColor = UIColor(named: "orangeKasumi")
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         label.textAlignment = .center
@@ -137,7 +138,7 @@ class CardViewController: UIViewController {
     
     let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "PickUp Store"
+        label.text = "PickUp Store".localiz()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
@@ -154,7 +155,7 @@ class CardViewController: UIViewController {
     
     let titleLabelDestination: UILabel = {
         let label = UILabel()
-        label.text = "Receiver"
+        label.text = "Receiver".localiz()
         label.textColor = .lightGray
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
@@ -205,7 +206,7 @@ class CardViewController: UIViewController {
     lazy var seeDetailButton: UIButton = {
        let button = UIButton()
         button.backgroundColor = UIColor(named: "darkKasumi")
-        button.setTitle("Pending", for: .normal)
+        button.setTitle("Pending".localiz(), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 45/2
         button.layer.masksToBounds = true
@@ -221,12 +222,12 @@ class CardViewController: UIViewController {
         if itemLabel.numberOfLines == 0 {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 self.itemLabel.numberOfLines = 3
-                self.detailItem.text = "See Details"
+                self.detailItem.text = "See Details".localiz()
             })
         }else {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 self.itemLabel.numberOfLines = 0
-                self.detailItem.text = "Hide"
+                self.detailItem.text = "Hide".localiz()
             })
         }
     }
@@ -455,15 +456,15 @@ class CardViewController: UIViewController {
                     DispatchQueue.main.async {
                         let filtered = data.filter({$0.scanned_status == 0})
                         if filtered.count > 0 {
-                            self?.titleButton = "Scan Stuff"
+                            self?.titleButton = "Scan Stuff".localiz()
                             self?.statusDelivery = .scan
                         }else if filtered.count == 0 && self!.currentIndex == items.count-1 {
-                            self?.titleButton = "Done Pickup"
+                            self?.titleButton = "Done Pickup".localiz()
                             self?.statusDelivery = .done_pickup
                             self?.orderButton.setTitle(self?.titleButton, for: .normal)
                             self?.orderButton2.setTitle(self?.titleButton, for: .normal)
                         }else {
-                            self?.titleButton = "Next Store"
+                            self?.titleButton = "Next Store".localiz()
                             self?.statusDelivery = .next
                         }
                         
@@ -515,23 +516,23 @@ class CardViewController: UIViewController {
                         self?.statusDelivery = .start_pickup
                         self?.hideDetail()
                     }else if statusTracking == "on pickup process" {
-                        self?.titleButton = "Loading ..."
+                        self?.titleButton = "Loading".localiz()
                         self?.statusDelivery = .nostatus
                         self?.cekScaned()
                         self?.setupDefaultButton()
                         self?.hideDetail()
                     }else if statusTracking == "waiting delivery" {
-                        self?.titleButton = "Start Delivery"
+                        self?.titleButton = "Start Delivery".localiz()
                         self?.setupDefaultButton()
                         self?.statusDelivery = .start_delivery
                         self?.showDetail()
                     }else if statusTracking == "on delivery" {
-                        self?.titleButton = "Done Delivery"
+                        self?.titleButton = "Done Delivery".localiz()
                         self?.setupButton()
                         self?.statusDelivery = .done_delivery
                         self?.showDetail()
                     }else {
-                        self?.titleButton = "Pickup Order"
+                        self?.titleButton = "Pickup Order".localiz()
                         self?.setupDefaultButton()
                         self?.statusDelivery = .start_pickup
                         self?.hideDetail()

@@ -27,6 +27,8 @@
 "Continue to register ?" = "Continue to register ?";
 "Are you sure ?" = "Are you sure ?";
 "Pull to refresh" = "Pull to refresh";
+"Checkout" = "Checkout";
+"Add" = "Add";
 
 //MARK: - PLACEHOLDER
 "Email" = "Email";
@@ -44,11 +46,16 @@
 "Change Password" = "Change Password";
 "Change Vehicle Data" = "Change Vehicle Data";
 "Edit Profile" = "Edit Profile";
+"Edit Day Off" = "Edit Day Off";
+"Live Tracking" = "Live Tracking";
+"Edit Vehicle Data" = "Edit Vehicle Data";
+"Pending Delivery" = "Pending Delivery";
+
 
 ///bottom navigation
 "Jobs" = "Jobs";
 "History" = "History";
-"Day OFf" = "Day OFf";
+"Day Off" = "Day Off";
 
 //MARK: - MAIN PAGE
 
@@ -115,14 +122,14 @@
 //MARK: - DAY OFF
 "Shift on this date" = "Shift on this date";
 "Plan Next Month" = "Plan Next Month";
+"Select Shift" = "Select Shift";
+"Select shift you want to add" = "Select shift you want to add";
 
 
 //MARK: - PLAN NEXT MONTH
 "Select Shift" = "Select Shift";
 "Select the shift you want to add" = "Select the shift you want to add";
 "Add" = "Add";
-
-
 
 //MARK: - CHATTING
 "Quick Chat" = "Quick Chat";
@@ -133,6 +140,12 @@
 "I have an accidents" = "I have an accidents";
 "Type your message here ..." = "Type your message here ...";
 
+//MARK: - Rest
+"Rest" = "Rest";
+"Activate rest now" = "Activate rest now";
+"Back To Work" = "Back To Work";
+"Start rest now ?" = "Start rest now ?";
+
 //MARK: - PROFILE
 "Note" = "Note";
 "Change Password" = "Change Password";
@@ -141,14 +154,36 @@
 
 //MARK: - CHANGE PROFILE
 
+//MARK: - CHANGE PASSWORD
+"Current Password" = "Current Password";
+"New Password" = "New Password";
+"Confirm New Password" = "Confirm New Password";
+"Submit New Password" = "Submit New Password";
+
 //MARK: - NOTES
-"Checkout" = "Checkout";
-"Pending" = "Pending";
 "Failed to sending note" = "Failed to sending note";
 
 //MARK: - SEND NOTES
 
 //MARK: - CHANGE VEHICLE DATA
+
+//MARK: - Scan Stuff
+"Scan QR Code to Verify" = "Scan QR Code to Verify";
+"Finish" = "Finish";
+"Add  Code Manually" = "Add  Code Manually";
+"Delivery Order List" = "Delivery Order List";
+"Item for this order" = "Item for this order";
+"Extra pickup item for Order No" = "Extra pickup item for Order No";
+"Try Again" = "Try Again";
+"Item code not found." = "Item code not found.";
+"Add code manual" =  "Add code manual";
+"Verify Package" = "Verify Package";
+"Input code here ..." = "Input code here ...";
+"Add Order Code" = "Add Order Code";
+
+"Scanner not supported" = "Scanner not supported";
+"Please use a device with a camera. Because this device does not support scanning a code" = "Please use a device with a camera. Because this device does not support scanning a code";
+"Input Manual" = "Input Manual";
 
 //MARK: - ERROR MESSAGE
 "Profile photo must be entered !" = "Profile photo must be entered !";
@@ -163,6 +198,7 @@
 "Failed to get data from server." = "Failed to get data from server.";
 "Failed to post data" = "Failed to post data";
 "Failed to decode json data" = "Failed to decode json data";
+"Something when wrong !" = "Something when wrong !";
 
 //MARK: - SUCCESS MESSAGE
 "Registration data has been sent please wait us to verification your data. We will contact you by email." = "Registration data has been sent please wait us to verification your data. We will contact you by email.";
@@ -171,7 +207,7 @@
 "Success" = "Success";
 "Loading" = "Loading";
 
-//MARK: - OTHER MESSAGE
+//MARK: - OTHER MESSAGE FOR VALIDATION
 "Please select profile picture !" = "Please select profile picture !";
 "First name must be entered !" = "First name must be entered !";
 "Last name must be entered !" = "Last name must be entered !";
@@ -212,8 +248,6 @@
 "Compensation range must be entered !" = "Compensation range must be entered !";
 "Driver not checkin/checkout yet" = "Driver not checkin/checkout yet";
 
-
-
 //MARK: - MONTH
 "January" = "January";
 "February" = "February";
@@ -228,3 +262,45 @@
 "November" = "November";
 "December" = "December";
 
+//MARK: - Components
+"Pending by System" = "Pending by System";
+"Pending" = "Pending";
+"Order No" = "Order No";
+"PickUp Address" = "PickUp Address";
+"Delivery To" = "Delivery To";
+"Select Shift" = "Select Shift";
+"Select shift you want to add" = "Select shift you want to add";
+
+"Pickup Order" = "Pickup Order";
+"Item Name" = "Item Name";
+"See Details" = "See Details";
+"PickUp Store" = "PickUp Store";
+"Receiver" = "Receiver";
+"Hide" = "Hide";
+"Scan Stuff" = "Scan Stuff";
+"Done Pickup" = "Done Pickup";
+"Next Store" = "Next Store";
+"Start Delivery" = "Start Delivery";
+"Done Delivery" = "Done Delivery";
+
+"Scan" = "Scan";
+"Verified" = "Verified";
+"Unverified" = "Unverified";
+"Code" = "Code";
+
+"Date" = "Date";
+"Status" = "Status";
+"Delivery Time" = "Delivery Time";
+"Delivery To" = "Delivery To";
+"Rating and Review" = "Rating and Review";
+"has not reviewed by admin" = "has not reviewed by admin";
+
+"Quick Chat" = "Quick Chat";
+"Hello" = "Hello";
+"Address cannot be found" = "Address cannot be found";
+"Person not at home" = "Person not at home";
+"Package not correct" = "Package not correct";
+"I have an accidents" = "I have an accidents";
+"Other" = "Other";
+
+"Tell Your Pending Delivery Reason" = "Tell Your Pending Delivery Reason";
