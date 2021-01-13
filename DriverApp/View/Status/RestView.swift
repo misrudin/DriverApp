@@ -20,24 +20,45 @@ class RestView: UIViewController {
     
     var inoutVm = InOutViewModel()
     
-    private let labelRest: UILabel = {
-       let l = UILabel()
-        l.text = "Rest".localiz()
-        l.font = UIFont.systemFont(ofSize: 30, weight: .bold)
-        l.textAlignment = .center
-        l.textColor = UIColor(named: "orangeKasumi")
-        l.translatesAutoresizingMaskIntoConstraints = false
-        return l
+    private let emptyImage: UIView = {
+        let view = UIView()
+        let imageView: UIImageView = {
+           let img = UIImageView()
+            img.image = UIImage(named: "restImage")
+            img.clipsToBounds = true
+            img.layer.masksToBounds = true
+            img.translatesAutoresizingMaskIntoConstraints = false
+            img.contentMode = .scaleAspectFit
+            return img
+        }()
+        
+        view.addSubview(imageView)
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        view.layer.cornerRadius = 120/2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        return view
     }()
+    
+    let restLabel = Reusable.makeLabel(text: "Have a good rest.",
+                                       font: .systemFont(ofSize: 15, weight: .medium),
+                                       color: UIColor(named: "darkKasumi")!, numberOfLines: 0,
+                                       alignment: .center)
+    
     
     private let loginButton: UIButton={
         let loginButton = UIButton()
         loginButton.setTitle("Back To Work".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
-        loginButton.layer.cornerRadius = 5
+        loginButton.layer.cornerRadius = 45/2
         loginButton.layer.masksToBounds = true
-        loginButton.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold )
+        loginButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .medium )
         loginButton.addTarget(self, action: #selector(work), for: .touchUpInside)
         return loginButton
     }()
@@ -80,14 +101,25 @@ class RestView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(labelRest)
+        view.addSubview(emptyImage)
+        view.addSubview(restLabel)
+        restLabel.translatesAutoresizingMaskIntoConstraints = false
+        emptyImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginButton)
         view.backgroundColor = .white
         
-        labelRest.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        labelRest.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        emptyImage.centerX(toAnchor: view.centerXAnchor)
+        emptyImage.centerY(toAnchor: view.centerYAnchor)
         
-        loginButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
+        restLabel.top(toAnchor: emptyImage.bottomAnchor, space: 24)
+        restLabel.left(toAnchor: view.leftAnchor, space: 10)
+        restLabel.right(toAnchor: view.rightAnchor, space: -10)
+        
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.top(toAnchor: restLabel.bottomAnchor, space: 30)
+        loginButton.left(toAnchor: view.leftAnchor, space: 20)
+        loginButton.right(toAnchor: view.rightAnchor, space: -20)
+        loginButton.height(45)
     }
 
 }

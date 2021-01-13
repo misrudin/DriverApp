@@ -307,7 +307,6 @@ class EditCurrentDayOff: UIViewController {
             if let dataList = listShift {
                 let filteredDataList = dataList.filter { $0 ==  item.id_shift_time }
                 
-                print(filteredDataList)
                 if filteredDataList.count != 0 {
                     let data: CustomList = CustomList(id: item.id_shift_time, name: item.label_data, selected: true)
                     dataShifts.append(data)
@@ -338,6 +337,7 @@ class EditCurrentDayOff: UIViewController {
                 "4": self.week4,
                 "5": self.week5,
             ]
+            scrollToDate()
             return}
         
         
@@ -427,6 +427,21 @@ class EditCurrentDayOff: UIViewController {
                 "5": week5,
             ]
         }
+        
+        DispatchQueue.main.async {
+            self.scrollToDate()
+        }
+    }
+    
+    private func scrollToDate(){
+        let date = Date()
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "dd"
+        
+        let dateToday = dateFor.string(from: date)
+        let dateInt: Int = Int(dateToday)!
+        let index: IndexPath = IndexPath(item: dateInt-1, section: 0)
+        colectionView.scrollToItem(at: index, at: .left, animated: true)
     }
     
     func configureLayout(){
@@ -1658,11 +1673,9 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let i = indexPath.row + 1
-        let month = montnNumber < 12 ? Date.monthNumber() + 1 : 1
-        let year = montnNumber <= 12 ? Date.yearNumber() : Date.yearNumber()+1
-        
-        let date = Date.dateStringNextMonthFrom(customDate: i, year: year, month: month)
-        let dayName = Date.dayNameFromCustomDate(customDate: i, year: year, month: month)
+     
+        let date = Date.dateStringFrom(customDate: i)
+        let dayName = Date.dayNameFromCustomDate(customDate: i)
         
         selectedIndex = i
         colectionView.reloadData()
@@ -1689,7 +1702,6 @@ extension EditCurrentDayOff: SelectShiftDelegate {
         var dataSelected = newData["\(selectedWeek)"] as! [String: Any]
         dataSelected["\(selectedDay)"] = idShift
         dayOffPlan["\(selectedWeek)"] = dataSelected
-        
         if listShift == nil {
             tableView.isHidden = true
             emptyImage.isHidden = false
@@ -1701,7 +1713,8 @@ extension EditCurrentDayOff: SelectShiftDelegate {
             setWorkButton.setTitle("Set To DayOff".localiz(), for: .normal)
         }
         
-        colectionView.reloadData()
+        self.colectionView.reloadData()
+        
     }
     
     func onDayOff(_ vm: SelectShift) {

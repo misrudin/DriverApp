@@ -296,7 +296,7 @@ extension LoginView: LoginViewModelDelegate {
         let action = UIAlertAction(title: "Try again", style: .default) { [weak self] _ in
             self?.codeDriver.becomeFirstResponder()
         }
-        Helpers().showAlert(view: self, message: "Code driver or password wrong !", customAction1: action)
+        Helpers().showAlert(view: self, message: error.localizedDescription, customAction1: action)
         codeDriver.text = ""
         password.text = ""
         self.spiner.dismiss()

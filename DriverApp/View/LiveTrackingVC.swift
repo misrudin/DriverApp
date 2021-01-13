@@ -620,7 +620,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
                 self.cardHandleAreaHeight = 190
             }
         case .pending:
-            let vc = PendingInputView()
+            let vc = PendingNoteVc()
             vc.orderData = order
             let navVc = UINavigationController(rootViewController: vc)
             

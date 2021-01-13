@@ -193,7 +193,7 @@ class ListScanView: UIViewController {
             var datas = [Scan]()
             
             if let extra = extraItem {
-                extra.pickup_list?.map { e in
+                _ = extra.pickup_list?.map { e in
                     let codes: [String] = (e.pickup_item?.map({$0.qr_code_raw}))!
                     let exData: Scan = Scan(order_number: e.order_no, qr_code_raw: codes)
                     datas.append(exData)
