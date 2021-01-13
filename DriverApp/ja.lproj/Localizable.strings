@@ -1,39 +1,49 @@
-/* 
-  Localizable.strings
-  DriverApp
-
-  Created by Indo Office4 on 17/12/20.
-  
-*/
+/*
+ Localizable.strings
+ DriverApp
+ 
+ Created by Indo Office4 on 17/12/20.
+ 
+ */
 
 //MARK: - Button
-"Submit" = "参加する";
-"Back" = "バック";
-"Finish Registration" = "登録を完了する";
-"Save" = "保存する";
-"Edit" = "編集";
-"Set Work Day" = "就業日を設定する";
-"Set To DayOff" = "休日に設定";
-"Edit Shift Time" = "シフトタイムの編集";
-"EN" = "英語";
-"JP" = "日本";
+"Submit" = "ログイン";
+"Back" = "Back";
+"Finish Registration" = "登録完了";
+"Save" = "保存";
+"Edit" = "Edit";
+"Set Work Day" = "Set Work Day";
+"Set To DayOff" = "出勤に変更";
+"Edit Shift Time" = "Edit Shift Time";
+"EN" = "EN";
+"JP" = "JP";
+"Done" = "完了";
+"Select Photo" = "Select Photo";
+"How would you like to select a picture ?" = "How would you like to select a picture ?";
+"Take Photo" = "Take Photo";
+"Choose Photo" = "Choose Photo";
+"Cancel" = "Cancel";
+"Yes" = "Yes";
+"Continue to register ?" = "Continue to register ?";
+"Are you sure ?" = "Are you sure ?";
+"Pull to refresh" = "Pull to refresh";
 
 //MARK: - PLACEHOLDER
-"Email" = "Eメール";
+"Email" = "Email";
 
 //MARK: - TITLE NAVIGATION
 ///top navigation
-"Registration" = "登録";
-"Job List" = "ジョブリスト";
-"Jobs History" = "職歴";
-"Day Off Driver" = "休日ドライバー";
-"Plan Next Month" = "来月の計画";
-"Customer Service" = "顧客サービス";
-"My Profile" = "私のプロフィール";
+"Registration" = "Registration";
+"Job List" = "デリバリーリスト";
+"Jobs History" = "履歴";
+"Day Off Driver" = "シフト";
+"Plan Next Month" = "次月の予定";
+"Customer Service" = "Customer Service";
+"My Profile" = "My Profile";
 "Notes" = "ノート";
-"Change Password" = "Change Password";
+"Change Password" = "パスワード変更";
 "Change Vehicle Data" = "Change Vehicle Data";
-"Edit Profile" = "Edit Profile";
+"Edit Profile" = "プロフィール編集";
 
 ///bottom navigation
 "Jobs" = "Jobs";
@@ -42,70 +52,75 @@
 
 //MARK: - MAIN PAGE
 
-"Have Account? Login" = "アカウントをお持ちですか？ログインする";
-"Join Us - Register" = "参加する-登録";
+"Have Account? Login" = "ログイン";
+"Join Us - Register" = "登録";
 
 //MARK: - LOGIN PAGE
-"LOGIN" = "ログインする";
-"Driver Code" = "ドライバーコード";
+"LOGIN" = "ログイン";
+"Driver Code" = "ユーザーID";
 "Password" = "パスワード";
-"Forgot your password ?" = "パスワードをお忘れですか ？";
+"Forgot your password ?" = "パスワード再設定";
 
 //MARK: -  FORGOT PASSWORD
-"Enter your email address and we will share a link to create a new password" = "メールアドレスを入力してください。新しいパスワードを作成するためのリンクを共有します";
+"Enter your email address and we will share a link to create a new password" = "Enter your email address and we will share a link to create a new password";
 
 //MARK: - Registration
-"Register as a freelance driver" = "フリーランスのドライバーとして登録する";
+"Register as a freelance driver" = "フリードライバー登録";
 
 "PERSONAL INFORMATION" = "個人情報";
-"Profile Photo" = "プロフィール写真";
-"Frist Name" = "ファーストネーム";
-"Last Name" = "苗字";
+"Profile Photo" = "Profile Photo";
+"First Name" = "姓";
+"Last Name" = "名";
 "Date Of Birth" = "生年月日";
 
-"ADDRESS" = "ADDRESS";
-"Postal Code" = "Postal Code";
-"Prefecture" = "Prefecture";
-"Municipal District" = "Municipal District";
-"Chome" = "Chome";
-"Municiapity Kana" = "Municiapity Kana";
-"Kana After Address" = "Kana After Address";
-"Gender" = "Gender";
+"ADDRESS" = "住所";
+"Postal Code" = "郵便番号";
+"Prefectures" = "都道府県";
+"Municipal District" = "市区町村・地名";
+"Chome" = "番地以降";
+"Municipality Kana" = "市区町村・地名（カナ）";
+"Kana After Address" = "番地以降（カナ）";
+"Gender" = "性別";
 "Language" = "Language";
 "Phone Number" = "Phone Number";
 
 "DRIVER LICENSE" = "DRIVER LICENSE";
-"License Number" = "License Number";
-"license-exp" = "Driver's License Expiration Date";
+"License Number" = "自動車免許番号";
+"Driver's License Expiration Date" = "自動車免許有効期限";
 
-"VEHICLE DATA" = "VEHICLE DATA";
-"Indurance Company" = "Indurance Company";
-"Personal Coverage" = "Personal Coverage";
-"Compension Range-Objective" = "Compension Range-Objective";
-"Insurance Expiration Date" = "Insurance Expiration Date";
-"Vehicle Name" = "Vehicle Name";
-"Vehicle Number Plater" = "Vehicle Number Plater";
-"Vehicle Year" = "Vehicle Year";
-"Vehicle Ownership" = "Vehicle Ownership";
-"Vehicle Inspection Exp. Date" = "Vehicle Inspection Exp. Date";
-"Vehicle Inspection Certificate Photo" = "Vehicle Inspection Certificate Photo";
-"Vehicle Photo" = "Vehicle Photo";
-"Upload Photo" = "Upload Photo";
-"Male" = "男性";
-"Female" = "女性";
+"VEHICLE DATA" = "車両情報";
+"Insurance Company" = "任意保険会社";
+"Personal Coverage" = "人身保障";
+"Compensation Range-Objective" = "対物保障";
+"Insurance Expiration Date" = "保険有効期限";
+"Vehicle Name" = "車両名";
+"Vehicle Number Plate" = "9 ナンバー";
+"Vehicle Year" = "登録年";
+"Vehicle Ownership" = "所有者";
+"Vehicle Inspection Exp. Date" = "車検満了日";
+"Vehicle Inspection Certificate Photo" = "車検証の写し";
+"Vehicle Photo" = "車両の画像";
+"Upload Photo" = "ファイルをアップロード";
+"Male" = "Male";
+"Female" = "Female";
 
 //MARK: - JOB LIST
 "Pending List Order" = "Pending List Order";
 "DELIVERY LIST ORDER" = "DELIVERY LIST ORDER";
+"Today" = "Today";
 
 //MARK: - JOB HISTORY
 
 
 //MARK: - DAY OFF
-"Shift on this date" = "この日付にシフト";
+"Shift on this date" = "当日のシフト";
+"Plan Next Month" = "次月";
 
 
 //MARK: - PLAN NEXT MONTH
+"Select Shift" = "Select Shift";
+"Select the shift you want to add" = "Select the shift you want to add";
+"Add" = "Add";
 
 
 
@@ -129,27 +144,87 @@
 //MARK: - NOTES
 "Checkout" = "Checkout";
 "Pending" = "Pending";
+"Failed to sending note" = "Failed to sending note";
 
 //MARK: - SEND NOTES
 
 //MARK: - CHANGE VEHICLE DATA
 
+//MARK: - ERROR MESSAGE
+"Profile photo must be entered !" = "Profile photo must be entered !";
+"Vehicle certification photo must be entered !" = "Vehicle certification photo must be entered !";
+"Vehicle photo must be entered !" = "Vehicle photo must be entered !";
+"Email not found !" = "Email not found !";
+"Failed to decline this order !" = "Failed to decline this order !";
+"Plese select day !" = "Plese select day !";
+"Opss" = "Opss";
+"Failed to edit data !" = "Failed to edit data !";
+"Failed to parse data" = "Failed to parse data";
+"Failed to get data from server." = "Failed to get data from server.";
+"Failed to post data" = "Failed to post data";
+"Failed to decode json data" = "Failed to decode json data";
 
+//MARK: - SUCCESS MESSAGE
+"Registration data has been sent please wait us to verification your data. We will contact you by email." = "Registration data has been sent please wait us to verification your data. We will contact you by email.";
+"Registration success" = "Registration success";
+"Please check your email !" = "Please check your email !";
+"Success" = "Success";
+"Loading" = "Loading";
 
-"Pull to refresh" = "引っ張ってリフレッシュ";
-"Loading" = "読み込み中";
+//MARK: - OTHER MESSAGE
+"Please select profile picture !" = "Please select profile picture !";
+"First name must be entered !" = "First name must be entered !";
+"Last name must be entered !" = "Last name must be entered !";
+"First name hiragana must be entered !" = "First name hiragana must be entered !";
+"Last name hiragana must be entered !" = "Last name hiragana must be entered !";
+"Birth date must be entered !" = "Birth date must be entered !";
+"Postal code must be entered !" = "Postal code must be entered !";
+"Birth date must be entered !" = "Birth date must be entered !";
+"Municipal district must be entered !" = "Municipal district must be entered !";
+"Chome address must be entered !" = "Chome address must be entered !";
+"Municipality kana must be entered !" = "Municipality kana must be entered !";
+"Kana after address must be entered !" = "Kana after address must be entered !";
+"Gender must be entered !" = "Gender must be entered !";
+"Language must be entered !" = "Language must be entered !";
+"Phone number must be entered !" = "Phone number must be entered !";
+"Email must be entered !" = "Email must be entered !";
+"Password must be entered !" = "Password must be entered !";
+"License number must be entered !" = "License number must be entered !";
+"License expiration date must be entered !" = "License expiration date must be entered !";
+"Insurance company must be entered !" = "Insurance company must be entered !";
+"Personal coverage must be entered !" = "Personal coverage must be entered !";
+"Compention range object must be entered !" = "Compention range object must be entered !";
+"Insurance expiration date must be entered !" = "Insurance expiration date must be entered !";
+"Vehicle name must be entered !" = "Vehicle name must be entered !";
+"Vehicle year must be entered !" = "Vehicle year must be entered !";
+"Vehicle ownership must be entered !" = "Vehicle ownership must be entered !";
+"Vehicle certification expiration must be entered !" = "Vehicle certification expiration must be entered !";
+"Vehicle certification photo must be entered !" = "Vehicle certification photo must be entered !";
+"Vehicle photo must be entered !" = "Vehicle photo must be entered !";
+"Register failed !" = "Register failed !";
+"Please use a valid email !" = "Please use a valid email !";
+"Vehicle plate must be entered !" = "Vehicle plate must be entered !";
+"Failed to fetch data !" = "Failed to fetch data !";
+"Failed to checkout !" = "Failed to checkout !";
+"Vehicle inspection certificate expiration date must be entered !"  ="Vehicle inspection certificate expiration date must be entered !";
+"Insurance company name must be entered !" = "Insurance company name must be entered !";
+"Coverage personal must be entered !" = "Coverage personal must be entered !";
+"Compensation range must be entered !" = "Compensation range must be entered !";
+"Driver not checkin/checkout yet" = "Driver not checkin/checkout yet";
+
 
 
 //MARK: - MONTH
-"January" = "一月";
-"February" = "二月";
-"March" = "二月";
-"April" = "四月";
-"May" = "五月";
-"June" = "六月";
-"July" = "七月";
-"August" = "八月";
-"September" = "九月";
-"October" = "十月";
-"November" = "十一月";
-"December" = "十二月";
+"January" = "January";
+"February" = "February";
+"March" = "March";
+"April" = "April";
+"May" = "May";
+"June" = "June";
+"July" = "July";
+"August" = "August";
+"September" = "September";
+"October" = "October";
+"November" = "November";
+"December" = "December";
+

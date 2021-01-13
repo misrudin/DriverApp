@@ -22,12 +22,9 @@ class PendingCell: UITableViewCell {
             }
             
             orderNo.text = orderData.order_number
-            let dateFormater = DateFormatter()
-            dateFormater.dateFormat = "dd MMMM yyyy"
-            let format1 = DateFormatter()
-            format1.dateFormat = "yyyy-mm-dd"
-            let dateString = format1.date(from: orderData.active_date)
-            let dateUse = dateFormater.string(from: dateString!)
+            
+            let start = orderData.detail_shift.time_start_shift[...4]
+            let end = orderData.detail_shift.time_end_shift[...4]
              
             
             DispatchQueue.main.async {
@@ -42,7 +39,7 @@ class PendingCell: UITableViewCell {
 
             self.isUserInteractionEnabled = orderData.pending_by_system!
 
-            date.text = dateUse
+            date.text = "\(start) - \(end)"
 
             var arrayOfStore: [String] = []
             for item in orderDetail.pickup_destination {
@@ -70,7 +67,7 @@ class PendingCell: UITableViewCell {
     }()
     let statusLabel = Reusable.makeLabel(text: "Status :", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!)
     let status = Reusable.makeLabel(text: "Pending", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!)
-    let dateLabel = Reusable.makeLabel(text: "Date :", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!)
+//    let dateLabel = Reusable.makeLabel(text: "Date :", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!)
     let date = Reusable.makeLabel(text: "2020-10-10", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!)
     
     let imageMarker: UIImageView = {
@@ -106,7 +103,6 @@ class PendingCell: UITableViewCell {
         addSubviews(views: orderNoLabel, orderNo, container)
         container.addSubviews(views: statusLabel,
                               status,
-                              dateLabel,
                               date,
                               imageMarker,
                               imageMarker2,
@@ -149,10 +145,6 @@ class PendingCell: UITableViewCell {
         date.translatesAutoresizingMaskIntoConstraints = false
         date.top(toAnchor: container.topAnchor, space: 10)
         date.right(toAnchor: container.rightAnchor, space: -5)
-        
-        dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.centerY(toAnchor: date.centerYAnchor)
-        dateLabel.right(toAnchor: date.leftAnchor, space: -5)
         
         imageMarker.anchor(top: statusLabel.bottomAnchor, left: container.leftAnchor, paddingTop: 10, paddingLeft: 5, width: 20, height: 20)
         pickupStore.translatesAutoresizingMaskIntoConstraints = false

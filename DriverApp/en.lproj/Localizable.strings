@@ -69,16 +69,16 @@
 
 "PERSONAL INFORMATION" = "PERSONAL INFORMATION";
 "Profile Photo" = "Profile Photo";
-"Frist Name" = "Frist Name";
+"First Name" = "First Name";
 "Last Name" = "Last Name";
 "Date Of Birth" = "Date Of Birth";
 
 "ADDRESS" = "ADDRESS";
 "Postal Code" = "Postal Code";
-"Prefecture" = "Prefecture";
+"Prefectures" = "Prefecture";
 "Municipal District" = "Municipal District";
 "Chome" = "Chome";
-"Municiapity Kana" = "Municiapity Kana";
+"Municipality Kana" = "Municipality Kana";
 "Kana After Address" = "Kana After Address";
 "Gender" = "Gender";
 "Language" = "Language";
@@ -86,15 +86,15 @@
 
 "DRIVER LICENSE" = "DRIVER LICENSE";
 "License Number" = "License Number";
-"license-exp" = "Driver's License Expiration Date";
+"Driver's License Expiration Date" = "Driver's License Expiration Date";
 
 "VEHICLE DATA" = "VEHICLE DATA";
-"Indurance Company" = "Indurance Company";
+"Insurance Company" = "Insurance Company";
 "Personal Coverage" = "Personal Coverage";
-"Compension Range-Objective" = "Compension Range-Objective";
+"Compensation Range-Objective" = "Compensation Range-Objective";
 "Insurance Expiration Date" = "Insurance Expiration Date";
 "Vehicle Name" = "Vehicle Name";
-"Vehicle Number Plater" = "Vehicle Number Plater";
+"Vehicle Number Plate" = "Vehicle Number Plate";
 "Vehicle Year" = "Vehicle Year";
 "Vehicle Ownership" = "Vehicle Ownership";
 "Vehicle Inspection Exp. Date" = "Vehicle Inspection Exp. Date";
@@ -144,13 +144,11 @@
 //MARK: - NOTES
 "Checkout" = "Checkout";
 "Pending" = "Pending";
+"Failed to sending note" = "Failed to sending note";
 
 //MARK: - SEND NOTES
 
 //MARK: - CHANGE VEHICLE DATA
-
-
-
 
 //MARK: - ERROR MESSAGE
 "Profile photo must be entered !" = "Profile photo must be entered !";
@@ -160,6 +158,11 @@
 "Failed to decline this order !" = "Failed to decline this order !";
 "Plese select day !" = "Plese select day !";
 "Opss" = "Opss";
+"Failed to edit data !" = "Failed to edit data !";
+"Failed to parse data" = "Failed to parse data";
+"Failed to get data from server." = "Failed to get data from server.";
+"Failed to post data" = "Failed to post data";
+"Failed to decode json data" = "Failed to decode json data";
 
 //MARK: - SUCCESS MESSAGE
 "Registration data has been sent please wait us to verification your data. We will contact you by email." = "Registration data has been sent please wait us to verification your data. We will contact you by email.";
@@ -167,6 +170,47 @@
 "Please check your email !" = "Please check your email !";
 "Success" = "Success";
 "Loading" = "Loading";
+
+//MARK: - OTHER MESSAGE
+"Please select profile picture !" = "Please select profile picture !";
+"First name must be entered !" = "First name must be entered !";
+"Last name must be entered !" = "Last name must be entered !";
+"First name hiragana must be entered !" = "First name hiragana must be entered !";
+"Last name hiragana must be entered !" = "Last name hiragana must be entered !";
+"Birth date must be entered !" = "Birth date must be entered !";
+"Postal code must be entered !" = "Postal code must be entered !";
+"Birth date must be entered !" = "Birth date must be entered !";
+"Municipal district must be entered !" = "Municipal district must be entered !";
+"Chome address must be entered !" = "Chome address must be entered !";
+"Municipality kana must be entered !" = "Municipality kana must be entered !";
+"Kana after address must be entered !" = "Kana after address must be entered !";
+"Gender must be entered !" = "Gender must be entered !";
+"Language must be entered !" = "Language must be entered !";
+"Phone number must be entered !" = "Phone number must be entered !";
+"Email must be entered !" = "Email must be entered !";
+"Password must be entered !" = "Password must be entered !";
+"License number must be entered !" = "License number must be entered !";
+"License expiration date must be entered !" = "License expiration date must be entered !";
+"Insurance company must be entered !" = "Insurance company must be entered !";
+"Personal coverage must be entered !" = "Personal coverage must be entered !";
+"Compention range object must be entered !" = "Compention range object must be entered !";
+"Insurance expiration date must be entered !" = "Insurance expiration date must be entered !";
+"Vehicle name must be entered !" = "Vehicle name must be entered !";
+"Vehicle year must be entered !" = "Vehicle year must be entered !";
+"Vehicle ownership must be entered !" = "Vehicle ownership must be entered !";
+"Vehicle certification expiration must be entered !" = "Vehicle certification expiration must be entered !";
+"Vehicle certification photo must be entered !" = "Vehicle certification photo must be entered !";
+"Vehicle photo must be entered !" = "Vehicle photo must be entered !";
+"Register failed !" = "Register failed !";
+"Please use a valid email !" = "Please use a valid email !";
+"Vehicle plate must be entered !" = "Vehicle plate must be entered !";
+"Failed to fetch data !" = "Failed to fetch data !";
+"Failed to checkout !" = "Failed to checkout !";
+"Vehicle inspection certificate expiration date must be entered !"  ="Vehicle inspection certificate expiration date must be entered !";
+"Insurance company name must be entered !" = "Insurance company name must be entered !";
+"Coverage personal must be entered !" = "Coverage personal must be entered !";
+"Compensation range must be entered !" = "Compensation range must be entered !";
+"Driver not checkin/checkout yet" = "Driver not checkin/checkout yet";
 
 
 

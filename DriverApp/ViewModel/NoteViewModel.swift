@@ -234,17 +234,17 @@ extension NotesError: LocalizedError {
             )
         case .failedToSendingNote:
             return NSLocalizedString(
-                "Failed to sending note",
+                "Failed to sending note".localiz(),
                 comment: ""
             )
         case .failedToDeleteNote:
             return NSLocalizedString(
-                "Failed to delete note",
+                "Failed to delete note".localiz(),
                 comment: ""
             )
         case .failedTodecode:
             return NSLocalizedString(
-                "Failed to parse data",
+                "Failed to parse data".localiz(),
                 comment: ""
             )
         }

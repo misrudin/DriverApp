@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import AesEverywhere
+import LanguageManager_iOS
 
 protocol OrderViewModelDelegate {
     //    func didFetchOrder(_ viewModel: OrderViewModel, order: OrderData)
@@ -360,7 +361,7 @@ extension OrderError: LocalizedError {
             )
         case .failedToParseJson:
             return NSLocalizedString(
-                "Failed to parse data",
+                "Failed to parse data".localiz(),
                 comment: ""
             )
         case .failedToUpdateData(let message):

@@ -853,7 +853,7 @@ class RegisterView: UIViewController {
         let lable = UILabel()
         let img = UIImageView()
         img.image = UIImage(named: "cameraIcon2")
-        lable.text = "Upload Foto".localiz()
+        lable.text = "Upload Photo".localiz()
         lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
         lable.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
         lable.textAlignment = .center
@@ -1140,7 +1140,7 @@ class RegisterView: UIViewController {
         phoneNumberLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 10)
         
         stakView.addSubview(viewCc)
-        viewCc.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 60, height: 45)
+        viewCc.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 100, height: 45)
         
         stakView.addSubview(phoneNumber)
         phoneNumber.anchor(top: phoneNumberLable.bottomAnchor, left: viewCc.rightAnchor, right: stakView.rightAnchor, paddingTop: 5,paddingLeft: 10, height: 45)

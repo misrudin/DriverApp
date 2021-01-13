@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 import FirebaseDatabase
 import Alamofire
+import LanguageManager_iOS
 
 struct RegisterViewModel {
 //    private let database = Database.database().reference()
@@ -242,172 +243,172 @@ extension ErrorRegister: LocalizedError {
         switch self {
         case .userFoto:
             return NSLocalizedString(
-                "Please select profile picture !",
+                "Please select profile picture !".localiz(),
                 comment: ""
             )
         case .firstName:
             return NSLocalizedString(
-                "First name must be entered !",
+                "First name must be entered !".localiz(),
                 comment: ""
             )
         case .lastName:
             return NSLocalizedString(
-                "Last name must be entered !",
+                "Last name must be entered !".localiz(),
                 comment: ""
             )
         case .firstNameHiragana:
             return NSLocalizedString(
-                "First name hiragana must be entered !",
+                "First name hiragana must be entered !".localiz(),
                 comment: ""
             )
         case .lastNameHiragana:
             return NSLocalizedString(
-                "Last name hiragana must be entered !",
+                "Last name hiragana must be entered !".localiz(),
                 comment: ""
             )
         case .dateOfBirth:
             return NSLocalizedString(
-                "Birth date must be entered !",
+                "Birth date must be entered !".localiz(),
                 comment: ""
             )
         case .postalCode:
             return NSLocalizedString(
-                "Postal code must be entered !",
+                "Postal code must be entered !".localiz(),
                 comment: ""
             )
         case .prefectures:
             return NSLocalizedString(
-                "Birth date must be entered !",
+                "Birth date must be entered !".localiz(),
                 comment: ""
             )
         case .municipalDistrict:
             return NSLocalizedString(
-                "Municipal district must be entered !",
+                "Municipal district must be entered !".localiz(),
                 comment: ""
             )
         case .chome:
             return NSLocalizedString(
-                "Chome address must be entered !",
+                "Chome address must be entered !".localiz(),
                 comment: ""
             )
         case .municipalityKana:
             return NSLocalizedString(
-                "Municipality kana must be entered !",
+                "Municipality kana must be entered !".localiz(),
                 comment: ""
             )
         case .KanaAfterAddress:
             return NSLocalizedString(
-                "Kana after address must be entered !",
+                "Kana after address must be entered !".localiz(),
                 comment: ""
             )
         case .gender:
             return NSLocalizedString(
-                "Gender must be entered !",
+                "Gender must be entered !".localiz(),
                 comment: ""
             )
         case .language:
             return NSLocalizedString(
-                "Language must be entered !",
+                "Language must be entered !".localiz(),
                 comment: ""
             )
         case .phoneNumber:
             return NSLocalizedString(
-                "Phone number must be entered !",
+                "Phone number must be entered !".localiz(),
                 comment: ""
             )
         case .email:
             return NSLocalizedString(
-                "Email must be entered !",
+                "Email must be entered !".localiz(),
                 comment: ""
             )
         case .password:
             return NSLocalizedString(
-                "Password must be entered !",
+                "Password must be entered !".localiz(),
                 comment: ""
             )
         case .licensseNumber:
             return NSLocalizedString(
-                "License number must be entered !",
+                "License number must be entered !".localiz(),
                 comment: ""
             )
         case .licenseExpDate:
             return NSLocalizedString(
-                "License expiration date must be entered !",
+                "License expiration date must be entered !".localiz(),
                 comment: ""
             )
         case .insuranceCompany:
             return NSLocalizedString(
-                "Insurance company must be entered !",
+                "Insurance company must be entered !".localiz(),
                 comment: ""
             )
         case .personalCoverage:
             return NSLocalizedString(
-                "Personal coverage must be entered !",
+                "Personal coverage must be entered !".localiz(),
                 comment: ""
             )
         case .compRangeObj:
             return NSLocalizedString(
-                "Compention range object must be entered !",
+                "Compention range object must be entered !".localiz(),
                 comment: ""
             )
         case .insuranceExpDate:
             return NSLocalizedString(
-                "Insurance expiration date must be entered !",
+                "Insurance expiration date must be entered !".localiz(),
                 comment: ""
             )
         case .vehicleName:
             return NSLocalizedString(
-                "Vehicle name must be entered !",
+                "Vehicle name must be entered !".localiz(),
                 comment: ""
             )
         case .vehicleYear:
             return NSLocalizedString(
-                "Vehicle year must be entered !",
+                "Vehicle year must be entered !".localiz(),
                 comment: ""
             )
         case .vehicleOwnership:
             return NSLocalizedString(
-                "Vehicle ownership must be entered !",
+                "Vehicle ownership must be entered !".localiz(),
                 comment: ""
             )
         case .vehicleCerExp:
             return NSLocalizedString(
-                "Vehicle certification expiration must be entered !",
+                "Vehicle certification expiration must be entered !".localiz(),
                 comment: ""
             )
         case .vehicleCerPhoto:
             return NSLocalizedString(
-                "Vehicle certification photo must be entered !",
+                "Vehicle certification photo must be entered !".localiz(),
                 comment: ""
             )
         case .vehiclePhoto1:
             return NSLocalizedString(
-                "Vehicle photo must be entered !",
+                "Vehicle photo must be entered !".localiz(),
                 comment: ""
             )
         case .vehiclePhoto2:
             return NSLocalizedString(
-                "Vehicle photo must be entered !",
+                "Vehicle photo must be entered !".localiz(),
                 comment: ""
             )
         case .vehiclePhoto3:
             return NSLocalizedString(
-                "Vehicle photo must be entered !",
+                "Vehicle photo must be entered !".localiz(),
                 comment: ""
             )
         case .failedToRegister:
             return NSLocalizedString(
-                "Register failed !",
+                "Register failed !".localiz(),
                 comment: ""
             )
         case .emailNotValid:
             return NSLocalizedString(
-                "Please use a valid email !",
+                "Please use a valid email !".localiz(),
                 comment: ""
             )
         case .vehiclePlate:
             return NSLocalizedString(
-                "Vehicle plate must be entered !",
+                "Vehicle plate must be entered !".localiz(),
                 comment: ""
             )
         }

@@ -7,7 +7,7 @@
 
 import Foundation
 import Alamofire
-
+import LanguageManager_iOS
 
 
 struct ShiftTimeViewModel {
@@ -60,17 +60,17 @@ extension ErrorShift: LocalizedError {
         switch self {
         case .failedToFetch:
             return NSLocalizedString(
-                "Failed to get data from server.",
+                "Failed to get data from server.".localiz(),
                 comment: ""
             )
         case .failedToPost:
             return NSLocalizedString(
-                "Failed to post data",
+                "Failed to post data".localiz(),
                 comment: ""
             )
         case .failedToDecode:
             return NSLocalizedString(
-                "Failed to decode json data",
+                "Failed to decode json data".localiz(),
                 comment: ""
             )
         }

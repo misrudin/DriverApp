@@ -10,6 +10,7 @@ import Alamofire
 import SwiftyJSON
 import FirebaseDatabase
 import AesEverywhere
+import LanguageManager_iOS
 
 struct ProfileViewModel {
     var delegate: ProfileViewModelDelegate?
@@ -340,62 +341,62 @@ extension DataError: LocalizedError {
         switch self {
         case .failedToFetch:
             return NSLocalizedString(
-                "Failed to fetch data !",
+                "Failed to fetch data !".localiz(),
                 comment: ""
             )
         case .failedToCheckout:
             return NSLocalizedString(
-                "Failed to checkout !",
+                "Failed to checkout !".localiz(),
                 comment: ""
             )
         case .vehicle_name:
             return NSLocalizedString(
-                "Vehicle name must be entered !",
+                "Vehicle name must be entered !".localiz(),
                 comment: ""
             )
         case .vehicle_number_plate:
             return NSLocalizedString(
-                "Vehicle number plate must be entered !",
+                "Vehicle number plate must be entered !".localiz(),
                 comment: ""
             )
         case .vehicle_year:
             return NSLocalizedString(
-                "Vehicle year must be entered !",
+                "Vehicle year must be entered !".localiz(),
                 comment: ""
             )
         case .vehicle_ownership:
             return NSLocalizedString(
-                "Vehicle ownership must be entered !",
+                "Vehicle ownership must be entered !".localiz(),
                 comment: ""
             )
         case .vehicle_inspection_certificate_expiration_date:
             return NSLocalizedString(
-                "Vehicle inspection certificate expiration date must be entered !",
+                "Vehicle inspection certificate expiration date must be entered !".localiz(),
                 comment: ""
             )
         case .insurance_company_name:
             return NSLocalizedString(
-                "Insurance company name must be entered !",
+                "Insurance company name must be entered !".localiz(),
                 comment: ""
             )
         case .coverage_personal:
             return NSLocalizedString(
-                "Coverage personal must be entered !",
+                "Coverage personal must be entered !".localiz(),
                 comment: ""
             )
         case .compensation_range_objective:
             return NSLocalizedString(
-                "Compensation range must be entered !",
+                "Compensation range must be entered !".localiz(),
                 comment: ""
             )
         case .insurance_expiration_date:
             return NSLocalizedString(
-                "Insurance expiration date must be entered !",
+                "Insurance expiration date must be entered !".localiz(),
                 comment: ""
             )
         case .failedToEdit:
             return NSLocalizedString(
-                "Failed to edit data !",
+                "Failed to edit data !".localiz(),
                 comment: ""
             )
         case .failedToEditPassword(let message):

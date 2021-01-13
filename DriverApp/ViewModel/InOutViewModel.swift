@@ -8,6 +8,7 @@
 import Foundation
 import Alamofire
 import CoreLocation
+import LanguageManager_iOS
 
 struct InOutViewModel {
     func cekStatusDriver(codeDriver: String, completion: @escaping (Result<StatusInOutDriver, Error>)-> Void){
@@ -177,22 +178,22 @@ extension ErrorDriver: LocalizedError {
         switch self {
         case .failedToFetch:
             return NSLocalizedString(
-                "Failed to get data from server.",
+                "Failed to get data from server.".localiz(),
                 comment: ""
             )
         case .notCheckinCheckout:
             return NSLocalizedString(
-                "Driver not checkin/checkout yet",
+                "Driver not checkin/checkout yet".localiz(),
                 comment: ""
             )
         case .failedToPost:
             return NSLocalizedString(
-                "Failed to post data",
+                "Failed to post data".localiz(),
                 comment: ""
             )
         case .failedToDecode:
             return NSLocalizedString(
-                "Failed to decode json data",
+                "Failed to decode json data".localiz(),
                 comment: ""
             )
         }
