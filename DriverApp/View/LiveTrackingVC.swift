@@ -623,7 +623,7 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             let vc = PendingNoteVc()
             vc.orderData = order
             let navVc = UINavigationController(rootViewController: vc)
-            
+            navVc.modalPresentationStyle = .fullScreen
             present(navVc, animated: true, completion: nil)
         case .done_delivery:
             spiner.show(in: view)

@@ -49,7 +49,7 @@ class OrderCell: UITableViewCell {
             }
             
 //          timeNow <= end &&
-            self.isUserInteractionEnabled = timeNow >= start && self.orderData.active_date == dateNow
+//            self.isUserInteractionEnabled = timeNow >= start && self.orderData.active_date == dateNow
 
             date.text = "\(start) - \(end)"
 

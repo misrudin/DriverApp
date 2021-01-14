@@ -55,6 +55,13 @@ class PendingNoteVc: UIViewController {
         return scroll
     }()
     
+    private let stackView: UIView = {
+       let view  = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .white
+        return view
+    }()
+    
     let titleLebel = Reusable.makeLabel(text: "Tell Your Pending Delivery Reason".localiz(),
                                         font: .systemFont(ofSize: 14, weight: .semibold),
                                         color: UIColor(named: "darkKasumi")!,
@@ -220,11 +227,18 @@ class PendingNoteVc: UIViewController {
         scrollView.isUserInteractionEnabled = true
         scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapScV)))
         
-        scrollView.addSubviews(views: titleLebel, container, submitButton, cancelButton, note)
+        scrollView.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.left(toAnchor: view.leftAnchor)
+        stackView.right(toAnchor: view.rightAnchor)
+        stackView.height(view.frame.height)
+        stackView.top(toAnchor: scrollView.topAnchor)
+        
+        stackView.addSubviews(views: titleLebel, container, submitButton, cancelButton, note)
         container.addSubviews(views: item1, item2, item3, item4, item5, imageCekist)
         
         titleLebel.translatesAutoresizingMaskIntoConstraints = false
-        titleLebel.top(toAnchor: view.safeAreaLayoutGuide.topAnchor, space: 20)
+        titleLebel.top(toAnchor: stackView.topAnchor, space: 20)
         titleLebel.left(toAnchor: view.leftAnchor, space: 10)
         titleLebel.right(toAnchor: view.rightAnchor, space: -10)
         
