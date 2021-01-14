@@ -48,6 +48,24 @@ struct DayOfPlan: Decodable {
     }
 }
 
+struct WaitingDayOffParent: Decodable {
+    let data: WaitingDayOff?
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
+}
+
+struct WaitingDayOff: Decodable {
+    let code_driver: String
+    let day_off_status: DayOffStatus?
+    
+    enum CodingKeys: String, CodingKey {
+        case code_driver
+        case day_off_status
+    }
+}
+
 struct DayOffStatus: Decodable {
     let week1: DayOfWeek
     let week2: DayOfWeek

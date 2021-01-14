@@ -96,7 +96,80 @@ struct DayOffViewModel {
             })
     }
     
+    //MARK: - GET DATA WAITING APPROVAL DAYOF
+    func getWaitingApproval(codeDriver: String, completion: @escaping (Result<WaitingDayOff, Error>)-> Void){
+        let parameters:[String: Any] = [
+            "code_driver" : codeDriver,
+        ]
+        
+        AF.request("\(Base.urlDriver)validate/days-off/now/detail",
+                   method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        if let statusCode = response.response?.statusCode {
+                            if statusCode != 200 {
+                                if let data = response.data {
+                                    if let re = Helpers().decodeError(data: data){
+                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                    }
+                                }
+                            }else {
+                                if let data = response.data {
+                                    if let safeData = decodePlanData(data: data) {
+                                        completion(.success(safeData))
+                                    }else{
+                                        completion(.failure(DataError.failedToFetch))
+                                    }
+                                }
+                            }
+                        }
+                        
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+            })
+    }
      
+    
+    //MARK: - GET DATA WAITING APPROVAL DAYOF NEXT MONTH
+    func getWaitingApprovalNextMonth(codeDriver: String, completion: @escaping (Result<WaitingDayOff, Error>)-> Void){
+        let parameters:[String: Any] = [
+            "code_driver" : codeDriver,
+        ]
+        
+        AF.request("\(Base.urlDriver)validate/days-off/next/detail",
+                   method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default, headers: Base.headers).response(completionHandler: {(response) in
+                    debugPrint(response)
+                    switch response.result {
+                    case .success:
+                        if let statusCode = response.response?.statusCode {
+                            if statusCode != 200 {
+                                if let data = response.data {
+                                    if let re = Helpers().decodeError(data: data){
+                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                    }
+                                }
+                            }else {
+                                if let data = response.data {
+                                    if let safeData = decodePlanData(data: data) {
+                                        completion(.success(safeData))
+                                    }else{
+                                        completion(.failure(DataError.failedToFetch))
+                                    }
+                                }
+                            }
+                        }
+                        
+                    case let .failure(error):
+                        completion(.failure(error))
+                    }
+            })
+    }
     
     
     //MARK: - decode data dayoff
@@ -112,9 +185,9 @@ struct DayOffViewModel {
     }
     
     //MARK: - decode data plan
-    private func decodePlanData(data: Data)-> DayOfPlan? {
+    private func decodePlanData(data: Data)-> WaitingDayOff? {
         do{
-            let decodedData = try JSONDecoder().decode(DayOffPlanModel.self, from: data)
+            let decodedData = try JSONDecoder().decode(WaitingDayOffParent.self, from: data)
             return decodedData.data
         }catch{
             print(error)

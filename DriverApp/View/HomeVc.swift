@@ -21,9 +21,6 @@ class HomeVc: UIViewController {
     var inOutVm = InOutViewModel()
     var origin: Origin? = nil
     
-//    var noteVm = NoteViewModel()
-//    var pendingNotes: [Note]!
-    
     var allowReject: Bool = true
     var totalReject: Int = 0
     
@@ -39,6 +36,34 @@ class HomeVc: UIViewController {
         
         return spin
     }()
+    
+    private let emptyImage: UIView = {
+        let view = UIView()
+        let imageView: UIImageView = {
+           let img = UIImageView()
+            img.image = UIImage(named: "emptyImage")
+            img.clipsToBounds = true
+            img.layer.masksToBounds = true
+            img.translatesAutoresizingMaskIntoConstraints = false
+            img.contentMode = .scaleAspectFit
+            return img
+        }()
+        
+        view.addSubview(imageView)
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
+        
+        view.backgroundColor = UIColor(named: "bgKasumi")
+        view.layer.cornerRadius = 120/2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.heightAnchor.constraint(equalToConstant: 120).isActive = true
+        view.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        return view
+    }()
+    
+    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: .black, numberOfLines: 0, alignment: .center)
     
     
     var orderViewModel = OrderViewModel()
@@ -87,6 +112,12 @@ class HomeVc: UIViewController {
         
         configureNavigationBar()
         
+        view.addSubview(emptyImage)
+        view.addSubview(labelEmpty)
+        emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        labelEmpty.anchor(top: emptyImage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        labelEmpty.isHidden = true
     }
     
     private func getCurrentPosition(){
@@ -118,6 +149,8 @@ class HomeVc: UIViewController {
             print("No user data")
             return
         }
+        
+        print(codeDriver)
         
         if let session = UserDefaults.standard.value(forKey: "userSession") as? [String: Any] {
             if session["date"] as? String != dateString {
@@ -197,12 +230,14 @@ class HomeVc: UIViewController {
         orderViewModel.getDataOrder(codeDriver: codeDriver) {[weak self] (res) in
             switch res {
             case .failure(let err):
-                print(err)
                 DispatchQueue.main.async {
                     self?.orderData = []
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
+                    self?.emptyImage.isHidden = false
+                    self?.labelEmpty.isHidden = false
+                    self?.labelEmpty.text = err.localizedDescription
                 }
             case .success(let order):
                 DispatchQueue.main.async {
@@ -210,6 +245,8 @@ class HomeVc: UIViewController {
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
+                    self?.emptyImage.isHidden = true
+                    self?.labelEmpty.isHidden = true
                 }
             }
         }

@@ -426,7 +426,7 @@ class EditProfileVc: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor,paddingTop: 16,paddingBottom: 16, paddingLeft: 16, paddingRight: 16,  height:(55*13))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor,paddingTop: 16,paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
         
         scrollView.isUserInteractionEnabled = true
         scrollView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapScV)))
@@ -479,6 +479,7 @@ class EditProfileVc: UIViewController {
         
         stakView.addSubview(expDate)
         expDate.anchor(top: expDateLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
+        expDate.bottom(toAnchor: stakView.bottomAnchor, space: -20)
     
     }
     

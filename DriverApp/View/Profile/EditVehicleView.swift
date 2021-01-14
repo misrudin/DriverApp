@@ -498,6 +498,8 @@ class EditVehicleView: UIViewController {
     lazy var dumy2 = createView()
     lazy var dumy3 = createView()
     
+    let errorMessage = Reusable.makeLabel(text: "Lorem Ipsum", font: .systemFontItalic(size: 15, fontWeight: .regular), color: .red, numberOfLines: 0, alignment: .center)
+    
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -576,18 +578,24 @@ class EditVehicleView: UIViewController {
     
     //MARK: - configure input
     private func configureInputValue(){
+        guard let vehiclePlate = vehicleData?.vehicle_number_plate else {
+            print("data vehicle is empty !")
+            return
+        }
+        
+        vehicleNumberPlate.text = vehiclePlate
+        
         guard let insuranceCompanyName = vehicleData?.insurance_company_name,
               let prsonalCov = vehicleData?.coverage_personal,
               let comRangeObj = vehicleData?.compensation_range_objective,
               let insuranceExpDate = vehicleData?.insurance_expiration_date,
               let vehicleName = vehicleData?.vehicle_name,
-              let vehiclePlate = vehicleData?.vehicle_number_plate,
               let vehicleYear = vehicleData?.vehicle_year,
               let vehicleOwnership = vehicleData?.vehicle_ownership,
               let vehicleInsExpDate = vehicleData?.vehicle_inspection_certificate_expiration_date,
-              let vehicleFoto1 = vehicleData?.vehicle_photo_data[0],
-              let vehicleFoto2 = vehicleData?.vehicle_photo_data[1],
-              let vehicleFoto3 = vehicleData?.vehicle_photo_data[2],
+              let vehicleFoto1 = vehicleData?.vehicle_photo_data![0],
+              let vehicleFoto2 = vehicleData?.vehicle_photo_data![1],
+              let vehicleFoto3 = vehicleData?.vehicle_photo_data![2],
               let certiUrl = vehicleData?.vehicle_inspection_certificate_photo_url,
               let certiName = vehicleData?.vehicle_inspection_certificate_photo_name,
               let urlCertificate = URL(string: "\(certiUrl)\(certiName)"),
@@ -607,7 +615,6 @@ class EditVehicleView: UIViewController {
         self.vehicleYear.text = vehicleYear
         self.vehicleOwnership.text = vehicleOwnership
         vehicleInspectionExpDate.text = vehicleInsExpDate
-        vehicleNumberPlate.text = vehiclePlate
         
         vehicleCertifiateImage.af.setImage(withURL: urlCertificate)
         dumyC.isHidden = true
@@ -656,7 +663,7 @@ class EditVehicleView: UIViewController {
     //MARK: - Ui configure
     private func configureUi(){
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*22))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
         
         stakView.addSubview(insuranceCompanyLable)
         insuranceCompanyLable.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
@@ -733,6 +740,7 @@ class EditVehicleView: UIViewController {
         
         stakView.addSubview(nextButton)
         nextButton.anchor(top: containerPhoto.bottomAnchor, right: stakView.rightAnchor, paddingTop: 40, width: view.frame.width-32, height: 45)
+        nextButton.bottom(toAnchor: stakView.bottomAnchor, space: -20)
         
         vehicleImage2.addSubview(dumy2)
         dumy2.anchor(width: 100, height: 50)

@@ -936,6 +936,7 @@ class RegisterView: UIViewController {
         scroll.showsHorizontalScrollIndicator = true
         scroll.bounces = true
         scroll.frame = self.view.bounds
+        scroll.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         return scroll
     }()
     
@@ -1042,7 +1043,7 @@ class RegisterView: UIViewController {
         view.addSubview(scrollView)
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height:(55*20)+(55*28))
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: scrollView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
 
         stakView.addSubview(lableTitleRegister)
         lableTitleRegister.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 0, paddingLeft: 0, paddingRight: 0)
@@ -1256,6 +1257,7 @@ class RegisterView: UIViewController {
             
             stakView.addSubview(nextButton)
             nextButton.anchor(top: containerPhoto.bottomAnchor, right: stakView.rightAnchor, paddingTop: 40, width: view.frame.width-32, height: 45)
+            nextButton.bottom(toAnchor: stakView.bottomAnchor, space: -20)
             
             vehicleImage2.addSubview(dumy2)
             dumy2.anchor(width: 100, height: 50)
@@ -1527,7 +1529,7 @@ extension RegisterView {
         formater.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateAdd = formater.string(from: Date())
         
-        let dataToPost: RegisterData = RegisterData(photo: "userImage",
+        let dataToPost: RegisterData = RegisterData(photo: userImage,
                                                     first_name: firstName,
                                                     last_name: lastName,
                                                     first_name_hiragana: firstNameHiragana,

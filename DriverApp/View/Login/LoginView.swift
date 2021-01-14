@@ -276,8 +276,6 @@ extension LoginView: UITextFieldDelegate {
 @available(iOS 13.0, *)
 extension LoginView: LoginViewModelDelegate {
     func didLoginSuccess(_ viewModel: LoginViewModel, user: User) {
-        codeDriver.text = ""
-        password.text = ""
         DispatchQueue.main.async {
             
             let userData: [String:Any] = [

@@ -483,6 +483,7 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: ProfileViewModelDelegate {
     func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel, bio: Bio, vehicle: VehicleData) {
         DispatchQueue.main.async {
+            print(vehicle)
             self.spiner.dismiss()
             if let urlString = URL(string: "\(bio.photo_url)\(bio.photo_name)")
             {

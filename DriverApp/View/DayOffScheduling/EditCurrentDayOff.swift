@@ -51,6 +51,7 @@ class EditCurrentDayOff: UIViewController {
     var dataDayOff: DayOffPost!
     var listShift: [Int]? = nil
     var dayOffPlanData: DayOfParent? = nil
+    var dayOfWaiting: DayOffStatus? = nil
     
     let slideVC = SelectShift()
     
@@ -265,6 +266,27 @@ class EditCurrentDayOff: UIViewController {
         getListShiftTime()
         
         slideVC.delegate = self
+        
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        spiner.show(in: view)
+        dayOfVm.getWaitingApproval(codeDriver: codeDriver) { (res) in
+            switch res {
+            case .failure(let err):
+                print(err.localizedDescription)
+                self.spiner.dismiss()
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.dayOfWaiting = data.day_off_status
+                    self.getDataDayOffPlan()
+                    self.spiner.dismiss()
+                }
+            }
+        }
     }
     
     
@@ -340,7 +362,6 @@ class EditCurrentDayOff: UIViewController {
             scrollToDate()
             return}
         
-        
         switch data.workingStatus {
         case "full time":
             self.lableStatusDriver.text = "Full Time"
@@ -374,11 +395,11 @@ class EditCurrentDayOff: UIViewController {
             var week3: [String: Any] = NSMutableDictionary() as! [String : Any]
             var week4: [String: Any] = NSMutableDictionary() as! [String : Any]
             var week5: [String: Any] = NSMutableDictionary() as! [String : Any]
-            let dataWeek1 = data.dayOfStatus?.week1
-            let dataWeek2 = data.dayOfStatus?.week2
-            let dataWeek3 = data.dayOfStatus?.week3
-            let dataWeek4 = data.dayOfStatus?.week4
-            let dataWeek5 = data.dayOfStatus?.week5
+            let dataWeek1 = dayOfWaiting?.week1 ?? data.dayOfStatus?.week1
+            let dataWeek2 = dayOfWaiting?.week2 ?? data.dayOfStatus?.week2
+            let dataWeek3 = dayOfWaiting?.week3 ?? data.dayOfStatus?.week3
+            let dataWeek4 = dayOfWaiting?.week4 ?? data.dayOfStatus?.week4
+            let dataWeek5 = dayOfWaiting?.week5 ?? data.dayOfStatus?.week5
             week1["Sunday"] = dataWeek1?.Sun == nil || dataWeek1?.Sun?.count == 0 ? NSNull() : dataWeek1?.Sun
             week1["Monday"] = dataWeek1?.Mon == nil || dataWeek1?.Sun?.count == 0 ? NSNull() : dataWeek1?.Mon
             week1["Tuesday"] = dataWeek1?.Tue == nil || dataWeek1?.Tue?.count == 0 ? NSNull() : dataWeek1?.Tue

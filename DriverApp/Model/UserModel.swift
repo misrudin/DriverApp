@@ -78,18 +78,18 @@ struct Bio: Decodable {
 }
 
 struct VehicleData: Decodable {
-    let vehicle_name: String
-    let vehicle_number_plate: String
-    let vehicle_year: String
-    let vehicle_ownership: String
-    let vehicle_inspection_certificate_expiration_date: String
-    let insurance_company_name: String
-    let coverage_personal: String
-    let compensation_range_objective: String
-    let insurance_expiration_date: String
-    let vehicle_inspection_certificate_photo_url: String
-    let vehicle_inspection_certificate_photo_name: String
-    let vehicle_photo_data: [VehiclePhotoData]
+    let vehicle_name: String?
+    let vehicle_number_plate: String?
+    let vehicle_year: String?
+    let vehicle_ownership: String?
+    let vehicle_inspection_certificate_expiration_date: String?
+    let insurance_company_name: String?
+    let coverage_personal: String?
+    let compensation_range_objective: String?
+    let insurance_expiration_date: String?
+    let vehicle_inspection_certificate_photo_url: String?
+    let vehicle_inspection_certificate_photo_name: String?
+    let vehicle_photo_data: [VehiclePhotoData]?
     
     enum CodingKeys: String, CodingKey {
         case vehicle_name
