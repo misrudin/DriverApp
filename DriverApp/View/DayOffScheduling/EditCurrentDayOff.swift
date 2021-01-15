@@ -62,6 +62,13 @@ class EditCurrentDayOff: UIViewController {
     var selectedDay: String?
     var selectedIndex: Int?
     
+    var selectedWeekReq: String?
+    var selectedDayReq: String?
+    var selectedIndexReq: Int?
+    
+    var constraint1: NSLayoutConstraint!
+    var constraint2: NSLayoutConstraint!
+    
     var week1:[String: Any] = [
         "Sunday": NSNull(),
         "Monday": NSNull(),
@@ -233,7 +240,8 @@ class EditCurrentDayOff: UIViewController {
         return cv
     }()
     
-    let titleReq = Reusable.makeLabel(text: "Requested Day Off", font: .systemFont(ofSize: 12, weight: .medium), color: UIColor(named: "colorGray")!, numberOfLines: 0, alignment: .left)
+    let titleReq = Reusable.makeLabel(text: "Requested Day Off", font: .systemFont(ofSize: 12, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0, alignment: .left)
+    let waitingText = Reusable.makeLabel(text: "Waiting for approval from admin", font: .systemFontItalic(size: 14, fontWeight: .regular), color: UIColor(named: "orangeKasumi")!, numberOfLines: 0, alignment: .center)
     
     private let colectionViewReq: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -290,6 +298,8 @@ class EditCurrentDayOff: UIViewController {
         contrainerView.addSubview(saveButton)
         contrainerView.addSubview(setWorkButton)
         contrainerView.addSubview(editButton)
+        contrainerView.addSubview(waitingText)
+        waitingText.anchor(left: contrainerView.leftAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingBottom: 10, paddingLeft: 10, paddingRight: 10)
         
         
         configureNavigationBar()
@@ -297,9 +307,6 @@ class EditCurrentDayOff: UIViewController {
         
         tableView.delegate = self
         tableView.dataSource = self
-        scrollView.delegate = self
-        
-        
         
         getDataDayOffPlan()
         getListShiftTime()
@@ -307,6 +314,12 @@ class EditCurrentDayOff: UIViewController {
         slideVC.delegate = self
         
         getDataReqDayoff()
+        
+        //set constraint
+        constraint1 = contrainerView.topAnchor.constraint(equalTo: colectionView.bottomAnchor, constant: 16)
+        constraint2 = contrainerView.topAnchor.constraint(equalTo: colectionViewReq.bottomAnchor, constant: 16)
+        constraint1.isActive = true
+        constraint2.isActive = false
     }
     
     
@@ -382,9 +395,25 @@ class EditCurrentDayOff: UIViewController {
             case .failure(let err):
                 print(err.localizedDescription)
                 self.spiner.dismiss()
+                self.titleReq.isHidden = true
+                self.colectionViewReq.isHidden = true
+                self.saveButton.isHidden = false
+                self.editButton.isHidden = false
+                self.setWorkButton.isHidden = false
+                self.waitingText.isHidden = true
+                self.constraint1.isActive = true
+                self.constraint2.isActive = false
             case .success(let data):
+                self.spiner.dismiss()
                 DispatchQueue.main.async {
-                    self.spiner.dismiss()
+                    self.titleReq.isHidden = false
+                    self.colectionViewReq.isHidden = false
+                    self.saveButton.isHidden = true
+                    self.editButton.isHidden = true
+                    self.setWorkButton.isHidden = true
+                    self.waitingText.isHidden = false
+                    self.constraint1.isActive = false
+                    self.constraint2.isActive = true
                     if data.day_off_status != nil {
                         var week1: [String: Any] = NSMutableDictionary() as! [String : Any]
                         var week2: [String: Any] = NSMutableDictionary() as! [String : Any]
@@ -443,6 +472,15 @@ class EditCurrentDayOff: UIViewController {
                             "4": week4,
                             "5": week5,
                         ]
+                    }else {
+                        self.titleReq.isHidden = true
+                        self.colectionViewReq.isHidden = true
+                        self.saveButton.isHidden = false
+                        self.editButton.isHidden = false
+                        self.setWorkButton.isHidden = false
+                        self.waitingText.isHidden = true
+                        self.constraint1.isActive = true
+                        self.constraint2.isActive = false
                     }
                     self.colectionViewReq.reloadData()
                 }
@@ -568,6 +606,8 @@ class EditCurrentDayOff: UIViewController {
         colectionViewReq.scrollToItem(at: index, at: .left, animated: true)
     }
     
+    
+    //MARK: - UI
     func configureLayout(){
         
         scrollView.addSubview(stakView)
@@ -581,8 +621,8 @@ class EditCurrentDayOff: UIViewController {
         titleReq.anchor(top: colectionView.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
         colectionViewReq.anchor(top: titleReq.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16, height: 100)
         
-        contrainerView.anchor(top: colectionViewReq.bottomAnchor, left: stakView.leftAnchor, bottom: stakView.bottomAnchor, right: stakView.rightAnchor, paddingTop: 16, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
-        contrainerView.height(400)
+        contrainerView.anchor(left: stakView.leftAnchor, bottom: stakView.bottomAnchor, right: stakView.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
+        contrainerView.height(420)
         contrainerView.dropShadow(color: UIColor.blue, opacity: 1, offSet: CGSize(width: 5, height: 5), radius: 5, scale: false)
         subTitleLabel.anchor(top: contrainerView.topAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
         dateLabel.anchor(top: subTitleLabel.bottomAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
@@ -895,6 +935,7 @@ class EditCurrentDayOff: UIViewController {
                     let action1 = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
                         self?.navigationController?.popViewController(animated: true)
                     }
+                    self?.getDataReqDayoff()
                     Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Successfully submitted new schedule!", customAction1: action1)
                 }
             case .failure(let e):
@@ -1000,6 +1041,7 @@ class EditCurrentDayOff: UIViewController {
                     let action1 = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
                         self?.navigationController?.popViewController(animated: true)
                     }
+                    self?.getDataReqDayoff()
                     Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Successfully submitted new schedule!", customAction1: action1)
                 }
             case .failure(let e):
@@ -1210,6 +1252,165 @@ class EditCurrentDayOff: UIViewController {
         }
         
     }
+    
+    //MARK: - On select day in list req
+    private func btnTouchReq(tanggal: String, day: String, index: Int){
+        let date = Date.dayStringFromStringDate(customDate: tanggal)
+        dateLabel.text = date
+        
+        let week1 = index <= 7
+        let week2 = index > 7 && index <= 14
+        let week3 = index > 14 && index <= 21
+        let week4 = index > 21 && index <= 28
+        let week5 = index > 28
+        
+        if week1 {
+            let dataWeek = dayOfWaiting["1"] as! [String: Any]
+            selectedWeekReq = "1"
+            switch day {
+            case "Sun":
+                selectedDayReq = "Sunday"
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                selectedDayReq = "Monday"
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                selectedDayReq = "Tuesday"
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                selectedDayReq = "Wednesday"
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                selectedDayReq = "Thursday"
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                selectedDayReq = "Friday"
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                selectedDayReq = "Saturday"
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        if week2 {
+            selectedWeekReq = "2"
+            let dataWeek = dayOfWaiting["2"] as! [String: Any]
+            switch day {
+            case "Sun":
+                selectedDayReq = "Sunday"
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                selectedDayReq = "Monday"
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                selectedDayReq = "Tuesday"
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                selectedDayReq = "Wednesday"
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                selectedDayReq = "Thursday"
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                selectedDayReq = "Friday"
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                selectedDayReq = "Saturday"
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        if week3 {
+            selectedWeekReq = "3"
+            let dataWeek = dayOfWaiting["3"] as! [String: Any]
+            switch day {
+            case "Sun":
+                selectedDayReq = "Sunday"
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                selectedDayReq = "Monday"
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                selectedDayReq = "Tuesday"
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                selectedDayReq = "Wednesday"
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                selectedDayReq = "Thursday"
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                selectedDayReq = "Friday"
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                selectedDayReq = "Saturday"
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        if week4 {
+            selectedWeekReq = "4"
+            let dataWeek = dayOfWaiting["4"] as! [String: Any]
+            switch day {
+            case "Sun":
+                selectedDayReq = "Sunday"
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                selectedDayReq = "Monday"
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                selectedDayReq = "Tuesday"
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                selectedDayReq = "Wednesday"
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                selectedDayReq = "Thursday"
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                selectedDayReq = "Friday"
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                selectedDayReq = "Saturday"
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        
+        if week5 {
+            selectedWeekReq = "5"
+            let dataWeek = dayOfWaiting["5"] as! [String: Any]
+            switch day {
+            case "Sun":
+                selectedDayReq = "Sunday"
+                listShift = dataWeek["Sunday"] as? [Int] ?? nil
+            case "Mon":
+                selectedDayReq = "Monday"
+                listShift = dataWeek["Monday"] as? [Int] ?? nil
+            case "Tue":
+                selectedDayReq = "Tuesday"
+                listShift = dataWeek["Tuesday"] as? [Int] ?? nil
+            case "Wed":
+                selectedDayReq = "Wednesday"
+                listShift = dataWeek["Wednesday"] as? [Int] ?? nil
+            case "Thu":
+                selectedDayReq = "Thursday"
+                listShift = dataWeek["Thursday"] as? [Int] ?? nil
+            case "Fri":
+                selectedDayReq = "Friday"
+                listShift = dataWeek["Friday"] as? [Int] ?? nil
+            default:
+                selectedDayReq = "Saturday"
+                listShift = dataWeek["Saturday"] as? [Int] ?? nil
+            }
+        }
+        
+        if listShift == nil {
+            tableView.isHidden = true
+            emptyImage.isHidden = false
+        }else{
+            tableView.isHidden = false
+            emptyImage.isHidden = true
+            tableView.reloadData()
+        }
+        
+    }
 }
 
 
@@ -1252,7 +1453,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if colectionView == colectionViewReq {
+        if collectionView == colectionViewReq {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
             
             let date = Date()
@@ -1274,7 +1475,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                 cell.borderBotom.isHidden = true
             }
             
-            if selectedIndex != nil && selectedIndex == i {
+            if selectedIndexReq != nil && selectedIndexReq == i {
                 cell.borderBotomSelected.isHidden = false
             }else {
                 cell.borderBotomSelected.isHidden = true
@@ -2358,10 +2559,15 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
         let date = Date.dateStringFrom(customDate: i)
         let dayName = Date.dayNameFromCustomDate(customDate: i)
         
-        selectedIndex = i
-        colectionView.reloadData()
-        
-        btnTouch(tanggal: date, day: dayName, index: i)
+        if collectionView == self.colectionView {
+            colectionView.reloadData()
+            btnTouch(tanggal: date, day: dayName, index: i)
+            selectedIndex = i
+        }else {
+            colectionViewReq.reloadData()
+            btnTouchReq(tanggal: date, day: dayName, index: i)
+            selectedIndexReq = i
+        }
     }
 }
 
@@ -2423,20 +2629,4 @@ extension EditCurrentDayOff: SelectShiftDelegate {
     }
     
     
-}
-
-
-@available(iOS 13.0, *)
-extension EditCurrentDayOff: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if (scrollView == self.scrollView) {
-                if scrollView.contentOffset.x>0 {
-                    scrollView.contentOffset.x = 0
-                }
-
-                if scrollView.contentOffset.x < 0 {
-                    scrollView.contentOffset.x = 0
-                }
-            }
-    }
 }
