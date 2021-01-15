@@ -406,11 +406,11 @@ class ProfileViewController: UIViewController {
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                        self?.spiner.dismiss()
+                    self?.spiner.dismiss()
                     if(logout){
                         UserDefaults.standard.removeObject(forKey: "userData")
-                        self?.dismiss(animated: true, completion: nil)
                     }
+                    self?.dismiss(animated: true, completion: nil)
                 }
             case .failure(let err):
                 print(err)
@@ -483,7 +483,6 @@ class ProfileViewController: UIViewController {
 extension ProfileViewController: ProfileViewModelDelegate {
     func didFetchUser(_ viewModel: ProfileViewModel, user: UserModel, bio: Bio, vehicle: VehicleData) {
         DispatchQueue.main.async {
-            print(vehicle)
             self.spiner.dismiss()
             if let urlString = URL(string: "\(bio.photo_url)\(bio.photo_name)")
             {
@@ -499,11 +498,8 @@ extension ProfileViewController: ProfileViewModelDelegate {
                 
                 
                 //MARK: -Ratings
-                let numberFormater = NumberFormatter()
-                numberFormater.numberStyle = .decimal
-                let totalRatingDecimal = numberFormater.number(from: user.rating.avgRating!)
                 
-                self.ratingLabel.text = "\(totalRatingDecimal ?? 0)"
+                self.ratingLabel.text =  user.rating.avgRating
                 
                 guard let totalRating: Double = Double((user.rating.avgRating)!) else {
                     return

@@ -209,10 +209,10 @@ class PendingNoteVc: UIViewController {
         
         let items = [item1,item2,item3,item4, item5]
         _ = items.enumerated().map { (i, e) in
-            e.addBorder(toSide: .Top, withColor: UIColor.rgba(red: 0, green: 0, blue: 0,alpha: 0.1).cgColor, andThickness: 1)
+            if i != 0 {
+                e.addBorder(toSide: .Top, withColor: UIColor.rgba(red: 0, green: 0, blue: 0,alpha: 0.1).cgColor, andThickness: 1)
+            }
         }
-        
-        item1.addBorder(toSide: .Top, withColor: UIColor.rgba(red: 0, green: 0, blue: 0,alpha: 0).cgColor, andThickness: 1)
 
         presentingController = presentingViewController
     }
@@ -231,8 +231,9 @@ class PendingNoteVc: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.left(toAnchor: view.leftAnchor)
         stackView.right(toAnchor: view.rightAnchor)
-        stackView.height(view.frame.height)
+//        stackView.height(view.frame.height)
         stackView.top(toAnchor: scrollView.topAnchor)
+        stackView.bottom(toAnchor: scrollView.bottomAnchor)
         
         stackView.addSubviews(views: titleLebel, container, submitButton, cancelButton, note)
         container.addSubviews(views: item1, item2, item3, item4, item5, imageCekist)
@@ -294,6 +295,7 @@ class PendingNoteVc: UIViewController {
         submitButton.right(toAnchor: cancelButton.leftAnchor, space: -10)
         cancelButton.height(45)
         submitButton.height(45)
+        submitButton.bottom(toAnchor: stackView.bottomAnchor, space: 20)
     }
     
     @objc private func tapOther(){
