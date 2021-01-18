@@ -22,3 +22,8 @@ struct Destination: Codable {
     let latitude: CLLocationDegrees
     let longitude: CLLocationDegrees
 }
+
+struct DistanceData: Codable {
+    let time: String
+    let distance: String
+}

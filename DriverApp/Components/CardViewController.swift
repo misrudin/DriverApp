@@ -251,7 +251,7 @@ class CardViewController: UIViewController {
         view.addSubview(detailItem)
         detailItem.isUserInteractionEnabled = true
         detailItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didSeeDetail)))
-        view.backgroundColor = UIColor(named: "whiteKasumi")
+        view.backgroundColor = .white
         configureLayout()
         
         guard let orderNo = orderData?.order_number,

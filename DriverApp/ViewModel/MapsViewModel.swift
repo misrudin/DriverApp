@@ -89,6 +89,78 @@ struct MapsViewModel {
         return camera
     }
     
+    
+    func getDistance(origin: Origin, destination: Destination, completion: @escaping (Result<DistanceData, Error>)-> Void){
+        let url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=\(origin.latitude),\(origin.longitude)&destinations=\(destination.latitude),\(destination.longitude)&key=\(Base.mapsApiKey)"
+        
+        AF.request(url).responseJSON { (response) in
+            guard let data = response.data else {return}
+            
+            do {
+                let jsonData = try JSON(data: data)
+                let rows = jsonData["rows"].arrayValue
+                let element = rows[0]["elements"].arrayValue[0]
+                print(element["status"])
+                
+                if element["status"] == "OK" {
+                    let distance = element["distance"].dictionary
+                    let distanceValue = distance?["value"]?.double
+                    let distanceString = "\(Double(distanceValue!/1000)) KM"
+                    
+                    
+                    let duration = element["duration"].dictionary
+                    let durationValue = duration?["value"]?.int
+                    let (h, m, _) = Helpers().secondsToHoursMinutesSeconds(seconds: durationValue!)
+                    var durationString = ""
+                    if h != 0 {
+                        durationString = "\(h) Hour \(m) Minutes"
+                    }else {
+                        durationString = "\(m) Minutes"
+                    }
+                    
+                    let data = DistanceData(time: durationString, distance: distanceString)
+                    completion(.success(data))
+                }else {
+                    let status = element["status"].string
+                    completion(.failure(MapsError.noResult(status ?? "Result not found!")))
+                }
+            
+            }catch let error {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    
 }
 
 
+
+enum MapsError: Error{
+    case failedToFetch(_ message: String)
+    case failedToParseJson
+    case noResult(_ message: String)
+}
+
+extension MapsError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        
+        case .failedToFetch(let message):
+            return NSLocalizedString(
+                message,
+                comment: ""
+            )
+        case .failedToParseJson:
+            return NSLocalizedString(
+                "Failed to parse data".localiz(),
+                comment: ""
+            )
+        case .noResult(let message):
+            return NSLocalizedString(
+                message,
+                comment: ""
+            )
+        }
+    }
+}
