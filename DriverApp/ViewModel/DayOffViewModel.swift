@@ -33,9 +33,15 @@ struct DayOffViewModel {
     
     //MARK: - RQUEST NEXT MONTH DAYOFF
     func setPlanDayOff(data: [String: Any], codeDriver: String, completion: @escaping (Result<Bool,Error>)-> Void){
+        let date = Date()
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = dateFormater.string(from: date)
+        
         let parameters:[String: Any] = [
             "code_driver" : codeDriver,
-            "day_off_status": data
+            "day_off_status": data,
+            "date_add": dateString
         ]
         
 
@@ -66,9 +72,15 @@ struct DayOffViewModel {
     
     //MARK: - REQUEST CHANGE CURRENT DAYOFF
     func reqChangeDayoff(data: [String: Any], codeDriver: String, completion: @escaping (Result<Bool,Error>)-> Void){
+        let date = Date()
+        let dateFormater = DateFormatter()
+        dateFormater.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let dateString = dateFormater.string(from: date)
+        
         let parameters:[String: Any] = [
             "code_driver" : codeDriver,
-            "day_off_status": data
+            "day_off_status": data,
+            "date_add": dateString
         ]
         
         AF.request("\(Base.urlDriver)validate/days-off/now",

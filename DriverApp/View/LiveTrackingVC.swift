@@ -92,21 +92,6 @@ class LiveTrackingVC: UIViewController {
         return button
     }()
     
-    lazy var matrixView: UIView = {
-       let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 10
-        return view
-    }()
-    
-    
-    let estLabel = Reusable.makeLabel(text: "Estimation",
-                                       font: .systemFont(ofSize: 14, weight: .regular),
-                                       color: .rgba(red: 0, green: 0, blue: 0, alpha: 0.5))
-    let distanceLabel = Reusable.makeLabel(text: "",
-                                           font: .systemFont(ofSize: 14, weight: .medium),
-                                       color: UIColor(named: "darkKasumi")!)
-    
     @objc
     func myPosition(){
         locationManager = CLLocationManager()
@@ -160,15 +145,9 @@ class LiveTrackingVC: UIViewController {
         view.insertSubview(mapView, at: 0)
         view.insertSubview(mapsButton, at: 1)
         view.insertSubview(directionButton, at: 2)
-        view.insertSubview(matrixView, at: 3)
-        matrixView.addSubviews(views: distanceLabel, estLabel)
-        estLabel.anchor(top: matrixView.topAnchor, left: matrixView.leftAnchor, right: matrixView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
-        
-        distanceLabel.anchor(top: estLabel.bottomAnchor, left: matrixView.leftAnchor, bottom: matrixView.bottomAnchor, right: matrixView.rightAnchor, paddingTop: 5, paddingBottom: 10, paddingLeft: 10, paddingRight: 10)
         
         mapsButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 20, paddingRight: 16, width: 50, height: 50)
         directionButton.anchor(top: mapsButton.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingRight: 16, width: 50, height: 50)
-        matrixView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: mapsButton.leftAnchor, paddingTop: 20, paddingLeft: 16, paddingRight: 16)
 
         
         
@@ -243,7 +222,6 @@ class LiveTrackingVC: UIViewController {
         
         mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
         directionButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
-        matrixView.dropShadow(color: .black, opacity: 0.1, offSet: CGSize(width: 1, height: 1), radius: 50/2, scale: true)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -480,7 +458,8 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
                     print(err)
                 case .success(let data):
                     DispatchQueue.main.async {
-                        self.distanceLabel.text = "\(data.time) - \(data.distance)"
+                        self.cardViewController.estLabel.text = "\(data.time)"
+                        self.cardViewController.distanceLabel.text = "\(data.distance)"
                     }
                 }
             }

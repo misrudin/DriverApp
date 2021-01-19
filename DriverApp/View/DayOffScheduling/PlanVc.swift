@@ -397,9 +397,7 @@ class PlanVc: UIViewController {
                 self.spiner.dismiss()
                 self.titleReq.isHidden = true
                 self.colectionViewReq.isHidden = true
-                self.saveButton.isHidden = false
-                self.editButton.isHidden = false
-                self.setWorkButton.isHidden = false
+                self.setupButton()
                 self.waitingText.isHidden = true
                 self.constraint1.isActive = true
                 self.constraint2.isActive = false
@@ -475,9 +473,7 @@ class PlanVc: UIViewController {
                     }else {
                         self.titleReq.isHidden = true
                         self.colectionViewReq.isHidden = true
-                        self.saveButton.isHidden = false
-                        self.editButton.isHidden = false
-                        self.setWorkButton.isHidden = false
+                        self.setupButton()
                         self.waitingText.isHidden = true
                         self.constraint1.isActive = true
                         self.constraint2.isActive = false
@@ -488,17 +484,8 @@ class PlanVc: UIViewController {
         }
     }
     
-    
-        //MARK:- Get day off plan
-    func getDataDayOffPlan(){
+    private func setupButton(){
         guard let data = dayOffPlanData else {
-            self.dayOffPlan = [
-                "1": self.week1,
-                "2": self.week2,
-                "3": self.week3,
-                "4": self.week4,
-                "5": self.week5,
-            ]
             return}
         
         
@@ -520,6 +507,21 @@ class PlanVc: UIViewController {
             editButton.isHidden = true
             setWorkButton.isHidden = false
         }
+    }
+    
+    
+        //MARK:- Get day off plan
+    func getDataDayOffPlan(){
+        setupButton()
+        guard let data = dayOffPlanData else {
+            self.dayOffPlan = [
+                "1": self.week1,
+                "2": self.week2,
+                "3": self.week3,
+                "4": self.week4,
+                "5": self.week5,
+            ]
+            return}
         
         if data.dayOfStatusPlan == nil {
             self.dayOffPlan = [

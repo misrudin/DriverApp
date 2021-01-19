@@ -43,7 +43,7 @@ class OrderCell: UITableViewCell {
                     self.container.backgroundColor = UIColor(named: "colorGray")
                 }
                 
-                if timeNow > end && timeNow < start && self.orderData.active_date != dateNow {
+                if (timeNow > end || timeNow < start) || self.orderData.active_date != dateNow {
                     self.container.backgroundColor = UIColor(named: "colorDisabled")
                 }
             }

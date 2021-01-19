@@ -320,6 +320,17 @@ class EditCurrentDayOff: UIViewController {
         constraint2 = contrainerView.topAnchor.constraint(equalTo: colectionViewReq.bottomAnchor, constant: 16)
         constraint1.isActive = true
         constraint2.isActive = false
+        
+        todayDate()
+    }
+    
+    func todayDate(){
+        let date = Date()
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "EE, dd MMM Y"
+        
+        let dayString = dateFor.string(from: date)
+        dateLabel.text = dayString
     }
     
     
@@ -397,9 +408,7 @@ class EditCurrentDayOff: UIViewController {
                 self.spiner.dismiss()
                 self.titleReq.isHidden = true
                 self.colectionViewReq.isHidden = true
-                self.saveButton.isHidden = false
-                self.editButton.isHidden = false
-                self.setWorkButton.isHidden = false
+                self.setupButton()
                 self.waitingText.isHidden = true
                 self.constraint1.isActive = true
                 self.constraint2.isActive = false
@@ -475,9 +484,7 @@ class EditCurrentDayOff: UIViewController {
                     }else {
                         self.titleReq.isHidden = true
                         self.colectionViewReq.isHidden = true
-                        self.saveButton.isHidden = false
-                        self.editButton.isHidden = false
-                        self.setWorkButton.isHidden = false
+                        self.setupButton()
                         self.waitingText.isHidden = true
                         self.constraint1.isActive = true
                         self.constraint2.isActive = false
@@ -488,19 +495,10 @@ class EditCurrentDayOff: UIViewController {
         }
     }
     
-    
-    //MARK:- Get day off plan
-    private func getDataDayOffPlan(){
+    private func setupButton(){
         guard let data = dayOffPlanData else {
-            self.dayOffPlan = [
-                "1": self.week1,
-                "2": self.week2,
-                "3": self.week3,
-                "4": self.week4,
-                "5": self.week5,
-            ]
-            scrollToDate()
             return}
+        
         
         switch data.workingStatus {
         case "full time":
@@ -520,6 +518,23 @@ class EditCurrentDayOff: UIViewController {
             editButton.isHidden = true
             setWorkButton.isHidden = false
         }
+    }
+    
+    
+    //MARK:- Get day off plan
+    private func getDataDayOffPlan(){
+        guard let data = dayOffPlanData else {
+            self.dayOffPlan = [
+                "1": self.week1,
+                "2": self.week2,
+                "3": self.week3,
+                "4": self.week4,
+                "5": self.week5,
+            ]
+            scrollToDate()
+            return}
+        
+       setupButton()
         
         if data.dayOfStatus == nil {
             self.dayOffPlan = [

@@ -67,7 +67,7 @@ class CardViewController: UIViewController {
     let lineView: UIView = {
         let line = UIView()
         line.backgroundColor = .lightGray
-        line.layer.cornerRadius = 5
+        line.layer.cornerRadius = 1
         return line
     }()
     
@@ -177,6 +177,13 @@ class CardViewController: UIViewController {
         return l
     }()
     
+    let estLabel = Reusable.makeLabel(text: "",
+                                      font: .systemFont(ofSize: 14, weight: .medium),
+                                       color: UIColor(named: "orangeKasumi")!)
+    let distanceLabel = Reusable.makeLabel(text: "",
+                                           font: .systemFont(ofSize: 14, weight: .medium),
+                                       color: UIColor(named: "darkKasumi")!)
+    
     
     private func createTitle(icon: UIImage)-> UIView {
        let  v = UIView()
@@ -249,6 +256,8 @@ class CardViewController: UIViewController {
         view.addSubview(titleLabelItemName)
         view.addSubview(itemLabel)
         view.addSubview(detailItem)
+        
+        view.addSubviews(views: estLabel, distanceLabel)
         detailItem.isUserInteractionEnabled = true
         detailItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didSeeDetail)))
         view.backgroundColor = .white
@@ -352,11 +361,14 @@ class CardViewController: UIViewController {
     
     
     private func configureLayout(){
-        handleArea.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 40)
+        handleArea.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, height: 30)
         setupDefaultButton()
-        lineView.anchor(width: 70, height: 6)
+        lineView.anchor(width: 30, height: 3)
         lineView.centerYAnchor.constraint(equalTo: handleArea.centerYAnchor).isActive = true
         lineView.centerXAnchor.constraint(equalTo: handleArea.centerXAnchor).isActive = true
+        
+        estLabel.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, paddingTop: 0, paddingLeft: 20)
+        distanceLabel.anchor(top: handleArea.bottomAnchor, left: estLabel.rightAnchor, paddingTop: 0, paddingLeft: 5, paddingRight: 20)
         
         
         orderNoLable.anchor(top: orderButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 20, height: 30)
@@ -370,9 +382,9 @@ class CardViewController: UIViewController {
         titleLabel.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 20, paddingRight: 20)
         storeLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 12)
         
-        pendingButton.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
+        pendingButton.anchor(top: estLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
         pendingButton.isHidden = true
-        orderButton.anchor(top: handleArea.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
+        orderButton.anchor(top: estLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 10, height: 45)
         orderButton2.anchor(top: pendingButton.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 16, paddingLeft: 20, paddingRight: 10)
         orderButton2.heightAnchor.constraint(equalToConstant: 45).isActive = true
         orderButton2.isHidden = true
