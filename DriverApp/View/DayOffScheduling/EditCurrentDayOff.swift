@@ -47,12 +47,16 @@ class EditCurrentDayOff: UIViewController {
         return view
     }()
     
+    lazy var refreshControl = UIRefreshControl()
+    
     var dayOfVm = DayOffViewModel()
     var dataDayOff: DayOffPost!
     var listShift: [Int]? = nil
     var dayOffPlanData: DayOfParent? = nil
     
     let slideVC = SelectShift()
+    
+    var profileVm = ProfileViewModel()
     
     var shiftTimeVm = ShiftTimeViewModel()
     
@@ -141,17 +145,15 @@ class EditCurrentDayOff: UIViewController {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = months[Calendar.current.component(.month, from: Date())-1]
-        label.textColor = UIColor.black
+        label.textColor = UIColor(named: "darkKasumi")
         label.font = UIFont.systemFont(ofSize: 20,weight: .bold)
-        label.textAlignment = .center
         return label
     }()
     
     lazy var lableStatusDriver: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.lightGray
-        label.font = UIFont.systemFont(ofSize: 15,weight: .regular)
-        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         return label
     }()
     
@@ -176,9 +178,9 @@ class EditCurrentDayOff: UIViewController {
         button.setTitle("Save".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 35/2
         button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium )
         button.addTarget(self, action: #selector(onSaveClick), for: .touchUpInside)
         return button
     }()
@@ -189,9 +191,9 @@ class EditCurrentDayOff: UIViewController {
         button.setTitle("Set Work Day".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "grayKasumi")
         button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 35/2
         button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium )
         button.addTarget(self, action: #selector(setWorkClick), for: .touchUpInside)
         button.isHidden = false
         return button
@@ -202,10 +204,23 @@ class EditCurrentDayOff: UIViewController {
         button.setTitle("Edit".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "grayKasumi")
         button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
-        button.layer.cornerRadius = 5
+        button.layer.cornerRadius = 35/2
         button.layer.masksToBounds = true
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .regular )
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium )
         button.addTarget(self, action: #selector(openModal), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+    
+    private let planButotn: UIButton={
+        let button = UIButton()
+        button.setTitle("Plan Next Month".localiz(), for: .normal)
+        button.backgroundColor = UIColor(named: "orangeKasumi")
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 30/2
+        button.layer.masksToBounds = true
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        button.addTarget(self, action: #selector(setPlanClick), for: .touchUpInside)
         button.isHidden = true
         return button
     }()
@@ -240,20 +255,7 @@ class EditCurrentDayOff: UIViewController {
         return cv
     }()
     
-    let titleReq = Reusable.makeLabel(text: "Requested Day Off", font: .systemFont(ofSize: 12, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0, alignment: .left)
     let waitingText = Reusable.makeLabel(text: "Waiting for approval from admin", font: .systemFontItalic(size: 14, fontWeight: .regular), color: UIColor(named: "orangeKasumi")!, numberOfLines: 0, alignment: .center)
-    
-    private let colectionViewReq: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.register(PlanCell.self, forCellWithReuseIdentifier: PlanCell.id)
-        cv.backgroundColor = UIColor(named: "bgKasumi")
-        cv.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        cv.showsHorizontalScrollIndicator = false
-        return cv
-    }()
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -273,23 +275,42 @@ class EditCurrentDayOff: UIViewController {
         return view
     }()
     
+    @objc
+    func setPlanClick(){
+        let vc = PlanVc()
+        vc.dayOffPlanData = dayOffPlanData
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    //    MARK: - Liveciclye
+        
+        override func viewDidAppear(_ animated: Bool) {
+            super.viewDidAppear(animated)
+            
+            configureNavigationBar()
+            
+            getData()
+            getListShiftTime()
+            
+        }
+    
     //MARK:- view did load
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "bgKasumi")
         
         view.addSubview(scrollView)
-        scrollView.addSubviews(views: stakView)
+        scrollView.addSubviews(views: stakView, refreshControl)
         stakView.addSubviews(views: titleLabel,
-                               lableStatusDriver,
-                               colectionView,
-                               titleReq,
-                               colectionViewReq, contrainerView)
+                             lableStatusDriver,
+                             colectionView, contrainerView, planButotn)
+        
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh".localiz())
+        refreshControl.addTarget(self, action: #selector(getData), for: .valueChanged)
         
         colectionView.delegate = self
         colectionView.dataSource = self
-        colectionViewReq.delegate = self
-        colectionViewReq.dataSource = self
         
         contrainerView.addSubview(dateLabel)
         contrainerView.addSubview(subTitleLabel)
@@ -302,24 +323,16 @@ class EditCurrentDayOff: UIViewController {
         waitingText.anchor(left: contrainerView.leftAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingBottom: 10, paddingLeft: 10, paddingRight: 10)
         
         
-        configureNavigationBar()
         configureLayout()
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        getDataDayOffPlan()
-        getListShiftTime()
-        
         slideVC.delegate = self
-        
-        getDataReqDayoff()
         
         //set constraint
         constraint1 = contrainerView.topAnchor.constraint(equalTo: colectionView.bottomAnchor, constant: 16)
-        constraint2 = contrainerView.topAnchor.constraint(equalTo: colectionViewReq.bottomAnchor, constant: 16)
         constraint1.isActive = true
-        constraint2.isActive = false
         
         todayDate()
     }
@@ -331,6 +344,41 @@ class EditCurrentDayOff: UIViewController {
         
         let dayString = dateFor.string(from: date)
         dateLabel.text = dayString
+    }
+    
+    @objc private func getData(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        spiner.show(in: view)
+        dayOfVm.getDataDayOff(codeDriver: codeDriver) {[weak self] (success) in
+            switch success {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self?.dayOffPlanData = data.data
+                    self?.spiner.dismiss()
+                    self?.refreshControl.endRefreshing()
+                    self?.colectionView.reloadData()
+                    self?.scrollToDate()
+                    if data.data.dayOfStatus == nil {
+                        self?.planButotn.isHidden = true
+                    }else {
+                        self?.planButotn.isHidden = false
+                    }
+                    self?.getDataDayOffPlan()
+                    self?.getDataReqDayoff()
+                }
+            case .failure(let error):
+                print(error)
+                self?.spiner.dismiss()
+                self?.colectionView.reloadData()
+                self?.scrollToDate()
+                self?.refreshControl.endRefreshing()
+            }
+        }
     }
     
     
@@ -406,23 +454,15 @@ class EditCurrentDayOff: UIViewController {
             case .failure(let err):
                 print(err.localizedDescription)
                 self.spiner.dismiss()
-                self.titleReq.isHidden = true
-                self.colectionViewReq.isHidden = true
                 self.setupButton()
                 self.waitingText.isHidden = true
-                self.constraint1.isActive = true
-                self.constraint2.isActive = false
             case .success(let data):
                 self.spiner.dismiss()
                 DispatchQueue.main.async {
-                    self.titleReq.isHidden = false
-                    self.colectionViewReq.isHidden = false
                     self.saveButton.isHidden = true
                     self.editButton.isHidden = true
                     self.setWorkButton.isHidden = true
                     self.waitingText.isHidden = false
-                    self.constraint1.isActive = false
-                    self.constraint2.isActive = true
                     if data.day_off_status != nil {
                         var week1: [String: Any] = NSMutableDictionary() as! [String : Any]
                         var week2: [String: Any] = NSMutableDictionary() as! [String : Any]
@@ -482,14 +522,9 @@ class EditCurrentDayOff: UIViewController {
                             "5": week5,
                         ]
                     }else {
-                        self.titleReq.isHidden = true
-                        self.colectionViewReq.isHidden = true
                         self.setupButton()
                         self.waitingText.isHidden = true
-                        self.constraint1.isActive = true
-                        self.constraint2.isActive = false
                     }
-                    self.colectionViewReq.reloadData()
                 }
             }
         }
@@ -499,6 +534,7 @@ class EditCurrentDayOff: UIViewController {
         guard let data = dayOffPlanData else {
             return}
         
+        saveButton.isHidden = false
         
         switch data.workingStatus {
         case "full time":
@@ -534,7 +570,7 @@ class EditCurrentDayOff: UIViewController {
             scrollToDate()
             return}
         
-       setupButton()
+        setupButton()
         
         if data.dayOfStatus == nil {
             self.dayOffPlan = [
@@ -618,7 +654,6 @@ class EditCurrentDayOff: UIViewController {
         let dateInt: Int = Int(dateToday)!
         let index: IndexPath = IndexPath(item: dateInt-1, section: 0)
         colectionView.scrollToItem(at: index, at: .left, animated: true)
-        colectionViewReq.scrollToItem(at: index, at: .left, animated: true)
     }
     
     
@@ -626,15 +661,18 @@ class EditCurrentDayOff: UIViewController {
     func configureLayout(){
         
         scrollView.addSubview(stakView)
-        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor,paddingTop: 16,paddingBottom: 16)
+        stakView.anchor(top: scrollView.topAnchor, left: scrollView.leftAnchor, bottom: scrollView.bottomAnchor, right: view.rightAnchor, paddingBottom: 16)
+         
         
-        titleLabel.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
+        titleLabel.anchor(top: stakView.topAnchor, left: stakView.leftAnchor, right: planButotn.leftAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 10)
+    
         
-        lableStatusDriver.anchor(top: titleLabel.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, paddingLeft: 16, paddingRight: 16)
+        planButotn.anchor(top: stakView.topAnchor, right: stakView.rightAnchor, paddingTop: 16, paddingRight: 16, width: 180, height: 30)
+        
+
+        lableStatusDriver.anchor(top: titleLabel.bottomAnchor, left: stakView.leftAnchor, right: planButotn.leftAnchor, paddingTop: 5, paddingLeft: 16, paddingRight: 10)
         
         colectionView.anchor(top: lableStatusDriver.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16, height: 100)
-        titleReq.anchor(top: colectionView.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16, paddingLeft: 16, paddingRight: 16)
-        colectionViewReq.anchor(top: titleReq.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 16, height: 100)
         
         contrainerView.anchor(left: stakView.leftAnchor, bottom: stakView.bottomAnchor, right: stakView.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16)
         contrainerView.height(420)
@@ -642,13 +680,13 @@ class EditCurrentDayOff: UIViewController {
         subTitleLabel.anchor(top: contrainerView.topAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10)
         dateLabel.anchor(top: subTitleLabel.bottomAnchor, left: contrainerView.leftAnchor, right: contrainerView.rightAnchor, paddingTop: 5, paddingLeft: 10, paddingRight: 10)
         
-        tableView.anchor(top: dateLabel.bottomAnchor, left: contrainerView.leftAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingTop: 20, paddingBottom: 60, paddingLeft: 10, paddingRight: 10)
+        tableView.anchor(top: dateLabel.bottomAnchor, left: contrainerView.leftAnchor, bottom: saveButton.topAnchor, right: contrainerView.rightAnchor, paddingTop: 20, paddingBottom: 10)
         
-        saveButton.anchor(top: tableView.bottomAnchor, left: contrainerView.leftAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, width: 150, height: 40)
+        saveButton.anchor(left: contrainerView.leftAnchor, bottom: contrainerView.bottomAnchor, paddingBottom: 10, paddingLeft: 10, width: 150, height: 35)
         
-        setWorkButton.anchor(top: tableView.bottomAnchor, left: saveButton.rightAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 40)
+        setWorkButton.anchor(left: saveButton.rightAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 35)
         
-        editButton.anchor(top: tableView.bottomAnchor, left: saveButton.rightAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 40)
+        editButton.anchor(left: saveButton.rightAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingBottom: 10, paddingLeft: 10, paddingRight: 10, height: 35)
         
         emptyImage.centerYAnchor.constraint(equalTo: contrainerView.centerYAnchor).isActive = true
         emptyImage.centerXAnchor.constraint(equalTo: contrainerView.centerXAnchor).isActive = true
@@ -657,13 +695,77 @@ class EditCurrentDayOff: UIViewController {
     
     //MARK: - Navigation bar
     func configureNavigationBar(){
-        navigationItem.title = "Edit Day Off".localiz()
+        let imageChat = UIImage(named: "chatIcon")
+        let imageProfile = UIImage(named: "profileIcon")
+        let imageRest = UIImage(named: "rest")
+        let chat = imageChat?.resizeImage(CGSize(width: 25, height: 25))
+        let profile = imageProfile?.resizeImage(CGSize(width: 25, height: 25))
+        let rest = imageRest?.resizeImage(CGSize(width: 25, height: 25))
+        
+        navigationItem.title = "Day Off Driver".localiz()
         navigationController?.navigationBar.barTintColor = UIColor(named: "orangeKasumi")
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         navigationController?.navigationBar.barStyle = .black
+    
+        let button1 = UIBarButtonItem(image: rest, style: .plain, target: self, action: #selector(onClickRest))
+        
+        let button2 = UIBarButtonItem(image: chat, style: .plain, target: self, action: #selector(onClickChatButton))
+        
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        navigationItem.leftBarButtonItems = [button1,button2]
+        
+        profileVm.cekStatusDriver(codeDriver: codeDriver) { (res) in
+            switch res {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    if data.checkinTime != nil {
+                        if data.workTime != nil {
+                            self.navigationItem.leftBarButtonItems = [button2]
+                        }else {
+                            self.navigationItem.leftBarButtonItems = [button1, button2]
+                        }
+                    }else {
+                        self.navigationItem.leftBarButtonItems = [button2]
+                    }
+                }
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.navigationItem.leftBarButtonItems = [button2]
+                }
+            }
+        }
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: profile, style: .plain, target: self, action: #selector(onClickProfiile))
+
+        
         navigationController?.navigationBar.tintColor = .white
+    }
+    
+    @objc
+    func onClickRest(){
+        let vc = RestViewController()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
+    func onClickProfiile(){
+        let vc = ProfileViewController()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc
+    func onClickChatButton(){
+        let vc = ChatView()
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     //MARK: - On Save Click
@@ -1468,1121 +1570,563 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == colectionViewReq {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
-            
-            let date = Date()
-            let dateFor = DateFormatter()
-            dateFor.dateFormat = "dd"
-            
-            let dateToday = dateFor.string(from: date)
-            
-            let i = indexPath.row + 1
-            let dayName = Date.dayNameFromCustomDate(customDate: i)
-            let dateLable = "\(i < 10 ? "\(0)\(i)" : "\(i)")"
-            
-            cell.dayLable.text = dayName
-            cell.dateLable.text = dateLable
-            
-            if "\(i < 10 ? "\(0)\(i)" : "\(i)")" == "\(dateToday)" {
-                cell.borderBotom.isHidden = false
-            }else {
-                cell.borderBotom.isHidden = true
-            }
-            
-            if selectedIndexReq != nil && selectedIndexReq == i {
-                cell.borderBotomSelected.isHidden = false
-            }else {
-                cell.borderBotomSelected.isHidden = true
-            }
-            
-            //jumlah shift dan hari apa ini?
-            let week1 = i <= 7
-            let week2 = i > 7 && i <= 14
-            let week3 = i > 14 && i <= 21
-            let week4 = i > 21 && i <= 28
-            let week5 = i > 28
-            
-            let color1: UIColor = .black
-            let color2: UIColor = .black
-            
-            let bgColor1: UIColor = UIColor(named: "colorGray")!
-            let bgColor2: UIColor = UIColor(named: "colorYellow")!
-            
-            //MARK: - Week 1
-            if week1 {
-                cell.weekLabel.text = "w1"
-                if dayOfWaiting != nil {
-                    let dataWeek = dayOfWaiting["1"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            
-            //MARK: - Week 2
-            if week2 {
-                cell.weekLabel.text = "w2"
-                if dayOfWaiting != nil {
-                    let dataWeek = dayOfWaiting["2"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            //MARK: - Week 3
-            if week3 {
-                cell.weekLabel.text = "w3"
-                if dayOfWaiting != nil {
-                    let dataWeek = dayOfWaiting["3"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            //MARK: - Week 4
-            if week4 {
-                cell.weekLabel.text = "w4"
-                if dayOfWaiting != nil {
-                    let dataWeek = dayOfWaiting["4"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            //MARK: - Week 5
-            if week5 {
-                cell.weekLabel.text = "w5"
-                if dayOfWaiting != nil {
-                    let dataWeek = dayOfWaiting["5"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
+        
+        let date = Date()
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "dd"
+        
+        let dateToday = dateFor.string(from: date)
+        
+        let i = indexPath.row + 1
+        let dayName = Date.dayNameFromCustomDate(customDate: i)
+        let dateLable = "\(i < 10 ? "\(0)\(i)" : "\(i)")"
+        
+        cell.dayLable.text = dayName
+        cell.dateLable.text = dateLable
+        
+        if "\(i < 10 ? "\(0)\(i)" : "\(i)")" == "\(dateToday)" {
+            cell.borderBotom.isHidden = false
         }else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlanCell.id, for: indexPath) as! PlanCell
-            
-            let date = Date()
-            let dateFor = DateFormatter()
-            dateFor.dateFormat = "dd"
-            
-            let dateToday = dateFor.string(from: date)
-            
-            let i = indexPath.row + 1
-            let dayName = Date.dayNameFromCustomDate(customDate: i)
-            let dateLable = "\(i < 10 ? "\(0)\(i)" : "\(i)")"
-            
-            cell.dayLable.text = dayName
-            cell.dateLable.text = dateLable
-            
-            if "\(i < 10 ? "\(0)\(i)" : "\(i)")" == "\(dateToday)" {
-                cell.borderBotom.isHidden = false
-            }else {
-                cell.borderBotom.isHidden = true
-            }
-            
-            if selectedIndex != nil && selectedIndex == i {
-                cell.borderBotomSelected.isHidden = false
-            }else {
-                cell.borderBotomSelected.isHidden = true
-            }
-            
-            //jumlah shift dan hari apa ini?
-            let week1 = i <= 7
-            let week2 = i > 7 && i <= 14
-            let week3 = i > 14 && i <= 21
-            let week4 = i > 21 && i <= 28
-            let week5 = i > 28
-            
-            let color1: UIColor = .black
-            let color2: UIColor = .black
-            
-            let bgColor1: UIColor = UIColor(named: "colorGray")!
-            let bgColor2: UIColor = UIColor(named: "colorYellow")!
-            
-            //MARK: - Week 1
-            if week1 {
-                cell.weekLabel.text = "w1"
-                if dayOffPlan != nil {
-                    let dataWeek = dayOffPlan["1"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            
-            //MARK: - Week 2
-            if week2 {
-                cell.weekLabel.text = "w2"
-                if dayOffPlan != nil {
-                    let dataWeek = dayOffPlan["2"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            //MARK: - Week 3
-            if week3 {
-                cell.weekLabel.text = "w3"
-                if dayOffPlan != nil {
-                    let dataWeek = dayOffPlan["3"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            //MARK: - Week 4
-            if week4 {
-                cell.weekLabel.text = "w4"
-                if dayOffPlan != nil {
-                    let dataWeek = dayOffPlan["4"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            //MARK: - Week 5
-            if week5 {
-                cell.weekLabel.text = "w5"
-                if dayOffPlan != nil {
-                    let dataWeek = dayOffPlan["5"] as! [String: Any]
-                    switch dayName {
-                    case "Sun":
-                        if dataWeek["Sunday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Sunday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Mon":
-                        if dataWeek["Monday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Monday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Tue":
-                        if dataWeek["Tuesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Tuesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Wed":
-                        if dataWeek["Wednesday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Wednesday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Thu":
-                        if dataWeek["Thursday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Thursday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    case "Fri":
-                        if dataWeek["Friday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Friday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    default:
-                        if dataWeek["Saturday"] as? [Int] != nil {
-                            let array:[Int]? = dataWeek["Saturday"] as? [Int]
-                            cell.container2.backgroundColor = bgColor1
-                            cell.statusLable.text = "\(array?.count ?? 0) Shift"
-                            cell.dayLable.textColor = color1
-                            cell.dateLable.textColor = color1
-                        }else {
-                            cell.container2.backgroundColor = bgColor2
-                            cell.statusLable.text = "Day Off".localiz()
-                            cell.dayLable.textColor = color2
-                            cell.dateLable.textColor = color2
-                        }
-                    }
-                }
-            }
-            
-            return cell
+            cell.borderBotom.isHidden = true
         }
         
+        if selectedIndex != nil && selectedIndex == i {
+            cell.borderBotomSelected.isHidden = false
+        }else {
+            cell.borderBotomSelected.isHidden = true
+        }
+        
+        //jumlah shift dan hari apa ini?
+        let week1 = i <= 7
+        let week2 = i > 7 && i <= 14
+        let week3 = i > 14 && i <= 21
+        let week4 = i > 21 && i <= 28
+        let week5 = i > 28
+        
+        let color1: UIColor = .black
+        let color2: UIColor = .black
+        
+        let bgColor1: UIColor = UIColor(named: "colorGray")!
+        let bgColor2: UIColor = UIColor(named: "colorYellow")!
+        
+        //MARK: - Week 1
+        if week1 {
+            cell.weekLabel.text = "w1"
+            if dayOffPlan != nil {
+                let dataWeek = dayOffPlan["1"] as! [String: Any]
+                switch dayName {
+                case "Sun":
+                    if dataWeek["Sunday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Sunday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Mon":
+                    if dataWeek["Monday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Monday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Tue":
+                    if dataWeek["Tuesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Tuesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Wed":
+                    if dataWeek["Wednesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Wednesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Thu":
+                    if dataWeek["Thursday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Thursday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Fri":
+                    if dataWeek["Friday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Friday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                default:
+                    if dataWeek["Saturday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Saturday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                }
+            }
+        }
+        
+        
+        //MARK: - Week 2
+        if week2 {
+            cell.weekLabel.text = "w2"
+            if dayOffPlan != nil {
+                let dataWeek = dayOffPlan["2"] as! [String: Any]
+                switch dayName {
+                case "Sun":
+                    if dataWeek["Sunday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Sunday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Mon":
+                    if dataWeek["Monday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Monday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Tue":
+                    if dataWeek["Tuesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Tuesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Wed":
+                    if dataWeek["Wednesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Wednesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Thu":
+                    if dataWeek["Thursday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Thursday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Fri":
+                    if dataWeek["Friday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Friday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                default:
+                    if dataWeek["Saturday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Saturday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                }
+            }
+        }
+        
+        //MARK: - Week 3
+        if week3 {
+            cell.weekLabel.text = "w3"
+            if dayOffPlan != nil {
+                let dataWeek = dayOffPlan["3"] as! [String: Any]
+                switch dayName {
+                case "Sun":
+                    if dataWeek["Sunday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Sunday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Mon":
+                    if dataWeek["Monday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Monday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Tue":
+                    if dataWeek["Tuesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Tuesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Wed":
+                    if dataWeek["Wednesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Wednesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Thu":
+                    if dataWeek["Thursday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Thursday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Fri":
+                    if dataWeek["Friday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Friday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                default:
+                    if dataWeek["Saturday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Saturday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                }
+            }
+        }
+        
+        //MARK: - Week 4
+        if week4 {
+            cell.weekLabel.text = "w4"
+            if dayOffPlan != nil {
+                let dataWeek = dayOffPlan["4"] as! [String: Any]
+                switch dayName {
+                case "Sun":
+                    if dataWeek["Sunday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Sunday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Mon":
+                    if dataWeek["Monday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Monday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Tue":
+                    if dataWeek["Tuesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Tuesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Wed":
+                    if dataWeek["Wednesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Wednesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Thu":
+                    if dataWeek["Thursday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Thursday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Fri":
+                    if dataWeek["Friday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Friday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                default:
+                    if dataWeek["Saturday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Saturday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                }
+            }
+        }
+        
+        //MARK: - Week 5
+        if week5 {
+            cell.weekLabel.text = "w5"
+            if dayOffPlan != nil {
+                let dataWeek = dayOffPlan["5"] as! [String: Any]
+                switch dayName {
+                case "Sun":
+                    if dataWeek["Sunday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Sunday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Mon":
+                    if dataWeek["Monday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Monday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Tue":
+                    if dataWeek["Tuesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Tuesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Wed":
+                    if dataWeek["Wednesday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Wednesday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Thu":
+                    if dataWeek["Thursday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Thursday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                case "Fri":
+                    if dataWeek["Friday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Friday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                default:
+                    if dataWeek["Saturday"] as? [Int] != nil {
+                        let array:[Int]? = dataWeek["Saturday"] as? [Int]
+                        cell.container2.backgroundColor = bgColor1
+                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.dayLable.textColor = color1
+                        cell.dateLable.textColor = color1
+                    }else {
+                        cell.container2.backgroundColor = bgColor2
+                        cell.statusLable.text = "Day Off".localiz()
+                        cell.dayLable.textColor = color2
+                        cell.dateLable.textColor = color2
+                    }
+                }
+            }
+        }
+        
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let i = indexPath.row + 1
-     
+        
         let date = Date.dateStringFrom(customDate: i)
         let dayName = Date.dayNameFromCustomDate(customDate: i)
-        
-        if collectionView == self.colectionView {
-            colectionView.reloadData()
-            btnTouch(tanggal: date, day: dayName, index: i)
-            selectedIndex = i
-        }else {
-            colectionViewReq.reloadData()
-            btnTouchReq(tanggal: date, day: dayName, index: i)
-            selectedIndexReq = i
-        }
+        colectionView.reloadData()
+        btnTouch(tanggal: date, day: dayName, index: i)
+        selectedIndex = i
     }
 }
 

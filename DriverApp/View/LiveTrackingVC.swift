@@ -458,8 +458,10 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
                     print(err)
                 case .success(let data):
                     DispatchQueue.main.async {
-                        self.cardViewController.estLabel.text = "\(data.time)"
-                        self.cardViewController.distanceLabel.text = "\(data.distance)"
+                        if self.cardViewController !== nil {
+                            self.cardViewController.estLabel.text = "\(data.time)"
+                            self.cardViewController.distanceLabel.text = "\(data.distance)"
+                        }
                     }
                 }
             }

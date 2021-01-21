@@ -153,6 +153,8 @@ class CardViewController: UIViewController {
         return label
     }()
     
+    let storeAddres = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
+    
     let titleLabelDestination: UILabel = {
         let label = UILabel()
         label.text = "Receiver".localiz()
@@ -248,6 +250,7 @@ class CardViewController: UIViewController {
         view.addSubview(pendingButton)
         view.addSubview(titleLabel)
         view.addSubview(storeLabel)
+        view.addSubview(storeAddres)
         view.addSubview(titleLabelDestination)
         view.addSubview(destinationLabel)
         view.addSubview(seeDetailButton)
@@ -273,6 +276,7 @@ class CardViewController: UIViewController {
         }
         
         lableText.text = orderNo
+        print("userInfo", userInfo)
         
         storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
         destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) 〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.phone_number)"

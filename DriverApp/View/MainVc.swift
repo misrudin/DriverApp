@@ -164,7 +164,7 @@ class MainVc: UIViewController {
         homeVc.title = "Jobs".localiz()
         let historyVc = UINavigationController(rootViewController: HistoryViewController())
         historyVc.title = "History".localiz()
-        let dayOffVc = UINavigationController(rootViewController: DayOffVc())
+        let dayOffVc = UINavigationController(rootViewController: EditCurrentDayOff())
         dayOffVc.title = "Day Off".localiz()
         
         let image1 = UIImage(named: "jobHistory")
