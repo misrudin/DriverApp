@@ -20,6 +20,12 @@ class QuickCell: UITableViewCell {
     @IBOutlet weak var item5: UIView!
     @IBOutlet weak var lastItem: UIView!
     @IBOutlet weak var item6: UIView!
+    @IBOutlet weak var label1: UILabel!
+    @IBOutlet weak var label2: UILabel!
+    @IBOutlet weak var label3: UILabel!
+    @IBOutlet weak var label4: UILabel!
+    @IBOutlet weak var label5: UILabel!
+    @IBOutlet weak var label6: UIView!
     
     var vi = ChatView()
     
@@ -38,7 +44,13 @@ class QuickCell: UITableViewCell {
         container.translatesAutoresizingMaskIntoConstraints = false
         container.layer.cornerRadius = 5
         container.backgroundColor = .white
-        
+    
+        label1.text = "Hello".localiz()
+        label2.text = "Address cannot be found".localiz()
+        label3.text = "Person not at home".localiz()
+        label4.text = "Package not correct".localiz()
+        label5.text = "I have an accidents".localiz()
+        label5.text = "Other".localiz()
         item1.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item2.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item3.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)

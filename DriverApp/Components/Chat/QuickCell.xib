@@ -264,6 +264,12 @@
                 <outlet property="item4" destination="gYI-SJ-z60" id="W5q-hU-zJg"/>
                 <outlet property="item5" destination="Cl8-PN-PUm" id="2k1-5u-6DC"/>
                 <outlet property="item6" destination="2Py-Xa-vQF" id="F5t-uU-C09"/>
+                <outlet property="label1" destination="Aqp-in-GoA" id="rIT-1z-s9E"/>
+                <outlet property="label2" destination="ABE-fe-dyy" id="K4E-9n-YAE"/>
+                <outlet property="label3" destination="UBT-i1-MP8" id="hNF-Op-0gv"/>
+                <outlet property="label4" destination="09R-ee-CtI" id="KkK-LW-B55"/>
+                <outlet property="label5" destination="64E-yK-cdT" id="PXw-kl-BGW"/>
+                <outlet property="label6" destination="2Py-Xa-vQF" id="Auv-H5-b8e"/>
                 <outlet property="lastItem" destination="hOF-Jy-uRl" id="nR9-6p-8LG"/>
                 <outlet property="title" destination="uUY-Ql-2aQ" id="dRz-ew-pJi"/>
             </connections>

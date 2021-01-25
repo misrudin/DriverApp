@@ -10,9 +10,11 @@ import Foundation
 struct ErrorResponse: Decodable {
     let Status: Int
     let Message: String
+    let Message_JP: String
     
     enum CodingKeys: String, CodingKey {
         case Status
         case Message
+        case Message_JP
     }
 }

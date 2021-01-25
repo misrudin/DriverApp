@@ -181,14 +181,14 @@ class LiveTrackingVC: UIViewController {
         
         
         if statusOrder == "wait for pickup" || statusOrder == "on pickup process" {
-            cardHandleAreaHeight = 110
+            cardHandleAreaHeight = 130
             if let destinationLat = CLLocationDegrees(storeDestinationLat!),
                let destinatoinLong = CLLocationDegrees(storeDestinationLng!) {
                 destination = Destination(latitude: destinationLat, longitude: destinatoinLong)
             }
         } else {
             if statusOrder == "waiting delivery" || statusOrder == "pending"  {
-                cardHandleAreaHeight = 110
+                cardHandleAreaHeight = 130
             }else {
                 cardHandleAreaHeight = 190
             }

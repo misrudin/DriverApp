@@ -97,8 +97,8 @@ class RegisterView: UIViewController {
     lazy var profilePhotoLable = Reusable.makeLabel(text: "Profile Photo".localiz(),font: lablefont, color: lableColor, alignment: .center)
     lazy var firstNameLable = Reusable.makeLabel(text: "First Name".localiz(),font: lablefont, color: lableColor)
     lazy var lastNameLable = Reusable.makeLabel(text: "Last Name".localiz(),font: lablefont, color: lableColor)
-    lazy var firstNameHiraganaLable = Reusable.makeLabel(text: "First Name Hiragana",font: lablefont, color: lableColor)
-    lazy var lastNameHiraganaLable = Reusable.makeLabel(text: "Last Name Hiragana",font: lablefont, color: lableColor)
+    lazy var firstNameHiraganaLable = Reusable.makeLabel(text: "First Name Hiragana".localiz(),font: lablefont, color: lableColor)
+    lazy var lastNameHiraganaLable = Reusable.makeLabel(text: "Last Name Hiragana".localiz(),font: lablefont, color: lableColor)
     lazy var emailLable = Reusable.makeLabel(text: "Email".localiz(),font: lablefont, color: lableColor)
     lazy var passwordLable = Reusable.makeLabel(text: "Password".localiz(),font: lablefont, color: lableColor)
     lazy var brithDateLable = Reusable.makeLabel(text: "Date Of Birth".localiz(),font: lablefont, color: lableColor)
@@ -131,8 +131,8 @@ class RegisterView: UIViewController {
     lazy var firstName = Reusable.makeInput(placeholder: "First Name".localiz(), bg: inputBg, radius: 5, autoKapital: .none)
     lazy var lastName = Reusable.makeInput(placeholder: "Last Name".localiz(), bg: inputBg, radius: 5, autoKapital: .none)
     
-    lazy var firstNameHiragana = Reusable.makeInput(placeholder: "First Name Hiragana", bg: inputBg, radius: 5, autoKapital: .none)
-    lazy var lastNameHiragana = Reusable.makeInput(placeholder: "Last Name Hiragana", bg: inputBg, radius: 5, autoKapital: .none)
+    lazy var firstNameHiragana = Reusable.makeInput(placeholder: "First Name Hiragana".localiz(), bg: inputBg, radius: 5, autoKapital: .none)
+    lazy var lastNameHiragana = Reusable.makeInput(placeholder: "Last Name Hiragana".localiz(), bg: inputBg, radius: 5, autoKapital: .none)
     
     //MARK: - Input Select
     
@@ -1138,7 +1138,7 @@ class RegisterView: UIViewController {
 //        language.anchor(top: languageLable.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 5, height: 45)
         
         stakView.addSubview(phoneNumberLable)
-        phoneNumberLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15,paddingLeft: 10)
+        phoneNumberLable.anchor(top: gender.bottomAnchor, left: stakView.leftAnchor, right: stakView.rightAnchor, paddingTop: 15)
         
         stakView.addSubview(viewCc)
         viewCc.anchor(top: phoneNumberLable.bottomAnchor, left: stakView.leftAnchor, paddingTop: 5, width: 100, height: 45)

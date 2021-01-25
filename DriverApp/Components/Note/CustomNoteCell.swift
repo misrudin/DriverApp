@@ -35,7 +35,7 @@ class CustomNoteCell: UITableViewCell {
             status.text = "Pending".localiz()
             date.text = item.created_date
             name.text = "\(userInfo.first_name) \(userInfo.last_name)"
-            address.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.phone_number)"
+            address.text = "\(userInfo.address)"
             note.text = item.note
         }
     }

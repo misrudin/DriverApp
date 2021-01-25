@@ -35,7 +35,7 @@ struct OrderViewModel {
                 }else {
                     if let data = response.data {
                         if let re = Helpers().decodeError(data: data){
-                            completion(.failure(OrderError.failedToFetch(re.Message)))
+                            completion(.failure(OrderError.failedToFetch(re.Message_JP)))
                         }
                     }
                 }
@@ -62,7 +62,7 @@ struct OrderViewModel {
                 }else {
                     if let data = response.data {
                         if let re = Helpers().decodeError(data: data){
-                            completion(.failure(OrderError.failedToFetch(re.Message)))
+                            completion(.failure(OrderError.failedToFetch(re.Message_JP)))
                         }
                     }
                 }
@@ -86,7 +86,7 @@ struct OrderViewModel {
                         }else {
                             if let data = response.data {
                                 if let re = Helpers().decodeError(data: data){
-                                    completion(.failure(OrderError.failedToUpdateData(re.Message)))
+                                    completion(.failure(OrderError.failedToUpdateData(re.Message_JP)))
                                 }
                             }
                         }
@@ -163,7 +163,7 @@ struct OrderViewModel {
                         }else {
                             if let data = response.data {
                                 if let re = Helpers().decodeError(data: data){
-                                    completion(.failure(OrderError.failedToFetch(re.Message)))
+                                    completion(.failure(OrderError.failedToFetch(re.Message_JP)))
                                 }
                             }
                         }

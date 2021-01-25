@@ -132,7 +132,7 @@ class OrderHistoryCell: UITableViewCell {
             }
             
             name.text = "\(userDetail.first_name) \(userDetail.last_name)"
-            address.text = "〒\(userDetail.postal_code) \(userDetail.prefecture) \(userDetail.chome) \(userDetail.address) \(userDetail.kana_after_address) \(userDetail.phone_number)"
+            address.text = "\(userDetail.address)"
         }
     }
 

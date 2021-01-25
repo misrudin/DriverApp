@@ -62,7 +62,7 @@ class DetailView: UIViewController {
         
         
         pickupStore.text = list.joined(separator: " - ")
-        destination.text = "〒\(userInfo!.postal_code) \(userInfo!.prefecture) \(userInfo!.chome) \(userInfo!.address) \(userInfo!.kana_after_address) \(userInfo!.first_name) \(userInfo!.last_name) \(userInfo!.phone_number)"
+        destination.text = "\(userInfo!.first_name) \(userInfo!.last_name) \(userInfo!.address)"
 
         view.backgroundColor = UIColor(named: "whiteKasumi")
         configureUi()

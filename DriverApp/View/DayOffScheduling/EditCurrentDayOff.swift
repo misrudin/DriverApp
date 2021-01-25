@@ -321,7 +321,7 @@ class EditCurrentDayOff: UIViewController {
         contrainerView.addSubview(editButton)
         contrainerView.addSubview(waitingText)
         waitingText.anchor(left: contrainerView.leftAnchor, bottom: contrainerView.bottomAnchor, right: contrainerView.rightAnchor, paddingBottom: 10, paddingLeft: 10, paddingRight: 10)
-        
+        waitingText.isHidden = true
         
         configureLayout()
         

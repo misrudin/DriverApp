@@ -345,7 +345,7 @@ class ProfileViewController: UIViewController {
     private func didTapLogout(){
         if(!checkout){
             let action1 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
-            let action2 = UIAlertAction(title: "Yes, Checkout".localiz(), style: .default) {[weak self] (_) in
+            let action2 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
                 self?.didCheckout(true)
             }
             
@@ -387,11 +387,11 @@ class ProfileViewController: UIViewController {
     @objc
     private func didTapCheckout(){
         let action1 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
-        let action2 = UIAlertAction(title: "Yes, Checkout".localiz(), style: .default) {[weak self] (_) in
+        let action2 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
             self?.didCheckout(false)
         }
         
-        Helpers().showAlert(view: self, message: "Do you want to checkout now".localiz(), customTitle: "Are you sure ?".localiz(), customAction1: action1, customAction2: action2)
+        Helpers().showAlert(view: self, message: "Do you want to checkout now".localiz(), customTitle: "".localiz(), customAction1: action1, customAction2: action2)
     }
     
     private func didCheckout(_ logout: Bool){

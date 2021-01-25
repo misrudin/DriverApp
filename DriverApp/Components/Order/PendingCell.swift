@@ -52,7 +52,7 @@ class PendingCell: UITableViewCell {
                 return
             }
             
-            deliveryAddress.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
+            deliveryAddress.text = "\(userInfo.address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
         }
     }
     

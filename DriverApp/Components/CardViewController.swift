@@ -279,7 +279,7 @@ class CardViewController: UIViewController {
         print("userInfo", userInfo)
         
         storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
-        destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) 〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.phone_number)"
+        destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) \(userInfo.address)"
         destinationLabel.numberOfLines = 0
         
         let dataN = orderDetail.pickup_destination.compactMap({$0.pickup_item.map({$0.item_name})})
@@ -455,7 +455,7 @@ class CardViewController: UIViewController {
         }
         
         storeLabel.text = orderDetail.pickup_destination[currentIndex].pickup_store_name
-        destinationLabel.text = "〒\(userInfo.postal_code) \(userInfo.prefecture) \(userInfo.chome) \(userInfo.address) \(userInfo.kana_after_address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
+        destinationLabel.text = "\(userInfo.address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
     
         
         let items = orderDetail.pickup_destination

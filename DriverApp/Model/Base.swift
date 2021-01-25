@@ -27,8 +27,10 @@ struct Base {
 
 struct ResponseData: Codable {
     let Message: String
+    let Message_JP: String
 
     enum CodeingKeys: String, CodingKey{
         case Message
+        case Message_JP
     }
 }

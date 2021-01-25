@@ -8,6 +8,7 @@
 
 //MARK: - Button
 "Submit" = "Submit";
+"Send" = "Send";
 "Back" = "Back";
 "Finish Registration" = "Finish Registration";
 "Save" = "Save";
@@ -71,7 +72,7 @@
 //MARK: -  FORGOT PASSWORD
 "Enter your email address and we will share a link to create a new password" = "Enter your email address and we will share a link to create a new password";
 
-//MARK: - Registration
+//MARK: - REGISTRATION
 "Register as a freelance driver" = "Register as a freelance driver";
 
 "PERSONAL INFORMATION" = "PERSONAL INFORMATION";
@@ -90,6 +91,8 @@
 "Gender" = "Gender";
 "Language" = "Language";
 "Phone Number" = "Phone Number";
+"First Name Hiragana" = "First Name Hiragana";
+"Last Name Hiragana" = "Last Name Hiragana";
 
 "DRIVER LICENSE" = "DRIVER LICENSE";
 "License Number" = "License Number";
@@ -151,14 +154,19 @@
 "Change Password" = "Change Password";
 "Change Vehicle Data" = "Change Vehicle Data";
 "Logout" = "Logout";
+"Do you want to checkout now" = "Do you want to checkout now";
+
 
 //MARK: - CHANGE PROFILE
+"Continue to edit profile ?" = "Continue to edit profile ?";
+"Success edit profile" = "Success edit profile";
 
 //MARK: - CHANGE PASSWORD
 "Current Password" = "Current Password";
 "New Password" = "New Password";
 "Confirm New Password" = "Confirm New Password";
 "Submit New Password" = "Submit New Password";
+"Success edit password" = "Success edit password";
 
 //MARK: - NOTES
 "Failed to sending note" = "Failed to sending note";
@@ -166,6 +174,7 @@
 //MARK: - SEND NOTES
 
 //MARK: - CHANGE VEHICLE DATA
+"Change vehicle data success" = "Change vehicle data success";
 
 //MARK: - Scan Stuff
 "Scan QR Code to Verify" = "Scan QR Code to Verify";

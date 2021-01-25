@@ -94,13 +94,13 @@ class PendingNoteVc: UIViewController {
     lazy var item2 = createItemView(title: "Person not at home".localiz())
     lazy var item3 = createItemView(title: "Package not correct".localiz())
     lazy var item4 = createItemView(title: "I have an accidents".localiz())
-    lazy var item5 = createItemView(title: "Others".localiz())
+    lazy var item5 = createItemView(title: "Other".localiz())
     
     let imageCekist = Reusable.makeImageView(image: UIImage(named: "ceklist"), contentMode: .scaleAspectFit)
     
     let submitButton: UIButton={
         let button = UIButton()
-        button.setTitle("Submit".localiz(), for: .normal)
+        button.setTitle("Send".localiz(), for: .normal)
         button.backgroundColor = UIColor(named: "orangeKasumi")
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 45/2

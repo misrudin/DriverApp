@@ -56,7 +56,7 @@ struct DayOffViewModel {
                             if statusCode != 200 {
                                 if let data = response.data {
                                     if let re = Helpers().decodeError(data: data){
-                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                        completion(.failure(OrderError.failedToFetch(re.Message_JP)))
                                     }
                                 }
                             }else {
@@ -94,7 +94,7 @@ struct DayOffViewModel {
                             if statusCode != 200 {
                                 if let data = response.data {
                                     if let re = Helpers().decodeError(data: data){
-                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                        completion(.failure(OrderError.failedToFetch(re.Message_JP)))
                                     }
                                 }
                             }else {
@@ -125,7 +125,7 @@ struct DayOffViewModel {
                             if statusCode != 200 {
                                 if let data = response.data {
                                     if let re = Helpers().decodeError(data: data){
-                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                        completion(.failure(OrderError.failedToFetch(re.Message_JP)))
                                     }
                                 }
                             }else {
@@ -163,7 +163,7 @@ struct DayOffViewModel {
                             if statusCode != 200 {
                                 if let data = response.data {
                                     if let re = Helpers().decodeError(data: data){
-                                        completion(.failure(OrderError.failedToFetch(re.Message)))
+                                        completion(.failure(OrderError.failedToFetch(re.Message_JP)))
                                     }
                                 }
                             }else {

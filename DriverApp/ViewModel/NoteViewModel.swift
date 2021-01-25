@@ -50,7 +50,7 @@ struct NoteViewModel {
                 }else {
                     if let data = response.data {
                         if let er = Helpers().decodeError(data: data) {
-                            completion(.failure(NotesError.failedToFetch(er.Message)))
+                            completion(.failure(NotesError.failedToFetch(er.Message_JP)))
                         }
                     }
                 }

@@ -8,50 +8,6 @@
 import Foundation
 import CoreLocation
 
-//struct OrderData: Decodable {
-//    let data: [Order]
-//
-//    enum CodingKeys: String, CodingKey {
-//        case data = "data"
-//    }
-//}
-//
-//struct Order: Decodable {
-//    let idOrder: Int
-//    let orderNumber: String
-//    let addressUser: String
-//    let statusTracking: String
-//    let latitude: String
-//    let longitude: String
-//    let storeDetail: Store
-//    let idShiftTime: Int
-//
-//    enum CodingKeys: String, CodingKey {
-//        case idOrder = "id_order"
-//        case orderNumber = "order_number"
-//        case addressUser = "address_user"
-//        case statusTracking = "status_tracking"
-//        case latitude = "lat"
-//        case longitude = "long"
-//        case storeDetail = "store_detail"
-//        case idShiftTime = "id_shift_time"
-//    }
-//}
-//
-//
-//struct Store: Decodable {
-//    let storeName: String
-//    let latitude: String
-//    let longitude: String
-//
-//    enum CodingKeys: String, CodingKey {
-//        case storeName = "store_name"
-//        case latitude = "lat"
-//        case longitude = "long"
-//    }
-//}
-
-
 struct HistoryData: Decodable {
     let data: [History]
     
@@ -210,20 +166,12 @@ struct DetailShift: Decodable {
 struct NewUserInfo: Decodable {
     let first_name: String
     let last_name: String
-    let postal_code: String
-    let prefecture: String
-    let chome: String
-    let kana_after_address: String
     let address: String
     let phone_number: String
     
     enum CodingKeys: String, CodingKey {
         case first_name
         case last_name
-        case postal_code
-        case prefecture
-        case chome
-        case kana_after_address
         case address
         case phone_number
     }
