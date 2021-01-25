@@ -33,9 +33,9 @@ class LiveTrackingVC: UIViewController {
     var cardViewController:CardViewController!
     var visualEffectView:UIVisualEffectView!
     
-    let cardHeight:CGFloat = UIScreen.main.bounds.height - 110
-    let cardFullHeight:CGFloat = UIScreen.main.bounds.height - 110
-    var cardHandleAreaHeight:CGFloat = 110
+    let cardHeight:CGFloat = UIScreen.main.bounds.height - 130
+    let cardFullHeight:CGFloat = UIScreen.main.bounds.height - 130
+    var cardHandleAreaHeight:CGFloat = 130
     
     var cardVisible = false
     var cardFull = false

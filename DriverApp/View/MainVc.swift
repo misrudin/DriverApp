@@ -7,6 +7,7 @@
 
 import UIKit
 import LanguageManager_iOS
+import FirebaseMessaging
 
 @available(iOS 13.0, *)
 class MainVc: UIViewController {
@@ -83,6 +84,16 @@ class MainVc: UIViewController {
         engButton.addTarget(self, action: #selector(didTapEng), for: .touchUpInside)
         
         cekLanguageActive()
+        
+        
+        Messaging.messaging().token { token, error in
+          if let error = error {
+            print("Error fetching FCM registration token: \(error)")
+          } else if let token = token {
+            print("FCM registration token: \(token)")
+          }
+        }
+        
     }
     
     @objc private func didTapJav(){

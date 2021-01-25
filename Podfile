@@ -21,6 +21,7 @@ target 'DriverApp' do
   	pod 'Firebase/Database'
   	pod 'Firebase/Analytics'
   	pod 'Firebase/Crashlytics'
+    pod 'Firebase/Messaging'
     
     pod 'JGProgressHUD'
     

@@ -26,6 +26,7 @@
 		B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A388625383207000EFBB6 /* HistoryViewController.swift */; };
 		B32A389525386C2E000EFBB6 /* AesEverywhere in Frameworks */ = {isa = PBXBuildFile; productRef = B32A389425386C2E000EFBB6 /* AesEverywhere */; };
 		B335EC1E257104230082DF1D /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335EC1D257104230082DF1D /* TabBarView.swift */; };
+		B337CF0525BABD8E00A404E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B337CF0425BABD8E00A404E0 /* GoogleService-Info.plist */; };
 		B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0025434D73007BDD3A /* PopUpView.swift */; };
 		B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B092543747C007BDD3A /* ChatViewModel.swift */; };
 		B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0C2543748A007BDD3A /* ChatModel.swift */; };
@@ -98,7 +99,6 @@
 		B3E256482589B56900CDED81 /* QuickCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3E256462589B56900CDED81 /* QuickCell.xib */; };
 		B3EC8985256B5E3C00D1618D /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8984256B5E3C00D1618D /* Reusable.swift */; };
 		B3EC8989256B5ECB00D1618D /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EC8988256B5ECB00D1618D /* Constraint.swift */; };
-		B3F79C832573628E003455D1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3F79C822573628E003455D1 /* GoogleService-Info.plist */; };
 		B3F79C872573A542003455D1 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C862573A542003455D1 /* DatabaseManager.swift */; };
 		B3F79C922573E3C0003455D1 /* ForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F79C912573E3C0003455D1 /* ForgotPassword.swift */; };
 		B3F84359259196ED008950E8 /* CustomNoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F84357259196ED008950E8 /* CustomNoteCell.swift */; };
@@ -126,6 +126,8 @@
 		B32944D0254213520040E90C /* EditProfileVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileVc.swift; sourceTree = "<group>"; };
 		B32A388625383207000EFBB6 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		B335EC1D257104230082DF1D /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
+		B337CF0025BA71E000A404E0 /* DriverAppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriverAppRelease.entitlements; sourceTree = "<group>"; };
+		B337CF0425BABD8E00A404E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B33B1B0025434D73007BDD3A /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		B33B1B092543747C007BDD3A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B33B1B0C2543748A007BDD3A /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
@@ -201,7 +203,6 @@
 		B3E256462589B56900CDED81 /* QuickCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QuickCell.xib; sourceTree = "<group>"; };
 		B3EC8984256B5E3C00D1618D /* Reusable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		B3EC8988256B5ECB00D1618D /* Constraint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraint.swift; sourceTree = "<group>"; };
-		B3F79C822573628E003455D1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B3F79C862573A542003455D1 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		B3F79C912573E3C0003455D1 /* ForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassword.swift; sourceTree = "<group>"; };
 		B3F84357259196ED008950E8 /* CustomNoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNoteCell.swift; sourceTree = "<group>"; };
@@ -375,7 +376,8 @@
 		B36E09722536E11800F1B421 /* DriverApp */ = {
 			isa = PBXGroup;
 			children = (
-				B3F79C822573628E003455D1 /* GoogleService-Info.plist */,
+				B337CF0025BA71E000A404E0 /* DriverAppRelease.entitlements */,
+				B337CF0425BABD8E00A404E0 /* GoogleService-Info.plist */,
 				B32A388F25383674000EFBB6 /* Components */,
 				B36E09A0253723CF00F1B421 /* Utils */,
 				B36E098C2536E48300F1B421 /* ViewModel */,
@@ -633,6 +635,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B337CF0525BABD8E00A404E0 /* GoogleService-Info.plist in Resources */,
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */,
@@ -645,7 +648,6 @@
 				B345DE2E258B349C00AE87B0 /* Localizable.strings in Resources */,
 				B36E097D2536E11B00F1B421 /* Assets.xcassets in Resources */,
 				B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */,
-				B3F79C832573628E003455D1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -991,6 +993,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DriverApp/DriverAppRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
