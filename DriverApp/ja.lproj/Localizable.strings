@@ -9,48 +9,48 @@
 //MARK: - Button
 "Submit" = "ログイン";
 "Send" = "送信";
-"Back" = "Back";
+"Back" = "前へ";
 "Finish Registration" = "登録完了";
 "Save" = "保存";
-"Edit" = "Edit";
-"Set Work Day" = "Set Work Day";
+"Edit" = "編集";
+"Set Work Day" = "出勤に設定";
 "Set To DayOff" = "出勤に変更";
-"Edit Shift Time" = "Edit Shift Time";
-"EN" = "EN";
-"JP" = "JP";
+"Edit Shift Time" = "シフトタイムを編集";
+"EN" = "英語";
+"JP" = "日本語";
 "Done" = "完了";
-"Select Photo" = "Select Photo";
-"How would you like to select a picture ?" = "How would you like to select a picture ?";
-"Take Photo" = "Take Photo";
-"Choose Photo" = "Choose Photo";
+"Select Photo" = "写真を選択";
+"How would you like to select a picture ?" = "アップロード方法を選択";
+"Take Photo" = "写真を取る";
+"Choose Photo" = "画像を選択";
 "Cancel" = "キャンセル";
 "Yes" = "はい";
-"Continue to register ?" = "Continue to register ?";
-"Are you sure ?" = "Are you sure ?";
-"Pull to refresh" = "Pull to refresh";
+"Continue to register ?" = "登録を続けますか？";
+"Are you sure ?" = "よろしいですか？";
+"Pull to refresh" = "更新";
 "Checkout" = "チェックアウト";
-"Add" = "Add";
+"Add" = "追加";
 
 //MARK: - PLACEHOLDER
-"Email" = "EMAIL";
+"Email" = "eメール";
 
 //MARK: - TITLE NAVIGATION
 ///top navigation
-"Registration" = "情報を入力";
+"Registration" = "登録";
 "Job List" = "デリバリーリスト";
 "Jobs History" = "履歴";
 "Day Off Driver" = "シフト";
 "Plan Next Month" = "次月の予定";
 "Customer Service" = "チャット";
-"My Profile" = "My Profile";
+"My Profile" = "プロフィール";
 "Notes" = "ノート";
 "Change Password" = "パスワード変更";
-"Change Vehicle Data" = "Change Vehicle Data";
+"Change Vehicle Data" = "車両情報変更";
 "Edit Profile" = "プロフィール編集";
-"Edit Day Off" = "Edit Day Off";
+"Edit Day Off" = "勤務シフト編集";
 "Live Tracking" = "お届け先詳細";
-"Edit Vehicle Data" = "Edit Vehicle Data";
-"Pending Delivery" = "Pending Delivery";
+"Edit Vehicle Data" = "車両情報編集";
+"Pending Delivery" = "再配達";
 
 ///bottom navigation
 "Jobs" = "デリバリーリスト";
@@ -69,13 +69,13 @@
 "Forgot your password ?" = "パスワード再設定";
 
 //MARK: -  FORGOT PASSWORD
-"Enter your email address and we will share a link to create a new password" = "Enter your email address and we will share a link to create a new password";
+"Enter your email address and we will share a link to create a new password" = "メールアドレスを入力してください。パスワード更新用のリンクをお送りします";
 
-//MARK: - REGISTRATION
+//MARK: - Registration
 "Register as a freelance driver" = "フリードライバー登録";
 
 "PERSONAL INFORMATION" = "個人情報";
-"Profile Photo" = "プロフィール写真";
+"Profile Photo" = "写真";
 "First Name" = "姓";
 "Last Name" = "名";
 "Date Of Birth" = "生年月日";
@@ -88,12 +88,12 @@
 "Municipality Kana" = "市区町村・地名（カナ）";
 "Kana After Address" = "番地以降（カナ）";
 "Gender" = "性別";
-"Language" = "Language";
+"Language" = "言語";
 "Phone Number" = "電話番号";
 "First Name Hiragana" = "セイ";
 "Last Name Hiragana" = "メイ";
 
-"DRIVER LICENSE" = "DRIVER LICENSE";
+"DRIVER LICENSE" = "自動車免許";
 "License Number" = "自動車免許番号";
 "Driver's License Expiration Date" = "自動車免許有効期限";
 
@@ -103,7 +103,7 @@
 "Compensation Range-Objective" = "対物保障";
 "Insurance Expiration Date" = "保険有効期限";
 "Vehicle Name" = "車両名";
-"Vehicle Number Plate" = "9 ナンバー";
+"Vehicle Number Plate" = " ナンバー";
 "Vehicle Year" = "登録年";
 "Vehicle Ownership" = "所有者";
 "Vehicle Inspection Exp. Date" = "車検満了日";
@@ -114,8 +114,8 @@
 "Female" = "女性";
 
 //MARK: - JOB LIST
-"Pending List Order" = "Pending List Order";
-"DELIVERY LIST ORDER" = "DELIVERY LIST ORDER";
+"Pending List Order" = "再配達リスト";
+"DELIVERY LIST ORDER" = "オーダーリスト";
 "Today" = "今日";
 
 //MARK: - JOB HISTORY
@@ -123,32 +123,32 @@
 
 //MARK: - DAY OFF
 "Shift on this date" = "当日のシフト";
-"Plan Next Month" = "次月を選択";
-"Select Shift" = "Select Shift";
-"Select shift you want to add" = "Select shift you want to add";
+"Plan Next Month" = "次月";
+"Select Shift" = "配送便選択";
+"Select shift you want to add" = "配送便を選択してください";
 
 
 //MARK: - PLAN NEXT MONTH
-"Select Shift" = "Select Shift";
-"Select the shift you want to add" = "Select the shift you want to add";
-"Add" = "Add";
+"Select Shift" = "配送便選択";
+"Select the shift you want to add" = "配送便を選択してください";
+"Add" = "OK";
 
 
 
 //MARK: - CHATTING
-"Quick Chat" = "Quick Chat";
-"Hello" = "Hello";
-"Address cannot be found" = "Address cannot be found";
-"Person not at home" = "Person not at home";
-"Package not correct" = "Package not correct";
-"I have an accidents" = "I have an accidents";
-"Type your message here ..." = "Type your message here ...";
+"Quick Chat" = "チャット";
+"Hello" = "こんにちは";
+"Address cannot be found" = "住所が見つかりません";
+"Person not at home" = "受取人不在";
+"Package not correct" = "荷物の間違い";
+"I have an accidents" = "事故";
+"Type your message here ..." = "メッセージを入力してください ...";
 
 //MARK: - Rest
-"Rest" = "Rest";
-"Activate rest now" = "Activate rest now";
-"Back To Work" = "作業に戻りますか?";
-"Start rest now ?" = "休憩しますか?";
+"Rest" = "休憩";
+"Activate rest now" = "休憩する";
+"Back To Work" = "仕事に戻る";
+"Start rest now ?" = "休憩に入りますか ?";
 
 //MARK: - PROFILE
 "Note" = "ノート";
@@ -156,6 +156,7 @@
 "Change Vehicle Data" = "車両情報変更";
 "Logout" = "ログアウト";
 "Do you want to checkout now" = "チェックアウトしはいますか?";
+"Do you want to logout ?" = "ログアウトしますか？";
 
 //MARK: - CHANGE PROFILE
 "Continue to edit profile ?" = "Continue to edit profile ?";
@@ -168,7 +169,7 @@
 "Success edit password" = "パスワード変更完了";
 
 //MARK: - NOTES
-"Failed to sending note" = "Failed to sending note";
+"Failed to sending note" = "メモを送信できませんでした";
 
 //MARK: - SEND NOTES
 
@@ -176,85 +177,85 @@
 "Change vehicle data success" = "変更完了";
 
 //MARK: - Scan Stuff
-"Scan QR Code to Verify" = "Scan QR Code to Verify";
-"Finish" = "Finish";
-"Add  Code Manually" = "Add  Code Manually";
-"Delivery Order List" = "QR コードスキャン";
-"Item for this order" = "Item for this order";
-"Extra pickup item for Order No" = "Extra pickup item for Order No";
-"Try Again" = "Try Again";
-"Item code not found." = "Item code not found.";
-"Add code manual" =  "Add code manual";
-"Verify Package" = "Verify Package";
-"Input code here ..." = "Input code here ...";
-"Add Order Code" = "Add Order Code";
+"Scan QR Code to Verify" = "QRコードをスキャンしてください";
+"Finish" = "完了";
+"Add  Code Manually" = "手動で入力";
+"Delivery Order List" = "オーダーリスト";
+"Item for this order" = "注文商品";
+"Extra pickup item for Order No" = "追加のピックアップ商品";
+"Try Again" = "もう一度";
+"Item code not found." = "コードが一致しません.";
+"Add code manual" =  "手動で入力";
+"Verify Package" = "商品を確認";
+"Input code here ..." = "コードを入力してください ...";
+"Add Order Code" = "コードを追加";
 
-"Scanner not supported" = "Scanner not supported";
-"Please use a device with a camera. Because this device does not support scanning a code" = "Please use a device with a camera. Because this device does not support scanning a code";
-"Input Manual" = "Input Manual";
+"Scanner not supported" = "スキャナーは使用できません";
+"Please use a device with a camera. Because this device does not support scanning a code" = "スマートフォンのカメラを使用してください";
+"Input Manual" = "手動で入力";
 
 //MARK: - ERROR MESSAGE
-"Profile photo must be entered !" = "Profile photo must be entered !";
-"Vehicle certification photo must be entered !" = "Vehicle certification photo must be entered !";
-"Vehicle photo must be entered !" = "Vehicle photo must be entered !";
-"Email not found !" = "Email not found !";
-"Failed to decline this order !" = "Failed to decline this order !";
-"Plese select day !" = "Plese select day !";
-"Opss" = "Opss";
-"Failed to edit data !" = "Failed to edit data !";
-"Failed to parse data" = "Failed to parse data";
-"Failed to get data from server." = "Failed to get data from server.";
-"Failed to post data" = "Failed to post data";
-"Failed to decode json data" = "Failed to decode json data";
-"Failed to fetch data !" = "Failed to fetch data !";
-"Failed to checkout !" = "Failed to checkout !";
-"Something when wrong !" = "Something when wrong !";
+"Profile photo must be entered !" = "写真が必要です";
+"Vehicle certification photo must be entered !" = "車検証の画像が必要です";
+"Vehicle photo must be entered !" = "車両の写真が必要です";
+"Email not found !" = "メールアドレスが正しくありません";
+"Failed to decline this order !" = "オーダーの取消に失敗しました";
+"Plese select day !" = "日付を選択してください";
+"Opss" = "！";
+"Failed to edit data !" = "編集できません";
+"Failed to parse data" = "解析できません";
+"Failed to get data from server." = "データが取得できません";
+"Failed to post data" = "入力できません";
+"Failed to decode json data" = "jsonデータが入力できません";
+"Failed to fetch data !" = "データが取得できません";
+"Failed to checkout !" = "チェックアウトできません";
+"Something when wrong !" = "内容をご確認ください";
 
 //MARK: - SUCCESS MESSAGE
-"Registration data has been sent please wait us to verification your data. We will contact you by email." = "承認待ち Eメールを確認して下さい";
-"Registration success" = "Registration success";
-"Please check your email !" = "Eメ ルを確認してください";
-"Success" = "送信完了";
+"Registration data has been sent please wait us to verification your data. We will contact you by email." = "入力された内容を登録しております。完了はメールでお知らせします";
+"Registration success" = "登録が完了しました";
+"Please check your email !" = "メールをご確認ください";
+"Success" = "完了";
 "Loading" = "読み込み中";
 
 //MARK: - OTHER MESSAGE
-"Please select profile picture !" = "Please select profile picture !";
-"First name must be entered !" = "First name must be entered !";
-"Last name must be entered !" = "Last name must be entered !";
-"First name hiragana must be entered !" = "First name hiragana must be entered !";
-"Last name hiragana must be entered !" = "Last name hiragana must be entered !";
-"Birth date must be entered !" = "Birth date must be entered !";
-"Postal code must be entered !" = "Postal code must be entered !";
-"Birth date must be entered !" = "Birth date must be entered !";
-"Municipal district must be entered !" = "Municipal district must be entered !";
-"Chome address must be entered !" = "Chome address must be entered !";
-"Municipality kana must be entered !" = "Municipality kana must be entered !";
-"Kana after address must be entered !" = "Kana after address must be entered !";
-"Gender must be entered !" = "Gender must be entered !";
-"Language must be entered !" = "Language must be entered !";
-"Phone number must be entered !" = "Phone number must be entered !";
-"Email must be entered !" = "Email must be entered !";
-"Password must be entered !" = "Password must be entered !";
-"License number must be entered !" = "License number must be entered !";
-"License expiration date must be entered !" = "License expiration date must be entered !";
-"Insurance company must be entered !" = "Insurance company must be entered !";
-"Personal coverage must be entered !" = "Personal coverage must be entered !";
-"Compention range object must be entered !" = "Compention range object must be entered !";
-"Insurance expiration date must be entered !" = "Insurance expiration date must be entered !";
-"Vehicle name must be entered !" = "Vehicle name must be entered !";
-"Vehicle year must be entered !" = "Vehicle year must be entered !";
-"Vehicle ownership must be entered !" = "Vehicle ownership must be entered !";
-"Vehicle certification expiration must be entered !" = "Vehicle certification expiration must be entered !";
-"Vehicle certification photo must be entered !" = "Vehicle certification photo must be entered !";
-"Vehicle photo must be entered !" = "Vehicle photo must be entered !";
-"Register failed !" = "Register failed !";
-"Please use a valid email !" = "Please use a valid email !";
-"Vehicle plate must be entered !" = "Vehicle plate must be entered !";
-"Vehicle inspection certificate expiration date must be entered !"  ="Vehicle inspection certificate expiration date must be entered !";
-"Insurance company name must be entered !" = "Insurance company name must be entered !";
-"Coverage personal must be entered !" = "Coverage personal must be entered !";
-"Compensation range must be entered !" = "Compensation range must be entered !";
-"Driver not checkin/checkout yet" = "Driver not checkin/checkout yet";
+"Please select profile picture !" = "プロフィール写真を選択してください";
+"First name must be entered !" = "名を入力してください";
+"Last name must be entered !" = "姓を入力してください";
+"First name hiragana must be entered !" = "名（カナ）を入力してください";
+"Last name hiragana must be entered !" = "姓（カナ）を入力してください";
+"Birth date must be entered !" = "生年月日を入力してください";
+"Postal code must be entered !" = "郵便番号を入力してください";
+"Birth date must be entered !" = "生年月日を入力してください";
+"Municipal district must be entered !" = "市区町村を入力してください";
+"Chome address must be entered !" = "字名・番地を入力してください";
+"Municipality kana must be entered !" = "市区町村（カナ）を入力してください";
+"Kana after address must be entered !" = "字名・番地（カナ）を入力してください";
+"Gender must be entered !" = "性別を選択してください";
+"Language must be entered !" = "言語を入力してください";
+"Phone number must be entered !" = "電話番号を入力してください";
+"Email must be entered !" = "メールアドレスを入力してください";
+"Password must be entered !" = "パスワードを入力してください";
+"License number must be entered !" = "自動車免許番号を入力してください";
+"License expiration date must be entered !" = "自動車免許の有効期限を入力してください";
+"Insurance company must be entered !" = "自動車保険会社を入力してください";
+"Personal coverage must be entered !" = "対人保証範囲を入力してください";
+"Compention range object must be entered !" = "対物保証範囲を入力してください";
+"Insurance expiration date must be entered !" = "自動車保険の有効期限を入力してください";
+"Vehicle name must be entered !" = "車両名を入力してください";
+"Vehicle year must be entered !" = "登録年を入力してください !";
+"Vehicle ownership must be entered !" = "車両所有者を入力してください !";
+"Vehicle certification expiration must be entered !" = "車検日を入力してください !";
+"Vehicle certification photo must be entered !" = "車検証画像を入力してください !";
+"Vehicle photo must be entered !" = "車両の写真を入力してください !";
+"Register failed !" = "登録できません";
+"Please use a valid email !" = "正しいメールアドレスを入力してください";
+"Vehicle plate must be entered !" = "ナンバーを入力してください";
+"Vehicle inspection certificate expiration date must be entered !"  ="車検証有効期限を入力してください";
+"Insurance company name must be entered !" = "自動車保険会社名を入力してください";
+"Coverage personal must be entered !" = "対人保証範囲を入力してください";
+"Compensation range must be entered !" = "対物保証範囲を入力してください";
+"Driver not checkin/checkout yet" = "ドライバーがチェックイン/チェックアウトしていません";
 
 
 
@@ -273,44 +274,44 @@
 "December" = "十二月";
 
 //MARK: - Components
-"Pending by System" = "Pending by System";
-"Pending" = "保留";
+"Pending by System" = "システムにより再配達";
+"Pending" = "再配達";
 "Order No" = "注文番号";
 "PickUp Address" = "ピックアップ店舗";
-"Delivery To" = "Delivery To";
-"Select Shift" = "Select Shift";
-"Select shift you want to add" = "Select shift you want to add";
+"Delivery To" = "お届け先";
+"Select Shift" = "配送便選択";
+"Select shift you want to add" = "配送便を選択してください";
 
-"Pickup Order" = "受注";
-"Item Name" = "Item Name";
-"See Details" = "See Details";
+"Pickup Order" = "ピックアップする";
+"Item Name" = "商品名";
+"See Details" = "詳細";
 "PickUp Store" = "ピックアップ店舗";
 "Receiver" = "お届け先";
-"Hide" = "Hide";
+"Hide" = "隠す";
 "Scan Stuff" = "スキャン";
-"Done Pickup" = "受取完了";
+"Done Pickup" = "ピックアップ完了";
 "Next Store" = "次の店舗へ";
 "Start Delivery" = "配送開始";
-"Done Delivery" = "配送完了";
+"Done Delivery" = "完了";
 
-"Scan" = "Scan";
-"Verified" = "Verified";
+"Scan" = "スキャン";
+"Verified" = "確認済";
 "Unverified" = "待機中";
-"Code" = "Code";
+"Code" = "コード";
 
 "Date" = "日付";
 "Status" = "対応状況";
-"Delivery Time" = "Delivery Time";
-"Delivery To" = "Delivery To";
-"Rating and Review" = "Rating and Review";
-"has not reviewed by admin" = "has not reviewed by admin";
+"Delivery Time" = "お届け時間";
+"Delivery To" = "お届け先";
+"Rating and Review" = "評価";
+"has not reviewed by admin" = "管理者の確認待ち";
 
-"Quick Chat" = "クイックチャット";
-"Hello" = "Hello";
-"Address cannot be found" = "住所が見つからない";
-"Person not at home" = "不在";
+"Quick Chat" = "チャット";
+"Hello" = "こんにちは";
+"Address cannot be found" = "住所が見つかりません";
+"Person not at home" = "受取人不在";
 "Package not correct" = "商品間違い";
-"I have an accidents" = "事故";
+"I have an accidents" = "交通事故";
 "Other" = "その他";
 
-"Tell Your Pending Delivery Reason" = "保留の理由を選択し";
+"Tell Your Pending Delivery Reason" = "再配達理由を入力してください";

@@ -155,6 +155,7 @@
 "Change Vehicle Data" = "Change Vehicle Data";
 "Logout" = "Logout";
 "Do you want to checkout now" = "Do you want to checkout now";
+"Do you want to logout ?" = "Do you want to logout ?";
 
 
 //MARK: - CHANGE PROFILE

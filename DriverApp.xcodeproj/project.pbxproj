@@ -26,7 +26,6 @@
 		B32A388725383207000EFBB6 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A388625383207000EFBB6 /* HistoryViewController.swift */; };
 		B32A389525386C2E000EFBB6 /* AesEverywhere in Frameworks */ = {isa = PBXBuildFile; productRef = B32A389425386C2E000EFBB6 /* AesEverywhere */; };
 		B335EC1E257104230082DF1D /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B335EC1D257104230082DF1D /* TabBarView.swift */; };
-		B337CF2A25BEDE5900A404E0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B337CF2925BEDE5900A404E0 /* GoogleService-Info.plist */; };
 		B33B1B0125434D73007BDD3A /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0025434D73007BDD3A /* PopUpView.swift */; };
 		B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B092543747C007BDD3A /* ChatViewModel.swift */; };
 		B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0C2543748A007BDD3A /* ChatModel.swift */; };
@@ -75,6 +74,7 @@
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
 		B392EC6125A84FE100AF110D /* EditCurrentDayOff.swift in Sources */ = {isa = PBXBuildFile; fileRef = B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */; };
+		B398744C25C16077000DB3BE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B398744B25C16077000DB3BE /* GoogleService-Info.plist */; };
 		B3A0521725773CBD00BC6FE0 /* Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521625773CBD00BC6FE0 /* Encrypt.swift */; };
 		B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521A2577794A00BC6FE0 /* Preview.swift */; };
 		B3A7EA6B25AC197100A75DD6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3A7EA6A25AC197100A75DD6 /* MapKit.framework */; };
@@ -127,7 +127,6 @@
 		B32A388625383207000EFBB6 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		B335EC1D257104230082DF1D /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		B337CF0025BA71E000A404E0 /* DriverAppRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DriverAppRelease.entitlements; sourceTree = "<group>"; };
-		B337CF2925BEDE5900A404E0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B33B1B0025434D73007BDD3A /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		B33B1B092543747C007BDD3A /* ChatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewModel.swift; sourceTree = "<group>"; };
 		B33B1B0C2543748A007BDD3A /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
@@ -179,6 +178,7 @@
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
 		B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCurrentDayOff.swift; sourceTree = "<group>"; };
+		B398744B25C16077000DB3BE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B3A0521625773CBD00BC6FE0 /* Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encrypt.swift; sourceTree = "<group>"; };
 		B3A0521A2577794A00BC6FE0 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		B3A7EA6A25AC197100A75DD6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -376,7 +376,7 @@
 		B36E09722536E11800F1B421 /* DriverApp */ = {
 			isa = PBXGroup;
 			children = (
-				B337CF2925BEDE5900A404E0 /* GoogleService-Info.plist */,
+				B398744B25C16077000DB3BE /* GoogleService-Info.plist */,
 				B337CF0025BA71E000A404E0 /* DriverAppRelease.entitlements */,
 				B32A388F25383674000EFBB6 /* Components */,
 				B36E09A0253723CF00F1B421 /* Utils */,
@@ -635,7 +635,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B337CF2A25BEDE5900A404E0 /* GoogleService-Info.plist in Resources */,
+				B398744C25C16077000DB3BE /* GoogleService-Info.plist in Resources */,
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */,
@@ -1004,7 +1004,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.kasumi.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
