@@ -18,6 +18,8 @@ class QuickCell: UITableViewCell {
     @IBOutlet weak var item3: UIView!
     @IBOutlet weak var item4: UIView!
     @IBOutlet weak var item5: UIView!
+    @IBOutlet weak var item7: UIView!
+    
     @IBOutlet weak var lastItem: UIView!
     @IBOutlet weak var item6: UIView!
     @IBOutlet weak var label1: UILabel!
@@ -26,12 +28,13 @@ class QuickCell: UITableViewCell {
     @IBOutlet weak var label4: UILabel!
     @IBOutlet weak var label5: UILabel!
     @IBOutlet weak var label6: UIView!
+    @IBOutlet weak var label7: UILabel!
     
     var vi = ChatView()
     
     var chatVm = ChatViewModel()
     var messages:[String] = [
-        "Hello".localiz(), "Address cannot be found".localiz(), "Person not at home".localiz(), "Package not correct".localiz(), "I have an accidents".localiz()
+        "Hello".localiz(), "Address cannot be found".localiz(), "Person not at home".localiz(), "Package not correct".localiz(), "I have an accidents".localiz(), "Trafic Jam".localiz()
     ]
     
     
@@ -50,6 +53,7 @@ class QuickCell: UITableViewCell {
         label3.text = "Person not at home".localiz()
         label4.text = "Package not correct".localiz()
         label5.text = "I have an accidents".localiz()
+        label7.text = "Trafic Jam".localiz()
         label5.text = "Other".localiz()
         item1.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item2.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
@@ -57,12 +61,14 @@ class QuickCell: UITableViewCell {
         item4.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item5.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item6.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
+        item7.addBorder(toSide: .Bottom, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
+        
         
         container.dropShadow(color: UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1), opacity: 0.1, offSet: CGSize(width: 0, height: 0), radius: 5, scale: true)
         
         lastItem.roundCorners([.bottomLeft, .bottomRight], radius: 5)
         
-        [item1,item2,item3,item4,item5].enumerated().forEach { (i, e) in
+        [item1,item2,item3,item4,item5, item7].enumerated().forEach { (i, e) in
             e?.isUserInteractionEnabled = true
             let tap = CustomTap(target: self, action: #selector(tapQuickChat))
             tap.ourCustomValue = i

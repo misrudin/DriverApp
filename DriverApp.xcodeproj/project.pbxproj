@@ -13,6 +13,7 @@
 		B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1892539424C00D693D3 /* LoginModel.swift */; };
 		B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A52539F6FD00D693D3 /* UserModel.swift */; };
 		B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */; };
+		B31B758725C7B9D3000A511E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B31B758625C7B9D3000A511E /* GoogleService-Info.plist */; };
 		B31E53A22587292C004875F2 /* Pangesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31E53A12587292B004875F2 /* Pangesture.swift */; };
 		B31E53C5258741A8004875F2 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31E53C4258741A8004875F2 /* ChatView.swift */; };
 		B32407FB25677A6D00BFF72D /* EditEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32407FA25677A6C00BFF72D /* EditEmail.swift */; };
@@ -74,7 +75,6 @@
 		B38C1B0E255E6B1E0078EE83 /* InOutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */; };
 		B38C1B11255E6B360078EE83 /* InOutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38C1B10255E6B360078EE83 /* InOutModel.swift */; };
 		B392EC6125A84FE100AF110D /* EditCurrentDayOff.swift in Sources */ = {isa = PBXBuildFile; fileRef = B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */; };
-		B398744C25C16077000DB3BE /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B398744B25C16077000DB3BE /* GoogleService-Info.plist */; };
 		B3A0521725773CBD00BC6FE0 /* Encrypt.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521625773CBD00BC6FE0 /* Encrypt.swift */; };
 		B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521A2577794A00BC6FE0 /* Preview.swift */; };
 		B3A7EA6B25AC197100A75DD6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3A7EA6A25AC197100A75DD6 /* MapKit.framework */; };
@@ -114,6 +114,7 @@
 		B31AF1892539424C00D693D3 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		B31AF1A52539F6FD00D693D3 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		B31B758625C7B9D3000A511E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B31E53A12587292B004875F2 /* Pangesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pangesture.swift; sourceTree = "<group>"; };
 		B31E53C4258741A8004875F2 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		B32407FA25677A6C00BFF72D /* EditEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmail.swift; sourceTree = "<group>"; };
@@ -178,7 +179,6 @@
 		B38C1B0D255E6B1E0078EE83 /* InOutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutViewModel.swift; sourceTree = "<group>"; };
 		B38C1B10255E6B360078EE83 /* InOutModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InOutModel.swift; sourceTree = "<group>"; };
 		B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCurrentDayOff.swift; sourceTree = "<group>"; };
-		B398744B25C16077000DB3BE /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Documents/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B3A0521625773CBD00BC6FE0 /* Encrypt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encrypt.swift; sourceTree = "<group>"; };
 		B3A0521A2577794A00BC6FE0 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		B3A7EA6A25AC197100A75DD6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -376,7 +376,7 @@
 		B36E09722536E11800F1B421 /* DriverApp */ = {
 			isa = PBXGroup;
 			children = (
-				B398744B25C16077000DB3BE /* GoogleService-Info.plist */,
+				B31B758625C7B9D3000A511E /* GoogleService-Info.plist */,
 				B337CF0025BA71E000A404E0 /* DriverAppRelease.entitlements */,
 				B32A388F25383674000EFBB6 /* Components */,
 				B36E09A0253723CF00F1B421 /* Utils */,
@@ -635,7 +635,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B398744C25C16077000DB3BE /* GoogleService-Info.plist in Resources */,
+				B31B758725C7B9D3000A511E /* GoogleService-Info.plist in Resources */,
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */,
@@ -972,14 +972,15 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = JUU4Y84U39;
+				DEVELOPMENT_TEAM = Y42336R3PS;
 				INFOPLIST_FILE = DriverApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management3";
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -1004,7 +1005,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.kasumi.driver-management";
+				MARKETING_VERSION = 1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

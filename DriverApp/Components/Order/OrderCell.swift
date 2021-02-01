@@ -54,11 +54,11 @@ class OrderCell: UITableViewCell {
 
             date.text = "\(start) - \(end)"
 
-//            var arrayOfStore: [String] = []
-//            for item in orderDetail.pickup_destination {
-//                arrayOfStore.append(item.pickup_store_name)
-//            }
-//            pickupAddress.text = arrayOfStore.joined(separator: " - ")
+            var arrayOfStore: [String] = []
+            for item in orderDetail.pickup_destination {
+                arrayOfStore.append(item.pickup_store_name)
+            }
+            pickupAddress.text = arrayOfStore.joined(separator: " - ")
             
             guard let userInfo = orderVm.decryptUserInfo(data: orderData.user_info, OrderNo: orderData.order_number) else {
                 return

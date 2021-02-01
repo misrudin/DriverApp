@@ -32,5 +32,6 @@ struct ResponseData: Codable {
     enum CodeingKeys: String, CodingKey{
         case Message
         case Message_JP
+        
     }
 }

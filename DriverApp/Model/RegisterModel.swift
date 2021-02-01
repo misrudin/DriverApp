@@ -106,4 +106,5 @@ struct VehicleEditData: Codable {
     let first_name: String
     let last_name: String
     let email: String
+    let id_group: Int
 }

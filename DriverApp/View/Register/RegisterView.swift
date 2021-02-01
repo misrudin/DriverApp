@@ -982,6 +982,7 @@ class RegisterView: UIViewController {
 
         //We make a call to our keyboard handling function as soon as the view is loaded.
         initializeHideKeyboard()
+        firstName.becomeFirstResponder()
         
         //dummy
         
@@ -1005,12 +1006,12 @@ class RegisterView: UIViewController {
 //              insuranceCompany.text = "234234"
 //              personalCoverage.text = "232"
 //              compensation.text = "214234"
-//              insuranceExpirationDate.text = "24324"
+//              insuranceExpirationDate.text = "15-05-2030"
 //              vehicleName.text = "234234"
 //              vehicleNumberPlate.text = "23424"
-//              vehicleYear.text = "23424"
+//              vehicleYear.text = "2022"
 //              vehicleOwnership.text = "234234"
-//              vehicleInspectionExpDate.text = "@3444"
+//              vehicleInspectionExpDate.text = "15-05-2030"
     }
     
     override func viewWillDisappear(_ animated: Bool) {

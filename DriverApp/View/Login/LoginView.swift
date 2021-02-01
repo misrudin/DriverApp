@@ -92,7 +92,6 @@ class LoginView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
-        field.text = "20110066"
         field.textColor = .white
         field.keyboardType = .numberPad
         return field
@@ -104,7 +103,6 @@ class LoginView: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
-        field.text = "admin"
         field.textColor = .white
         field.isSecureTextEntry = true
         return field
@@ -137,6 +135,10 @@ class LoginView: UIViewController {
         codeDriver.delegate = self
         password.delegate = self
         loginViewModel.delegate = self
+        codeDriver.becomeFirstResponder()
+        
+//        codeDriver.text = "201110068"
+//        password.text = "admin"
         
         
         loginButton.addTarget(self, action: #selector(didLoginTap), for: .touchUpInside)
@@ -278,10 +280,12 @@ extension LoginView: LoginViewModelDelegate {
     func didLoginSuccess(_ viewModel: LoginViewModel, user: User) {
         DispatchQueue.main.async {
             
+            print(user)
             let userData: [String:Any] = [
                 "codeDriver": user.codeDriver,
                 "idDriver":user.id,
-                "status": "\(user.status)"
+                "status": "\(user.status)",
+                "idGroup": user.id_group ?? 1
             ]
           
                 UserDefaults.standard.setValue(userData, forKey: "userData")

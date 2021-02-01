@@ -527,7 +527,7 @@ class CardViewController: UIViewController {
                     let statusTracking = data.status_tracking
                     
                     if statusTracking == "wait for pickup" || statusTracking == "" {
-                        self?.titleButton = "Pickup Order"
+                        self?.titleButton = "Pickup Order".localiz()
                         self?.setupDefaultButton()
                         self?.statusDelivery = .start_pickup
                         self?.hideDetail()

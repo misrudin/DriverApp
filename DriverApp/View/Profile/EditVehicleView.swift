@@ -936,27 +936,12 @@ extension EditVehicleView {
         formater.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateAdd = formater.string(from: Date())
         
-//        let dataToPost: [String:Any] = [
-//            "code_driver": codeDriver,
-//            "vehicle_name": vName,
-//            "vehicle_number_plate": vPlate,
-//            "vehicle_year": vYear,
-//            "vehicle_ownership": vOwner,
-//            "vehicle_inspection_certificate_expiration_date": vCerExp,
-//            "vehicle_inspection_certificate_photo": vCerPhoto,
-//            "insurance_company_name": insuranceCom,
-//            "coverage_personal": personalCov,
-//            "compensation_range_objective": comRangeObj,
-//            "insurance_expiration_date": insuranceExpDate,
-//            "date_edit": dateAdd,
-//            "vehicle_photo1": vPhoto1,
-//            "vehicle_photo2": vPhoto2,
-//            "vehicle_photo3": vPhoto3,
-//            "first_name": firstName,
-//            "last_name": lastName,
-//            "email": email
-//        ]
-//
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let idGroup = userData["idGroup"] as? Int else {
+            print("no user data in storage")
+            return
+        }
+        
         let dataEdit: VehicleEditData = VehicleEditData(code_driver: codeDriver,
                                                         vehicle_name: vName,
                                                         vehicle_number_plate: vPlate,
@@ -974,7 +959,8 @@ extension EditVehicleView {
                                                         vehicle_photo3: vPhoto3,
                                                         first_name: firstName,
                                                         last_name: lastName,
-                                                        email: email)
+                                                        email: email,
+                                                        id_group: idGroup)
         spiner.dismiss()
         let action1 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
             self?.submitEdit(data: dataEdit)

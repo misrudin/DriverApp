@@ -54,7 +54,8 @@ struct LoginViewModel {
             let idDriver = decodedData.data.id
             let codeDriver = decodedData.data.codeDriver
             let status = decodedData.data.status
-            let user = User(id: idDriver, codeDriver: codeDriver, status: status)
+            let idGroup = decodedData.data.id_group
+            let user = User(id: idDriver, codeDriver: codeDriver, status: status, id_group: idGroup)
             return user
         }catch{
             delegate?.didFailedLogin(error)

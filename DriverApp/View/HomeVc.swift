@@ -118,6 +118,14 @@ class HomeVc: UIViewController {
         emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         labelEmpty.anchor(top: emptyImage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
         labelEmpty.isHidden = true
+        
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let idGroup = userData["idGroup"] as? Int else {
+            logout()
+            return
+        }
+        
+        print("idGroup => ", idGroup)
     }
     
     private func getCurrentPosition(){
@@ -125,6 +133,11 @@ class HomeVc: UIViewController {
         manager?.requestWhenInUseAuthorization()
         manager?.startUpdatingLocation()
         manager?.delegate = self
+    }
+    
+    private func logout(){
+        UserDefaults.standard.removeObject(forKey: "userData")
+        dismiss(animated: true, completion: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -150,7 +163,6 @@ class HomeVc: UIViewController {
             return
         }
         
-        print(codeDriver)
         
         if let session = UserDefaults.standard.value(forKey: "userSession") as? [String: Any] {
             if session["date"] as? String != dateString {

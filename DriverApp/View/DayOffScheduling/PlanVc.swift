@@ -869,14 +869,15 @@ class PlanVc: UIViewController {
         
         //       MARK: - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
+              let codeDriver = userData["codeDriver"] as? String,
+              let idGroup = userData["idGroup"] as? Int else {
             print("No user data")
             return
         }
         
         spiner.show(in: view)
         
-        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) {[weak self] (response) in
+        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver, idGroup: idGroup) {[weak self] (response) in
             switch response {
             case .success(_):
                 DispatchQueue.main.async {
@@ -975,14 +976,15 @@ class PlanVc: UIViewController {
         
         //       MARK: - SIMPAN DATA
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
+              let codeDriver = userData["codeDriver"] as? String,
+              let idGroup = userData["idGroup"] as? Int else {
             print("No user data")
             return
         }
         
         spiner.show(in: view)
         
-        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver) {[weak self] (response) in
+        dayOfVm.setPlanDayOff(data: dayOffPlan, codeDriver: codeDriver, idGroup: idGroup) {[weak self] (response) in
             switch response {
             case .success(_):
                 DispatchQueue.main.async {

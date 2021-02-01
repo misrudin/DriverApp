@@ -23,7 +23,9 @@ class MainVc: UIViewController {
         return view
     }()
     
-    private let imageView = Reusable.makeImageView(image: UIImage(named: "logoKasumi"), contentMode: .scaleAspectFit)
+    private let imageView = Reusable.makeImageView(image: UIImage(named: "logoKasumi"), contentMode: .scaleAspectFill)
+    
+    private let labelAppName = Reusable.makeLabel(font: .systemFont(ofSize: 15, weight: .bold), color: .white, numberOfLines: 0, alignment: .center)
     
     private let bg = Reusable.makeImageView(image: UIImage(named: "bgMain"), contentMode: .scaleToFill)
     
@@ -55,8 +57,21 @@ class MainVc: UIViewController {
         view.addSubview(visualEffectView)
         view.insertSubview(bg, at: 0)
         view.addSubview(imageView)
+        view.addSubview(labelAppName)
         view.addSubview(loginButton)
         view.addSubview(signupButton)
+        
+        loginButton.alpha = 0
+        signupButton.alpha = 0
+        engButton.alpha = 0
+        javButton.alpha = 0
+        
+        loginButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+        signupButton.transform = CGAffineTransform(scaleX: 0, y: 0)
+        
+        if let displayName = Bundle.main.displayName {
+            labelAppName.text = displayName
+        }
         
         view.addSubview(javButton)
         view.addSubview(engButton)
@@ -68,14 +83,21 @@ class MainVc: UIViewController {
         
         imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageView.anchor(width: 64, height: 64)
+        imageView.anchor(width: 80, height: 80)
+        labelAppName.translatesAutoresizingMaskIntoConstraints = false
+        labelAppName.bottom(toAnchor: imageView.bottomAnchor, space: 30)
+        labelAppName.left(toAnchor: view.leftAnchor, space: 10)
+        labelAppName.right(toAnchor: view.rightAnchor, space: -10)
+        labelAppName.isHidden = true
+        imageView.isHidden = true
+        
         signupButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 20, paddingLeft: 16, paddingRight: 16, height: 45)
         
         loginButton.anchor(left: view.leftAnchor, bottom: signupButton.topAnchor, right: view.rightAnchor, paddingBottom: 16, paddingLeft: 16, paddingRight: 16, height: 45)
        
-        javButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: engButton.leftAnchor, paddingTop: 16, paddingRight: 10, width: 40, height: 30)
+        javButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: engButton.leftAnchor, paddingTop: 16, paddingRight: 10, width: 60, height: 30)
         
-        engButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 16, paddingRight: 16, width: 40, height: 30)
+        engButton.anchor(top: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor, paddingTop: 16, paddingRight: 16, width: 60, height: 30)
         
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside)
         signupButton.addTarget(self, action: #selector(register), for: .touchUpInside)
@@ -153,14 +175,6 @@ class MainVc: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loginButton.alpha = 0
-        signupButton.alpha = 0
-        javButton.alpha = 0
-        engButton.alpha = 0
-        loginButton.transform = CGAffineTransform(scaleX: 0, y: 0)
-        signupButton.transform = CGAffineTransform(scaleX: 0, y: 0)
-        javButton.transform = CGAffineTransform(scaleX: 0, y: 0)
-        engButton.transform = CGAffineTransform(scaleX: 0, y: 0)
         cekUser()
         cekLanguageActive()
     }
@@ -262,12 +276,17 @@ class MainVc: UIViewController {
                 self.javButton.alpha = 1
                 self.loginButton.transform = CGAffineTransform(scaleX: 1, y: 1)
                 self.signupButton.transform = CGAffineTransform(scaleX: 1, y: 1)
-                self.javButton.transform = CGAffineTransform(scaleX: 1, y: 1)
-                self.engButton.transform = CGAffineTransform(scaleX: 1, y: 1)
             })
         }
     }
     
     
     
+}
+
+
+extension Bundle {
+    var displayName: String? {
+        return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+    }
 }
