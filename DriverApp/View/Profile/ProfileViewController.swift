@@ -353,8 +353,8 @@ class ProfileViewController: UIViewController {
             return
         }
         
-        let confirmationAlert = UIAlertController(title: "Are you sure ?".localiz(),
-                                                  message: "Do you want to logout ?".localiz(),
+        let confirmationAlert = UIAlertController(title: "Do you want to logout ?".localiz(),
+                                                  message: "",
                                                   preferredStyle: .alert)
         confirmationAlert.addAction(UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil))
         confirmationAlert.addAction(UIAlertAction(title: "Yes".localiz(), style: .default, handler: {[weak self] (_) in
@@ -391,7 +391,7 @@ class ProfileViewController: UIViewController {
             self?.didCheckout(false)
         }
         
-        Helpers().showAlert(view: self, message: "Do you want to checkout now".localiz(), customTitle: "".localiz(), customAction1: action1, customAction2: action2)
+        Helpers().showAlert(view: self, message: "", customTitle: "Do you want to checkout now".localiz(), customAction1: action1, customAction2: action2)
     }
     
     private func didCheckout(_ logout: Bool){

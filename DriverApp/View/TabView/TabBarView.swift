@@ -19,7 +19,7 @@ class TabBarView: FloatingTabBarController {
         
         let homeVc = HomeVc()
         let historyVc = HistoryViewController()
-        let dayOffVc = DayOffVc()
+        let dayOffVc = EditCurrentDayOff()
         
         let image = UIImage(named: "homeIcon")
         let baru = image?.resizeImage(CGSize(width: 25, height: 25))

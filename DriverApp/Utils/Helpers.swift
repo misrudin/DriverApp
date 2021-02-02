@@ -100,7 +100,7 @@ extension UIView {
 struct Helpers {
     func showAlert(view: UIViewController,message:String,customTitle: String? = nil,customAction1: UIAlertAction? = nil,customAction2: UIAlertAction? = nil){
         
-        let alert = UIAlertController(title: customTitle == nil ? "Woopss !" : customTitle, message: message, preferredStyle: .alert)
+        let alert = UIAlertController(title: customTitle == nil ? "" : customTitle, message: message, preferredStyle: .alert)
 
         if let action1 = customAction1 {
             alert.addAction(action1)
@@ -111,7 +111,7 @@ struct Helpers {
         }
         
         if customAction2 == nil && customAction1 == nil {
-            alert.addAction(UIAlertAction(title: "Try Again", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Try Again".localiz(), style: .default, handler: nil))
         }
 
         view.present(alert, animated: true)

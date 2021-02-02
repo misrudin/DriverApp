@@ -255,7 +255,7 @@ class EditCurrentDayOff: UIViewController {
         return cv
     }()
     
-    let waitingText = Reusable.makeLabel(text: "Waiting for approval from admin", font: .systemFontItalic(size: 14, fontWeight: .regular), color: UIColor(named: "orangeKasumi")!, numberOfLines: 0, alignment: .center)
+    let waitingText = Reusable.makeLabel(text: "Waiting for approval from admin".localiz(), font: .systemFontItalic(size: 14, fontWeight: .regular), color: UIColor(named: "orangeKasumi")!, numberOfLines: 0, alignment: .center)
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -340,6 +340,7 @@ class EditCurrentDayOff: UIViewController {
     func todayDate(){
         let date = Date()
         let dateFor = DateFormatter()
+        dateFor.locale = Locale(identifier: "jp")
         dateFor.dateFormat = "EE, dd MMM Y"
         
         let dayString = dateFor.string(from: date)
@@ -410,8 +411,8 @@ class EditCurrentDayOff: UIViewController {
     @objc
     func openModal(){
         if selectedWeek == nil && selectedDay == nil {
-            let action = UIAlertAction(title: "Oke", style: .default, handler: nil)
-            Helpers().showAlert(view: self, message: "Plese select day !".localiz(), customTitle: "Opss", customAction1: action)
+            let action = UIAlertAction(title: "Oke".localiz(), style: .default, handler: nil)
+            Helpers().showAlert(view: self, message: "Plese select day !".localiz(), customTitle: "Opss".localiz(), customAction1: action)
             return
         }
         
@@ -538,15 +539,15 @@ class EditCurrentDayOff: UIViewController {
         
         switch data.workingStatus {
         case "full time":
-            self.lableStatusDriver.text = "Full Time"
+            self.lableStatusDriver.text = "Full Time".localiz()
             editButton.isHidden = true
             setWorkButton.isHidden = false
         case "part time":
-            self.lableStatusDriver.text = "Part Time"
+            self.lableStatusDriver.text = "Part Time".localiz()
             editButton.isHidden = false
             setWorkButton.isHidden = true
         case "freelance":
-            self.lableStatusDriver.text = "Freelance"
+            self.lableStatusDriver.text = "Freelance".localiz()
             editButton.isHidden = false
             setWorkButton.isHidden = true
         default:
@@ -648,6 +649,7 @@ class EditCurrentDayOff: UIViewController {
     private func scrollToDate(){
         let date = Date()
         let dateFor = DateFormatter()
+        dateFor.locale = Locale(identifier: "jp")
         dateFor.dateFormat = "dd"
         
         let dateToday = dateFor.string(from: date)
@@ -771,12 +773,14 @@ class EditCurrentDayOff: UIViewController {
     //MARK: - On Save Click
     @objc
     func onSaveClick(){
-        switch lableStatusDriver.text {
-        case "Full Time":
+        guard let data = dayOffPlanData else {
+            return}
+        switch data.workingStatus {
+        case "full time":
             fullTimePlan()
-        case "Part Time":
+        case "part time":
             partTimePlan()
-        case "Freelance":
+        case "freelance":
             partTimePlan()
         default:
             print("Entah apa")
@@ -1050,11 +1054,11 @@ class EditCurrentDayOff: UIViewController {
             case .success(_):
                 DispatchQueue.main.async {
                     self?.spiner.dismiss()
-                    let action1 = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+                    let action1 = UIAlertAction(title: "Oke".localiz(), style: .default) {[weak self] (_) in
                         self?.navigationController?.popViewController(animated: true)
                     }
                     self?.getDataReqDayoff()
-                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Successfully submitted new schedule!", customAction1: action1)
+                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.".localiz(), customTitle: "Successfully submitted new schedule!".localiz(), customAction1: action1)
                 }
             case .failure(let e):
                 self?.spiner.dismiss()
@@ -1081,7 +1085,7 @@ class EditCurrentDayOff: UIViewController {
         
         let filtered = newData.filter { $0.value != nil }
         if filtered.count != 5 {
-            showAlert(text: "Select 2 day off in week 1")
+            showAlert(text: "Select 2 day off in week 1".localiz())
             return
         }
         
@@ -1100,7 +1104,7 @@ class EditCurrentDayOff: UIViewController {
         
         let filtered2 = newData2.filter { $0.value != nil }
         if filtered2.count != 5 {
-            showAlert(text: "Select 2 day off in week 2")
+            showAlert(text: "Select 2 day off in week 2".localiz())
             return
         }
         
@@ -1119,7 +1123,7 @@ class EditCurrentDayOff: UIViewController {
         
         let filtered3 = newData3.filter { $0.value != nil }
         if filtered3.count != 5 {
-            showAlert(text: "Select 2 day off in week 3")
+            showAlert(text: "Select 2 day off in week 3".localiz())
             return
         }
         //cek week 4 libur min max 2
@@ -1137,7 +1141,7 @@ class EditCurrentDayOff: UIViewController {
         
         let filtered4 = newData4.filter { $0.value != nil }
         if filtered4.count != 5 {
-            showAlert(text: "Select 2 day off in week 4")
+            showAlert(text: "Select 2 day off in week 4".localiz())
             return
         }
         //cek week 5 cek ada berapa hari dulu
@@ -1157,11 +1161,11 @@ class EditCurrentDayOff: UIViewController {
             case .success(_):
                 DispatchQueue.main.async {
                     self?.spiner.dismiss()
-                    let action1 = UIAlertAction(title: "Oke", style: .default) {[weak self] (_) in
+                    let action1 = UIAlertAction(title: "Oke".localiz(), style: .default) {[weak self] (_) in
                         self?.navigationController?.popViewController(animated: true)
                     }
                     self?.getDataReqDayoff()
-                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.", customTitle: "Successfully submitted new schedule!", customAction1: action1)
+                    Helpers().showAlert(view: self!, message: "Please wait approval from admin.".localiz(), customTitle: "Successfully submitted new schedule!".localiz(), customAction1: action1)
                 }
             case .failure(let e):
                 self?.spiner.dismiss()
@@ -1199,12 +1203,12 @@ class EditCurrentDayOff: UIViewController {
         if listShift == nil {
             tableView.isHidden = true
             emptyImage.isHidden = false
-            setWorkButton.setTitle("Set Work Day", for: .normal)
+            setWorkButton.setTitle("Set Work Day".localiz(), for: .normal)
         }else{
             tableView.isHidden = false
             emptyImage.isHidden = true
             tableView.reloadData()
-            setWorkButton.setTitle("Set To DayOff", for: .normal)
+            setWorkButton.setTitle("Set To DayOff".localiz(), for: .normal)
         }
         
         colectionView.reloadData()
@@ -1362,12 +1366,12 @@ class EditCurrentDayOff: UIViewController {
         if listShift == nil {
             tableView.isHidden = true
             emptyImage.isHidden = false
-            setWorkButton.setTitle("Set Work Day", for: .normal)
+            setWorkButton.setTitle("Set Work Day".localiz(), for: .normal)
         }else{
             tableView.isHidden = false
             emptyImage.isHidden = true
             tableView.reloadData()
-            setWorkButton.setTitle("Set To DayOff", for: .normal)
+            setWorkButton.setTitle("Set To DayOff".localiz(), for: .normal)
         }
         
     }
@@ -1576,6 +1580,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
         
         let date = Date()
         let dateFor = DateFormatter()
+        dateFor.locale = Locale(identifier: "jp")
         dateFor.dateFormat = "dd"
         
         let dateToday = dateFor.string(from: date)
@@ -1622,7 +1627,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Sunday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Sunday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1635,7 +1640,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Monday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Monday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1648,7 +1653,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Tuesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Tuesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1661,7 +1666,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Wednesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Wednesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1674,7 +1679,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Thursday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Thursday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1687,7 +1692,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Friday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Friday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1700,7 +1705,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Saturday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Saturday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1724,7 +1729,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Sunday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Sunday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1737,7 +1742,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Monday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Monday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1750,7 +1755,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Tuesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Tuesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1763,7 +1768,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Wednesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Wednesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1776,7 +1781,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Thursday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Thursday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1789,7 +1794,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Friday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Friday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1802,7 +1807,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Saturday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Saturday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1825,7 +1830,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Sunday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Sunday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1838,7 +1843,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Monday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Monday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1851,7 +1856,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Tuesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Tuesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1864,7 +1869,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Wednesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Wednesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1877,7 +1882,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Thursday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Thursday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1890,7 +1895,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Friday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Friday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1903,7 +1908,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Saturday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Saturday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1926,7 +1931,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Sunday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Sunday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1939,7 +1944,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Monday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Monday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1952,7 +1957,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Tuesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Tuesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1965,7 +1970,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Wednesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Wednesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1978,7 +1983,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Thursday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Thursday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -1991,7 +1996,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Friday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Friday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2004,7 +2009,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Saturday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Saturday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2027,7 +2032,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Sunday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Sunday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2040,7 +2045,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Monday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Monday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2053,7 +2058,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Tuesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Tuesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2066,7 +2071,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Wednesday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Wednesday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2079,7 +2084,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Thursday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Thursday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2092,7 +2097,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Friday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Friday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {
@@ -2105,7 +2110,7 @@ extension EditCurrentDayOff: UICollectionViewDelegateFlowLayout, UICollectionVie
                     if dataWeek["Saturday"] as? [Int] != nil {
                         let array:[Int]? = dataWeek["Saturday"] as? [Int]
                         cell.container2.backgroundColor = bgColor1
-                        cell.statusLable.text = "\(array?.count ?? 0) Shift"
+                        cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color1
                     }else {

@@ -982,7 +982,7 @@ class RegisterView: UIViewController {
 
         //We make a call to our keyboard handling function as soon as the view is loaded.
         initializeHideKeyboard()
-        firstName.becomeFirstResponder()
+//        firstName.becomeFirstResponder()
         
         //dummy
         

@@ -13,28 +13,27 @@ class QuickCell: UITableViewCell {
     static let id = "QuickCell"
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var title: UILabel!
-    @IBOutlet weak var item1: UIView!
     @IBOutlet weak var item2: UIView!
     @IBOutlet weak var item3: UIView!
     @IBOutlet weak var item4: UIView!
     @IBOutlet weak var item5: UIView!
     @IBOutlet weak var item7: UIView!
+    @IBOutlet weak var lastLabel: UILabel!
     
     @IBOutlet weak var lastItem: UIView!
     @IBOutlet weak var item6: UIView!
-    @IBOutlet weak var label1: UILabel!
     @IBOutlet weak var label2: UILabel!
     @IBOutlet weak var label3: UILabel!
     @IBOutlet weak var label4: UILabel!
     @IBOutlet weak var label5: UILabel!
     @IBOutlet weak var label6: UIView!
     @IBOutlet weak var label7: UILabel!
+    @IBOutlet weak var other: UILabel!
     
     var vi = ChatView()
     
     var chatVm = ChatViewModel()
-    var messages:[String] = [
-        "Hello".localiz(), "Address cannot be found".localiz(), "Person not at home".localiz(), "Package not correct".localiz(), "I have an accidents".localiz(), "Trafic Jam".localiz()
+    var messages:[String] = ["Address cannot be found".localiz(), "Person not at home".localiz(), "Package not correct".localiz(), "I have an accidents".localiz(), "Trafic Jam".localiz()
     ]
     
     
@@ -48,14 +47,15 @@ class QuickCell: UITableViewCell {
         container.layer.cornerRadius = 5
         container.backgroundColor = .white
     
-        label1.text = "Hello".localiz()
+    
         label2.text = "Address cannot be found".localiz()
         label3.text = "Person not at home".localiz()
         label4.text = "Package not correct".localiz()
         label5.text = "I have an accidents".localiz()
         label7.text = "Trafic Jam".localiz()
-        label5.text = "Other".localiz()
-        item1.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
+        other.text = "Other".localiz()
+        lastLabel.text = "Once you click on the option above, your message will be send directly".localiz()
+        title.text = "Quick Chat".localiz()
         item2.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item3.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
         item4.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
@@ -68,15 +68,15 @@ class QuickCell: UITableViewCell {
         
         lastItem.roundCorners([.bottomLeft, .bottomRight], radius: 5)
         
-        [item1,item2,item3,item4,item5, item7].enumerated().forEach { (i, e) in
+        [item2,item3,item4,item5, item6].enumerated().forEach { (i, e) in
             e?.isUserInteractionEnabled = true
             let tap = CustomTap(target: self, action: #selector(tapQuickChat))
             tap.ourCustomValue = i
             e?.addGestureRecognizer(tap)
         }
         
-        item6.isUserInteractionEnabled = true
-        item6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(otherClick)))
+        label6.isUserInteractionEnabled = true
+        label6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(otherClick)))
         
     }
     

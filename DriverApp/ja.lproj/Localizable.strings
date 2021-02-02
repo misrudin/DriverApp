@@ -28,8 +28,12 @@
 "Continue to register ?" = "登録を続けますか？";
 "Are you sure ?" = "よろしいですか？";
 "Pull to refresh" = "更新";
-"Checkout" = "チェックアウト";
+"Checkout" = "退勤する";
 "Add" = "追加";
+"Oke" = "完了";
+"Start" = "開始";
+"Resume" = "再開";
+"Decline" = "低下";
 
 //MARK: - PLACEHOLDER
 "Email" = "eメール";
@@ -93,6 +97,7 @@
 "First Name Hiragana" = "セイ";
 "Last Name Hiragana" = "メイ";
 
+
 "DRIVER LICENSE" = "自動車免許";
 "License Number" = "自動車免許番号";
 "Driver's License Expiration Date" = "自動車免許有効期限";
@@ -118,14 +123,26 @@
 "DELIVERY LIST ORDER" = "オーダーリスト";
 "Today" = "今日";
 
-//MARK: - JOB HISTORY
-
-
 //MARK: - DAY OFF
 "Shift on this date" = "当日のシフト";
 "Plan Next Month" = "次月";
 "Select Shift" = "配送便選択";
 "Select shift you want to add" = "配送便を選択してください";
+
+"Please wait approval from admin." = "承認をお待ち下さい";
+"Successfully submitted new schedule!" = "S編集が完了しました";
+"Select 2 day off in week 1" = "第1週の2日休みを選択します";
+"Select 2 day off in week 2" = "第2週の2日休みを選択します";
+"Select 2 day off in week 3" = "第3週の2日休みを選択します";
+"Select 2 day off in week 4" =  "第4週の2日休みを選択します";
+"Waiting for approval from admin" = "管理者からの承認を待っています";
+"Plese select day !" = "プレセセレクトデー！";
+"Opss" = "Opss";
+"Full Time" = "フルタイム";
+"Part Time" = "パートタイム";
+"Freelance" = "フリーランス";
+"Success to set plan next month!" = "来月の計画立案に成功！";
+"Shift" = "シフト";
 
 
 //MARK: - PLAN NEXT MONTH
@@ -147,34 +164,38 @@
 //MARK: - Rest
 "Rest" = "休憩";
 "Activate rest now" = "休憩する";
-"Back To Work" = "仕事に戻る";
+"Back To Work" = "作業を再開する";
 "Start rest now ?" = "休憩に入りますか ?";
+"Do you want to start a break?" = "休憩を開始しますか？";
+"Do you want to resume work?" = "作業を再開しますか？";
 
 //MARK: - PROFILE
 "Note" = "ノート";
 "Change Password" = "パスワード変更";
 "Change Vehicle Data" = "車両情報変更";
 "Logout" = "ログアウト";
-"Do you want to checkout now" = "チェックアウトしはいますか?";
+"Do you want to checkout now" = "作業を終了しますか？";
 "Do you want to logout ?" = "ログアウトしますか？";
 
 //MARK: - CHANGE PROFILE
-"Continue to edit profile ?" = "Continue to edit profile ?";
-"Success edit profile" = "編集完了";
+"Continue to edit profile ?" = "編集を終わりますか？";
+"Success edit profile" = "編集が完了しました";
 
 //MARK: - CHANGE PASSWORD
 "Current Password" = "古いパスワード";
 "New Password" = "新しいパスワード";
 "Confirm New Password" = "新しいパスワード（確認）";
 "Success edit password" = "パスワード変更完了";
+"New password not match !" = "新しいパスワードが一致しません！";
+"Editing is complete" = "編集が完了しました";
 
 //MARK: - NOTES
 "Failed to sending note" = "メモを送信できませんでした";
 
-//MARK: - SEND NOTES
-
 //MARK: - CHANGE VEHICLE DATA
-"Change vehicle data success" = "変更完了";
+"Change vehicle data success" = "編集が完了しました";
+"Do you want to complete the edit?" = "編集を完了しますか？";
+"Vehicle certification photo must be edit !" = "車両認証写真は編集する必要があります！";
 
 //MARK: - Scan Stuff
 "Scan QR Code to Verify" = "QRコードをスキャンしてください";
@@ -189,6 +210,7 @@
 "Verify Package" = "商品を確認";
 "Input code here ..." = "コードを入力してください ...";
 "Add Order Code" = "コードを追加";
+"Item for this order" = "注文番号";
 
 "Scanner not supported" = "スキャナーは使用できません";
 "Please use a device with a camera. Because this device does not support scanning a code" = "スマートフォンのカメラを使用してください";
@@ -289,7 +311,7 @@
 "Receiver" = "お届け先";
 "Hide" = "隠す";
 "Scan Stuff" = "スキャン";
-"Done Pickup" = "ピックアップ完了";
+"Done Pickup" = "受取完了";
 "Next Store" = "次の店舗へ";
 "Start Delivery" = "配送開始";
 "Done Delivery" = "完了";
@@ -306,7 +328,7 @@
 "Rating and Review" = "評価";
 "has not reviewed by admin" = "管理者の確認待ち";
 
-"Quick Chat" = "チャット";
+"Quick Chat" = "クイックチャット";
 "Hello" = "こんにちは";
 "Address cannot be found" = "住所が見つかりません";
 "Person not at home" = "受取人不在";
@@ -314,5 +336,13 @@
 "I have an accidents" = "交通事故";
 "Trafic Jam" = "渋滞";
 "Other" = "その他";
+"Once you click on the option above, your message will be send directly" = "上記をクリックすると
+内容が直接送信されます";
 
 "Tell Your Pending Delivery Reason" = "再配達理由を入力してください";
+
+
+//MARK: - Status
+"SUCCESS" = "成功";
+"Your Delivery Task Done" = "配送完了";
+"Back to Homescreen" = "ホーム画面に戻る";

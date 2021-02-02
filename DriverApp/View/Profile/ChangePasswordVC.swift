@@ -127,7 +127,7 @@ class ChangePasswordVC: UIViewController {
                 self.editStart(data: data)
             }
             let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
-            Helpers().showAlert(view: self, message:"Continue to change password ?".localiz(), customTitle: "Are you sure".localiz(), customAction1: action, customAction2: action2)
+            Helpers().showAlert(view: self, message: "", customTitle: "Do you want to complete the edit?".localiz(), customAction1: action, customAction2: action2)
         }else {
             Helpers().showAlert(view: self, message: "New password not match !".localiz())
         }
@@ -145,12 +145,12 @@ class ChangePasswordVC: UIViewController {
                         let action = UIAlertAction(title: "Oke".localiz(), style: .default) { (_) in
                             self?.navigationController?.popViewController(animated: true)
                         }
-                        Helpers().showAlert(view: self!, message:"Success edit password".localiz(), customTitle: "Success".localiz(), customAction1: action)
+                        Helpers().showAlert(view: self!, message: "Editing is complete".localiz(), customTitle: "Success".localiz(), customAction1: action)
                     }
                 }
                 
             case .failure(let error):
-                Helpers().showAlert(view: self!, message: error.localizedDescription, customTitle: "Error")
+                Helpers().showAlert(view: self!, message: error.localizedDescription, customTitle: "")
                 self?.spiner.dismiss()
             }
             

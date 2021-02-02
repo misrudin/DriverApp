@@ -94,6 +94,7 @@ class LoginView: UIViewController {
         field.paddingRight(10)
         field.textColor = .white
         field.keyboardType = .numberPad
+        field.placeholder = "Driver Code".localiz()
         return field
     }()
 
@@ -105,6 +106,7 @@ class LoginView: UIViewController {
         field.paddingRight(10)
         field.textColor = .white
         field.isSecureTextEntry = true
+        field.placeholder = "Password".localiz()
         return field
     }()
     
@@ -135,7 +137,7 @@ class LoginView: UIViewController {
         codeDriver.delegate = self
         password.delegate = self
         loginViewModel.delegate = self
-        codeDriver.becomeFirstResponder()
+//        codeDriver.becomeFirstResponder()
         
 //        codeDriver.text = "201110068"
 //        password.text = "admin"

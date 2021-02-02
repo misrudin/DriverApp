@@ -32,7 +32,7 @@ class HomeVc: UIViewController {
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
-        spin.textLabel.text = "Loading"
+        spin.textLabel.text = "Loading".localiz()
         
         return spin
     }()
@@ -531,11 +531,12 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 guard let allorder = self?.orderData,
                       let dateOrder = allorder[indexPath.section].order_list,
                       let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                            let codeDriver = userData["codeDriver"] as? String  else {return}
+                            let codeDriver = userData["codeDriver"] as? String,
+                            let idGroup = userData["idGroup"] as? Int  else {return}
                 
                 let orderNo = dateOrder[indexPath.row].order_number
                 
-                let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver)
+                let data: DeleteHistory = DeleteHistory(order_number: orderNo, code_driver: codeDriver, id_group: idGroup)
                 if self!.totalReject >= 2 {
                     return
                 }

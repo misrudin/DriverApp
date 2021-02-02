@@ -962,12 +962,12 @@ extension EditVehicleView {
                                                         email: email,
                                                         id_group: idGroup)
         spiner.dismiss()
-        let action1 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
+        let action1 = UIAlertAction(title: "Oke".localiz(), style: .default) {[weak self] (_) in
             self?.submitEdit(data: dataEdit)
         }
         let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
-        Helpers().showAlert(view: self, message: "Continue to send data ?".localiz(),
-                            customTitle: "The data is correct ?".localiz(), customAction1: action2, customAction2: action1)
+        Helpers().showAlert(view: self, message: "",
+                            customTitle: "Do you want to complete the edit?".localiz(), customAction1: action2, customAction2: action1)
     }
     
     func submitEdit(data: VehicleEditData){

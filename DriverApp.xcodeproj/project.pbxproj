@@ -87,7 +87,6 @@
 		B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D59A256E41910056D867 /* ForgotView.xib */; };
 		B3CEF63C25904829004F0343 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF63B25904829004F0343 /* Response.swift */; };
 		B3CEF6572590954E004F0343 /* PendingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF6562590954E004F0343 /* PendingListView.swift */; };
-		B3DE97982555364400A30892 /* DayOffVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97972555364400A30892 /* DayOffVc.swift */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
 		B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97A22555611B00A30892 /* ShiftCell.swift */; };
@@ -191,7 +190,6 @@
 		B3B9D59A256E41910056D867 /* ForgotView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgotView.xib; sourceTree = "<group>"; };
 		B3CEF63B25904829004F0343 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		B3CEF6562590954E004F0343 /* PendingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingListView.swift; sourceTree = "<group>"; };
-		B3DE97972555364400A30892 /* DayOffVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffVc.swift; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
 		B3DE97A22555611B00A30892 /* ShiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCell.swift; sourceTree = "<group>"; };
@@ -525,7 +523,6 @@
 		B3DE97962555360000A30892 /* DayOffScheduling */ = {
 			isa = PBXGroup;
 			children = (
-				B3DE97972555364400A30892 /* DayOffVc.swift */,
 				B308DB5E255794B30088D741 /* PlanVc.swift */,
 				B392EC6025A84FE100AF110D /* EditCurrentDayOff.swift */,
 			);
@@ -758,7 +755,6 @@
 				B3E256422589AD0D00CDED81 /* ImageCell.swift in Sources */,
 				B3A0521725773CBD00BC6FE0 /* Encrypt.swift in Sources */,
 				B326FF7425612CF00067C0DE /* RestView.swift in Sources */,
-				B3DE97982555364400A30892 /* DayOffVc.swift in Sources */,
 				B3F8435E2591CA83008950E8 /* OrderHistoryCell.swift in Sources */,
 				B36C4FB92578B7BB002C4D06 /* PendingCell.swift in Sources */,
 				B3F79C872573A542003455D1 /* DatabaseManager.swift in Sources */,
@@ -979,7 +975,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1005,7 +1001,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

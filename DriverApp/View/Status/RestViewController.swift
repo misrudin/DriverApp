@@ -52,7 +52,7 @@ class RestViewController: UIViewController {
             self.switchBtn.isOn = false
             self.switchBtn.setOn(false, animated: true)
         }
-        Helpers().showAlert(view: self, message: "Start rest now ?".localiz(), customTitle: "Sure".localiz(), customAction1: action1, customAction2: action2)
+        Helpers().showAlert(view: self, message: "", customTitle: "Do you want to start a break?".localiz(), customAction1: action1, customAction2: action2)
     }
     
     private func start(){

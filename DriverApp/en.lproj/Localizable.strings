@@ -30,6 +30,10 @@
 "Pull to refresh" = "Pull to refresh";
 "Checkout" = "Checkout";
 "Add" = "Add";
+"Oke" = "Oke";
+"Start" = "Start";
+"Resume" = "Resume";
+"Decline" = "Decline";
 
 //MARK: - PLACEHOLDER
 "Email" = "Email";
@@ -119,14 +123,26 @@
 "DELIVERY LIST ORDER" = "DELIVERY LIST ORDER";
 "Today" = "Today";
 
-//MARK: - JOB HISTORY
-
-
 //MARK: - DAY OFF
 "Shift on this date" = "Shift on this date";
 "Plan Next Month" = "Plan Next Month";
 "Select Shift" = "Select Shift";
 "Select shift you want to add" = "Select shift you want to add";
+
+"Please wait approval from admin." = "Please wait approval from admin.";
+"Successfully submitted new schedule!" = "Successfully submitted new schedule!";
+"Select 2 day off in week 1" = "Select 2 day off in week 1";
+"Select 2 day off in week 2" = "Select 2 day off in week 2";
+"Select 2 day off in week 3" = "Select 2 day off in week 3";
+"Select 2 day off in week 4" =  "Select 2 day off in week 4";
+"Waiting for approval from admin" = "Waiting for approval from admin";
+"Plese select day !" = "Plese select day !";
+"Opss" = "Opss";
+"Full Time" = "Full Time";
+"Part Time" = "Part Time";
+"Freelance" = "Freelance";
+"Success to set plan next month!" = "Success to set plan next month!";
+"Shift" = "Shift";
 
 
 //MARK: - PLAN NEXT MONTH
@@ -148,6 +164,8 @@
 "Activate rest now" = "Activate rest now";
 "Back To Work" = "Back To Work";
 "Start rest now ?" = "Start rest now ?";
+"Do you want to start a break?" = "Do you want to start a break?";
+"Do you want to resume work?" = "Do you want to resume work?";
 
 //MARK: - PROFILE
 "Note" = "Note";
@@ -168,6 +186,8 @@
 "Confirm New Password" = "Confirm New Password";
 "Submit New Password" = "Submit New Password";
 "Success edit password" = "Success edit password";
+"New password not match !" = "New password not match !";
+"Editing is complete" = "Editing is complete";
 
 //MARK: - NOTES
 "Failed to sending note" = "Failed to sending note";
@@ -176,6 +196,8 @@
 
 //MARK: - CHANGE VEHICLE DATA
 "Change vehicle data success" = "Change vehicle data success";
+"Do you want to complete the edit?" = "Do you want to complete the edit?";
+"Vehicle certification photo must be edit !" = "Vehicle certification photo must be edit !";
 
 //MARK: - Scan Stuff
 "Scan QR Code to Verify" = "Scan QR Code to Verify";
@@ -190,6 +212,7 @@
 "Verify Package" = "Verify Package";
 "Input code here ..." = "Input code here ...";
 "Add Order Code" = "Add Order Code";
+"Item for this order" = "Item for this order";
 
 "Scanner not supported" = "Scanner not supported";
 "Please use a device with a camera. Because this device does not support scanning a code" = "Please use a device with a camera. Because this device does not support scanning a code";
@@ -313,5 +336,12 @@
 "I have an accidents" = "I have an accidents";
 "Trafic Jam" = "Trafic Jam";
 "Other" = "Other";
+"Once you click on the option above, your message will be send directly" = "Once you click on the option above, your message will be send directly";
 
 "Tell Your Pending Delivery Reason" = "Tell Your Pending Delivery Reason";
+
+
+//MARK: - Status
+"SUCCESS" = "SUCCESS";
+"Your Delivery Task Done" = "Your Delivery Task Done";
+"Back to Homescreen" = "Back to Homescreen";

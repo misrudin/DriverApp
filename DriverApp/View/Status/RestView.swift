@@ -70,14 +70,14 @@ class RestView: UIViewController {
             print("No user data")
             return
         }
-        let action1 = UIAlertAction(title: "Yes".localiz(), style: .default) {[weak self] (_) in
+        let action1 = UIAlertAction(title: "Resume".localiz(), style: .default) {[weak self] (_) in
             let data: CheckDriver = CheckDriver(code_driver: codeDriver)
             self?.spiner.show(in: (self?.view)!)
             self?.workNow(data: data)
         }
         
         let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
-        Helpers().showAlert(view: self, message: "Start work now ?".localiz(), customTitle: "Ready".localiz(), customAction1: action1, customAction2: action2)
+        Helpers().showAlert(view: self, message: "", customTitle: "Do you want to resume work?".localiz(), customAction1: action1, customAction2: action2)
     }
     
     private func workNow(data: CheckDriver){

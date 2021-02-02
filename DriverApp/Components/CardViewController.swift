@@ -145,6 +145,23 @@ class CardViewController: UIViewController {
         return label
     }()
     
+    let titleLabel2: UILabel = {
+        let label = UILabel()
+        label.text = "Classification".localiz()
+        label.textColor = .lightGray
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        
+        return label
+    }()
+    
+    let classificationLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.textColor = UIColor(named: "darkKasumi")
+        
+        return label
+    }()
+    
     let storeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
@@ -259,6 +276,7 @@ class CardViewController: UIViewController {
         view.addSubview(titleLabelItemName)
         view.addSubview(itemLabel)
         view.addSubview(detailItem)
+        view.addSubview(classificationLabel)
         
         view.addSubviews(views: estLabel, distanceLabel)
         detailItem.isUserInteractionEnabled = true
@@ -278,6 +296,7 @@ class CardViewController: UIViewController {
         lableText.text = orderNo
         print("userInfo", userInfo)
         
+        classificationLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].classification
         storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
         destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) \(userInfo.address)"
         destinationLabel.numberOfLines = 0
@@ -386,6 +405,8 @@ class CardViewController: UIViewController {
         titleLabel.anchor(left: view.leftAnchor, right: view.rightAnchor, paddingLeft: 20, paddingRight: 20)
         storeLabel.anchor(top: titleLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 12)
         
+        classificationLabel.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
+        
         pendingButton.anchor(top: estLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 0, paddingLeft: 20, paddingRight: 10, height: 45)
         pendingButton.isHidden = true
         orderButton.anchor(top: estLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 10, height: 45)
@@ -410,6 +431,7 @@ class CardViewController: UIViewController {
         storeLabel.isHidden = true
         titleLabel.isHidden = true
         orderNoLable.isHidden = true
+        classificationLabel.isHidden = true
         
         titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: -40, paddingLeft: 20, paddingRight: 20)
         destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
@@ -428,8 +450,9 @@ class CardViewController: UIViewController {
         storeLabel.isHidden = false
         titleLabel.isHidden = false
         orderNoLable.isHidden = false
+        classificationLabel.isHidden = false
         
-        titleLabelDestination.anchor(top: storeLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
+        titleLabelDestination.anchor(top: classificationLabel.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 20, paddingRight: 20)
         destinationLabel.anchor(top: titleLabelDestination.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 20, paddingRight: 20)
     }
     
@@ -455,6 +478,7 @@ class CardViewController: UIViewController {
         }
         
         storeLabel.text = orderDetail.pickup_destination[currentIndex].pickup_store_name
+        classificationLabel.text = orderDetail.pickup_destination[currentIndex].classification
         destinationLabel.text = "\(userInfo.address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
     
         
