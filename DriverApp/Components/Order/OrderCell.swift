@@ -41,16 +41,16 @@ class OrderCell: UITableViewCell {
             
             DispatchQueue.main.async {
                 if timeNow <= end && timeNow > start && self.orderData.active_date == dateNow {
-                    self.container.backgroundColor = UIColor(named: "colorGray")
+                    self.container.backgroundColor = UIColor(named: "bgOrderActive")
                 }
                 
                 if (timeNow > end || timeNow < start) || self.orderData.active_date != dateNow {
-                    self.container.backgroundColor = UIColor(named: "colorDisabled")
+                    self.container.backgroundColor = UIColor(named: "bgOrderDisable")
                 }
             }
             
 //          timeNow <= end &&
-            self.isUserInteractionEnabled = timeNow >= start && self.orderData.active_date == dateNow
+//            self.isUserInteractionEnabled = timeNow >= start && self.orderData.active_date == dateNow
 
             date.text = "\(start) - \(end)"
 
@@ -69,8 +69,8 @@ class OrderCell: UITableViewCell {
     }
     
     //    MARK: - Components
-    let orderNoLabel = Reusable.makeLabel(text: "Order No".localiz(), font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, alignment: .left)
-    let orderNo = Reusable.makeLabel(text: "1111", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "orangeKasumi")!, alignment: .left)
+    let orderNoLabel = Reusable.makeLabel(text: "Order No".localiz(), font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, alignment: .left)
+    let orderNo = Reusable.makeLabel(text: "1111", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!, alignment: .left)
     
     let container: UIView = {
         let view = UIView()
@@ -79,7 +79,7 @@ class OrderCell: UITableViewCell {
         return view
     }()
 
-    let date = Reusable.makeLabel(text: "2020-10-10", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!)
+    let date = Reusable.makeLabel(text: "2020-10-10", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!)
     
     let imageMarker: UIImageView = {
        let img = UIImageView()
@@ -89,8 +89,8 @@ class OrderCell: UITableViewCell {
         return img
     }()
     
-    let pickupStore = Reusable.makeLabel(text: "PickUp Address".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
-    let pickupAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
+    let pickupStore = Reusable.makeLabel(text: "PickUp Address".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!, numberOfLines: 0)
+    let pickupAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0)
     
     let imageMarker2: UIImageView = {
        let img = UIImageView()
@@ -100,8 +100,8 @@ class OrderCell: UITableViewCell {
         return img
     }()
     
-    let delivaryLabel = Reusable.makeLabel(text: "Delivery To".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
-    let deliveryAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
+    let delivaryLabel = Reusable.makeLabel(text: "Delivery To".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!, numberOfLines: 0)
+    let deliveryAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0)
     
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

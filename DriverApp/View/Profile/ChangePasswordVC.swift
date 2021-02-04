@@ -25,12 +25,10 @@ class ChangePasswordVC: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "Current Password".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor(named: "bgInput")
         field.translatesAutoresizingMaskIntoConstraints = false
         field.isSecureTextEntry = true
         return field
@@ -42,12 +40,10 @@ class ChangePasswordVC: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "New Password".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor(named: "bgInput")
         field.translatesAutoresizingMaskIntoConstraints = false
         field.isSecureTextEntry = true
         return field
@@ -59,12 +55,10 @@ class ChangePasswordVC: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.layer.cornerRadius = 5
-        field.layer.borderWidth = 1
-        field.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5).cgColor
         field.placeholder = "Confirm New Password".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor(named: "bgInput")
         field.translatesAutoresizingMaskIntoConstraints = false
         field.isSecureTextEntry = true
         return field
@@ -96,7 +90,7 @@ class ChangePasswordVC: UIViewController {
         
         submitButton.addTarget(self, action: #selector(didSubmit), for: .touchUpInside)
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
     }
     
     func configureNavigationBar(){
@@ -163,6 +157,6 @@ class ChangePasswordVC: UIViewController {
         oldPassword.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10, height: 50)
         newPassword.anchor(top: oldPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, height: 50)
         confirmPassword.anchor(top: newPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 10, paddingRight: 10, height: 50)
-        submitButton.anchor(top: confirmPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10, height: 50)
+        submitButton.anchor(top: confirmPassword.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 20, paddingLeft: 10, paddingRight: 10, height: 45)
     }
 }

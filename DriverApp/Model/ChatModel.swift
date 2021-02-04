@@ -31,3 +31,19 @@ struct HistoryMessage: Codable {
     let codeDriver: String
     let token: String
 }
+
+
+struct Admin: Decodable {
+    let email: String?
+    let employee_number: String
+    let group_name: String
+    let iduser: Int
+    let first_name: String
+    let last_name: String
+    let photo_name: String?
+    let photo_url: String?
+}
+
+struct DataAdmin: Decodable {
+    let data: [Admin]
+}

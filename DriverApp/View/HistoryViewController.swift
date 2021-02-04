@@ -40,7 +40,7 @@ class HistoryViewController: UIViewController {
         return view
     }()
     
-    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: .black, numberOfLines: 0, alignment: .center)
+    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0, alignment: .center)
     
     var orderData: [History]?
     private let spiner: JGProgressHUD = {
@@ -57,6 +57,7 @@ class HistoryViewController: UIViewController {
         
         table.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
+        table.backgroundColor = UIColor(named: "whiteKasumi")
         return table
     }()
 
@@ -64,7 +65,7 @@ class HistoryViewController: UIViewController {
         super.viewDidLoad()
 
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         
         view.addSubview(tableView)
         tableView.dataSource = self

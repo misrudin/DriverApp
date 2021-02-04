@@ -229,7 +229,7 @@ class ListScanView: UIViewController {
     
     lazy var tableView: UITableView = {
         let tv = UITableView(frame: CGRect.zero, style: .grouped)
-        tv.backgroundColor = .white
+        tv.backgroundColor = UIColor(named: "whiteKasumi")
         tv.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         tv.register(UINib(nibName: "ScanCell", bundle: nil), forCellReuseIdentifier: ScanCell.id)
         tv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
@@ -243,7 +243,7 @@ class ListScanView: UIViewController {
         super.viewDidLoad()
         title = "Delivery Order List".localiz()
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         
         configureUi()
         configureNavigationBar()
@@ -411,7 +411,7 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
         
         override init(frame: CGRect) {
             super.init(frame: frame)
-            textColor = UIColor(named: "darkKasumi")
+            textColor = UIColor(named: "labelColor")
             translatesAutoresizingMaskIntoConstraints = false
             font = UIFont.boldSystemFont(ofSize: 14)
         }

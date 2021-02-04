@@ -72,6 +72,7 @@
 "Driver Code" = "Driver Code";
 "Password" = "Password";
 "Forgot your password ?" = "Forgot your password ?";
+"Please input code driver and password !" = "Please input code driver and password !";
 
 //MARK: -  FORGOT PASSWORD
 "Enter your email address and we will share a link to create a new password" = "Enter your email address and we will share a link to create a new password";

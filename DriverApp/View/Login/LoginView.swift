@@ -125,7 +125,7 @@ class LoginView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor(named: "bgKasumi")
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         view.addSubview(visualEffectView)
         view.addSubview(scrollView)
         view.insertSubview(imageView, at: 0)
@@ -239,10 +239,10 @@ extension LoginView{
         guard let codeDriver = codeDriver.text, let password = password.text,
               codeDriver != "" && password != ""
               else {
-            let action = UIAlertAction(title: "Oke", style: .default) { [weak self] _ in
+            let action = UIAlertAction(title: "Oke".localiz(), style: .default) { [weak self] _ in
                 self?.codeDriver.becomeFirstResponder()
             }
-            Helpers().showAlert(view: self, message: "Please input code driver and password !", customTitle: "Hmm", customAction1: action)
+            Helpers().showAlert(view: self, message: "", customTitle: "Please input code driver and password !".localiz(), customAction1: action)
             return
         }
         spiner.show(in: view)

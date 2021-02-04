@@ -64,7 +64,7 @@ class EditProfileVc: UIViewController {
         img.layer.masksToBounds = true
         img.contentMode = .scaleAspectFit
         img.layer.cornerRadius = 120/2
-        img.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        img.backgroundColor = UIColor(named: "bgInput")
         return img
     }()
     
@@ -75,7 +75,7 @@ class EditProfileVc: UIViewController {
         let lable = UILabel()
         lable.text = "First Name".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -85,8 +85,11 @@ class EditProfileVc: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
+        field.paddingLeft(10)
+        field.layer.cornerRadius = 5
+        field.backgroundColor = UIColor(named: "bgInput")
         field.keyboardType = .default
-        field.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
+        field.textColor = UIColor(named: "labelSecondary")
         field.isEnabled = false
         return field
     }()
@@ -95,7 +98,7 @@ class EditProfileVc: UIViewController {
         let lable = UILabel()
         lable.text = "Last Name".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -105,8 +108,11 @@ class EditProfileVc: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
+        field.paddingLeft(10)
+        field.layer.cornerRadius = 5
+        field.backgroundColor = UIColor(named: "bgInput")
         field.keyboardType = .default
-        field.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
+        field.textColor = UIColor(named: "labelSecondary")
         field.isEnabled = false
         return field
     }()
@@ -116,7 +122,7 @@ class EditProfileVc: UIViewController {
         let lable = UILabel()
         lable.text = "Email".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -126,8 +132,11 @@ class EditProfileVc: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
+        field.paddingLeft(10)
+        field.layer.cornerRadius = 5
+        field.backgroundColor = UIColor(named: "bgInput")
         field.keyboardType = .emailAddress
-        field.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
+        field.textColor = UIColor(named: "labelSecondary")
         field.isEnabled = false
         return field
     }()
@@ -137,7 +146,7 @@ class EditProfileVc: UIViewController {
         let lable = UILabel()
         lable.text = "Phone Number".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     let lableCc = Reusable.makeLabel(text: "+81", color: .black)
@@ -148,6 +157,9 @@ class EditProfileVc: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
+        field.paddingLeft(10)
+        field.layer.cornerRadius = 5
+        field.backgroundColor = UIColor(named: "bgInput")
         field.keyboardType = .numberPad
         return field
     }()
@@ -158,7 +170,7 @@ class EditProfileVc: UIViewController {
         let lable = UILabel()
         lable.text = "Driver License Number".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -168,6 +180,9 @@ class EditProfileVc: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
+        field.paddingLeft(10)
+        field.layer.cornerRadius = 5
+        field.backgroundColor = UIColor(named: "bgInput")
         field.keyboardType = .numberPad
         return field
     }()
@@ -177,7 +192,7 @@ class EditProfileVc: UIViewController {
         let lable = UILabel()
         lable.text = "License Expiration Date".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -209,6 +224,9 @@ class EditProfileVc: UIViewController {
         field.autocorrectionType = .no
         field.returnKeyType = .continue
         field.paddingRight(10)
+        field.paddingLeft(10)
+        field.layer.cornerRadius = 5
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerExpiration
         field.inputAccessoryView = toolBar
         let image = UIImage(named: "calendarIcon")
@@ -260,7 +278,7 @@ class EditProfileVc: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         configureNavigationBar()
         
 
@@ -291,16 +309,6 @@ class EditProfileVc: UIViewController {
        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        firstName.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        lastName.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        email.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        phoneNumber.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        license.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        expDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-    }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -315,17 +323,11 @@ class EditProfileVc: UIViewController {
         case .willShow:
         print("1")
         case .didShow:
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 250, right: 0)
-                self.stakView.heightAnchor.constraint(equalToConstant: 55*15).isActive = true
-                let bottomOffset = CGPoint(x: 0, y: 250)
-                self.scrollView.setContentOffset(bottomOffset, animated: true)
-            })
+            print("show")
+            self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 250, right: 0)
         case .willHide:
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-                self.stakView.heightAnchor.constraint(equalToConstant: 55*13).isActive = true
-            })
+           print("hide")
+            self.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         case .didHide:
             print("did hide")
         case .willChangeFrame:

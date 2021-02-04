@@ -54,14 +54,11 @@ class EditVehicleView: UIViewController {
     
     //MARK:- Vehicle Data
     
-    //MARK:- Personal Coverage
-    
-    //MARK:- Insurance Company
     lazy var insuranceCompanyLable: UILabel = {
         let lable = UILabel()
         lable.text = "Insurance Company".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -70,11 +67,11 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Insurance Company Name".localiz()
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
-        field.backgroundColor = .white
+        field.paddingLeft(10)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
@@ -84,7 +81,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Personal Coverage".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -93,11 +90,11 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Personal Coverage".localiz()
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
-        field.backgroundColor = .white
+        field.paddingLeft(10)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
@@ -107,7 +104,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Compensation Range-Objective".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -116,11 +113,11 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Compensation Range-Objective".localiz()
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
-        field.backgroundColor = .white
+        field.paddingLeft(10)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
@@ -130,7 +127,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Insurance Expiration Date".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -161,7 +158,7 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Insurance Expiration Date".localiz()
         let button = UIButton(type: .custom)
         let image = UIImage(named: "calendarIcon")
@@ -172,9 +169,10 @@ class EditVehicleView: UIViewController {
         button.addTarget(self, action: #selector(expOpen), for: .touchUpInside)
         field.rightView = button
         field.rightViewMode = .always
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerInsurance
         field.inputAccessoryView = toolBar
+        field.paddingLeft(10)
         return field
     }()
     
@@ -187,7 +185,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Vehicle Name".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -196,11 +194,11 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Name".localiz()
         field.paddingRight(10)
-        field.backgroundColor = .white
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        field.paddingLeft(10)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
@@ -210,7 +208,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Vehicle Number Plate".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -219,11 +217,11 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Number Plate".localiz()
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
-        field.backgroundColor = .white
+        field.paddingLeft(10)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
@@ -233,7 +231,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Vehicle Year".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -248,7 +246,7 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Year".localiz()
         
         let button = UIButton(type: .custom)
@@ -260,10 +258,10 @@ class EditVehicleView: UIViewController {
         button.addTarget(self, action: #selector(openVehicle), for: .touchUpInside)
         field.rightView = button
         field.rightViewMode = .always
-        
-        field.backgroundColor = .white
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = pickerView3
         field.inputAccessoryView = toolBar
+        field.paddingLeft(10)
         return field
     }()
     
@@ -276,7 +274,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Vehicle Ownership".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -285,11 +283,11 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Vehicle Ownership".localiz()
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
         field.paddingRight(10)
-        field.backgroundColor = .white
+        field.paddingLeft(10)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.returnKeyType = .continue
         return field
     }()
@@ -299,7 +297,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Vehicle Inspection Exp. Date".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -323,8 +321,6 @@ class EditVehicleView: UIViewController {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let strDate = dateFormatter.string(from: datePickerInspection.date)
         vehicleInspectionExpDate.text = strDate
-//        change += 1
-//        cekCehange()
     }
     
     lazy var vehicleInspectionExpDate: UITextField = {
@@ -332,7 +328,7 @@ class EditVehicleView: UIViewController {
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.returnKeyType = .continue
-        field.layer.cornerRadius = 2
+        field.layer.cornerRadius = 5
         field.placeholder = "Insurance Expiration Date".localiz()
         
         let button = UIButton(type: .custom)
@@ -344,11 +340,10 @@ class EditVehicleView: UIViewController {
         button.addTarget(self, action: #selector(openins), for: .touchUpInside)
         field.rightView = button
         field.rightViewMode = .always
-        
-        field.backgroundColor = .white
-//        field.addTarget(self, action: #selector(textFieldDidChange(textField:)), for: .editingChanged)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.inputView = datePickerInspection
         field.inputAccessoryView = toolBar
+        field.paddingLeft(10)
         return field
     }()
     
@@ -364,11 +359,10 @@ class EditVehicleView: UIViewController {
         loginButton.backgroundColor = UIColor.gray
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.setTitleColor(.lightGray, for: .highlighted)
-        loginButton.layer.cornerRadius = 2
+        loginButton.layer.cornerRadius = 5
         loginButton.layer.masksToBounds = true
         loginButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold )
         loginButton.addTarget(self, action: #selector(editClick), for: .touchUpInside)
-//        loginButton.isUserInteractionEnabled = false
         return loginButton
     }()
     
@@ -377,7 +371,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Vehicle Inspection Certificate Photo".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -386,7 +380,7 @@ class EditVehicleView: UIViewController {
         let lable = UILabel()
         lable.text = "Vehicle Photo".localiz()
         lable.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        lable.textColor = UIColor.black
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -411,7 +405,6 @@ class EditVehicleView: UIViewController {
     lazy var containerPhoto: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
-//        view.backgroundColor = .red
         view.spacing = 10
         view.distribution = .fillEqually
         return view
@@ -419,11 +412,9 @@ class EditVehicleView: UIViewController {
     
     func cekCehange(){
         if change > 3 {
-//            nextButton.isUserInteractionEnabled = true
             nextButton.backgroundColor = UIColor(named: "orangeKasumi")
         }else {
-//            nextButton.isUserInteractionEnabled = false
-            nextButton.backgroundColor = UIColor.gray
+            nextButton.backgroundColor = UIColor(named: "labelSecondary")
         }
     }
     
@@ -434,10 +425,11 @@ class EditVehicleView: UIViewController {
         img.image = UIImage(named: "cameraIcon2")
         lable.text = "Upload Foto".localiz()
         lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        lable.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
+        lable.textColor = UIColor(named: "labelColor")
         lable.textAlignment = .center
         viewC.addSubview(lable)
         viewC.addSubview(img)
+        viewC.backgroundColor = UIColor(named: "bgInput")
         img.anchor(top: viewC.topAnchor, width: 30, height: 30)
         img.centerXAnchor.constraint(equalTo: viewC.centerXAnchor).isActive = true
         lable.anchor(top: img.bottomAnchor, left: viewC.leftAnchor, right: viewC.rightAnchor, paddingTop: 5)
@@ -524,7 +516,7 @@ class EditVehicleView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         configureNavigationBar()
         view.addSubview(scrollView)
         pickerView3.delegate = self
@@ -547,20 +539,6 @@ class EditVehicleView: UIViewController {
 
         //We make a call to our keyboard handling function as soon as the view is loaded.
         initializeHideKeyboard()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        insuranceCompany.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        personalCoverage.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        compensation.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        insuranceExpirationDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        vehicleName.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        vehicleNumberPlate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        vehicleYear.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        vehicleOwnership.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
-        vehicleInspectionExpDate.addBorder(toSide: .Bottom, withColor: UIColor.gray.cgColor, andThickness: 1)
     }
 
     

@@ -39,7 +39,7 @@ class PlanVc: UIViewController {
         imageView.heightAnchor.constraint(equalToConstant: 70).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 70).isActive = true
         
-        view.backgroundColor = UIColor(named: "bgKasumi")
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         view.layer.cornerRadius = 120/2
         view.translatesAutoresizingMaskIntoConstraints = false
         view.heightAnchor.constraint(equalToConstant: 120).isActive = true
@@ -139,7 +139,7 @@ class PlanVc: UIViewController {
         let label = UILabel()
         let index = Calendar.current.component(.month, from: Date()) < 12 ? Calendar.current.component(.month, from: Date()) : 0
         label.text = months[index]
-        label.textColor = UIColor.black
+        label.textColor = UIColor(named: "labelColor")
         label.font = UIFont.systemFont(ofSize: 20,weight: .bold)
         label.textAlignment = .center
         return label
@@ -147,7 +147,7 @@ class PlanVc: UIViewController {
     
     lazy var lableStatusDriver: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.lightGray
+        label.textColor = UIColor(named: "labelSecondary")
         label.font = UIFont.systemFont(ofSize: 15,weight: .regular)
         label.textAlignment = .center
         return label
@@ -157,14 +157,14 @@ class PlanVc: UIViewController {
     lazy var subTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Shift on this date".localiz()
-        label.textColor = UIColor.black
+        label.textColor = UIColor(named: "labelColor")
         label.font = UIFont.systemFont(ofSize: 18,weight: .regular)
         return label
     }()
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.lightGray
+        label.textColor = UIColor(named: "labelSeconadry")
         label.font = UIFont.systemFont(ofSize: 14,weight: .regular)
         return label
     }()
@@ -210,7 +210,7 @@ class PlanVc: UIViewController {
     
     let contrainerView: UIView = {
         let view=UIView()
-        view.backgroundColor = UIColor.white
+        view.backgroundColor = UIColor(named: "bgKasumi")
         view.layer.cornerRadius = 5
         return view
     }()
@@ -218,9 +218,9 @@ class PlanVc: UIViewController {
     private let tableView: UITableView = {
         let table = UITableView()
         table.register(ShiftCell.self, forCellReuseIdentifier: ShiftCell.id)
-        //        table.isScrollEnabled = false
         table.showsVerticalScrollIndicator = false
         table.separatorStyle = .none
+        table.backgroundColor = UIColor(named: "bgKasumi")
         return table
     }()
     
@@ -232,7 +232,7 @@ class PlanVc: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(PlanCell.self, forCellWithReuseIdentifier: PlanCell.id)
-        cv.backgroundColor = UIColor(named: "bgKasumi")
+        cv.backgroundColor = UIColor(named: "whiteKasumi")
         cv.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         cv.showsHorizontalScrollIndicator = false
         return cv
@@ -263,7 +263,7 @@ class PlanVc: UIViewController {
         super.viewDidLoad()
         view.addSubview(titleLabel)
         view.addSubview(lableStatusDriver)
-        view.backgroundColor = UIColor(named: "bgKasumi")
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         
         view.addSubview(scrollView)
         scrollView.addSubviews(views: stakView)
@@ -313,6 +313,22 @@ class PlanVc: UIViewController {
                 DispatchQueue.main.async {
                     self.spiner.dismiss()
                     self.shiftTime = data
+                    
+                    let dataWeek = self.dayOffPlan[self.selectedWeek!] as! [String: Any]
+                    self.listShift = dataWeek[self.selectedDay!] as? [Int] ?? nil
+                    
+                    if self.listShift == nil {
+                        self.tableView.isHidden = true
+                        self.emptyImage.isHidden = false
+                        self.setWorkButton.setTitle("Set Work Day".localiz(), for: .normal)
+                    }else{
+                        self.tableView.isHidden = false
+                        self.emptyImage.isHidden = true
+                        self.tableView.reloadData()
+                        self.setWorkButton.setTitle("Set To DayOff".localiz(), for: .normal)
+                    }
+                    
+                    self.selectedIndex = 1
                 }
             case .failure(let error):
                 print(error.localizedDescription)
@@ -558,6 +574,24 @@ class PlanVc: UIViewController {
                 "5": week5,
             ]
         }
+        
+        selectedWeek = "1"
+            
+        let month = montnNumber < 12 ? Date.monthNumber() + 1 : 1
+        let year = montnNumber <= 12 ? Date.yearNumber() : Date.yearNumber()+1
+        let i = 1
+        let dayName = Date.dayNameFromCustomDate2(customDate: i, year: year, month: month)
+        
+        selectedDay = dayName
+        selectedIndex = i
+        
+        let tanggal = Date.dateStringNextMonthFrom(customDate: i, year: year, month: month)
+        
+        let date = Date.dayStringFromStringDate(customDate: tanggal)
+        dateLabel.text = date
+        
+        
+        
     }
     
     //MARK: - UI
@@ -1434,7 +1468,7 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
         let week4 = i > 21 && i <= 28
         let week5 = i > 28
         
-        let color1: UIColor = .black
+        let color1: UIColor = UIColor(named: "labelColor")!
         let color2: UIColor = .black
         
         let bgColor1: UIColor = UIColor(named: "colorGray")!
@@ -1452,11 +1486,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Mon":
@@ -1465,11 +1499,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Tue":
@@ -1478,11 +1512,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Wed":
@@ -1491,11 +1525,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Thu":
@@ -1504,11 +1538,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Fri":
@@ -1517,11 +1551,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 default:
@@ -1530,11 +1564,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 }
@@ -1554,11 +1588,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Mon":
@@ -1567,11 +1601,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Tue":
@@ -1580,11 +1614,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Wed":
@@ -1593,11 +1627,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Thu":
@@ -1606,11 +1640,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Fri":
@@ -1619,11 +1653,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 default:
@@ -1632,11 +1666,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 }
@@ -1655,11 +1689,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Mon":
@@ -1668,11 +1702,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Tue":
@@ -1681,11 +1715,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Wed":
@@ -1694,11 +1728,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Thu":
@@ -1707,11 +1741,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Fri":
@@ -1720,11 +1754,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 default:
@@ -1733,11 +1767,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 }
@@ -1756,11 +1790,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Mon":
@@ -1769,11 +1803,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Tue":
@@ -1782,11 +1816,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Wed":
@@ -1795,11 +1829,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Thu":
@@ -1808,11 +1842,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Fri":
@@ -1821,11 +1855,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 default:
@@ -1834,11 +1868,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 }
@@ -1857,11 +1891,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Mon":
@@ -1870,11 +1904,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Tue":
@@ -1883,11 +1917,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Wed":
@@ -1896,11 +1930,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Thu":
@@ -1909,11 +1943,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 case "Fri":
@@ -1922,11 +1956,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 default:
@@ -1935,11 +1969,11 @@ extension PlanVc: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource
                         cell.container2.backgroundColor = bgColor1
                         cell.statusLable.text = "\(array?.count ?? 0) " + "Shift".localiz()
                         cell.dayLable.textColor = color1
-                        cell.dateLable.textColor = color1
+                        cell.dateLable.textColor = color2
                     }else {
                         cell.container2.backgroundColor = bgColor2
                         cell.statusLable.text = "Day Off".localiz()
-                        cell.dayLable.textColor = color2
+                        cell.dayLable.textColor = color1
                         cell.dateLable.textColor = color2
                     }
                 }

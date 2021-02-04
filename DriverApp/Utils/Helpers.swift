@@ -198,8 +198,28 @@ extension Date {
         let dateNow = customDate < 10 ? "\(year)-\(month)-\(0)\(customDate)" : "\(year)-\(month)-\(customDate)"
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.locale = Locale(identifier: "en-us")
         let dateFor = DateFormatter()
         dateFor.dateFormat = "EE"
+        dateFor.locale = Locale(identifier: "en-us")
+        
+        let date = dateFormatter.date(from: dateNow)
+        let dayString = dateFor.string(from: date!)
+        
+        
+        return dayString
+    }
+    
+    static func dayNameFromCustomDate2(customDate: Int, year:Int? = nil, month: Int? = nil) -> String {
+        let year = year ?? Calendar.current.component(.year, from: Date())
+        let month = month ?? Calendar.current.component(.month, from: Date())
+        let dateNow = customDate < 10 ? "\(year)-\(month)-\(0)\(customDate)" : "\(year)-\(month)-\(customDate)"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        dateFormatter.locale = Locale(identifier: "en-us")
+        let dateFor = DateFormatter()
+        dateFor.dateFormat = "EEEE"
+        dateFor.locale = Locale(identifier: "en-us")
         
         let date = dateFormatter.date(from: dateNow)
         let dayString = dateFor.string(from: date!)

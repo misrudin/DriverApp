@@ -71,6 +71,7 @@
 "Driver Code" = "ユーザーID";
 "Password" = "パスワード";
 "Forgot your password ?" = "パスワード再設定";
+"Please input code driver and password !" = "コードドライバとパスワードを入力してください！";
 
 //MARK: -  FORGOT PASSWORD
 "Enter your email address and we will share a link to create a new password" = "メールアドレスを入力してください。パスワード更新用のリンクをお送りします";

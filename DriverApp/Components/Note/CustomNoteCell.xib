@@ -22,13 +22,13 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Order No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oyV-D4-pH7">
                         <rect key="frame" x="10" y="10" width="59.5" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" name="labelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="2423423434" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ApG-md-CdT">
                         <rect key="frame" x="74.5" y="9.5" width="105" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" name="labelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="38w-0C-SL9">
@@ -37,42 +37,43 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status : " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7D-NZ-cf7">
                                 <rect key="frame" x="10" y="10" width="53" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Deliver to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ooI-T2-KQi">
                                 <rect key="frame" x="38" y="36.5" width="62" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Deliver to" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qVf-1W-yt0">
                                 <rect key="frame" x="38" y="70" width="439" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PENDING" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A38-9W-HSg">
                                 <rect key="frame" x="68" y="5" width="62.5" height="27"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="PENDING" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fwo-6b-Rbk">
                                 <rect key="frame" x="38" y="53" width="439" height="17"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQv-52-OKB">
                                 <rect key="frame" x="375.5" y="5" width="30.5" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3240234" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6th-oe-2cV">
                                 <rect key="frame" x="411" y="10" width="66" height="18"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="destinationMarker" translatesAutoresizingMaskIntoConstraints="NO" id="ecU-CD-FB2">
@@ -85,6 +86,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Deliver to" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="viG-1e-9mE">
                                 <rect key="frame" x="38" y="162" width="439" height="17"/>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -148,8 +150,11 @@
     </objects>
     <resources>
         <image name="destinationMarker" width="128" height="128"/>
-        <namedColor name="darkKasumi">
-            <color red="0.23499999940395355" green="0.23499999940395355" blue="0.23499999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="labelColor">
+            <color red="0.10199999809265137" green="0.10999999940395355" blue="0.125" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="labelSecondary">
+            <color red="0.28600001335144043" green="0.32899999618530273" blue="0.3919999897480011" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

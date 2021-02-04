@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "clipboard.png",
+      "filename" : "sticky-note.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "clipboard@2x.png",
+      "filename" : "sticky-note@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "clipboard@3x.png",
+      "filename" : "sticky-note@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

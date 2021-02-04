@@ -47,7 +47,7 @@ class RestView: UIViewController {
     
     let restLabel = Reusable.makeLabel(text: "Have a good rest.",
                                        font: .systemFont(ofSize: 15, weight: .medium),
-                                       color: UIColor(named: "darkKasumi")!, numberOfLines: 0,
+                                       color: UIColor(named: "labelColor")!, numberOfLines: 0,
                                        alignment: .center)
     
     
@@ -106,7 +106,7 @@ class RestView: UIViewController {
         restLabel.translatesAutoresizingMaskIntoConstraints = false
         emptyImage.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(loginButton)
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         
         emptyImage.centerX(toAnchor: view.centerXAnchor)
         emptyImage.centerY(toAnchor: view.centerYAnchor)

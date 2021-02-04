@@ -45,7 +45,7 @@ class QuickCell: UITableViewCell {
         selectionStyle = .none
         container.translatesAutoresizingMaskIntoConstraints = false
         container.layer.cornerRadius = 5
-        container.backgroundColor = .white
+        container.backgroundColor = UIColor(named: "bubbleColor")
     
     
         label2.text = "Address cannot be found".localiz()
@@ -56,12 +56,12 @@ class QuickCell: UITableViewCell {
         other.text = "Other".localiz()
         lastLabel.text = "Once you click on the option above, your message will be send directly".localiz()
         title.text = "Quick Chat".localiz()
-        item2.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
-        item3.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
-        item4.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
-        item5.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
-        item6.addBorder(toSide: .Top, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
-        item7.addBorder(toSide: .Bottom, withColor: UIColor(named: "grayKasumi")!.cgColor, andThickness: 1)
+        item2.addBorder(toSide: .Top, withColor: UIColor(named: "borderColor3")!.cgColor, andThickness: 1)
+        item3.addBorder(toSide: .Top, withColor: UIColor(named: "borderColor3")!.cgColor, andThickness: 1)
+        item4.addBorder(toSide: .Top, withColor: UIColor(named: "borderColor3")!.cgColor, andThickness: 1)
+        item5.addBorder(toSide: .Top, withColor: UIColor(named: "borderColor3")!.cgColor, andThickness: 1)
+        item6.addBorder(toSide: .Top, withColor: UIColor(named: "borderColor3")!.cgColor, andThickness: 1)
+        item7.addBorder(toSide: .Bottom, withColor: UIColor(named: "borderColor3")!.cgColor, andThickness: 1)
         
         
         container.dropShadow(color: UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1), opacity: 0.1, offSet: CGSize(width: 0, height: 0), radius: 5, scale: true)
@@ -73,9 +73,11 @@ class QuickCell: UITableViewCell {
             let tap = CustomTap(target: self, action: #selector(tapQuickChat))
             tap.ourCustomValue = i
             e?.addGestureRecognizer(tap)
+            e?.backgroundColor = .clear
         }
         
         label6.isUserInteractionEnabled = true
+        label6.backgroundColor = .clear
         label6.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(otherClick)))
         
     }
@@ -90,9 +92,9 @@ class QuickCell: UITableViewCell {
             return
         }
         
-        
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
+              let codeDriver = userData["codeDriver"] as? String,
+              let idAdmin = UserDefaults.standard.value(forKey: "idAdmin") as? Int else {
             print("No user data")
             return
         }
@@ -100,7 +102,7 @@ class QuickCell: UITableViewCell {
         let chat = messages[index]
         NotificationCenter.default.post(name: .didSendMessage, object: nil)
         
-        chatVm.sendMessage(codeDriver: codeDriver, chat: chat) { (res) in
+        chatVm.sendMessage(codeDriver: codeDriver, idAdmin: "\(idAdmin)", chat: chat) { (res) in
             if res {
                 print("Succes to sen \(self.messages[index])")
             }else{

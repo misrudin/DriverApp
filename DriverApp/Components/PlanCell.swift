@@ -64,7 +64,6 @@ class PlanCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
-        
 
         contentView.addSubview(container)
         container.addSubview(dayLable)

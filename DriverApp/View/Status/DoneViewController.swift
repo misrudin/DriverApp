@@ -18,9 +18,9 @@ class DoneViewController: UIViewController {
         return iv
     }()
     
-    lazy var titleLabel = Reusable.makeLabel(text: "SUCCESS".localiz(), font: .systemFont(ofSize: 20, weight: .semibold), color: .black, alignment: .center)
+    lazy var titleLabel = Reusable.makeLabel(text: "SUCCESS".localiz(), font: .systemFont(ofSize: 20, weight: .semibold), color: UIColor(named: "labelColor")!, alignment: .center)
     
-    lazy var subTitleLabel = Reusable.makeLabel(text: "Your Delivery Task Done".localiz(), font: .systemFont(ofSize: 16, weight: .medium), color: .black, alignment: .center)
+    lazy var subTitleLabel = Reusable.makeLabel(text: "Your Delivery Task Done".localiz(), font: .systemFont(ofSize: 16, weight: .medium), color: UIColor(named: "labelColor")!, alignment: .center)
 
     let submitButton: UIButton={
         let button = UIButton()
@@ -34,7 +34,7 @@ class DoneViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         view.addSubview(submitButton)
         view.addSubview(imageView)
         view.addSubview(titleLabel)

@@ -39,7 +39,7 @@ class NotesVc: UIViewController {
         return view
     }()
     
-    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: .black, numberOfLines: 0, alignment: .center)
+    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0, alignment: .center)
     
     var noteViewModel = NoteViewModel()
     private let spiner: JGProgressHUD = {
@@ -57,21 +57,21 @@ class NotesVc: UIViewController {
     lazy var tableView: UITableView = {
        let table = UITableView()
         table.register(UINib(nibName: "CustomNoteCell", bundle: nil), forCellReuseIdentifier: CustomNoteCell .id)
-        
+        table.backgroundColor = UIColor(named: "whiteKasumi")
        return table
     }()
     
     var containerButton: UIView = {
        let container = UIView()
         container.backgroundColor = UIColor(named: "orangeKasumi")
-
+        
        return container
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         configureNavigationBar()
     
         view.addSubview(tableView)

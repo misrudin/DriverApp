@@ -13,7 +13,6 @@
 		B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1892539424C00D693D3 /* LoginModel.swift */; };
 		B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A52539F6FD00D693D3 /* UserModel.swift */; };
 		B31AF1A92539F90F00D693D3 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */; };
-		B31B758725C7B9D3000A511E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B31B758625C7B9D3000A511E /* GoogleService-Info.plist */; };
 		B31E53A22587292C004875F2 /* Pangesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31E53A12587292B004875F2 /* Pangesture.swift */; };
 		B31E53C5258741A8004875F2 /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B31E53C4258741A8004875F2 /* ChatView.swift */; };
 		B32407FB25677A6D00BFF72D /* EditEmail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32407FA25677A6C00BFF72D /* EditEmail.swift */; };
@@ -54,6 +53,7 @@
 		B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35598E52541ED2300866C10 /* OrderViewModel.swift */; };
 		B35642702566198800D3B644 /* EditVehicleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B356426F2566198800D3B644 /* EditVehicleView.swift */; };
 		B35918302576079B005135A0 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B359182E2576079B005135A0 /* DetailView.swift */; };
+		B36B82B725CA72F700BD9152 /* SelectAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36B82B625CA72F700BD9152 /* SelectAdmin.swift */; };
 		B36C4FB92578B7BB002C4D06 /* PendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C4FB72578B7BB002C4D06 /* PendingCell.swift */; };
 		B36E09742536E11800F1B421 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09732536E11800F1B421 /* AppDelegate.swift */; };
 		B36E09762536E11800F1B421 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09752536E11800F1B421 /* SceneDelegate.swift */; };
@@ -87,6 +87,7 @@
 		B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D59A256E41910056D867 /* ForgotView.xib */; };
 		B3CEF63C25904829004F0343 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF63B25904829004F0343 /* Response.swift */; };
 		B3CEF6572590954E004F0343 /* PendingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF6562590954E004F0343 /* PendingListView.swift */; };
+		B3CFC46625CB239C00101925 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3CFC46525CB239C00101925 /* GoogleService-Info.plist */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
 		B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97A22555611B00A30892 /* ShiftCell.swift */; };
@@ -113,7 +114,6 @@
 		B31AF1892539424C00D693D3 /* LoginModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginModel.swift; sourceTree = "<group>"; };
 		B31AF1A52539F6FD00D693D3 /* UserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserModel.swift; sourceTree = "<group>"; };
 		B31AF1A82539F90F00D693D3 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
-		B31B758625C7B9D3000A511E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B31E53A12587292B004875F2 /* Pangesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pangesture.swift; sourceTree = "<group>"; };
 		B31E53C4258741A8004875F2 /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		B32407FA25677A6C00BFF72D /* EditEmail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditEmail.swift; sourceTree = "<group>"; };
@@ -155,6 +155,7 @@
 		B35598E52541ED2300866C10 /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
 		B356426F2566198800D3B644 /* EditVehicleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVehicleView.swift; sourceTree = "<group>"; };
 		B359182E2576079B005135A0 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		B36B82B625CA72F700BD9152 /* SelectAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAdmin.swift; sourceTree = "<group>"; };
 		B36C4FB72578B7BB002C4D06 /* PendingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingCell.swift; sourceTree = "<group>"; };
 		B36E09702536E11800F1B421 /* DriverApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriverApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B36E09732536E11800F1B421 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -190,6 +191,7 @@
 		B3B9D59A256E41910056D867 /* ForgotView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgotView.xib; sourceTree = "<group>"; };
 		B3CEF63B25904829004F0343 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		B3CEF6562590954E004F0343 /* PendingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingListView.swift; sourceTree = "<group>"; };
+		B3CFC46525CB239C00101925 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
 		B3DE97A22555611B00A30892 /* ShiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCell.swift; sourceTree = "<group>"; };
@@ -238,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				B31E53C4258741A8004875F2 /* ChatView.swift */,
+				B36B82B625CA72F700BD9152 /* SelectAdmin.swift */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -374,8 +377,8 @@
 		B36E09722536E11800F1B421 /* DriverApp */ = {
 			isa = PBXGroup;
 			children = (
-				B31B758625C7B9D3000A511E /* GoogleService-Info.plist */,
 				B337CF0025BA71E000A404E0 /* DriverAppRelease.entitlements */,
+				B3CFC46525CB239C00101925 /* GoogleService-Info.plist */,
 				B32A388F25383674000EFBB6 /* Components */,
 				B36E09A0253723CF00F1B421 /* Utils */,
 				B36E098C2536E48300F1B421 /* ViewModel */,
@@ -632,7 +635,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B31B758725C7B9D3000A511E /* GoogleService-Info.plist in Resources */,
+				B3CFC46625CB239C00101925 /* GoogleService-Info.plist in Resources */,
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */,
@@ -813,6 +816,7 @@
 				B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */,
 				B354B11B253B7B3600B5798B /* OrderModel.swift in Sources */,
 				B32944D1254213520040E90C /* EditProfileVc.swift in Sources */,
+				B36B82B725CA72F700BD9152 /* SelectAdmin.swift in Sources */,
 				B33B1B0A2543747C007BDD3A /* ChatViewModel.swift in Sources */,
 				B353094E255A76DF00B68347 /* EditNoteView.swift in Sources */,
 			);
@@ -975,7 +979,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1001,7 +1005,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3;
+				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

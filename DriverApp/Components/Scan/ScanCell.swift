@@ -48,6 +48,7 @@ class ScanCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         selectionStyle = .none
+        backgroundColor = .clear
         configureUi()
     }
     
@@ -55,7 +56,7 @@ class ScanCell: UITableViewCell {
         line.translatesAutoresizingMaskIntoConstraints = false
         container.layer.borderWidth = 2
         container.layer.borderColor = UIColor(named: "orangeKasumi")?.cgColor
-        container.backgroundColor = .white
+        container.backgroundColor = UIColor(named: "whiteKAsumi")
         line.backgroundColor = UIColor(named: "orangeKasumi")
         container.layer.cornerRadius = 10
         line.layer.cornerRadius = 2

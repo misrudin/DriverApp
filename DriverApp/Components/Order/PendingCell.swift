@@ -30,10 +30,10 @@ class PendingCell: UITableViewCell {
             
             DispatchQueue.main.async {
                 if self.orderData.pending_by_system! {
-                    self.container.backgroundColor = UIColor(named: "colorGray")
+                    self.container.backgroundColor = UIColor(named: "bgOrderActive")
                     self.status.text = "Pending by System".localiz()
                 }else {
-                    self.container.backgroundColor = UIColor(named: "colorDisabled")
+                    self.container.backgroundColor = UIColor(named: "bgOrderDisable")
                     self.status.text = "Pending".localiz()
                 }
             }

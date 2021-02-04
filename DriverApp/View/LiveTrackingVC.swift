@@ -84,7 +84,7 @@ class LiveTrackingVC: UIViewController {
         let button = UIButton()
         let image = UIImage(named: "location")
         let baru = image?.resizeImage(CGSize(width: 25, height: 25))
-        button.backgroundColor = .white
+        button.backgroundColor = UIColor(named: "whiteKasumi")
         button.setImage(baru, for: .normal)
         button.layer.cornerRadius = 50/2
         button.layer.masksToBounds = true
@@ -105,7 +105,7 @@ class LiveTrackingVC: UIViewController {
         let button = UIButton()
         let image = UIImage(named: "upload")
         let baru = image?.resizeImage(CGSize(width: 25, height: 25))
-        button.backgroundColor = .white
+        button.backgroundColor = UIColor(named: "whiteKasumi")
         button.setImage(baru, for: .normal)
         button.layer.cornerRadius = 50/2
         button.layer.masksToBounds = true

@@ -8,6 +8,7 @@
 import UIKit
 import AutoKeyboard
 import LanguageManager_iOS
+import JGProgressHUD
 
 extension Date {
     
@@ -33,6 +34,13 @@ extension Date {
 @available(iOS 13.0, *)
 class ChatView: UIViewController {
     
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading".localiz()
+        
+        return spin
+    }()
+    
     private let cellId = "id"
     var chatViewModel = ChatViewModel()
        
@@ -49,6 +57,8 @@ class ChatView: UIViewController {
 
     private var chatObserver: NSObjectProtocol?
     private var otherObserver: NSObjectProtocol?
+    private var adminObserver: NSObjectProtocol?
+    private var adminObserver2: NSObjectProtocol?
     
     var chatMessages = [[ChatMessage]]()
     
@@ -61,7 +71,7 @@ class ChatView: UIViewController {
         field.placeholder = "Type your message here ...".localiz()
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
-        field.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        field.backgroundColor = UIColor(named: "bgInput")
         field.isEnabled = false
         return field
     }()
@@ -94,6 +104,7 @@ class ChatView: UIViewController {
     lazy var tableView: UITableView = {
        let table = UITableView()
         table.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
+        table.backgroundColor = UIColor(named: "whiteKasumi")
        return table
     }()
     
@@ -110,10 +121,11 @@ class ChatView: UIViewController {
         return button
     }()
 
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         configureNavigationBar()
         
 
@@ -121,14 +133,12 @@ class ChatView: UIViewController {
         tableView.register(UINib(nibName: "ImageCell", bundle: nil), forCellReuseIdentifier: ImageCell.id)
         tableView.register(UINib(nibName: "QuickCell", bundle: nil), forCellReuseIdentifier: QuickCell.id)
         tableView.separatorStyle = .none
-        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.estimatedRowHeight = 50
-        listenData()
         view.addSubview(tableView)
         view.addSubview(inputChat)
-        
+        listenData()
         inputField.delegate = self
       
         tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,bottom: inputChat.topAnchor, right: view.rightAnchor)
@@ -156,6 +166,20 @@ class ChatView: UIViewController {
             using: { [weak self] _ in
                 self?.hideQuickChat()
             })
+        
+        adminObserver = NotificationCenter.default.addObserver(forName: .didCloseAdmin,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                self?.handleCloseAdmin()
+            })
+        
+        adminObserver = NotificationCenter.default.addObserver(forName: .didSelectAdmin,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                self?.handleSelectAdmin()
+            })
 
         otherObserver = NotificationCenter.default.addObserver(forName: .didOtherClick,
                                                                object: nil,
@@ -166,6 +190,14 @@ class ChatView: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        ////hide quick chat
+        if let isQuickChat = UserDefaults.standard.value(forKey: "quickChat") {
+            showQuickChat = false
+            print(isQuickChat)
+        }else {
+            showQuickChat = true
+        }
         
     }
     
@@ -190,8 +222,11 @@ class ChatView: UIViewController {
     func didSendMessage(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String,
-              let chat = inputField.text, chat != "" else {
+              let chat = inputField.text, chat != "",
+              let idAdmin = UserDefaults.standard.value(forKey: "idAdmin") as? Int else {
             print("No user data")
+            //show select admin form chat
+            showSelectAdmin()
             return
         }
         
@@ -201,7 +236,7 @@ class ChatView: UIViewController {
         }
         
         
-        chatViewModel.sendMessage(codeDriver: codeDriver,chat: chat) {[weak self] (result) in
+        chatViewModel.sendMessage(codeDriver: codeDriver, idAdmin: "\(idAdmin)", chat: chat) {[weak self] (result) in
             if result {
                 print("Success To send Messages")
             }else {
@@ -215,9 +250,27 @@ class ChatView: UIViewController {
         if let observer = chatObserver {
             NotificationCenter.default.removeObserver(observer)
         }
-
-//        showQuickChat = false
-        showQuickChat = true
+        
+        UserDefaults.standard.setValue("1", forKey: "quickChat")
+        showQuickChat = false
+//        showQuickChat = true
+    }
+    
+    private func handleCloseAdmin(){
+        if let observer = adminObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+        
+        
+        self.navigationController?.popViewController(animated: false)
+    }
+    
+    private func handleSelectAdmin(){
+        if let observer = adminObserver2 {
+            NotificationCenter.default.removeObserver(observer)
+        }
+        
+        listenData()
     }
     
     private func otherClick(){
@@ -225,12 +278,15 @@ class ChatView: UIViewController {
         inputField.becomeFirstResponder()
         let indexPath = NSIndexPath(item: chatMessages.last!.count-1, section: chatMessages.count-1)
         self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
+        UserDefaults.standard.setValue("1", forKey: "quickChat")
     }
     
     func sendFotoMessage(image: UIImage){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
+              let codeDriver = userData["codeDriver"] as? String,
+              let idAdmin = UserDefaults.standard.value(forKey: "idAdmin") as? Int else {
             print("No user data")
+            showSelectAdmin()
             return
         }
         let imageData = image.jpegData(compressionQuality: 0.5)
@@ -241,7 +297,7 @@ class ChatView: UIViewController {
             sendCount += 1
         }
         
-        chatViewModel.sendMessage(codeDriver: codeDriver, foto: imageString!, chat: "") { (result) in
+        chatViewModel.sendMessage(codeDriver: codeDriver, foto: imageString!, idAdmin: "\(idAdmin)", chat: "") { (result) in
             if result {
                 print("Success To send Foto")
             }else {
@@ -253,25 +309,39 @@ class ChatView: UIViewController {
     
     func listenData(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
+              let codeDriver = userData["codeDriver"] as? String,
+              let idAdmin = UserDefaults.standard.value(forKey: "idAdmin") as? Int else {
             print("No user data")
+           showSelectAdmin()
             return
         }
         
-        chatViewModel.getAllMsssages(codeDriver: codeDriver) { (result) in
+        spiner.show(in: view)
+        print("Chat with =>",idAdmin)
+        
+        chatViewModel.getAllMsssages(codeDriver: codeDriver, idAdmin: "\(idAdmin)") { (result) in
             switch result {
             case .success(let data):
                 DispatchQueue.main.async {
+                    self.spiner.dismiss()
                     self.chatMessages = data
                     self.tableView.reloadData()
                     let indexPath = NSIndexPath(item: data.last!.count-1, section: data.count-1)
                     self.tableView.scrollToRow(at: indexPath as IndexPath, at: .bottom, animated: true)
                 }
             case .failure(let error):
+                self.spiner.dismiss()
                 print(error)
             }
         }
         
+    }
+    
+    private func showSelectAdmin(){
+        let vc = SelectAdmin()
+        let navVc = UINavigationController(rootViewController: vc)
+        navVc.modalPresentationStyle = .fullScreen
+        present(navVc, animated: false, completion: nil)
     }
     
     func configureNavigationBar(){
@@ -587,7 +657,7 @@ class PeviewPhoto: UIViewController {
         view.addSubview(sendButton)
         view.addSubview(closeButton)
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
     }
     
     override func viewDidLayoutSubviews() {

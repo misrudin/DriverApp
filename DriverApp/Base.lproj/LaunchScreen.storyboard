@@ -38,11 +38,11 @@
                                 <blurEffect style="dark"/>
                             </visualEffectView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logoKasumi" translatesAutoresizingMaskIntoConstraints="NO" id="xBG-19-0Pc">
-                                <rect key="frame" x="175" y="416" width="64" height="64"/>
+                                <rect key="frame" x="157" y="278" width="100" height="100"/>
                                 <color key="tintColor" name="bgInput"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="GpB-lP-dT5"/>
-                                    <constraint firstAttribute="width" constant="64" id="y1D-Oo-abB"/>
+                                    <constraint firstAttribute="height" constant="100" id="GpB-lP-dT5"/>
+                                    <constraint firstAttribute="width" constant="100" id="y1D-Oo-abB"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -50,7 +50,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="Vih-yG-Frr" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="4rH-Ff-PJs"/>
-                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerY" secondItem="Vih-yG-Frr" secondAttribute="centerY" id="5su-X8-Rph"/>
+                            <constraint firstItem="xBG-19-0Pc" firstAttribute="centerY" secondItem="Vih-yG-Frr" secondAttribute="centerY" constant="-120" id="5su-X8-Rph"/>
                             <constraint firstItem="Vih-yG-Frr" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7W1-Wr-ynF"/>
                             <constraint firstAttribute="trailing" secondItem="8Wy-Qq-477" secondAttribute="trailing" id="VNp-MV-ULc"/>
                             <constraint firstAttribute="bottom" secondItem="Vih-yG-Frr" secondAttribute="bottom" id="WNU-7T-fTL"/>
@@ -71,7 +71,7 @@
         <image name="bgMain" width="340" height="550"/>
         <image name="logoKasumi" width="1960" height="1964"/>
         <namedColor name="bgInput">
-            <color red="0.9649999737739563" green="0.97299998998641968" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.92199999094009399" green="0.92199999094009399" blue="0.92199999094009399" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

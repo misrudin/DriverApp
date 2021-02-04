@@ -8,13 +8,50 @@
 import Foundation
 import FirebaseDatabase
 import SwiftyJSON
+import Alamofire
 
 struct ChatViewModel {
     private let database = Database.database().reference()
     
-    let idAdmin = "17257"
+//    let idAdmin = "17257"
     
-    func getAllMsssages(codeDriver: String, completion: @escaping (Result<[[ChatMessage]],Error>)-> Void){
+    func getListAdminByGroup(idGroup: Int, completion: @escaping (Result<[Admin],Error>)-> Void){
+        AF.request("\(Base.urlDx)group/user/\(idGroup)",headers: Base.headers).responseJSON { response in
+            switch response.result {
+            case .success:
+                if response.response?.statusCode == 200 {
+
+                    if let data = response.data {
+                        if let adminData =  parseAdmin(data: data){
+                            completion(.success(adminData))
+                        }else {
+                            completion(.failure(OrderError.failedToParseJson))
+                        }
+                    }
+                }else {
+                    if let data = response.data {
+                        if let re = Helpers().decodeError(data: data){
+                            completion(.failure(OrderError.failedToFetch(re.Message_JP)))
+                        }
+                    }
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func parseAdmin(data: Data) -> [Admin]?{
+        do{
+            let decodedData = try JSONDecoder().decode(DataAdmin.self, from: data)
+            return decodedData.data
+        }catch{
+            print(error)
+            return nil
+        }
+    }
+    
+    func getAllMsssages(codeDriver: String, idAdmin: String, completion: @escaping (Result<[[ChatMessage]],Error>)-> Void){
         let urlFirebase = "chatting/\(codeDriver)_\(idAdmin)/allChat"
         database.child(urlFirebase).observe(.value) { (snapshot) in
             
@@ -59,7 +96,7 @@ struct ChatViewModel {
         }
     }
     
-    func getNewMessageValue(codeDriver: String, completion: @escaping (Int)->Void){
+    func getNewMessageValue(codeDriver: String, idAdmin: String, completion: @escaping (Int)->Void){
         let urlFirebase = "messages/\(idAdmin)/\(codeDriver)_\(idAdmin)"
         database.child(urlFirebase).observeSingleEvent(of: .value) { (snapshot) in
             guard let data = snapshot.value as? [String: Any], let value = data["newMessage"] as? Int else{
@@ -70,7 +107,7 @@ struct ChatViewModel {
         }
     }
     
-    func sendMessage(codeDriver: String, chat: String, completion: @escaping (Bool)-> Void){
+    func sendMessage(codeDriver: String, idAdmin: String, chat: String, completion: @escaping (Bool)-> Void){
         let dateNow = Date()
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy-MM-dd"
@@ -117,7 +154,7 @@ struct ChatViewModel {
             completion(true)
         }
         
-        getNewMessageValue(codeDriver: codeDriver) { (val) in
+        getNewMessageValue(codeDriver: codeDriver, idAdmin: idAdmin) { (val) in
             DispatchQueue.main.async {
                 let historyChatDic: [String: Any] = [
                     "lastContentChat": historyChat.lastContentChat,
@@ -139,7 +176,7 @@ struct ChatViewModel {
     }
     
     
-    func sendMessage(codeDriver: String, foto: String, chat: String, completion: @escaping (Bool)-> Void){
+    func sendMessage(codeDriver: String, foto: String, idAdmin: String, chat: String, completion: @escaping (Bool)-> Void){
         let dateNow = Date()
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy-MM-dd"
@@ -183,7 +220,7 @@ struct ChatViewModel {
             completion(true)
         }
         
-        getNewMessageValue(codeDriver: codeDriver) { (val) in
+        getNewMessageValue(codeDriver: codeDriver, idAdmin: idAdmin) { (val) in
             DispatchQueue.main.async {
                 let historyChatDic: [String: Any] = [
                     "lastContentChat": historyChat.lastContentChat,

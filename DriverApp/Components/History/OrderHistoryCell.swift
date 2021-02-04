@@ -139,6 +139,7 @@ class OrderHistoryCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        backgroundColor = .clear
         
 //        MARK: - Value
         orderNoLabel.text = "Order No".localiz()
@@ -150,7 +151,7 @@ class OrderHistoryCell: UITableViewCell {
         nothing.text = "has not reviewed by admin".localiz()
         
         
-        container.backgroundColor = UIColor(named: "bgKasumi")
+        container.backgroundColor = UIColor(named: "bgOrderActive")
         container.layer.cornerRadius = 5
     }
 

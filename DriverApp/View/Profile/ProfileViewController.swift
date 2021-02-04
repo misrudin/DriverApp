@@ -32,7 +32,7 @@ class ProfileViewController: UIViewController {
     
     lazy var containerView: UIView = {
         let container = UIView()
-        container.backgroundColor = .rgba(red: 0, green: 0, blue: 0, alpha: 0.025)
+        container.backgroundColor = UIColor(named: "whiteSecondary")
         container.addSubview(lableName)
         container.addSubview(lableEmail)
         container.addSubview(imageView)
@@ -101,20 +101,21 @@ class ProfileViewController: UIViewController {
     
     lazy var containerButton: UIView = {
        let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         return view
     }()
     
     lazy var button1 = createButton(title: "Note".localiz(), icon: UIImage(named: "note")!)
     lazy var button2 = createButton(title: "Change Password".localiz(), icon: UIImage(named: "password")!)
     lazy var button6 = createButton(title: "Change Vehicle Data".localiz(), icon: UIImage(named: "vehicle")!)
+    lazy var buttonLanguage = createButton(title: "Language".localiz(), icon: UIImage(named: "language")!)
 
     //MARK: - Ratings
     lazy var ratingLabel: UILabel = {
         let lable = UILabel()
         lable.text = "0"
         lable.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-        lable.textColor = UIColor(named: "darkKasumi")
+        lable.textColor = UIColor(named: "labelColor")
         return lable
     }()
     
@@ -171,7 +172,7 @@ class ProfileViewController: UIViewController {
         b.setImage(baru, for: .normal)
         b.setTitle("Logout".localiz(), for: .normal)
         b.setTitleColor(.red, for: .normal)
-        b.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        b.backgroundColor = UIColor(named: "bgInput")
         b.layer.cornerRadius = 5
         b.layer.masksToBounds = true
         b.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold )
@@ -195,11 +196,14 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        lableName.textColor = UIColor(named: "labelColor")
+        lableEmail.textColor = UIColor(named: "labelSecondary")
+        
         
         imageView.layer.cornerRadius = 80/2
         imageEdit.isUserInteractionEnabled = true
         imageEdit.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapEditProfile)))
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         
         view.addSubview(containerView)
         
@@ -207,6 +211,7 @@ class ProfileViewController: UIViewController {
         containerButton.addSubview(button1)
         containerButton.addSubview(button2)
         containerButton.addSubview(button3)
+        
 //        containerButton.addSubview(button4)
         containerButton.addSubview(button5)
         containerButton.addSubview(button6)
@@ -360,6 +365,8 @@ class ProfileViewController: UIViewController {
         confirmationAlert.addAction(UIAlertAction(title: "Yes".localiz(), style: .default, handler: {[weak self] (_) in
             self?.updateStatus(status: "inactive")
             UserDefaults.standard.removeObject(forKey: "userData")
+            UserDefaults.standard.removeObject(forKey: "idAdmin")
+            UserDefaults.standard.removeObject(forKey: "quickChat")
             self?.dismiss(animated: true, completion: nil)
         }))
         
@@ -409,6 +416,8 @@ class ProfileViewController: UIViewController {
                     self?.spiner.dismiss()
                     if(logout){
                         UserDefaults.standard.removeObject(forKey: "userData")
+                        UserDefaults.standard.removeObject(forKey: "idAdmin")
+                        UserDefaults.standard.removeObject(forKey: "quickChat")
                     }
                     self?.dismiss(animated: true, completion: nil)
                 }

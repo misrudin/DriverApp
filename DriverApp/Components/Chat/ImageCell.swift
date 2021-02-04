@@ -29,7 +29,7 @@ class ImageCell: UITableViewCell {
             timeLabel.textColor =  UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2)
             chatContent.text = item.text
             timeLabel.text = item.time
-            chatContent.textColor = item.isIncoming ? .black : .white
+            chatContent.textColor = item.isIncoming ? UIColor(named: "labelColor") : .white
             guard let imgString = item.photo else {
                 return
             }
@@ -57,7 +57,6 @@ class ImageCell: UITableViewCell {
         container.layer.cornerRadius = 5
         imageChat.layer.cornerRadius = 5
         container.widthAnchor.constraint(equalToConstant: 250).isActive = true
-        container.backgroundColor = .red
         leading = container.leadingAnchor.constraint(equalTo: leadingAnchor,constant: 16)
         leading.isActive = false
         trailing = container.trailingAnchor.constraint(equalTo: trailingAnchor,constant: -16)

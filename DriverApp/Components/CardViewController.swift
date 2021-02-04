@@ -60,14 +60,15 @@ class CardViewController: UIViewController {
     
     let handleArea: UIView = {
         let viewArea = UIView()
-        viewArea.backgroundColor = .white
+        viewArea.backgroundColor = UIColor(named: "whiteKasumi")
         return viewArea
     }()
     
     let lineView: UIView = {
         let line = UIView()
-        line.backgroundColor = .lightGray
+        line.backgroundColor = UIColor(named: "borderColor")
         line.layer.cornerRadius = 1
+        line.alpha = 0.5
         return line
     }()
     
@@ -111,7 +112,7 @@ class CardViewController: UIViewController {
     let titleLabelItemName: UILabel = {
         let label = UILabel()
         label.text = "Item Name".localiz()
-        label.textColor = .lightGray
+        label.textColor = UIColor(named: "labelSecondary")
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         return label
@@ -120,7 +121,7 @@ class CardViewController: UIViewController {
     let itemLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = UIColor(named: "darkKasumi")
+        label.textColor = UIColor(named: "labelColor")
         label.numberOfLines = 3
         
         return label
@@ -139,7 +140,7 @@ class CardViewController: UIViewController {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "PickUp Store".localiz()
-        label.textColor = .lightGray
+        label.textColor = UIColor(named: "labelSecondary")
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         return label
@@ -148,7 +149,7 @@ class CardViewController: UIViewController {
     let titleLabel2: UILabel = {
         let label = UILabel()
         label.text = "Classification".localiz()
-        label.textColor = .lightGray
+        label.textColor = UIColor(named: "labelSecondary")
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         return label
@@ -157,7 +158,7 @@ class CardViewController: UIViewController {
     let classificationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        label.textColor = UIColor(named: "darkKasumi")
+        label.textColor = UIColor(named: "labelColor")
         
         return label
     }()
@@ -165,17 +166,17 @@ class CardViewController: UIViewController {
     let storeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = UIColor(named: "darkKasumi")
+        label.textColor = UIColor(named: "labelColor")
         
         return label
     }()
     
-    let storeAddres = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "darkKasumi")!, numberOfLines: 0)
+    let storeAddres = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0)
     
     let titleLabelDestination: UILabel = {
         let label = UILabel()
         label.text = "Receiver".localiz()
-        label.textColor = .lightGray
+        label.textColor = UIColor(named: "labelSecondary")
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         
         return label
@@ -184,7 +185,7 @@ class CardViewController: UIViewController {
     let destinationLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = UIColor(named: "darkKasumi")
+        label.textColor = UIColor(named: "labelColor")
         
         return label
     }()
@@ -192,7 +193,7 @@ class CardViewController: UIViewController {
     private let lableText: UILabel = {
         let l = UILabel()
         l.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        l.textColor = UIColor(named: "darkKasumi")
+        l.textColor = UIColor(named: "labelColor")
         return l
     }()
     
@@ -201,7 +202,7 @@ class CardViewController: UIViewController {
                                        color: UIColor(named: "orangeKasumi")!)
     let distanceLabel = Reusable.makeLabel(text: "",
                                            font: .systemFont(ofSize: 14, weight: .medium),
-                                       color: UIColor(named: "darkKasumi")!)
+                                       color: UIColor(named: "labelColor")!)
     
     
     private func createTitle(icon: UIImage)-> UIView {
@@ -281,7 +282,7 @@ class CardViewController: UIViewController {
         view.addSubviews(views: estLabel, distanceLabel)
         detailItem.isUserInteractionEnabled = true
         detailItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didSeeDetail)))
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         configureLayout()
         
         guard let orderNo = orderData?.order_number,
@@ -294,9 +295,9 @@ class CardViewController: UIViewController {
         }
         
         lableText.text = orderNo
-        print("userInfo", userInfo)
+        print("userInfo", orderDetail)
         
-        classificationLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].classification
+        classificationLabel.text = orderDetail.classification
         storeLabel.text = orderDetail.pickup_destination[orderDetail.pickup_destination.count-1].pickup_store_name
         destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) \(userInfo.address)"
         destinationLabel.numberOfLines = 0
@@ -478,7 +479,7 @@ class CardViewController: UIViewController {
         }
         
         storeLabel.text = orderDetail.pickup_destination[currentIndex].pickup_store_name
-        classificationLabel.text = orderDetail.pickup_destination[currentIndex].classification
+        classificationLabel.text = orderDetail.classification
         destinationLabel.text = "\(userInfo.address) \(userInfo.first_name) \(userInfo.last_name) \(userInfo.phone_number)"
     
         
@@ -499,8 +500,14 @@ class CardViewController: UIViewController {
                             self?.titleButton = "Scan Stuff".localiz()
                             self?.statusDelivery = .scan
                         }else if filtered.count == 0 && self!.currentIndex == items.count-1 {
-                            self?.titleButton = "Done Pickup".localiz()
-                            self?.statusDelivery = .done_pickup
+                            if orderDetail.classification == "BOPIS" {
+                                self?.titleButton = "Done".localiz()
+                                self?.statusDelivery = .done_delivery
+                            }else {
+                                self?.titleButton = "Done Pickup".localiz()
+                                self?.statusDelivery = .done_pickup
+                            }
+                            
                             self?.orderButton.setTitle(self?.titleButton, for: .normal)
                             self?.orderButton2.setTitle(self?.titleButton, for: .normal)
                         }else {

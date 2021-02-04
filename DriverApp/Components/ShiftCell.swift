@@ -69,6 +69,7 @@ class ShiftCell: UITableViewCell {
         viewContainer.insertSubview(leftView, at: 0)
         viewContainer.addSubview(line)
         selectionStyle = .none
+        backgroundColor = .clear
         
         line.anchor(top: viewContainer.topAnchor, left: viewContainer.leftAnchor, bottom: viewContainer.bottomAnchor, width: 10)
         

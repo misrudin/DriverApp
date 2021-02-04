@@ -60,11 +60,7 @@ class MainVc: UIViewController {
         view.addSubview(labelAppName)
         view.addSubview(loginButton)
         view.addSubview(signupButton)
-        
-        loginButton.alpha = 0
-        signupButton.alpha = 0
-        engButton.alpha = 0
-        javButton.alpha = 0
+    
         
         loginButton.transform = CGAffineTransform(scaleX: 0, y: 0)
         signupButton.transform = CGAffineTransform(scaleX: 0, y: 0)
@@ -81,15 +77,14 @@ class MainVc: UIViewController {
         visualEffectView.fill(toView: view)
         bg.fill(toView: view)
         
-        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -120).isActive = true
         imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        imageView.anchor(width: 80, height: 80)
+        imageView.anchor(width: 100, height: 100)
         labelAppName.translatesAutoresizingMaskIntoConstraints = false
         labelAppName.bottom(toAnchor: imageView.bottomAnchor, space: 30)
         labelAppName.left(toAnchor: view.leftAnchor, space: 10)
         labelAppName.right(toAnchor: view.rightAnchor, space: -10)
         labelAppName.isHidden = true
-        imageView.isHidden = true
         
         signupButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingBottom: 20, paddingLeft: 16, paddingRight: 16, height: 45)
         
@@ -175,6 +170,10 @@ class MainVc: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        loginButton.alpha = 0
+        signupButton.alpha = 0
+        engButton.alpha = 0
+        javButton.alpha = 0
         cekUser()
         cekLanguageActive()
     }

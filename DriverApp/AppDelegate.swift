@@ -44,6 +44,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self.window!.backgroundColor = .red
         }
         updateStatus(status: "active")
+        print("On Load View Ready")
         
         //firebase notification
         if #available(iOS 10.0, *) {
@@ -75,9 +76,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-      print("discard session")
+        print("discard session")
         updateStatus(status: "inactive")
     }
+    
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        print("discard session")
+        updateStatus(status: "inactive")
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        print("sceneDidBecomeActive")
+        updateStatus(status: "active")
+    }
+    
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        print("sceneWillEnterForeground")
+        updateStatus(status: "active")
+    }
+    
+    func sceneDidDisconnect(_ scene: UIScene) {
+        print("sceneDidDisconnect")
+        updateStatus(status: "inactive")
+    }
+
+    func sceneWillResignActive(_ scene: UIScene) {
+        print("sceneWillResignActive")
+        updateStatus(status: "inactive")
+    }
+    
     
     private func updateStatus(status: String){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],

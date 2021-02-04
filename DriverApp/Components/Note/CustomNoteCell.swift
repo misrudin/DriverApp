@@ -43,8 +43,9 @@ class CustomNoteCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        backgroundColor = .clear
         
-        container.backgroundColor = UIColor(named: "bgKasumi")
+        container.backgroundColor = UIColor(named: "bgOrderActive")
         container.layer.cornerRadius = 10
         orderNoLabel.text = "Order No".localiz()
         statusLabel.text = "Status".localiz()

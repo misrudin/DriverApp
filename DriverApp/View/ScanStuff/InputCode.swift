@@ -20,8 +20,8 @@ class InputCode: UIViewController {
     
     lazy var inputCode: UITextField = {
         let field = UITextField()
-        field.backgroundColor = .white
-        field.layer.borderColor = UIColor(named: "grayKasumi")?.cgColor
+        field.backgroundColor = .clear
+        field.layer.borderColor = UIColor.lightGray.cgColor
         field.autocorrectionType = .no
         field.autocapitalizationType = .none
         field.placeholder = "Input code here ...".localiz()
@@ -46,7 +46,7 @@ class InputCode: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         title = "Add code manual".localiz()
 
         configureUi()

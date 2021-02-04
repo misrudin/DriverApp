@@ -22,7 +22,7 @@ class RestViewController: UIViewController {
     
     let container: UIView = {
         let v = UIView()
-        v.backgroundColor = .white
+        v.backgroundColor = UIColor(named: "whiteKasumi")
         return v
     }()
     
@@ -106,7 +106,8 @@ class RestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        lable.textColor = UIColor(named: "labelColor")
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         configureNavigationBar()
     }
     

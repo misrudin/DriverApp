@@ -84,12 +84,12 @@ class RegisterView: UIViewController {
         img.layer.cornerRadius = 80/2
         img.isUserInteractionEnabled = true
         img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectProfilePhoto)))
-        img.backgroundColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.1)
+        img.backgroundColor = UIColor(named: "bgInput")
         return img
     }()
 
     
-    let lableColor: UIColor = .black
+    let lableColor: UIColor = UIColor(named: "labelColor")!
     let lablefont: UIFont = UIFont.systemFont(ofSize: 14, weight: .regular)
     let inputBg: UIColor = UIColor(named: "bgInput")!
     
@@ -576,7 +576,6 @@ class RegisterView: UIViewController {
     
     
     //MARK:- Vehicle Data
-    //MARK:- Insurance Company
     
     
     lazy var insuranceCompany: UITextField = {
@@ -842,7 +841,6 @@ class RegisterView: UIViewController {
     lazy var containerPhoto: UIStackView = {
         let view = UIStackView()
         view.axis = .horizontal
-//        view.backgroundColor = .red
         view.spacing = 10
         view.distribution = .fillEqually
         return view
@@ -855,7 +853,7 @@ class RegisterView: UIViewController {
         img.image = UIImage(named: "cameraIcon2")
         lable.text = "Upload Photo".localiz()
         lable.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        lable.textColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.5)
+        lable.textColor = UIColor(named: "labelColor")
         lable.textAlignment = .center
         viewC.addSubview(lable)
         viewC.addSubview(img)
@@ -950,6 +948,8 @@ class RegisterView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        view.backgroundColor = UIColor(named: "whiteKasumi")
+        
         pickerView1.delegate = self
         pickerView1.dataSource = self
         
@@ -970,7 +970,6 @@ class RegisterView: UIViewController {
             vehicleY.append(VehicleYear(year: String(i)))
         }
         
-        view.backgroundColor = .white
         configureNavigationBar()
         
         

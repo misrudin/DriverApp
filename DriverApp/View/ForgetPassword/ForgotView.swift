@@ -34,6 +34,9 @@ class ForgotView: UIViewController {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction))
         view.addGestureRecognizer(panGesture)
         
+        titleLable.textColor = UIColor(named: "labelColor")
+        subTitlw.textColor = UIColor(named: "labelSecondary")
+        
         titleLable.text = "Forgot your password ?".localiz()
         subTitlw.text = "Enter your email address and we will share a link to create a new password".localiz()
         
@@ -79,7 +82,7 @@ class ForgotView: UIViewController {
         
         email.layer.cornerRadius = 5
         email.layer.borderWidth = 1
-        email.layer.borderColor = UIColor(named: "darkKasumi")?.cgColor
+        email.layer.borderColor = UIColor(named: "borderColor")?.cgColor
         email.keyboardType = .emailAddress
         email.autocorrectionType = .no
         email.autocapitalizationType = .none
@@ -90,6 +93,9 @@ class ForgotView: UIViewController {
         submit.layer.cornerRadius = 5
         submit.addTarget(self, action: #selector(didSubmit), for: .touchUpInside)
         submit.setTitle("Send".localiz(), for: .normal)
+        
+        view.backgroundColor = UIColor(named: "whiteKasumi")
+        container.backgroundColor = UIColor(named: "whiteKasumi")
         
         email.becomeFirstResponder()
         

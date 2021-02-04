@@ -22,13 +22,13 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order No" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m3N-jk-XGw">
                         <rect key="frame" x="10" y="10" width="59.5" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" name="labelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0024343" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="krD-S3-SVj">
                         <rect key="frame" x="74.5" y="9.5" width="66.5" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" name="labelColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXT-rl-NPd">
@@ -37,65 +37,67 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jmG-qq-fRw">
                                 <rect key="frame" x="10" y="10" width="30.5" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delivery Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vB6-oI-nzi">
                                 <rect key="frame" x="10" y="32.5" width="88" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delivery to" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FY7-IX-aHr">
                                 <rect key="frame" x="35" y="61.5" width="69" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Rating and Riview" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HrK-oS-iBS">
                                 <rect key="frame" x="35" y="236.5" width="115" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="address" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HTg-bt-dSF">
                                 <rect key="frame" x="35" y="209.5" width="596" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="address" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j2w-3d-ib3">
                                 <rect key="frame" x="35" y="278.5" width="596" height="17"/>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KOK-JX-UVg">
                                 <rect key="frame" x="486" y="10.5" width="42" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="darkKasumi"/>
+                                <color key="textColor" name="labelSecondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0024343" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v35-kk-hWj">
                                 <rect key="frame" x="45.5" y="9.5" width="66.5" height="18"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0024343" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mo2-91-fcY">
                                 <rect key="frame" x="103" y="32" width="66.5" height="18"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RqY-nK-emC">
                                 <rect key="frame" x="35" y="83.5" width="596" height="18"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Done Delivery" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFi-f5-V4t">
                                 <rect key="frame" x="533" y="10" width="98" height="18"/>
                                 <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="destinationMarker" translatesAutoresizingMaskIntoConstraints="NO" id="9rp-ok-wYp">
@@ -143,6 +145,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="has not reviewed by admin" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="azF-lA-KNn">
                                 <rect key="frame" x="35" y="264" width="596" height="17"/>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
+                                <color key="textColor" name="labelColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -233,8 +236,11 @@
     <resources>
         <image name="destinationMarker" width="128" height="128"/>
         <image name="star" width="128" height="128"/>
-        <namedColor name="darkKasumi">
-            <color red="0.23499999940395355" green="0.23499999940395355" blue="0.23499999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="labelColor">
+            <color red="0.10199999809265137" green="0.10999999940395355" blue="0.125" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="labelSecondary">
+            <color red="0.28600001335144043" green="0.32899999618530273" blue="0.3919999897480011" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemGray3Color">
             <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

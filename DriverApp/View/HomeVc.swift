@@ -63,7 +63,7 @@ class HomeVc: UIViewController {
         return view
     }()
     
-    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: .black, numberOfLines: 0, alignment: .center)
+    private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0, alignment: .center)
     
     
     var orderViewModel = OrderViewModel()
@@ -75,7 +75,7 @@ class HomeVc: UIViewController {
         let table = UITableView(frame: CGRect.zero, style: .grouped)
         table.register(OrderCell.self, forCellReuseIdentifier: OrderCell.id)
         table.register(PendingCell.self, forCellReuseIdentifier: PendingCell.id)
-        table.backgroundColor = .white
+        table.backgroundColor = UIColor(named: "whiteKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
         table.sectionFooterHeight = 0

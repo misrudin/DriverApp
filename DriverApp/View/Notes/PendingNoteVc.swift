@@ -58,18 +58,18 @@ class PendingNoteVc: UIViewController {
     private let stackView: UIView = {
        let view  = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         return view
     }()
     
     let titleLebel = Reusable.makeLabel(text: "Tell Your Pending Delivery Reason".localiz(),
                                         font: .systemFont(ofSize: 14, weight: .semibold),
-                                        color: UIColor(named: "darkKasumi")!,
+                                        color: UIColor(named: "labelColor")!,
                                         numberOfLines: 0,
                                         alignment: .center)
     private let container: UIView = {
        let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "bgKasumi")
         view.layer.cornerRadius = 5
         return view
     }()
@@ -80,7 +80,7 @@ class PendingNoteVc: UIViewController {
         contain.backgroundColor = .white
         let labelTitle = Reusable.makeLabel(text: title,
                                             font: .systemFont(ofSize: 14, weight: .regular),
-                                            color: UIColor(named: "darkKasumi")!,
+                                            color: UIColor(named: "labelColor")!,
                                             numberOfLines: 0, alignment: .left)
         contain.addSubviews(views: labelTitle)
         labelTitle.centerY(toAnchor: contain.centerYAnchor)
@@ -131,7 +131,7 @@ class PendingNoteVc: UIViewController {
         tv.layer.borderWidth = 1
         tv.layer.borderColor = UIColor.rgba(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
         tv.layer.shadowOpacity = 0.5
-        tv.backgroundColor = .white
+        tv.backgroundColor = UIColor(named: "bgKasumi")
         tv.dataDetectorTypes = .all
         tv.textAlignment = .left
         tv.font = UIFont.systemFont(ofSize: 15)
@@ -144,7 +144,7 @@ class PendingNoteVc: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         view.addSubviews(views: scrollView)
         
         configureNavigationBar()
@@ -210,7 +210,7 @@ class PendingNoteVc: UIViewController {
         let items = [item1,item2,item3,item4, item5]
         _ = items.enumerated().map { (i, e) in
             if i != 0 {
-                e.addBorder(toSide: .Top, withColor: UIColor.rgba(red: 0, green: 0, blue: 0,alpha: 0.1).cgColor, andThickness: 1)
+                e.addBorder(toSide: .Top, withColor: UIColor(named: "borderColor3")!.cgColor, andThickness: 1)
             }
         }
 

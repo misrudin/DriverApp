@@ -183,10 +183,12 @@ struct NewUserInfo: Decodable {
 struct NewOrderDetail: Decodable {
     let delivery_destination: DeliveryDestination
     let pickup_destination: [PickupDestination]
+    let classification: String?
     
     enum CodingKeys: String, CodingKey {
         case delivery_destination
         case pickup_destination
+        case classification
     }
 }
 
@@ -209,14 +211,12 @@ struct PickupDestination: Decodable {
     let lat: String?
     let long: String?
     var pickup_item: [PickupItem]
-    let classification: String?
     
     enum CodingKeys: String, CodingKey {
         case pickup_store_name
         case lat
         case long
         case pickup_item
-        case classification
     }
 }
 

@@ -42,7 +42,7 @@ class SelectShift: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(ShiftTimeCell.self, forCellWithReuseIdentifier: ShiftTimeCell.id)
-        cv.backgroundColor = UIColor.white
+        cv.backgroundColor = UIColor(named: "whiteKasumi")
         cv.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         cv.showsHorizontalScrollIndicator = false
         return cv
