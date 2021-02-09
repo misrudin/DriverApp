@@ -14,57 +14,30 @@ class OrderCell: UITableViewCell {
     
     
     //MARK: - Setter
-    var orderData: NewOrderData! {
+    
+    var shift: ShiftTime! {
         didSet {
-            
-            guard let orderDetail = orderVm.decryptOrderDetail(data: orderData.order_detail, OrderNo: orderData.order_number) else {
-                return
-            }
-            
-            
-            orderNo.text = ": \(orderData.order_number)"
-      
-            
-            let formatDateTime = DateFormatter()
-            formatDateTime.dateFormat = "HH:mm"
-            let timeNow = formatDateTime.string(from: Date())
-            
-            
-
-            let start = orderData.detail_shift.time_start_shift[...4]
-            let end = orderData.detail_shift.time_end_shift[...4]
-            
-            let dateFormater = DateFormatter()
-            dateFormater.dateFormat = "yyyy-MM-dd"
-            let dateNow = dateFormater.string(from: Date())
-             
-            
-            DispatchQueue.main.async {
-                if timeNow <= end && timeNow > start && self.orderData.active_date == dateNow {
-                    self.container.backgroundColor = UIColor(named: "bgOrderActive")
-                }
-                
-                if (timeNow > end || timeNow < start) || self.orderData.active_date != dateNow {
-                    self.container.backgroundColor = UIColor(named: "bgOrderDisable")
-                }
-            }
-            
-//          timeNow <= end &&
-//            self.isUserInteractionEnabled = timeNow >= start && self.orderData.active_date == dateNow
-
+            let start = shift.time_start_shift[...4]
+            let end = shift.time_end_shift[...4]
             date.text = "\(start) - \(end)"
-
-            var arrayOfStore: [String] = []
-            for item in orderDetail.pickup_destination {
-                arrayOfStore.append(item.pickup_store_name)
-            }
-            pickupAddress.text = arrayOfStore.joined(separator: " - ")
+        }
+    }
+    
+    var deliveryData: NewDelivery! {
+        didSet {
+            orderNo.text = ": \(deliveryData.order_number)"
             
-            guard let userInfo = orderVm.decryptUserInfo(data: orderData.user_info, OrderNo: orderData.order_number) else {
+            guard let userInfo = orderVm.decryptUserInfo(data: deliveryData.user_info!, OrderNo: deliveryData.order_number) else {
                 return
             }
             
-            deliveryAddress.text = "\(userInfo.first_name) \(userInfo.last_name) \(userInfo.address)"
+            pickupAddress.text = "\(userInfo.first_name) \(userInfo.last_name), \(userInfo.address)"
+            
+            if deliveryData.status_tracking == "wait for pickup" {
+                self.visualEffectView.isHidden = false
+            }else {
+                self.visualEffectView.isHidden = true
+            }
         }
     }
     
@@ -74,25 +47,16 @@ class OrderCell: UITableViewCell {
     
     let container: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(named: "colorGray")
+        view.backgroundColor = UIColor(named: "bgOrderActive")
         view.layer.cornerRadius = 5
+        view.clipsToBounds = true
+        view.layer.masksToBounds = true
         return view
     }()
 
-    let date = Reusable.makeLabel(text: "2020-10-10", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!)
+    let date = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!)
     
     let imageMarker: UIImageView = {
-       let img = UIImageView()
-        img.image = UIImage(named: "originMarker")
-        img.contentMode = .scaleAspectFit
-        img.translatesAutoresizingMaskIntoConstraints = false
-        return img
-    }()
-    
-    let pickupStore = Reusable.makeLabel(text: "PickUp Address".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!, numberOfLines: 0)
-    let pickupAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0)
-    
-    let imageMarker2: UIImageView = {
        let img = UIImageView()
         img.image = UIImage(named: "destinationMarker")
         img.contentMode = .scaleAspectFit
@@ -100,8 +64,17 @@ class OrderCell: UITableViewCell {
         return img
     }()
     
-    let delivaryLabel = Reusable.makeLabel(text: "Delivery To".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!, numberOfLines: 0)
-    let deliveryAddress = Reusable.makeLabel(text: "Lorem ipsum", font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0)
+    let pickupStore = Reusable.makeLabel(text: "Delivery Address".localiz(), font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!, numberOfLines: 0)
+    let pickupAddress = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0)
+    
+    let visualEffectView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let view = UIVisualEffectView(effect: blurEffect)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.6
+        return view
+    }()
+
     
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -111,11 +84,8 @@ class OrderCell: UITableViewCell {
         container.addSubviews(views:
                               date,
                               imageMarker,
-                              imageMarker2,
                               pickupStore,
-                              pickupAddress,
-                              delivaryLabel,
-                              deliveryAddress)
+                              pickupAddress, visualEffectView)
         configureUi()
         backgroundColor = .clear
         selectionStyle = .none
@@ -155,16 +125,10 @@ class OrderCell: UITableViewCell {
         pickupAddress.right(toAnchor: container.rightAnchor, space: -5)
         pickupStore.right(toAnchor: container.rightAnchor, space: -5)
         
-        imageMarker2.anchor(top: pickupAddress.bottomAnchor, left: container.leftAnchor, paddingTop: 10, paddingLeft: 5, width: 20, height: 20)
-        delivaryLabel.translatesAutoresizingMaskIntoConstraints = false
-        deliveryAddress.translatesAutoresizingMaskIntoConstraints = false
-        delivaryLabel.centerY(toAnchor: imageMarker2.centerYAnchor)
-        delivaryLabel.left(toAnchor: imageMarker2.rightAnchor, space: 5)
-        deliveryAddress.top(toAnchor: delivaryLabel.bottomAnchor, space: 5)
-        deliveryAddress.left(toAnchor: imageMarker2.rightAnchor, space: 5)
-        deliveryAddress.right(toAnchor: container.rightAnchor, space: -5)
-        delivaryLabel.right(toAnchor: container.rightAnchor, space: -5)
-        deliveryAddress.bottom(toAnchor: container.bottomAnchor, space: -10)
+        pickupAddress.bottom(toAnchor: container.bottomAnchor, space: -10)
+        
+        visualEffectView.fill(toView: container)
+        visualEffectView.clipsToBounds = true
     }
     
 }

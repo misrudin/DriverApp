@@ -8,7 +8,19 @@
 import UIKit
 import LanguageManager_iOS
 
+@available(iOS 13.0, *)
 class DoneViewController: UIViewController {
+    
+    var isLast: Bool! {
+        didSet {
+            if isLast {
+                submitButton.setTitle("Back To Store".localiz(), for: .normal)
+            }else {
+                submitButton.setTitle("Next Delivery".localiz(), for: .normal)
+            }
+        }
+    }
+    weak var delegate: DeliveryOrderVc!
     
     let imageView: UIImageView = {
        let iv = UIImageView()
@@ -24,7 +36,7 @@ class DoneViewController: UIViewController {
 
     let submitButton: UIButton={
         let button = UIButton()
-        button.setTitle("Back to Homescreen".localiz(), for: .normal)
+        button.setTitle("Back".localiz(), for: .normal)
         button.setTitleColor(UIColor(named: "orangeKasumi"), for: .normal)
         button.layer.masksToBounds = true
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
@@ -72,8 +84,13 @@ class DoneViewController: UIViewController {
     
     @objc
     func didTapBack(){
+        if !isLast {
+            delegate.cekOrderWaiting()
+        }
         self.dismiss(animated: true) {
-            self.presentingController?.dismiss(animated: false)
+            if self.isLast {
+                self.delegate.backToStore()
+            }
         }
     }
     

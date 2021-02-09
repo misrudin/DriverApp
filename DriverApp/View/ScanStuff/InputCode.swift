@@ -7,6 +7,7 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
 class InputCode: UIViewController {
     
     var orderNo: String = ""
@@ -91,11 +92,7 @@ class InputCode: UIViewController {
             let action1 = UIAlertAction(title: "Try Again".localiz(), style: .default, handler: nil)
             Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
-            if extra {
-                delegate.updateListExtra(code: code, orderNo: orderNo)
-            }else {
-                delegate.updateList(code: code)
-            }
+            delegate.updateList(code: code)
             navigationController?.popViewController(animated: true)
         }
         

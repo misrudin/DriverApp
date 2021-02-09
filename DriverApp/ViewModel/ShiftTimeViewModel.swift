@@ -35,6 +35,31 @@ struct ShiftTimeViewModel {
         }
     }
     
+    func getCurrentShiftTime(completion: @escaping (Result<ShiftTime,Error>)-> Void){
+        AF.request("\(Base.urlOrder)current/shift-time",headers: Base.headers).response { response in
+            switch response.result {
+            case .success:
+                if response.response?.statusCode == 200 {
+                    if let data = response.data {
+                        if let dataShift =  self.decodeShiftTime(data: data){
+                            completion(.success(dataShift))
+                        }else {
+                            completion(.failure(ErrorShift.failedToDecode))
+                        }
+                    }
+                }else {
+                    if let data = response.data {
+                        if let re = Helpers().decodeError(data: data){
+                            completion(.failure(OrderError.failedToFetch(re.Message_JP)))
+                        }
+                    }
+                }
+            case let .failure(error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
 //    MARK: - Decode json data from api
     private func decodeData(data: Data)-> [ShiftTime]? {
         do{
@@ -45,6 +70,17 @@ struct ShiftTimeViewModel {
             return nil
         }
     }
+    
+    private func decodeShiftTime(data: Data)-> ShiftTime? {
+        do{
+            let decodedData = try JSONDecoder().decode(CurrentShiftTime.self, from: data)
+            return decodedData.data
+        }catch{
+            print(error)
+            return nil
+        }
+    }
+
     
 }
 

@@ -8,12 +8,23 @@
 import UIKit
 import LanguageManager_iOS
 import FirebaseMessaging
+import JGProgressHUD
 
 @available(iOS 13.0, *)
 class MainVc: UIViewController {
     
+    private let spiner: JGProgressHUD = {
+        let spin = JGProgressHUD()
+        spin.textLabel.text = "Loading".localiz()
+        
+        return spin
+    }()
+    
     var profileVm = ProfileViewModel()
     var ordervm = OrderViewModel()
+    
+    var shiftTimeVm = ShiftTimeViewModel()
+    var activeShift: ShiftTime!
     
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
@@ -216,6 +227,40 @@ class MainVc: UIViewController {
         present(tabBarVc, animated: true, completion: nil)
     }
     
+    private func getShiftTime(order: String, status: String){
+        spiner.show(in: view)
+        shiftTimeVm.getCurrentShiftTime { (res) in
+            switch res {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    self.activeShift = data
+                    if status == "pickup" {
+                        let vc = PickupOrderVc()
+                        vc.currentOrder = order
+                        vc.shift = data
+                        let navVc = UINavigationController(rootViewController: vc)
+                        navVc.modalPresentationStyle = .fullScreen
+                        self.present(navVc, animated: true, completion: nil)
+                    }else if status == "delivery" {
+                        let vc = DeliveryOrderVc()
+                        vc.currentOrder = order
+                        vc.shift = data
+                        let navVc = UINavigationController(rootViewController: vc)
+                        navVc.modalPresentationStyle = .fullScreen
+                        self.present(navVc, animated: true, completion: nil)
+                    }else {
+                        self.configureNavigation()
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.configureNavigation()
+                self.spiner.dismiss()
+            }
+        }
+    }
+    
     
     func cekUser() {
         
@@ -237,24 +282,8 @@ class MainVc: UIViewController {
                             vc.modalTransitionStyle = .crossDissolve
                             self?.present(vc, animated: true, completion: nil)
                         }
-                        else if data.currentOrder != nil && data.currentOrder != "" {
-                            self!.ordervm.getDetailOrder(orderNo: data.currentOrder!) { (res) in
-                                switch res {
-                                case .success(let data):
-                                    DispatchQueue.main.async {
-                                        let vc = LiveTrackingVC()
-                                        vc.order = data
-                                        let navVc = UINavigationController(rootViewController: vc)
-                                        navVc.modalPresentationStyle = .fullScreen
-                                        self?.present(navVc, animated: true, completion: nil)
-                                    }
-                                case .failure(let error):
-                                    DispatchQueue.main.async {
-                                        print(error)
-                                    }
-                                }
-                            }
-                            
+                        else if data.currentOrder != nil && data.currentOrder != "" && data.statusOrder != nil {
+                            self?.getShiftTime(order: data.currentOrder!, status: data.statusOrder!)
                         }
                         else {
                             self?.configureNavigation()

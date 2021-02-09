@@ -14,11 +14,14 @@ import LanguageManager_iOS
 class PendingNoteVc: UIViewController {
     
     //MARK: - Data
-    
-    var orderData: NewOrderData?
+    var orderNo: String!
+    var idShiftTime: Int!
+    var isLast: Bool = false
     
     let noteViewModel = NoteViewModel()
     var databaseM = DatabaseManager()
+    weak var delegate1: PickupOrderVc!
+    weak var delegate2: DeliveryOrderVc!
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
@@ -356,8 +359,6 @@ extension PendingNoteVc {
     func didTapSubmit(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String,
-              let orderNo = orderData?.order_number,
-              let idShiftTime = orderData?.id_shift_time,
               let note = note.text, note.count > 5 else {
             print("No user data")
             return
@@ -372,15 +373,41 @@ extension PendingNoteVc {
                 DispatchQueue.main.async {
                     self.spiner.dismiss()
                     self.dismiss(animated: true) {
-                        self.presentingController?.dismiss(animated: false)
+                        if self.isLast {
+                            self.presentingController?.dismiss(animated: false)
+                        }
                     }
-                    self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
+                    self.cekDelegate()
+                    self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
                         print(res)
                     }
                 }
             case .failure(let error):
                 print(error)
                 self.spiner.dismiss()
+                self.dismiss(animated: true)
+                self.cekDelegate()
+                self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
+                    print(res)
+                }
+            }
+        }
+    }
+    
+    private func cekDelegate (){
+        if delegate1 != nil {
+            if !isLast {
+                delegate1.cekOrderWaiting()
+            }else {
+                delegate1.closePickupVc()
+            }
+        }
+        
+        if delegate2 != nil {
+            if !isLast {
+                delegate2.cekOrderWaiting()
+            }else {
+                delegate2.backToStore()
             }
         }
     }

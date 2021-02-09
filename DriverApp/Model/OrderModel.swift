@@ -277,3 +277,52 @@ struct Scan: Codable {
 struct ResponseReject: Decodable {
     let data: Int
 }
+
+
+struct NewOrderList: Decodable {
+    let data: NewDataOrder?
+}
+
+struct NewDataOrder: Decodable {
+    let pickup_list: [Pickup]?
+    let delivery_list: [NewDelivery]?
+}
+
+
+struct Pickup: Decodable {
+    let pickup_store_name: String
+    let store_address: String
+    let lat: String
+    let long: String
+    let pickup_item: [PickupItem]?
+    let order_number: String
+    let classification: String?
+    let status_tracking: String
+    let active_date: String
+    let queue: Int
+    let distance: Double
+    let pending_by_system: Bool
+    let id_shift_time: Int
+}
+
+struct NewDelivery: Decodable {
+    let order_number: String
+    let id_shift_time: Int
+    let status_tracking: String
+    let active_date: String
+    let id_group: Int
+    let pending_by_system: Bool
+    let classification: String?
+    let lat: String
+    let long: String
+    let queue: Int
+    let distance: Double
+    let user_info: String?
+    let pickup_item: [DeliveryPickupItem]?
+}
+
+
+struct DeliveryPickupItem: Decodable {
+    let pickup_store_name: String
+    let pickup_item: [PickupItem]?
+}

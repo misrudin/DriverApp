@@ -15,6 +15,13 @@ struct AllShiftTime: Decodable {
     }
 }
 
+struct CurrentShiftTime: Decodable {
+    let data: ShiftTime
+    
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
+}
 
 struct ShiftTime: Decodable {
     let id_shift_time: Int

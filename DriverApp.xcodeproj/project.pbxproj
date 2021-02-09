@@ -34,6 +34,8 @@
 		B345DE2E258B349C00AE87B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B345DE30258B349C00AE87B0 /* Localizable.strings */; };
 		B348E8EA2588B0FE00133CB8 /* CustomCellChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B348E8E82588B0FE00133CB8 /* CustomCellChat.swift */; };
 		B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */ = {isa = PBXBuildFile; fileRef = B348E8E92588B0FE00133CB8 /* CustomCellChat.xib */; };
+		B34BB6EF25D1CCC10024869F /* DeliveryOrderVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34BB6EE25D1CCC10024869F /* DeliveryOrderVc.swift */; };
+		B34BB6F225D1FFF70024869F /* DeliveryDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34BB6F125D1FFF70024869F /* DeliveryDetail.swift */; };
 		B34F7A7525460932004AB82B /* PendingNoteVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7425460932004AB82B /* PendingNoteVc.swift */; };
 		B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7825461F8D004AB82B /* DoneViewController.swift */; };
 		B34F7A7D25461F9B004AB82B /* RestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B34F7A7C25461F9B004AB82B /* RestViewController.swift */; };
@@ -79,6 +81,8 @@
 		B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3A0521A2577794A00BC6FE0 /* Preview.swift */; };
 		B3A7EA6B25AC197100A75DD6 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B3A7EA6A25AC197100A75DD6 /* MapKit.framework */; };
 		B3ABAF0325748EB100A7B80B /* CameraScanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3ABAF0225748EB100A7B80B /* CameraScanView.swift */; };
+		B3B0E97C25D03E0C00BD3F75 /* PickupOrderVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B0E97B25D03E0C00BD3F75 /* PickupOrderVc.swift */; };
+		B3B0E98025D10B2E00BD3F75 /* OrderDetailVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B0E97F25D10B2D00BD3F75 /* OrderDetailVc.swift */; };
 		B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D58D256E00DE0056D867 /* SelectShift.swift */; };
 		B3B9D590256E00DE0056D867 /* SelectShift.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D58E256E00DE0056D867 /* SelectShift.xib */; };
 		B3B9D593256E07260056D867 /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B9D592256E07260056D867 /* PresentationController.swift */; };
@@ -136,6 +140,8 @@
 		B345DE31258B34FE00AE87B0 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B348E8E82588B0FE00133CB8 /* CustomCellChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellChat.swift; sourceTree = "<group>"; };
 		B348E8E92588B0FE00133CB8 /* CustomCellChat.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCellChat.xib; sourceTree = "<group>"; };
+		B34BB6EE25D1CCC10024869F /* DeliveryOrderVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryOrderVc.swift; sourceTree = "<group>"; };
+		B34BB6F125D1FFF70024869F /* DeliveryDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryDetail.swift; sourceTree = "<group>"; };
 		B34F7A7425460932004AB82B /* PendingNoteVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingNoteVc.swift; sourceTree = "<group>"; };
 		B34F7A7825461F8D004AB82B /* DoneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneViewController.swift; sourceTree = "<group>"; };
 		B34F7A7C25461F9B004AB82B /* RestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestViewController.swift; sourceTree = "<group>"; };
@@ -183,6 +189,8 @@
 		B3A0521A2577794A00BC6FE0 /* Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preview.swift; sourceTree = "<group>"; };
 		B3A7EA6A25AC197100A75DD6 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		B3ABAF0225748EB100A7B80B /* CameraScanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraScanView.swift; sourceTree = "<group>"; };
+		B3B0E97B25D03E0C00BD3F75 /* PickupOrderVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickupOrderVc.swift; sourceTree = "<group>"; };
+		B3B0E97F25D10B2D00BD3F75 /* OrderDetailVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailVc.swift; sourceTree = "<group>"; };
 		B3B9D58D256E00DE0056D867 /* SelectShift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectShift.swift; sourceTree = "<group>"; };
 		B3B9D58E256E00DE0056D867 /* SelectShift.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectShift.xib; sourceTree = "<group>"; };
 		B3B9D592256E07260056D867 /* PresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationController.swift; sourceTree = "<group>"; };
@@ -397,6 +405,7 @@
 		B36E098A2536E47100F1B421 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B3B0E97A25D03DE900BD3F75 /* Order */,
 				B31E53C325874143004875F2 /* Messages */,
 				B359182D2576077B005135A0 /* Delivery */,
 				B335EC1C257103E90082DF1D /* TabView */,
@@ -491,6 +500,8 @@
 			children = (
 				B384A3DC256F624900D237CC /* OrderCell.swift */,
 				B36C4FB72578B7BB002C4D06 /* PendingCell.swift */,
+				B3B0E97F25D10B2D00BD3F75 /* OrderDetailVc.swift */,
+				B34BB6F125D1FFF70024869F /* DeliveryDetail.swift */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -511,6 +522,15 @@
 				B3A0521A2577794A00BC6FE0 /* Preview.swift */,
 			);
 			path = Preview;
+			sourceTree = "<group>";
+		};
+		B3B0E97A25D03DE900BD3F75 /* Order */ = {
+			isa = PBXGroup;
+			children = (
+				B3B0E97B25D03E0C00BD3F75 /* PickupOrderVc.swift */,
+				B34BB6EE25D1CCC10024869F /* DeliveryOrderVc.swift */,
+			);
+			path = Order;
 			sourceTree = "<group>";
 		};
 		B3B9D58C256E00C20056D867 /* Shift */ = {
@@ -767,6 +787,7 @@
 				B3544F31253D899B00B6A001 /* NotesVC.swift in Sources */,
 				B3CEF6572590954E004F0343 /* PendingListView.swift in Sources */,
 				B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */,
+				B34BB6EF25D1CCC10024869F /* DeliveryOrderVc.swift in Sources */,
 				B31AF18A2539424C00D693D3 /* LoginModel.swift in Sources */,
 				B3B9D593256E07260056D867 /* PresentationController.swift in Sources */,
 				B37431F5256219FC0010E0E4 /* PlanCell.swift in Sources */,
@@ -792,6 +813,7 @@
 				B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */,
 				B34F7A7925461F8D004AB82B /* DoneViewController.swift in Sources */,
 				B31AF18625393DF800D693D3 /* LoginViewModel.swift in Sources */,
+				B34BB6F225D1FFF70024869F /* DeliveryDetail.swift in Sources */,
 				B36E09762536E11800F1B421 /* SceneDelegate.swift in Sources */,
 				B31E53A22587292C004875F2 /* Pangesture.swift in Sources */,
 				B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */,
@@ -806,6 +828,7 @@
 				B3CEF63C25904829004F0343 /* Response.swift in Sources */,
 				B33DFEB72563A00A006AF898 /* RegisterModel.swift in Sources */,
 				B3DFFD86256D02E000B3C2D0 /* ShiftTimeViewModel.swift in Sources */,
+				B3B0E97C25D03E0C00BD3F75 /* PickupOrderVc.swift in Sources */,
 				B335EC1E257104230082DF1D /* TabBarView.swift in Sources */,
 				B31AF1A62539F6FD00D693D3 /* UserModel.swift in Sources */,
 				B328BB9B2550168C00FACA03 /* ActionCell.swift in Sources */,
@@ -814,6 +837,7 @@
 				B3B9D58F256E00DE0056D867 /* SelectShift.swift in Sources */,
 				B384A3E7256F9C6700D237CC /* InputCode.swift in Sources */,
 				B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */,
+				B3B0E98025D10B2E00BD3F75 /* OrderDetailVc.swift in Sources */,
 				B354B11B253B7B3600B5798B /* OrderModel.swift in Sources */,
 				B32944D1254213520040E90C /* EditProfileVc.swift in Sources */,
 				B36B82B725CA72F700BD9152 /* SelectAdmin.swift in Sources */,
@@ -979,7 +1003,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.4;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1005,7 +1029,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.4;
+				MARKETING_VERSION = 1.3.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

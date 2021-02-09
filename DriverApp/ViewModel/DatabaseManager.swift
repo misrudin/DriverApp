@@ -70,7 +70,7 @@ struct DatabaseManager {
         
     }
     
-    func setCurrentOrder(orderNo: String, codeDriver: String, completion: @escaping (Result<Bool, Error>)-> Void){
+    func setCurrentOrder(orderNo: String, status: String, codeDriver: String, completion: @escaping (Result<Bool, Error>)-> Void){
         let date = Date()
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "yyyy-MM-dd"
@@ -79,7 +79,8 @@ struct DatabaseManager {
         let urlFirebase = "monitoring/\(dateNow)/\(codeDriver)"
 
         let dataToPost: [String: Any] = [
-            "current_order": orderNo
+            "current_order": orderNo,
+            "order_status" : status
         ]
         
         database.child(urlFirebase).updateChildValues(dataToPost) { (err, res) in
@@ -101,6 +102,7 @@ struct DatabaseManager {
         let urlFirebase = "monitoring/\(dateNow)/\(codeDriver)"
 
         database.child(urlFirebase).child("current_order").removeValue()
+        database.child(urlFirebase).child("order_status").removeValue()
         
     }
     

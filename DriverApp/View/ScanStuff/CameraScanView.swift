@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 
+@available(iOS 13.0, *)
 class CameraScanView: UIViewController {
     
     //props
@@ -119,6 +120,7 @@ class CameraScanView: UIViewController {
 }
 
 
+@available(iOS 13.0, *)
 extension CameraScanView: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         avCaptureSession.stopRunning()
@@ -140,11 +142,7 @@ extension CameraScanView: AVCaptureMetadataOutputObjectsDelegate {
             }
             Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
-            if extra {
-                delegate.updateListExtra(code: code, orderNo: orderNo)
-            }else {
-                delegate.updateList(code: code)
-            }
+            delegate.updateList(code: code)
             navigationController?.popViewController(animated: true)
         }
         

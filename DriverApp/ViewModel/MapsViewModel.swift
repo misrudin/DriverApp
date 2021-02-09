@@ -83,8 +83,15 @@ struct MapsViewModel {
         return destinationMarker
     }
     
+    func createMarker(position: CLLocationCoordinate2D, title: String? = "")-> GMSMarker?{
+        let destinationMarker = GMSMarker()
+        destinationMarker.position = position
+        destinationMarker.title = title
+        return destinationMarker
+    }
+    
     func zoomTo(marker: GMSMarker)-> GMSCameraPosition{
-//        let camera = GMSCameraPosition(target: marker.position, zoom: 10)
+        //        let camera = GMSCameraPosition(target: marker.position, zoom: 10)
         let camera = GMSCameraPosition(target: marker.position, zoom: 14, bearing: 0, viewingAngle: 50)
         return camera
     }
@@ -127,7 +134,7 @@ struct MapsViewModel {
                     let status = element["status"].string
                     completion(.failure(MapsError.noResult(status ?? "Result not found!")))
                 }
-            
+                
             }catch let error {
                 completion(.failure(error))
             }
@@ -135,35 +142,111 @@ struct MapsViewModel {
     }
     
     
-}
-
-
-
-enum MapsError: Error{
-    case failedToFetch(_ message: String)
-    case failedToParseJson
-    case noResult(_ message: String)
-}
-
-extension MapsError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
+    func getDotsToDrawRoute(positions : [CLLocationCoordinate2D], completion: @escaping(_ markers: [GMSMarker]?, _ polylines: [GMSPolyline]?) -> Void) {
+        if positions.count > 1 {
+            var markers = [GMSMarker]()
+            var polylines = [GMSPolyline]()
+            var titikA: CLLocationCoordinate2D!
+            var titikB: CLLocationCoordinate2D!
+            
+            
+            _ = positions.enumerated().map { i, position in
+                markers.append(createMarker(position: position)!)
+                if(i < positions.count - 1) {
+                    titikB = positions[i+1]
+                    titikA = position
+                    drawPolyline(origin: titikA, destination: titikB) { p in
+                        polylines.append(p!)
+                        completion(markers, polylines)
+                    }
+                }else {
+                    titikB = positions[positions.count-1]
+                    drawPolyline(origin: titikA, destination: titikB) { p in
+                        polylines.append(p!)
+                        completion(markers, polylines)
+                    }
+                }
+            }
+        }else{
+            let origin = positions.first
+            var markers = [GMSMarker]()
+            markers.append(createMarker(position: origin!)!)
+            completion(markers, nil)
+        }
+    }
+    
+    
+    
+    
+    private func drawPolyline(origin: CLLocationCoordinate2D, destination: CLLocationCoordinate2D, completion: @escaping(_ polyline: GMSPolyline?)-> Void){
         
-        case .failedToFetch(let message):
-            return NSLocalizedString(
-                message,
-                comment: ""
-            )
-        case .failedToParseJson:
-            return NSLocalizedString(
-                "Failed to parse data".localiz(),
-                comment: ""
-            )
-        case .noResult(let message):
-            return NSLocalizedString(
-                message,
-                comment: ""
-            )
+        let request = "https://maps.googleapis.com/maps/api/directions/json"
+        let parameters : [String : String] = ["origin" : "\(origin.latitude),\(origin.longitude)", "destination" : "\(destination.latitude),\(destination.longitude)", "key" : Base.mapsApiKey]
+        
+        AF.request(request, method: .get, parameters: parameters).responseJSON { (response) in
+            guard let data = response.data else {return}
+            
+            do {
+                let jsonData = try JSON(data: data)
+                let routes = jsonData["routes"].arrayValue
+                
+                for route in routes {
+                    let overview_polyline = route["overview_polyline"].dictionary
+                    let points = overview_polyline?["points"]?.string
+                    let path = GMSPath.init(fromEncodedPath: points ?? "")
+                    let polyline = GMSPolyline.init(path: path)
+                    polyline.strokeColor = .systemRed
+                    polyline.strokeWidth = 4
+                    
+                    completion(polyline)
+                }
+                
+            }catch let error {
+                completion(nil)
+                print(error.localizedDescription)
+            }
         }
     }
 }
+    
+    
+    
+    enum MapsError: Error{
+        case failedToFetch(_ message: String)
+        case failedToParseJson
+        case noResult(_ message: String)
+    }
+    
+    extension MapsError: LocalizedError {
+        var errorDescription: String? {
+            switch self {
+            
+            case .failedToFetch(let message):
+                return NSLocalizedString(
+                    message,
+                    comment: ""
+                )
+            case .failedToParseJson:
+                return NSLocalizedString(
+                    "Failed to parse data".localiz(),
+                    comment: ""
+                )
+            case .noResult(let message):
+                return NSLocalizedString(
+                    message,
+                    comment: ""
+                )
+            }
+        }
+    }
+    
+    
+    extension GMSMutablePath {
+        func appendPath(path : GMSPath?) {
+            if let path = path {
+                for i in 0..<path.count() {
+                    self.add(path.coordinate(at: i))
+                }
+            }
+        }
+    }

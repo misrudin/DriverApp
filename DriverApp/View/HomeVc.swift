@@ -30,6 +30,15 @@ class HomeVc: UIViewController {
     
     var profileVm = ProfileViewModel()
     
+    var shiftTimeVm = ShiftTimeViewModel()
+    var activeShift: ShiftTime!
+    
+    var pickupList: [Pickup]!
+    var deliveryList: [NewDelivery]!
+    
+    var constraint1: NSLayoutConstraint!
+    var constraint2: NSLayoutConstraint!
+    
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
         spin.textLabel.text = "Loading".localiz()
@@ -72,13 +81,12 @@ class HomeVc: UIViewController {
     lazy var refreshControl = UIRefreshControl()
     
     private let tableView: UITableView = {
-        let table = UITableView(frame: CGRect.zero, style: .grouped)
+        let table = UITableView()
         table.register(OrderCell.self, forCellReuseIdentifier: OrderCell.id)
         table.register(PendingCell.self, forCellReuseIdentifier: PendingCell.id)
         table.backgroundColor = UIColor(named: "whiteKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
-        table.sectionFooterHeight = 0
         return table
     }()
     
@@ -91,33 +99,57 @@ class HomeVc: UIViewController {
         img.contentMode = .right
         return img
     }()
+    
+    let labelTitle = Reusable.makeLabel(text: "DELIVERY LIST ORDER".localiz(), font: .systemFont(ofSize: 15, weight: .medium), color: UIColor(named: "orangeKasumi")!, numberOfLines: 0, alignment: .left)
+    
+    private let pickupButton: UIButton={
+        let loginButton = UIButton()
+        loginButton.setTitle("Pick Up Order".localiz(), for: .normal)
+        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
+        loginButton.setTitleColor(.white, for: .normal)
+        loginButton.layer.cornerRadius = 40/2
+        loginButton.layer.masksToBounds = true
+        loginButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium )
+        loginButton.addTarget(self, action: #selector(pickupAllOrder), for: .touchUpInside)
+        loginButton.isHidden = true
+        return loginButton
+    }()
+    
+    private let deliveryButton: UIButton={
+        let loginButton = UIButton()
+        loginButton.setTitle("Start Delivery".localiz(), for: .normal)
+        loginButton.backgroundColor = UIColor(named: "orangeKasumi")
+        loginButton.setTitleColor(.white, for: .normal)
+        loginButton.layer.cornerRadius = 40/2
+        loginButton.layer.masksToBounds = true
+        loginButton.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium )
+        loginButton.addTarget(self, action: #selector(deliveryAllOrder), for: .touchUpInside)
+        loginButton.isHidden = true
+        return loginButton
+    }()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         
         view.addSubview(tableView)
+        view.addSubview(pickupButton)
+        view.addSubview(deliveryButton)
+        view.addSubview(labelTitle)
+        view.addSubview(emptyImage)
+        view.addSubview(labelEmpty)
+        
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
-        tableView.separatorStyle = .none
-        tableView.estimatedRowHeight = 150
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh".localiz())
-        refreshControl.addTarget(self, action: #selector(getDataOrder), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(getListShiftTime), for: .valueChanged)
         
         tableView.addSubview(refreshControl)
         
-        
         configureNavigationBar()
-        
-        view.addSubview(emptyImage)
-        view.addSubview(labelEmpty)
-        emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        labelEmpty.anchor(top: emptyImage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
-        labelEmpty.isHidden = true
         
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let idGroup = userData["idGroup"] as? Int else {
@@ -126,6 +158,66 @@ class HomeVc: UIViewController {
         }
         
         print("idGroup => ", idGroup)
+        
+        //button
+        labelTitle.translatesAutoresizingMaskIntoConstraints = false
+        labelTitle.left(toAnchor: view.leftAnchor, space: 10)
+        labelTitle.right(toAnchor: view.rightAnchor, space: -10)
+        labelTitle.top(toAnchor: view.safeAreaLayoutGuide.topAnchor, space: 10)
+        
+        pickupButton.translatesAutoresizingMaskIntoConstraints = false
+        pickupButton.left(toAnchor: view.leftAnchor, space: 10)
+        pickupButton.right(toAnchor: view.rightAnchor, space: -10)
+        pickupButton.height(40)
+        pickupButton.top(toAnchor: labelTitle.bottomAnchor, space: 10)
+        
+        deliveryButton.translatesAutoresizingMaskIntoConstraints = false
+        deliveryButton.left(toAnchor: view.leftAnchor, space: 10)
+        deliveryButton.right(toAnchor: view.rightAnchor, space: -10)
+        deliveryButton.height(40)
+        deliveryButton.top(toAnchor: labelTitle.bottomAnchor, space: 10)
+        
+        tableView.anchor(left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = 150
+        
+        emptyImage.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+        emptyImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        labelEmpty.anchor(top: emptyImage.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 10, paddingLeft: 16, paddingRight: 16)
+        labelEmpty.isHidden = true
+        
+        constraint1 = tableView.topAnchor.constraint(equalTo: labelTitle.bottomAnchor, constant: 10)
+        constraint2 = tableView.topAnchor.constraint(equalTo: pickupButton.bottomAnchor, constant: 10)
+        pickupButton.isHidden = true
+        deliveryButton.isHidden = true
+        constraint1.isActive = true
+        constraint2.isActive = false
+    
+    }
+    
+    @objc private func getListShiftTime(){
+        spiner.show(in: view)
+        shiftTimeVm.getCurrentShiftTime { (res) in
+            switch res {
+            case .success(let data):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    self.activeShift = data
+                    self.getDataOrder()
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+                self.spiner.dismiss()
+                self.pickupList = []
+                self.deliveryList = []
+                self.tableView.reloadData()
+                self.spiner.dismiss()
+                self.refreshControl.endRefreshing()
+                self.emptyImage.isHidden = false
+                self.labelEmpty.isHidden = false
+                self.labelEmpty.text = error.localizedDescription
+            }
+        }
     }
     
     private func getCurrentPosition(){
@@ -184,7 +276,7 @@ class HomeVc: UIViewController {
                     UserDefaults.standard.setValue(data, forKey: "userSession")
                     getCurrentPosition()
                 }else {
-                    getDataOrder()
+                    getListShiftTime()
                 }
             }
         }else {
@@ -200,6 +292,19 @@ class HomeVc: UIViewController {
         cekStatusReject()
     }
 
+    @objc private func pickupAllOrder(){
+        let vc = PickupOrderVc()
+        vc.hidesBottomBarWhenPushed = true
+        vc.shift = activeShift
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func deliveryAllOrder(){
+        let vc = DeliveryOrderVc()
+        vc.hidesBottomBarWhenPushed = true
+        vc.shift = activeShift
+        navigationController?.pushViewController(vc, animated: true)
+    }
     
     private func upateLocation(){
         print("update Location")
@@ -219,7 +324,7 @@ class HomeVc: UIViewController {
                 DispatchQueue.main.async {
                     self.spiner.dismiss()
                     if oke {
-                        self.getDataOrder()
+                        self.getListShiftTime()
                     }
                 }
             case .failure(_):
@@ -229,7 +334,7 @@ class HomeVc: UIViewController {
     }
     
     @objc
-    func getDataOrder(){
+    private func getDataOrder(){
         print("order")
         // get data detail user from local
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
@@ -239,21 +344,53 @@ class HomeVc: UIViewController {
         }
         spiner.show(in: view)
         
-        orderViewModel.getDataOrder(codeDriver: codeDriver) {[weak self] (res) in
+        orderViewModel.getDataOrder(codeDriver: codeDriver, shift: activeShift.id_shift_time) {[weak self] (res) in
             switch res {
             case .failure(let err):
                 DispatchQueue.main.async {
-                    self?.orderData = []
+                    self?.pickupList = []
+                    self?.deliveryList = []
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
                     self?.emptyImage.isHidden = false
                     self?.labelEmpty.isHidden = false
                     self?.labelEmpty.text = err.localizedDescription
+                    self?.pickupButton.isHidden = true
+                    self?.deliveryButton.isHidden = true
+                    self?.constraint1.isActive = true
+                    self?.constraint2.isActive = false
+                    print(err)
                 }
             case .success(let order):
                 DispatchQueue.main.async {
-                    self?.orderData = order
+                    let filterOrder = order.pickup_list?.filter({ $0.status_tracking == "wait for pickup" || ($0.status_tracking == "pending" && $0.pending_by_system == true) })
+                    
+                    let filterOrderDelivery = order.delivery_list?.filter({ $0.status_tracking == "waiting delivery" })
+                    
+                    self?.constraint1.isActive = false
+                    self?.constraint2.isActive = true
+                    self?.pickupButton.isHidden = filterOrder?.count == 0
+                    
+                    if filterOrder?.count == 0 && filterOrderDelivery?.count != 0 {
+                        self?.deliveryButton.isHidden = false
+                    }else{
+                        self?.deliveryButton.isHidden = true
+                    }
+                    
+                    if filterOrder?.count == 0 && filterOrderDelivery?.count == 0 {
+                        self?.constraint1.isActive = true
+                        self?.constraint2.isActive = false
+                    }else{
+                        self?.constraint1.isActive = false
+                        self?.constraint2.isActive = true
+                    }
+                    
+                    
+                    
+                    
+                    self?.pickupList = order.pickup_list
+                    self?.deliveryList = order.delivery_list
                     self?.tableView.reloadData()
                     self?.spiner.dismiss()
                     self?.refreshControl.endRefreshing()
@@ -371,49 +508,11 @@ class HomeVc: UIViewController {
 //MARK: - TABLE VIEW ORDER
 @available(iOS 13.0, *)
 extension HomeVc: UITableViewDelegate,UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        if let orderData = orderData {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let orderData = deliveryList {
             return orderData.count
         }
         
-        
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 45
-    }
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section == 0 {
-           let v = UIView()
-            let v2 = UIView()
-            let lableDelivery = Reusable.makeLabel(text: "DELIVERY LIST ORDER".localiz(), font: UIFont.systemFont(ofSize: 16, weight: .medium), color: UIColor(named: "orangeKasumi")!)
-            
-            v.addSubview(v2)
-            v2.anchor(top: v.topAnchor, left: v.leftAnchor, right: v.rightAnchor, paddingTop: 5, height: 1)
-            
-            v.addSubview(lableDelivery)
-            lableDelivery.anchor(left: v.leftAnchor, bottom: v.bottomAnchor, right: v.rightAnchor, paddingLeft: 10, paddingRight: 10)
-            v2.backgroundColor = UIColor(named: "orangeKasumi")
-           return v
-        }
-        return nil
-    }
-
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let orderData = orderData {
-            if orderData[section].order_list != nil {
-                return orderData[section].order_list!.count
-            }else {
-                return 0
-            }
-        }
         return 0
     }
     
@@ -422,18 +521,25 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         
         let cellPending = tableView.dequeueReusableCell(withIdentifier: PendingCell.id, for: indexPath) as! PendingCell
         
-        if let order = orderData {
-            cellOrder.orderData = order[indexPath.section].order_list![indexPath.row]
-            cellPending.orderData = order[indexPath.section].order_list![indexPath.row]
+        
+        if let order = deliveryList {
+            cellOrder.deliveryData = order[indexPath.row]
+            cellPending.deliveryData = order[indexPath.row]
+            
+            if activeShift != nil {
+                cellPending.shift = activeShift
+                cellOrder.shift = activeShift
+            }
         }
         
-        guard let orderData = orderData else {
+        
+        guard let deliveryData = deliveryList else {
             return UITableViewCell()
         }
         
-       let item = orderData[indexPath.section].order_list![indexPath.row]
-    
-        if item.status_tracking == "pending" {
+        let itemDelivery = deliveryData[indexPath.row]
+        
+        if itemDelivery.status_tracking == "pending" {
             return cellPending
         }else {
             return cellOrder
@@ -441,59 +547,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         
     }
     
-    class DateHeaderHome: UILabel {
-        
-        override init(frame: CGRect) {
-            super.init(frame: frame)
-            textColor = UIColor(named: "darkKasumi")
-            translatesAutoresizingMaskIntoConstraints = false
-            font = UIFont.boldSystemFont(ofSize: 14)
-        }
-        
-        required init?(coder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-        
-        override var intrinsicContentSize: CGSize{
-            let originalContentSize = super.intrinsicContentSize
-            let height = originalContentSize.height
-            layer.masksToBounds = true
-            return CGSize(width: originalContentSize.width, height: height)
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let label = DateHeaderHome()
-        
-        let containerLabel = UIView()
-        containerLabel.addSubview(label)
-        
-        label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10)
-    
-        
-        if let order = orderData {
-            let dateFormater = DateFormatter()
-            dateFormater.dateFormat = "yyyy/MM/dd"
-            let date = dateFormater.date(from: order[section].date)
-            let dateString = dateFormater.string(from: date!)
-            
-            let dateStringNow = dateFormater.string(from: Date())
-            
-            let value = dateString == dateStringNow ? "Today".localiz() : dateString
-            
-            let totalOrderList = order[section].order_list
-            
-            label.text = "\(value) (\(totalOrderList?.count ?? 0))"
-            
-            
-            return containerLabel
-        }
-  
-        return nil
-               
-       }
-    
+
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -515,7 +569,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-//            print(indexPath.row)
+            print(indexPath.row)
         }
     }
     
@@ -571,7 +625,8 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 if let order = self?.orderData {
                     if order[indexPath.section].order_list != nil {
                         let orderList = order[indexPath.section].order_list
-                        vc.orderData = orderList![indexPath.row]
+                        vc.orderNo = orderList![indexPath.row].order_number
+                        vc.idShiftTime = orderList![indexPath.row].id_shift_time
                     }
                 }
                 

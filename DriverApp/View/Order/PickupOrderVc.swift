@@ -1,8 +1,8 @@
 //
-//  LiveTrackingVC.swift
+//  PickupOrderVc.swift
 //  DriverApp
 //
-//  Created by BMG MacbookPro on 18/10/20.
+//  Created by Indo Office4 on 07/02/21.
 //
 
 import UIKit
@@ -11,10 +11,20 @@ import CoreLocation
 import JGProgressHUD
 import LanguageManager_iOS
 
+enum MapsType {
+    case folowing
+    case bounds
+    case free
+}
+
+enum CardStatePickup {
+    case expanded
+    case collapsed
+}
+
 @available(iOS 13.0, *)
-class LiveTrackingVC: UIViewController {
+class PickupOrderVc: UIViewController {
     
-    //    loading
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
         spin.textLabel.text = "Loading".localiz()
@@ -22,45 +32,50 @@ class LiveTrackingVC: UIViewController {
         return spin
     }()
     
-    //    card
+    var currentOrder: String!
     
-    enum CardState {
-        case expanded
-        case collapsed
-        case full
-    }
+    var cardViewController:OrderDetailVc!
     
-    var cardViewController:CardViewController!
-    var visualEffectView:UIVisualEffectView!
-    
-    let cardHeight:CGFloat = UIScreen.main.bounds.height - 130
-    let cardFullHeight:CGFloat = UIScreen.main.bounds.height - 130
+    let cardHeight:CGFloat = UIScreen.main.bounds.height / 2
     var cardHandleAreaHeight:CGFloat = 130
     
     var cardVisible = false
-    var cardFull = false
-    var nextState:CardState {
-        return cardVisible ? .collapsed : cardFull ? .full : .expanded
+    var nextState:CardStatePickup {
+        return cardVisible ? .collapsed : .expanded
     }
     
     var runningAnimations = [UIViewPropertyAnimator]()
     var animationProgressWhenInterrupted:CGFloat = 0
-    
-    //    order
     
     var order:NewOrderData? = nil
     var mapsViewModel = MapsViewModel()
     var orderViewModel = OrderViewModel()
     var inOutVm = InOutViewModel()
     var databaseM = DatabaseManager()
+    var appear: Bool = false
     
-    enum MapsType {
-        case folowing
-        case bounds
-        case free
+    
+    var shift: ShiftTime! {
+        didSet {
+            getDataOrder(id_shift_time: shift.id_shift_time, cek: false, waypoints: true)
+            appear = true
+        }
     }
     
+    var pickupList: [Pickup]!
+    
     var mapsType: MapsType = .free
+    
+    var oldPolyLines = [GMSPolyline]()
+    var oldMarkers = [GMSMarker]()
+    
+    var currentStore: Pickup!
+    
+    var databaseManager = DatabaseManager()
+    
+    var origin: Origin?
+    var destination: Destination?
+    var positions = [CLLocationCoordinate2D]()
     
     private var manager: CLLocationManager?
     private var locationManager: CLLocationManager?
@@ -122,23 +137,11 @@ class LiveTrackingVC: UIViewController {
         return mapView
     }()
     
-    var oldPolyLines = [GMSPolyline]()
-    var oldMarkers = [GMSMarker]()
-    
-    var currentStore: PickupDestination!
-    
-    var databaseManager = DatabaseManager()
-    
-    
-    //origin
-    var origin: Origin?
-    var destination: Destination?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         title = "Live Tracking".localiz()
         
         
@@ -150,75 +153,17 @@ class LiveTrackingVC: UIViewController {
         directionButton.anchor(top: mapsButton.bottomAnchor, right: view.rightAnchor, paddingTop: 10, paddingRight: 16, width: 50, height: 50)
 
         
-        
-        guard let orderDetailString = order?.order_detail,
-              let orderNo = order?.order_number,
-              let orderDetail = orderViewModel.decryptOrderDetail(data: orderDetailString, OrderNo: orderNo),
-              let statusOrder = order?.status_tracking else {
-            
-            return
-        }
-        
-        //MARK: - GET DETAIL ORDER
-        spiner.show(in: view)
-        orderViewModel.getDetailOrder(orderNo: orderNo) {[weak self] (result) in
-            switch result {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self?.order = data
-                    self?.setupCard()
-                    self?.spiner.dismiss()
-                }
-            case .failure(_):
-                self?.spiner.dismiss()
-            }
-        }
-        
-        let orderDestinationLat = orderDetail.delivery_destination.lat
-        let orderDestinationLng =  orderDetail.delivery_destination.long
-        let storeDestinationLat = orderDetail.pickup_destination[0].lat
-        let storeDestinationLng = orderDetail.pickup_destination[0].long
-        
-        
-        if statusOrder == "wait for pickup" || statusOrder == "on pickup process" {
-            cardHandleAreaHeight = 130
-            if let destinationLat = CLLocationDegrees(storeDestinationLat!),
-               let destinatoinLong = CLLocationDegrees(storeDestinationLng!) {
-                destination = Destination(latitude: destinationLat, longitude: destinatoinLong)
-            }
-        } else {
-            if statusOrder == "waiting delivery" || statusOrder == "pending"  {
-                cardHandleAreaHeight = 130
-            }else {
-                cardHandleAreaHeight = 190
-            }
-            if let destinationLat = CLLocationDegrees(orderDestinationLat!),
-               let destinationLong = CLLocationDegrees(orderDestinationLng!) {
-                destination = Destination(latitude: destinationLat, longitude: destinationLong)
-            }
-            
-            
-        }
-        
         mapView.frame = view.bounds
         myPosition()
         
         configureNavigationBar()
         
         mapsViewModel.delegate = self
-        
-        getCurrentPosition()
-        
-        
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if cardViewController != nil {
-            cardViewController.status = !cardViewController.status
-        }
-        
         
         mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
         directionButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
@@ -231,34 +176,64 @@ class LiveTrackingVC: UIViewController {
         manager?.stopUpdatingHeading()
     }
     
+    func cekOrderWaiting(){
+        getDataOrder(id_shift_time: shift.id_shift_time, cek: true)
+        cardViewController.view.frame.origin.y = view.frame.height - cardHandleAreaHeight
+        cardVisible = false
+    }
     
-    func setupCard() {
-        guard let orderNo = order?.order_number else {
-            return
+    private func cekCurrentOrder(){
+        let filterStatus = pickupList.filter({$0.order_number == currentOrder})
+        let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
+        
+        let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
+        destination = destinationPickup
+        myPosition()
+        getCurrentPosition()
+        cardViewController.order = sortedList[0]
+        cardViewController.display = .start_pickup
+    }
+    
+    private func cekWaiting(){
+        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
+        let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
+        print(sortedList)
+        
+        if sortedList.count != 0 {
+            myPosition()
+            cardViewController.display = .next
         }
-        cardViewController = CardViewController()
-        cardViewController.orderData = order
-        self.cardViewController.orderNo = orderNo
-        self.cardViewController.status = !self.cardViewController.status
-        cardViewController.status = true
+    }
+    
+    func closePickupVc(){
+        myPosition()
+        manager?.stopUpdatingLocation()
+        manager?.stopUpdatingHeading()
+        
+        cardViewController.view.frame.origin.y = view.frame.height - cardHandleAreaHeight
+        cardVisible = false
+        
+        cardViewController.display = .done
+    }
+    
+    private func setupCard() {
+        cardViewController = OrderDetailVc()
         self.addChild(cardViewController)
         self.view.addSubview(cardViewController.view)
         cardViewController.delegate = self
+        cardViewController.display = .initial
         
-        cardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardFullHeight)
+        cardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardHeight)
         
         cardViewController.view.clipsToBounds = false
         
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleCardPan(recognizer:)))
         
         cardViewController.handleArea.addGestureRecognizer(panGestureRecognizer)
-        
-        
     }
-
     
     @objc
-    func handleCardPan (recognizer:UIPanGestureRecognizer) {
+    private func handleCardPan(recognizer:UIPanGestureRecognizer) {
         switch recognizer.state {
         case .began:
             startInteractiveTransition(state: nextState, duration: 0.9)
@@ -285,6 +260,87 @@ class LiveTrackingVC: UIViewController {
             break
         }
         
+    }
+    
+    private func getDataOrder(id_shift_time: Int, cek: Bool? = false, waypoints: Bool? = false){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        spiner.show(in: view)
+        
+        orderViewModel.getDataOrder(codeDriver: codeDriver, shift: id_shift_time) {[weak self] (res) in
+            switch res {
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self?.pickupList = []
+                    self?.spiner.dismiss()
+                }
+            case .success(let order):
+                DispatchQueue.main.async {
+                    let filteredPickup = order.pickup_list?.filter({$0.distance != 0})
+                    let sortPickup = filteredPickup?.sorted(by: {$0.queue < $1.queue})
+                    let list = order.pickup_list!.sorted(by: {$0.queue < $1.queue})
+                    self?.pickupList = list
+                    let newPositions = sortPickup?.map({ CLLocationCoordinate2D(latitude: CLLocationDegrees($0.lat)!, longitude: CLLocationDegrees($0.long)!) })
+                    self?.positions = newPositions!
+                    
+                    if waypoints == true {
+                        self?.drawWaypoints()
+                    }
+                    
+                    self?.spiner.dismiss()
+                    
+                    self?.setupCard()
+                    
+                    if cek! == true {
+                        self?.cekWaiting()
+                    }
+                    
+                    if self?.currentOrder != nil {
+                        self?.cekCurrentOrder()
+                    }
+                    
+                }
+            }
+        }
+    }
+    
+    private func drawWaypoints(){
+        mapsViewModel.getDotsToDrawRoute(positions: positions) {markers, poli  in
+            DispatchQueue.main.async {
+                if let poli = poli {
+                    _ = poli.map { p in
+                        p.map = self.mapView
+                        self.oldPolyLines.append(p)
+                    }
+                }
+                if let markers = markers {
+                    _ = markers.map { marker in
+                        marker.map = self.mapView
+                        self.oldMarkers.append(marker)
+                    }
+                }
+                
+                self.focusMapToShowAllMarkers(arrMarkers: markers!)
+            }
+        }
+    }
+    
+    private func focusMapToShowAllMarkers(arrMarkers: [GMSMarker]) {
+
+        if arrMarkers.count > 0 {
+            let firstLocation = (arrMarkers.first!).position
+            var bounds = GMSCoordinateBounds(coordinate: firstLocation, coordinate: firstLocation)
+
+            for marker in arrMarkers {
+              bounds = bounds.includingCoordinate(marker.position)
+            }
+
+            let update = GMSCameraUpdate.fit(bounds, withPadding: CGFloat(150))
+            self.mapView.animate(with: update)
+        }
     }
     
     func getCurrentPosition(){
@@ -342,7 +398,7 @@ class LiveTrackingVC: UIViewController {
 
 //MARK - maps direction
 @available(iOS 13.0, *)
-extension LiveTrackingVC: MapsViewModelDelegate {
+extension PickupOrderVc: MapsViewModelDelegate {
     func didDrawDirection(_ viewModel: MapsViewModel, direction: GMSPolyline, markerOrigin: GMSMarker, markerDestination: GMSMarker, camera: GMSCameraPosition) {
         
         if self.oldPolyLines.count > 0 {
@@ -356,6 +412,7 @@ extension LiveTrackingVC: MapsViewModelDelegate {
                 marker.map = nil
             }
         }
+        
         
         self.oldPolyLines.append(direction)
         self.oldMarkers.append(markerDestination)
@@ -373,7 +430,7 @@ extension LiveTrackingVC: MapsViewModelDelegate {
 
 //MARK: - CORE LOCATION DELEGATE
 @available(iOS 13.0, *)
-extension LiveTrackingVC: CLLocationManagerDelegate {
+extension PickupOrderVc: CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
@@ -418,8 +475,6 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
             
             
             //MARK: -   MARKER AND DIRECTION
-            CATransaction.begin()
-            CATransaction.setAnimationDuration(2.0)
             origin = Origin(latitude: coordinate.latitude, longitude: coordinate.longitude)
             
             guard let origin = origin, let destination = destination else {
@@ -447,11 +502,9 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
                 print("free")
             }
             
-            
             CATransaction.commit()
             
-            
-//            MARK:- DISTANCE MATRIX
+//          MARK:- DISTANCE MATRIX
             mapsViewModel.getDistance(origin: origin, destination: destination) { (res) in
                 switch res {
                 case .failure(let err):
@@ -476,8 +529,6 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
         }
         let angleInRadians: CGFloat = CGFloat(angle) * .pi / CGFloat(180)
         originMarker.iconView?.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
-        
-        //            directionButton.transform = CGAffineTransform.identity.rotated(by: angleInRadians)
     }
     
     //MARK: - fit two markers
@@ -499,11 +550,9 @@ extension LiveTrackingVC: CLLocationManagerDelegate {
 }
 
 
-//Mark - Func animate
-
 @available(iOS 13.0, *)
-extension LiveTrackingVC {
-    func animateTransitionIfNeeded (state:CardState, duration:TimeInterval) {
+extension PickupOrderVc {
+    func animateTransitionIfNeeded (state:CardStatePickup, duration:TimeInterval) {
         if runningAnimations.isEmpty {
             let frameAnimator = UIViewPropertyAnimator(duration: duration, dampingRatio: 1) {
                 switch state {
@@ -511,15 +560,10 @@ extension LiveTrackingVC {
                     self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHeight
                 case .collapsed:
                     self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardHandleAreaHeight
-                case .full:
-                    self.cardViewController.view.frame.origin.y = self.view.frame.height - self.cardFullHeight
                 }
             }
             
             frameAnimator.addCompletion { _ in
-//                if !self.cardFull {
-//                    self.cardVisible = !self.cardVisible
-//                }
                 self.cardVisible = !self.cardVisible
                 self.runningAnimations.removeAll()
             }
@@ -530,7 +574,7 @@ extension LiveTrackingVC {
         }
     }
     
-    func startInteractiveTransition(state:CardState, duration:TimeInterval) {
+    func startInteractiveTransition(state:CardStatePickup, duration:TimeInterval) {
         if runningAnimations.isEmpty {
             animateTransitionIfNeeded(state: state, duration: duration)
         }
@@ -555,188 +599,86 @@ extension LiveTrackingVC {
 
 
 @available(iOS 13.0, *)
-extension LiveTrackingVC: CardViewControllerDelegate {
-    func seeDetail(_ viewC: CardViewController, order: NewOrderDetail?, userInfo: NewUserInfo?) {
-        //        let vi = DetailView()
-        //        vi.orderDetail = order
-        //        vi.userInfo = userInfo
-        //        navigationController?.pushViewController(vi, animated: true)
-        //        let vc = PendingNoteVc()
-        //        vc.orderData = order
-        //        let navVc = UINavigationController(rootViewController: vc)
-        //
-        //        present(navVc, animated: true, completion: nil)
+extension PickupOrderVc: OrderDetailVcDelegate {
+    func doneAll(_ viewC: OrderDetailVc) {
+        if self.navigationController != nil {
+            self.navigationController?.popViewController(animated: true)
+        }else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
-    func next(_ viewC: CardViewController, store: PickupDestination?) {
-        self.cardViewController.status = !self.cardViewController.status
-        
-        guard let storeDestinationLat = store?.lat,
-              let storeDestinationLng = store?.long else {return}
-        
-        destination = Destination(latitude: CLLocationDegrees(storeDestinationLat)!, longitude: CLLocationDegrees(storeDestinationLng)!)
-        
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(2.0)
-        
-        guard let origin = origin, let destination = destination else {
-            return
-        }
-        
-        
-        let direction: DirectionData = DirectionData(origin: origin, destination: destination)
-        
-        
-        self.mapsViewModel.drawDirection(direction: direction)
-        
-        
-        CATransaction.commit()
+    func pending(_ viewC: OrderDetailVc, order: Pickup?) {
+        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
+        let vc = PendingNoteVc()
+        vc.orderNo = order?.order_number
+        vc.idShiftTime = order?.id_shift_time
+        vc.delegate1 = self
+        vc.isLast = filterStatus.count == 1
+        let navVc = UINavigationController(rootViewController: vc)
+        navVc.modalPresentationStyle = .fullScreen
+        present(navVc, animated: true, completion: nil)
     }
     
-    func scan(_ viewC: CardViewController, store: PickupDestination?, extra: AnotherPickup?) {
-        guard let orderNo = order?.order_number else {
-            return
-        }
+    func didTapButton(_ viewModel: OrderDetailVc, type: TypeDelivery) {
+        print("oke")
+    }
+    
+    func scan(_ viewC: OrderDetailVc, order: Pickup?) {
+        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
         let vc = ListScanView()
-        vc.orderNo = orderNo
+        vc.orderNo = order!.order_number
         vc.origin = origin
+        vc.items = order!.pickup_item
+        vc.isLast = filterStatus.count == 1
+        vc.classification = order?.classification
+        vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
     
-    func didTapButton(_ viewModel: CardViewController, type: TypeDelivery) {
-        guard let orderNo = order?.order_number else {
-            return
-        }
-        switch type {
-        case .start_pickup:
-            guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                  let codeDriver = userData["codeDriver"] as? String else {
-                print("No user data")
-                return
-            }
-            spiner.show(in: view)
-            let data = Delivery(status: "pickup", order_number: orderNo, type: "start")
-            self.orderViewModel.statusOrder(data: data) { (result) in
-                self.handleResult(result: result)
-                self.navigationItem.hidesBackButton = true
-                self.databaseM.setCurrentOrder(orderNo: orderNo, status: "pickup", codeDriver: codeDriver) { (re) in
-                    print(re)
-                }
-            }
-        case .done_pickup:
-            spiner.show(in: view)
-            donePickupOrder()
-        case .start_delivery:
-            spiner.show(in: view)
-            let data = Delivery(status: "delivery", order_number: orderNo, type: "start")
-            self.orderViewModel.statusOrder(data: data) { (result) in
-                self.handleResult(result: result)
-                self.cardHandleAreaHeight = 190
-            }
-        case .pending:
-            let vc = PendingNoteVc()
-            vc.orderNo = order?.order_number
-            vc.idShiftTime = order?.id_shift_time
-            let navVc = UINavigationController(rootViewController: vc)
-            navVc.modalPresentationStyle = .fullScreen
-            present(navVc, animated: true, completion: nil)
-        case .done_delivery:
-            spiner.show(in: view)
-            let data = Delivery(status: "delivery", order_number: orderNo, type: "done")
-            self.orderViewModel.statusOrder(data: data) { (result) in
-                switch result {
-                case .success(_):
-                    DispatchQueue.main.async {
-                        self.navigationItem.hidesBackButton = false
-                        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-                              let codeDriver = userData["codeDriver"] as? String else {
-                            print("No user data")
-                            return
-                        }
-                        self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
-                            print(res)
-                        }
-                        self.upateLocation()
-                        self.spiner.dismiss()
-                        let vc = DoneViewController()
-                        let navVc = UINavigationController(rootViewController: vc)
-                        
-                        self.present(navVc, animated: true, completion: nil)
-                    }
-                case .failure(let error):
-                    DispatchQueue.main.async {
-                        print(error)
-                    }
-                }
-            }
-            
-        case .none:
-            print("Status Undefined")
-        case .next:
-            print("Next store")
-        case .scan:
-            print("Start Scan")
-        case .nostatus:
-            print("no status")
-        }
+    func next(_ viewC: OrderDetailVc, store: PickupDestination?) {
+        print("oke")
     }
     
-    
-    private func handleResult(result: Result<Bool, Error>){
-        guard let orderNo = order?.order_number else {
+    func startPickup(_ viewC: OrderDetailVc) {
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
             return
         }
+        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
+        let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
+        
+        print(sortedList)
+        
+        let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
+        destination = destinationPickup
+        myPosition()
+        getCurrentPosition()
+        cardViewController.order = sortedList[0]
+        cardViewController.display = .start_pickup
+        spiner.show(in: view)
+        let data = Delivery(status: "pickup", order_number: sortedList[0].order_number, type: "start")
+        self.orderViewModel.statusOrder(data: data) { (result) in
+            self.handleResult(result: result)
+            self.navigationItem.hidesBackButton = true
+            self.databaseM.setCurrentOrder(orderNo: sortedList[0].order_number, status: "pickup", codeDriver: codeDriver) { (re) in
+                print(re)
+            }
+    }
+}
+    
+    private func handleResult(result: Result<Bool, Error>){
         switch result {
         case .success(_):
             DispatchQueue.main.async {
                 self.spiner.dismiss()
-                self.cardViewController.orderNo = orderNo
-                self.cardViewController.status = !self.cardViewController.status
             }
         case .failure(let error):
             DispatchQueue.main.async {
                 self.spiner.dismiss()
-                self.cardViewController.orderNo = orderNo
-                self.cardViewController.status = !self.cardViewController.status
                 print(error)
             }
         }
     }
-    
-    private func donePickupOrder(){
-        guard let orderDetailString = order?.order_detail,
-              let orderNo = order?.order_number,
-              let orderDetail = orderViewModel.decryptOrderDetail(data: orderDetailString, OrderNo: orderNo) else {
-            return
-        }
-        
-        let data = Delivery(status: "pickup", order_number: orderNo, type: "done")
-        self.orderViewModel.statusOrder(data: data) { (result) in
-            self.handleResult(result: result)
-        }
-        
-        if let orderDestinationLat = CLLocationDegrees(orderDetail.delivery_destination.lat!),
-           let orderDestinationLng =  CLLocationDegrees(orderDetail.delivery_destination.long!) {
-            destination = Destination(latitude: orderDestinationLat, longitude: orderDestinationLng)
-        }
-        
-        
-        CATransaction.begin()
-        CATransaction.setAnimationDuration(2.0)
-        
-        guard let origin = origin, let destination = destination else {
-            return
-        }
-        
-        
-        let direction: DirectionData = DirectionData(origin: origin, destination: destination)
-        
-        
-        self.mapsViewModel.drawDirection(direction: direction)
-        
-        
-        CATransaction.commit()
-        
-    }
 }
-

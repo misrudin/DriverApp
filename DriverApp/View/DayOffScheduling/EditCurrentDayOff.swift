@@ -1210,7 +1210,7 @@ class EditCurrentDayOff: UIViewController {
             return
         }
         switch setWorkButton.title(for: .normal) {
-        case "Set Work Day":
+        case "Set Work Day".localiz():
             listShift = [1,2,3,4]
             let newData:[String: Any] = dayOffPlan
             var dataSelected = newData["\(selectedWeek)"] as! [String: Any]

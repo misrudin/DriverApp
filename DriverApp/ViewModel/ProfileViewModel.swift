@@ -35,11 +35,12 @@ struct ProfileViewModel {
             let workTime = data["work_time"] as? String
             let checkoutTime = data["checkout_time"] as? String
             let currentOrder = data["current_order"] as? String
+            let statusOrder = data["order_status"] as? String
             let userStatus: UserStatus = UserStatus(checkinTime: checkinTime,
                                                     checkoutTime: checkoutTime,
                                                     restTime: restTime,
                                                     workTime: workTime,
-                                                    currentOrder: currentOrder)
+                                                    currentOrder: currentOrder, statusOrder: statusOrder)
             debugPrint(data)
             completion(.success(userStatus))
         }

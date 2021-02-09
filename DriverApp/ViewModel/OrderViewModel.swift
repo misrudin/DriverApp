@@ -20,13 +20,13 @@ struct OrderViewModel {
     var delegate: OrderViewModelDelegate?
     
     //    MARK: - GET DATA ORDER BY CODE DRIVER
-    func getDataOrder(codeDriver: String, completion: @escaping (Result<[OrderListDate], Error>)-> Void){
-        AF.request("\(Base.urlOrder)list/\(codeDriver)",headers: Base.headers).response { response in
+    func getDataOrder(codeDriver: String, shift: Int, completion: @escaping (Result<NewDataOrder, Error>)-> Void){
+        AF.request("\(Base.urlOrder)list/\(shift)/\(codeDriver)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if response.response?.statusCode == 200 {
                     if let data = response.data {
-                        if let orderData =  parseDataOrder(data){
+                        if let orderData = parseDataOrder(data){
                             completion(.success(orderData))
                         }else {
                             completion(.failure(OrderError.failedToParseJson))
@@ -252,11 +252,12 @@ struct OrderViewModel {
     
     //MARK: - Parse Data Order
     //    Parese data order
-    private func parseDataOrder(_ data: Data) -> [OrderListDate]?{
+    private func parseDataOrder(_ data: Data) -> NewDataOrder?{
         do{
-            let decodedData = try JSONDecoder().decode(NewOrder.self, from: data)
+            let decodedData = try JSONDecoder().decode(NewOrderList.self, from: data)
             return decodedData.data
         }catch{
+            print(error)
             return nil
         }
     }

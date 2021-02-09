@@ -173,6 +173,7 @@ struct UserStatus: Codable {
     let restTime: String?
     let workTime: String?
     let currentOrder: String?
+    let statusOrder: String?
 }
 
 

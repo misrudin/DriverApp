@@ -15,7 +15,6 @@ class ScanCell: UITableViewCell {
     var item: PickupItem! {
         didSet {
             name.text = item.item_name
-            code.text = "Code".localiz() + " : \(item.item_name)"
             print(item.qr_code_raw)
             status.text = item.scan != nil ? "Verified".localiz() : "Unverified".localiz()
             scanButton.isHidden = item.scan != nil
@@ -26,13 +25,11 @@ class ScanCell: UITableViewCell {
                 container.layer.borderColor = colorV?.cgColor
                 status.textColor = colorV
                 name.textColor = colorV
-                code.textColor = colorV
             }else {
                 line.backgroundColor = colorU
                 container.layer.borderColor = colorU?.cgColor
                 status.textColor = colorU
                 name.textColor = colorU
-                code.textColor = colorU
             }
         }
     }
@@ -40,7 +37,6 @@ class ScanCell: UITableViewCell {
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var line: UIView!
     @IBOutlet weak var name: UILabel!
-    @IBOutlet weak var code: UILabel!
     @IBOutlet weak var status: UILabel!
     @IBOutlet weak var scanButton: UIButton!
     
@@ -61,7 +57,7 @@ class ScanCell: UITableViewCell {
         container.layer.cornerRadius = 10
         line.layer.cornerRadius = 2
         line.widthAnchor.constraint(equalToConstant: 5).isActive = true
-        scanButton.backgroundColor = UIColor(named: "orangeKasumi")
+        scanButton.backgroundColor = UIColor(named: "darkKasumi")
         scanButton.translatesAutoresizingMaskIntoConstraints = false
         scanButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
         scanButton.widthAnchor.constraint(equalToConstant: 100).isActive = true

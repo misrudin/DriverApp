@@ -253,6 +253,7 @@ class ChatView: UIViewController {
         
         UserDefaults.standard.setValue("1", forKey: "quickChat")
         showQuickChat = false
+        inputField.isEnabled = true
 //        showQuickChat = true
     }
     
