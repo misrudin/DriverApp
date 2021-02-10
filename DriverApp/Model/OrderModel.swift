@@ -303,6 +303,21 @@ struct Pickup: Decodable {
     let distance: Double
     let pending_by_system: Bool
     let id_shift_time: Int
+    var dictionary: [String: Any] {
+        return [
+            "pickup_store_name" : pickup_store_name,
+            "store_address" : store_address,
+            "lat" : lat,
+            "long" : long,
+            "order_number" : order_number,
+            "status_tracking" : status_tracking,
+            "active_date" : active_date,
+            "queue" : queue,
+            "distance" : distance,
+            "pending_by_system" : pending_by_system,
+            "id_shift_time" : id_shift_time
+        ]
+    }
 }
 
 struct NewDelivery: Decodable {

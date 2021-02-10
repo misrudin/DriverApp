@@ -372,11 +372,7 @@ extension PendingNoteVc {
             case .success(_):
                 DispatchQueue.main.async {
                     self.spiner.dismiss()
-                    self.dismiss(animated: true) {
-                        if self.isLast {
-                            self.presentingController?.dismiss(animated: false)
-                        }
-                    }
+                    self.dismiss(animated: true)
                     self.cekDelegate()
                     self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
                         print(res)

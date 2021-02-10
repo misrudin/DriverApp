@@ -43,7 +43,7 @@ class OrderCell: UITableViewCell {
     
     //    MARK: - Components
     let orderNoLabel = Reusable.makeLabel(text: "Order No".localiz(), font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, alignment: .left)
-    let orderNo = Reusable.makeLabel(text: "1111", font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "labelColor")!, alignment: .left)
+    let orderNo = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .semibold), color: UIColor(named: "orangeKasumi")!, alignment: .left)
     
     let container: UIView = {
         let view = UIView()

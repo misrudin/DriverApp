@@ -167,6 +167,11 @@ class PickupOrderVc: UIViewController {
         
         mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
         directionButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
+        
+        if cardViewController != nil {
+            cardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardHeight)
+            cardVisible = false
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -186,12 +191,17 @@ class PickupOrderVc: UIViewController {
         let filterStatus = pickupList.filter({$0.order_number == currentOrder})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         
-        let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
-        destination = destinationPickup
-        myPosition()
-        getCurrentPosition()
-        cardViewController.order = sortedList[0]
-        cardViewController.display = .start_pickup
+        if sortedList.count != 0 {
+            let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
+            destination = destinationPickup
+            myPosition()
+            getCurrentPosition()
+            cardViewController.order = sortedList[0]
+            cardViewController.display = .start_pickup
+        }else {
+            myPosition()
+            cardViewController.display = .done
+        }
     }
     
     private func cekWaiting(){
@@ -286,6 +296,12 @@ class PickupOrderVc: UIViewController {
                     let newPositions = sortPickup?.map({ CLLocationCoordinate2D(latitude: CLLocationDegrees($0.lat)!, longitude: CLLocationDegrees($0.long)!) })
                     self?.positions = newPositions!
                     
+                    let queue1 = list.filter({$0.queue == 1})
+                    
+                    if queue1.count != 0 {
+                        UserDefaults.standard.setValue(queue1[0].dictionary, forKey: "queue1")
+                    }
+
                     if waypoints == true {
                         self?.drawWaypoints()
                     }
@@ -601,11 +617,8 @@ extension PickupOrderVc {
 @available(iOS 13.0, *)
 extension PickupOrderVc: OrderDetailVcDelegate {
     func doneAll(_ viewC: OrderDetailVc) {
-        if self.navigationController != nil {
-            self.navigationController?.popViewController(animated: true)
-        }else {
-            self.dismiss(animated: true, completion: nil)
-        }
+        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
     }
     
     func pending(_ viewC: OrderDetailVc, order: Pickup?) {
@@ -614,7 +627,7 @@ extension PickupOrderVc: OrderDetailVcDelegate {
         vc.orderNo = order?.order_number
         vc.idShiftTime = order?.id_shift_time
         vc.delegate1 = self
-        vc.isLast = filterStatus.count == 1
+        vc.isLast = filterStatus.count <= 1
         let navVc = UINavigationController(rootViewController: vc)
         navVc.modalPresentationStyle = .fullScreen
         present(navVc, animated: true, completion: nil)
@@ -630,7 +643,7 @@ extension PickupOrderVc: OrderDetailVcDelegate {
         vc.orderNo = order!.order_number
         vc.origin = origin
         vc.items = order!.pickup_item
-        vc.isLast = filterStatus.count == 1
+        vc.isLast = filterStatus.count <= 1
         vc.classification = order?.classification
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)

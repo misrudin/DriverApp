@@ -168,6 +168,11 @@ class DeliveryOrderVc: UIViewController {
         
         mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
         directionButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
+        
+        if cardViewController != nil {
+            cardViewController.view.frame = CGRect(x: 0, y: self.view.frame.height - cardHandleAreaHeight, width: self.view.bounds.width, height: cardHeight)
+            cardVisible = false
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -194,15 +199,40 @@ class DeliveryOrderVc: UIViewController {
         
         cardViewController.display = .done
         
-        let filteredPickup = pickupList.filter({$0.queue == 1})
-        if filteredPickup.count != 0 {
-            let store = filteredPickup[0]
-            let destinationStore = Destination(latitude: CLLocationDegrees(store.lat)!, longitude: CLLocationDegrees(store.long)!)
-            cardViewController.store = store
-            destination = destinationStore
-            
-            upateLocation()
+        guard let storeSession = UserDefaults.standard.value(forKey: "queue1") as? [String: Any],
+              let pickup_store_name = storeSession["pickup_store_name"] as? String,
+              let storeAddress =  storeSession["store_address"] as? String,
+              let lat = storeSession["lat"] as? String,
+              let long = storeSession["long"] as? String,
+              let orderNo = storeSession["order_number"] as? String,
+              let status = storeSession["status_tracking"] as? String,
+              let activeDate = storeSession["active_date"] as? String,
+              let queue = storeSession["queue"] as? Int,
+              let distance =  storeSession["distance"] as? Double,
+              let pendingStatus = storeSession["pending_by_system"] as? Bool,
+              let idShiftTime = storeSession["id_shift_time"] as? Int
+              else {
+            print("No data")
+            return
         }
+        let store: Pickup = Pickup(pickup_store_name: pickup_store_name,
+                                   store_address: storeAddress,
+                                   lat: lat,
+                                   long: long,
+                                   pickup_item: nil,
+                                   order_number: orderNo,
+                                   classification: nil,
+                                   status_tracking: status,
+                                   active_date: activeDate,
+                                   queue: queue,
+                                   distance: distance,
+                                   pending_by_system: pendingStatus,
+                                   id_shift_time: idShiftTime)
+        let destinationStore = Destination(latitude: CLLocationDegrees(store.lat)!, longitude: CLLocationDegrees(store.long)!)
+        cardViewController.store = store
+        destination = destinationStore
+        
+        upateLocation()
     }
     
     private func CekWaiting(){
@@ -632,18 +662,18 @@ extension DeliveryOrderVc {
 @available(iOS 13.0, *)
 extension DeliveryOrderVc: DeliveryDetailDelegate {
     func doneBackToStore(_ viewC: DeliveryDetail) {
-        if self.navigationController != nil {
-            self.navigationController?.popViewController(animated: true)
-        }else {
-            self.dismiss(animated: true, completion: nil)
-        }
+        navigationController?.popViewController(animated: true)
+        dismiss(animated: true, completion: nil)
+        UserDefaults.standard.removeObject(forKey: "queue1")
     }
     
     func pending(_ viewC: DeliveryDetail, order: NewDelivery?) {
+        let filterStatus = pickupList.filter({$0.status_tracking == "waiting delivery"})
         let vc = PendingNoteVc()
         vc.orderNo = order?.order_number
         vc.idShiftTime = order?.id_shift_time
         vc.delegate2 = self
+        vc.isLast = filterStatus.count <= 1
         let navVc = UINavigationController(rootViewController: vc)
         navVc.modalPresentationStyle = .fullScreen
         present(navVc, animated: true, completion: nil)
@@ -670,7 +700,7 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
                     self.spiner.dismiss()
                     let vc = DoneViewController()
                     vc.delegate = self
-                    vc.isLast = filterStatus.count == 1
+                    vc.isLast = filterStatus.count <= 1
                     let navVc = UINavigationController(rootViewController: vc)
                     
                     self.present(navVc, animated: true, completion: nil)
@@ -687,6 +717,7 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
         print("oke")
     }
     
+    //start delivery
     func startPickup(_ viewC: DeliveryDetail) {
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {

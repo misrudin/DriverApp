@@ -170,7 +170,11 @@ class ListScanView: UIViewController {
             
             myGroup.notify(queue: .main) {
                 print("Finished all requests.")
-                self.donePickupOrder()
+                if self.classification == "BOPIS" {
+                    self.doneDeliveryOrder()
+                }else {
+                    self.donePickupOrder()
+                }
                 self.spiner.dismiss()
             }
         }
@@ -184,6 +188,39 @@ class ListScanView: UIViewController {
         }
         spiner.show(in: view)
         let data = Delivery(status: "pickup", order_number: orderNo, type: "done")
+        orderVm.statusOrder(data: data) { (result) in
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
+                        print(res)
+                    }
+                    self.spiner.dismiss()
+                    self.navigationController?.popViewController(animated: true)
+                    if self.isLast {
+                        self.delegate.closePickupVc()
+                    }else{
+                        self.delegate.cekOrderWaiting()
+                    }
+                }
+            case .failure(let error):
+                DispatchQueue.main.async {
+                    self.spiner.dismiss()
+                    let action1 = UIAlertAction(title: "Try again".localiz(), style: .default, handler: nil)
+                    Helpers().showAlert(view: self, message: "", customTitle: error.localizedDescription, customAction1: action1)
+                }
+            }
+        }
+    }
+    
+    private func doneDeliveryOrder(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        spiner.show(in: view)
+        let data = Delivery(status: "delivery", order_number: orderNo, type: "done")
         orderVm.statusOrder(data: data) { (result) in
             switch result {
             case .success(_):
