@@ -23,15 +23,31 @@ class OrderCell: UITableViewCell {
         }
     }
     
+    var pickupData: Pickup! {
+        didSet {
+            orderNo.text = ": \(pickupData.order_number)"
+            pickupStore.text = "Pickup Address".localiz()
+            
+            pickupAddress.text = "\(pickupData.pickup_store_name)\n\(pickupData.store_address)"
+
+            if pickupData.status_tracking == "wait for pickup" {
+                self.visualEffectView.isHidden = false
+            }else {
+                self.visualEffectView.isHidden = true
+            }
+        }
+    }
+    
     var deliveryData: NewDelivery! {
         didSet {
             orderNo.text = ": \(deliveryData.order_number)"
+            pickupStore.text = "Delivery Address".localiz()
             
             guard let userInfo = orderVm.decryptUserInfo(data: deliveryData.user_info!, OrderNo: deliveryData.order_number) else {
                 return
             }
             
-            pickupAddress.text = "\(userInfo.first_name) \(userInfo.last_name), \(userInfo.address)"
+            pickupAddress.text = "\(userInfo.first_name) \(userInfo.last_name)\n\(userInfo.address)"
             
             if deliveryData.status_tracking == "wait for pickup" {
                 self.visualEffectView.isHidden = false

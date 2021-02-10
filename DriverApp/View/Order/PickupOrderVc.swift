@@ -54,6 +54,8 @@ class PickupOrderVc: UIViewController {
     var databaseM = DatabaseManager()
     var appear: Bool = false
     
+    var isCheckin: Bool = false
+    
     
     var shift: ShiftTime! {
         didSet {
@@ -159,6 +161,7 @@ class PickupOrderVc: UIViewController {
         configureNavigationBar()
         
         mapsViewModel.delegate = self
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     
@@ -179,6 +182,30 @@ class PickupOrderVc: UIViewController {
         
         manager?.stopUpdatingLocation()
         manager?.stopUpdatingHeading()
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
+    private func cekStatusDriver(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            print("No user data")
+            return
+        }
+        
+        inOutVm.cekStatusDriver(codeDriver: codeDriver) {[weak self] (res) in
+            switch res {
+            case .success(let response):
+                DispatchQueue.main.async {
+                    if response.isCheckin == true {
+                        self?.isCheckin = true
+                    }
+                }
+            case .failure(let err):
+                print(err.localizedDescription)
+                self?.isCheckin = false
+            }
+        }
+        
     }
     
     func cekOrderWaiting(){
@@ -662,8 +689,6 @@ extension PickupOrderVc: OrderDetailVcDelegate {
         let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         
-        print(sortedList)
-        
         let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
         destination = destinationPickup
         myPosition()
@@ -678,8 +703,9 @@ extension PickupOrderVc: OrderDetailVcDelegate {
             self.databaseM.setCurrentOrder(orderNo: sortedList[0].order_number, status: "pickup", codeDriver: codeDriver) { (re) in
                 print(re)
             }
+        }
+        cekSatatusCheckin()
     }
-}
     
     private func handleResult(result: Result<Bool, Error>){
         switch result {
@@ -694,4 +720,34 @@ extension PickupOrderVc: OrderDetailVcDelegate {
             }
         }
     }
+    
+    //check status driver checkin
+    private func cekSatatusCheckin(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String, let lat = origin?.latitude, let long = origin?.longitude else {
+            print("No user data")
+            return
+        }
+        if self.isCheckin == false {
+            print("belum cekin")
+            spiner.show(in: view)
+            self.inOutVm.checkinDriver(with: codeDriver, lat: String(lat), long: String(long)) { (res) in
+                switch res {
+                case .success(let oke):
+                    DispatchQueue.main.async {
+                        if oke == true {
+                            self.isCheckin = true
+                        }
+                    }
+                case .failure(let err):
+                    print(err)
+                    Helpers().showAlert(view: self, message: "Something when wrong !".localiz())
+                }
+            }
+        }else {
+            print("Sudah cekin")
+        }
+    }
+    
+    
 }

@@ -22,10 +22,31 @@ class PendingCell: UITableViewCell {
         }
     }
     
+    var pickupData: Pickup! {
+        didSet {
+            
+            orderNo.text = ": \(pickupData.order_number)"
+            pickupStore.text = "Pickup Address".localiz()
+            
+            pickupAddress.text = "\(pickupData.pickup_store_name)\n\(pickupData.store_address)"
+             
+            DispatchQueue.main.async {
+                if self.pickupData.pending_by_system {
+                    self.container.backgroundColor = UIColor(named: "bgOrderActive")
+                    self.status.text = "Pending by System".localiz()
+                }else {
+                    self.container.backgroundColor = UIColor(named: "bgOrderActive")
+                    self.status.text = "Pending".localiz()
+                }
+            }
+        }
+    }
+    
     var deliveryData: NewDelivery! {
         didSet {
             
             orderNo.text = ": \(deliveryData.order_number)"
+            pickupStore.text = "Delivery Address".localiz()
              
             DispatchQueue.main.async {
                 if self.deliveryData.pending_by_system {
@@ -43,7 +64,7 @@ class PendingCell: UITableViewCell {
                 return
             }
             
-            pickupAddress.text = "\(userInfo.first_name) \(userInfo.last_name), \(userInfo.address)"
+            pickupAddress.text = "\(userInfo.first_name) \(userInfo.last_name)\n\(userInfo.address)"
         }
     }
     

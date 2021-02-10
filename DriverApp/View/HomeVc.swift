@@ -12,6 +12,11 @@ import JGProgressHUD
 import CoreLocation
 import LanguageManager_iOS
 
+enum DisplayHomeType {
+    case pickup
+    case delivery
+}
+
 @available(iOS 13.0, *)
 class HomeVc: UIViewController {
     
@@ -38,6 +43,10 @@ class HomeVc: UIViewController {
     
     var constraint1: NSLayoutConstraint!
     var constraint2: NSLayoutConstraint!
+    
+    var orderViewModel = OrderViewModel()
+    
+    var display: DisplayHomeType! = .pickup
     
     private let spiner: JGProgressHUD = {
         let spin = JGProgressHUD()
@@ -74,9 +83,6 @@ class HomeVc: UIViewController {
     
     private let labelEmpty = Reusable.makeLabel(font: .systemFont(ofSize: 14, weight: .regular), color: UIColor(named: "labelColor")!, numberOfLines: 0, alignment: .center)
     
-    
-    var orderViewModel = OrderViewModel()
-    var orderData: [OrderListDate]?
     
     lazy var refreshControl = UIRefreshControl()
     
@@ -197,25 +203,29 @@ class HomeVc: UIViewController {
     
     @objc private func getListShiftTime(){
         spiner.show(in: view)
-        shiftTimeVm.getCurrentShiftTime { (res) in
+        shiftTimeVm.getCurrentShiftTime {[weak self] (res) in
             switch res {
             case .success(let data):
                 DispatchQueue.main.async {
-                    self.spiner.dismiss()
-                    self.activeShift = data
-                    self.getDataOrder()
+                    self?.spiner.dismiss()
+                    self?.activeShift = data
+                    self?.getDataOrder()
                 }
             case .failure(let error):
                 print(error.localizedDescription)
-                self.spiner.dismiss()
-                self.pickupList = []
-                self.deliveryList = []
-                self.tableView.reloadData()
-                self.spiner.dismiss()
-                self.refreshControl.endRefreshing()
-                self.emptyImage.isHidden = false
-                self.labelEmpty.isHidden = false
-                self.labelEmpty.text = error.localizedDescription
+                self?.spiner.dismiss()
+                self?.pickupList = []
+                self?.deliveryList = []
+                self?.tableView.reloadData()
+                self?.spiner.dismiss()
+                self?.refreshControl.endRefreshing()
+                self?.emptyImage.isHidden = false
+                self?.labelEmpty.isHidden = false
+                self?.labelEmpty.text = error.localizedDescription
+                self?.pickupButton.isHidden = true
+                self?.deliveryButton.isHidden = true
+                self?.constraint1.isActive = true
+                self?.constraint2.isActive = false
             }
         }
     }
@@ -372,8 +382,13 @@ class HomeVc: UIViewController {
                     self?.constraint2.isActive = true
                     self?.pickupButton.isHidden = filterOrder?.count == 0
                     
+                    if filterOrder?.count != 0 {
+                        self?.display = .pickup
+                    }
+                    
                     if filterOrder?.count == 0 && filterOrderDelivery?.count != 0 {
                         self?.deliveryButton.isHidden = false
+                        self?.display = .delivery
                     }else{
                         self?.deliveryButton.isHidden = true
                     }
@@ -385,9 +400,6 @@ class HomeVc: UIViewController {
                         self?.constraint1.isActive = false
                         self?.constraint2.isActive = true
                     }
-                    
-                    
-                    
                     
                     self?.pickupList = order.pickup_list
                     self?.deliveryList = order.delivery_list
@@ -509,11 +521,20 @@ class HomeVc: UIViewController {
 @available(iOS 13.0, *)
 extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let orderData = deliveryList {
-            return orderData.count
+        switch display {
+        case .pickup:
+            if let orderData = pickupList {
+                return orderData.count
+            }
+            return 0
+        case .delivery:
+            if let orderData = deliveryList {
+                return orderData.count
+            }
+            return 0
+        default:
+            return 0
         }
-        
-        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -522,44 +543,58 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         let cellPending = tableView.dequeueReusableCell(withIdentifier: PendingCell.id, for: indexPath) as! PendingCell
         
         
-        if let order = deliveryList {
-            cellOrder.deliveryData = order[indexPath.row]
-            cellPending.deliveryData = order[indexPath.row]
-            
-            if activeShift != nil {
-                cellPending.shift = activeShift
-                cellOrder.shift = activeShift
+        switch display {
+        case .pickup:
+            if let order = pickupList {
+                cellOrder.pickupData = order[indexPath.row]
+                cellPending.pickupData = order[indexPath.row]
+                
+                if activeShift != nil {
+                    cellPending.shift = activeShift
+                    cellOrder.shift = activeShift
+                }
             }
-        }
-        
-        
-        guard let deliveryData = deliveryList else {
+            
+            
+            guard let orderData = pickupList else {
+                return UITableViewCell()
+            }
+            
+            let itemOrder = orderData[indexPath.row]
+            
+            if itemOrder.status_tracking == "pending" {
+                return cellPending
+            }else {
+                return cellOrder
+            }
+            
+        case .delivery:
+            if let order = deliveryList {
+                cellOrder.deliveryData = order[indexPath.row]
+                cellPending.deliveryData = order[indexPath.row]
+                
+                if activeShift != nil {
+                    cellPending.shift = activeShift
+                    cellOrder.shift = activeShift
+                }
+            }
+            
+            
+            guard let deliveryData = deliveryList else {
+                return UITableViewCell()
+            }
+            
+            let itemDelivery = deliveryData[indexPath.row]
+            
+            if itemDelivery.status_tracking == "pending" {
+                return cellPending
+            }else {
+                return cellOrder
+            }
+        default:
             return UITableViewCell()
         }
         
-        let itemDelivery = deliveryData[indexPath.row]
-        
-        if itemDelivery.status_tracking == "pending" {
-            return cellPending
-        }else {
-            return cellOrder
-        }
-        
-    }
-    
-
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        if let orderData = orderData {
-            let order = orderData[indexPath.section].order_list![indexPath.row]
-            
-            let vc = LiveTrackingVC()
-            vc.order = order
-            vc.hidesBottomBarWhenPushed = true
-            navigationController?.pushViewController(vc, animated: true)
-        }
     }
     
     
@@ -582,8 +617,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
             handler: {[weak self](action, view, completion) in
                    completion(true)
                 
-                guard let allorder = self?.orderData,
-                      let dateOrder = allorder[indexPath.section].order_list,
+                guard let dateOrder = self?.deliveryList,
                       let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                             let codeDriver = userData["codeDriver"] as? String,
                             let idGroup = userData["idGroup"] as? Int  else {return}
@@ -602,7 +636,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                         Helpers().showAlert(view: self!, message: "Failed to decline this order !".localiz())
                     case .success(let oke):
                         if oke {
-                            self?.orderData![indexPath.section].order_list?.remove(at: indexPath.row)
+                            self?.deliveryList.remove(at: indexPath.row)
                             self?.tableView.deleteRows(at: [indexPath], with: .middle)
                             self?.totalReject += 1
                             if self!.totalReject >= 2{
@@ -615,38 +649,17 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
                 }
                 
            })
-        
-        let pendingAction = UIContextualAction(
-            style: .normal,
-            title: "Pending".localiz(),
-            handler: {[weak self](action, view, completion) in
-                   completion(true)
-                let vc = PendingNoteVc()
-                if let order = self?.orderData {
-                    if order[indexPath.section].order_list != nil {
-                        let orderList = order[indexPath.section].order_list
-                        vc.orderNo = orderList![indexPath.row].order_number
-                        vc.idShiftTime = orderList![indexPath.row].id_shift_time
-                    }
-                }
-                
-                let navVc = UINavigationController(rootViewController: vc)
-                self?.present(navVc, animated: true, completion: nil)
-           })
 
 
         let imageDelete = UIImage(named: "remove")
         let delete = imageDelete?.resizeImage(CGSize(width: 25, height: 25))
-        
-        let imageEdit = UIImage(named: "time")
-        let edit = imageEdit?.resizeImage(CGSize(width: 25, height: 25))
     
         rejectAction.image = delete
         rejectAction.backgroundColor = UIColor(named: "darkKasumi")
-        pendingAction.image = edit
-        pendingAction.backgroundColor = UIColor(named: "grayKasumi")
+
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any], let statusDriver = userData["status"] as? String  else {return nil}
-        let actions = statusDriver == "freelance" && allowReject ? [rejectAction] : []
+        let cekDecline = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.status_tracking == "pending" && $0.pending_by_system == true)})
+        let actions = statusDriver == "freelance" && allowReject && cekDecline.count > 0 ? [rejectAction] : []
         
         
         let configuration = UISwipeActionsConfiguration(actions: actions)

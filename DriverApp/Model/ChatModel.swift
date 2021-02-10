@@ -29,7 +29,6 @@ struct HistoryMessage: Codable {
     let lastFileSend: String
     let lastChatDate: String
     let codeDriver: String
-    let token: String
 }
 
 

@@ -160,6 +160,8 @@ class DeliveryOrderVc: UIViewController {
         configureNavigationBar()
         
         mapsViewModel.delegate = self
+        
+        UIApplication.shared.isIdleTimerDisabled = true
     }
     
     
@@ -180,6 +182,7 @@ class DeliveryOrderVc: UIViewController {
         
         manager?.stopUpdatingLocation()
         manager?.stopUpdatingHeading()
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     func cekOrderWaiting(){

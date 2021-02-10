@@ -72,7 +72,6 @@ class ChatView: UIViewController {
         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
         field.leftViewMode = .always
         field.backgroundColor = UIColor(named: "bgInput")
-        field.isEnabled = false
         return field
     }()
     

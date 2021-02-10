@@ -136,8 +136,7 @@ struct ChatViewModel {
         let historyChat: HistoryMessage = HistoryMessage(lastContentChat: chat,
                                                          lastFileSend: "",
                                                          lastChatDate: dateString,
-                                                         codeDriver: codeDriver,
-                                                         token: "")
+                                                         codeDriver: codeDriver)
         
         let chatDataDict: [String: Any] = [
             "chatContent" : chatdData.chatContent,
@@ -161,7 +160,6 @@ struct ChatViewModel {
                     "lastFileSend": historyChat.lastFileSend,
                     "lastChatDate": historyChat.lastChatDate,
                     "codeDriver": historyChat.codeDriver,
-                    "token": historyChat.token,
                     "newMessage": val + 1
                 ]
                 //buat history untuk cs
@@ -201,8 +199,7 @@ struct ChatViewModel {
         let historyChat: HistoryMessage = HistoryMessage(lastContentChat: "Foto",
                                                          lastFileSend: "Foto",
                                                          lastChatDate: dateString,
-                                                         codeDriver: codeDriver,
-                                                         token: "")
+                                                         codeDriver: codeDriver)
         
         let chatDataDict: [String: Any] = [
             "file" : "data:image/png;base64, \(foto)",
@@ -227,7 +224,6 @@ struct ChatViewModel {
                     "lastFileSend": historyChat.lastFileSend,
                     "lastChatDate": historyChat.lastChatDate,
                     "codeDriver": historyChat.codeDriver,
-                    "token": historyChat.token,
                     "newMessage": val + 1
                 ]
                 //buat history untuk cs
