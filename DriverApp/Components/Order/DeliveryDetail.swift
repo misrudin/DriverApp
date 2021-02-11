@@ -21,6 +21,7 @@ enum DisplayDelivery {
     case start_pickup
     case next
     case done
+    case bopis
     case scan
 }
 
@@ -59,6 +60,7 @@ class DeliveryDetail: UIViewController {
                 distanceLabel.isHidden = true
                 backToStoreButton.isHidden = true
                 container2.isHidden = true
+                container3.isHidden = true
                 break
             case .start_pickup:
                 startPickupButton.isHidden = true
@@ -71,6 +73,7 @@ class DeliveryDetail: UIViewController {
                 distanceLabel.isHidden = false
                 backToStoreButton.isHidden = true
                 container2.isHidden = true
+                container3.isHidden = true
                 break
             case .next:
                 startPickupButton.isHidden = true
@@ -81,6 +84,7 @@ class DeliveryDetail: UIViewController {
                 handleArea.isUserInteractionEnabled = false
                 backToStoreButton.isHidden = true
                 container2.isHidden = true
+                container3.isHidden = true
                 break
             case .done:
                 startPickupButton.isHidden = true
@@ -91,6 +95,18 @@ class DeliveryDetail: UIViewController {
                 lineView.isHidden = false
                 handleArea.isUserInteractionEnabled = true
                 container2.isHidden = false
+                container3.isHidden = true
+                break
+            case .bopis:
+                startPickupButton.isHidden = true
+                doneButton.isHidden = true
+                nextButton.isHidden = true
+                container.isHidden = true
+                backToStoreButton.isHidden = false
+                lineView.isHidden = false
+                handleArea.isUserInteractionEnabled = true
+                container2.isHidden = true
+                container3.isHidden = false
                 break
             case .scan:
                 break
@@ -104,13 +120,16 @@ class DeliveryDetail: UIViewController {
         didSet {
             backStoreName.text = store.pickup_store_name
             backStoreAddress.text = store.store_address
+            
+            lableText2.text = "Order No".localiz() + " : " + store.order_number
+            storeLabel2.text = store.pickup_store_name
+            storeAddress2.text = store.store_address
         }
     }
     
     var order: NewDelivery!{
         didSet {
             lableText.text = "Order No".localiz() + " : " + order.order_number
-        
             
             let dataN = order.pickup_item?.compactMap({$0.pickup_item?.map({$0.item_name})})
             let dataItems = dataN?.flatMap({$0})
@@ -238,7 +257,22 @@ class DeliveryDetail: UIViewController {
         return view
     }()
     
+    let container3: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(named: "whiteKasumi")
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
+    }()
+    
     private let lableText: UILabel = {
+        let l = UILabel()
+        l.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        l.textColor = UIColor(named: "labelColor")
+        return l
+    }()
+    
+    private let lableText2: UILabel = {
         let l = UILabel()
         l.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         l.textColor = UIColor(named: "labelColor")
@@ -268,11 +302,45 @@ class DeliveryDetail: UIViewController {
        return v
     }
     
+    private func createTitle2(icon: UIImage)-> UIView {
+       let  v = UIView()
+        
+        let img: UIImageView = {
+           let i = UIImageView()
+            i.image = icon
+            i.clipsToBounds = true
+            i.layer.masksToBounds = true
+            i.layer.cornerRadius = 10
+            return i
+        }()
+        
+        v.addSubview(lableText2)
+        v.addSubview(img)
+        
+        img.anchor(left: v.leftAnchor, paddingLeft: 0, width: 30, height: 30)
+        img.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
+        
+        lableText2.anchor(top: v.topAnchor, left: img.rightAnchor, bottom: v.bottomAnchor, right: v.rightAnchor, paddingTop: 5, paddingBottom: 5, paddingLeft: 10, paddingRight: 10)
+        
+       return v
+    }
+    
     lazy var orderNoLable = createTitle(icon: UIImage(named: "orderNoCar")!)
+    lazy var orderNoLable2 = createTitle2(icon: UIImage(named: "orderNoCar")!)
     
     let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Receiver".localiz()
+        label.textColor = UIColor(named: "labelSecondary")
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let titleLabel2: UILabel = {
+        let label = UILabel()
+        label.text = "BOPIS Store".localiz()
         label.textColor = UIColor(named: "labelSecondary")
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -300,6 +368,16 @@ class DeliveryDetail: UIViewController {
         return label
     }()
     
+    let storeLabel2: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.textColor = UIColor(named: "labelColor")
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
     let storeAddress: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -309,6 +387,17 @@ class DeliveryDetail: UIViewController {
         
         return label
     }()
+    
+    let storeAddress2: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+        label.textColor = UIColor(named: "labelSecondary")
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        
+        return label
+    }()
+    
     let phoneNumber: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
@@ -390,10 +479,11 @@ class DeliveryDetail: UIViewController {
         view.addSubviews(views: startPickupButton, doneButton, nextButton,
                          estLabel, distanceLabel, backToStoreButton,
                          handleArea, lineView, scrollView)
-        scrollView.addSubviews(views: container, container2)
+        scrollView.addSubviews(views: container, container2, container3)
         container.addSubviews(views: orderNoLable, titleLabel, storeLabel, classificationLabel,
                               storeAddress, pendingButton, titleLabelItemName, itemLabel, phoneNumber)
         container2.addSubviews(views: backStoreName, backStoreAddress)
+        container3.addSubviews(views: orderNoLable2, storeLabel2, storeAddress2, titleLabel2)
         configureLayout()
     }
     
@@ -461,7 +551,29 @@ class DeliveryDetail: UIViewController {
         
         container2.left(toAnchor: view.leftAnchor, space: 10)
         container2.right(toAnchor: view.rightAnchor, space: -10)
-        container2.top(toAnchor: scrollView.topAnchor, space: 10)
+        container2.top(toAnchor: backToStoreButton.bottomAnchor, space: 10)
+        
+        container3.left(toAnchor: view.leftAnchor, space: 10)
+        container3.right(toAnchor: view.rightAnchor, space: -10)
+        container3.top(toAnchor: backToStoreButton.bottomAnchor, space: 10)
+        
+        //inside container 3 style
+        orderNoLable2.translatesAutoresizingMaskIntoConstraints = false
+        orderNoLable2.left(toAnchor: container3.leftAnchor)
+        orderNoLable2.top(toAnchor: container3.topAnchor)
+        orderNoLable2.right(toAnchor: container3.rightAnchor)
+        
+        titleLabel2.top(toAnchor: orderNoLable2.bottomAnchor, space: 10)
+        titleLabel2.left(toAnchor: container3.leftAnchor)
+        titleLabel2.right(toAnchor: container3.rightAnchor)
+        
+        storeLabel2.top(toAnchor: titleLabel2.bottomAnchor, space: 5)
+        storeLabel2.left(toAnchor: container3.leftAnchor)
+        storeLabel2.right(toAnchor: container3.rightAnchor)
+        
+        storeAddress2.top(toAnchor: storeLabel2.bottomAnchor, space: 5)
+        storeAddress2.left(toAnchor: container3.leftAnchor)
+        storeAddress2.right(toAnchor: container3.rightAnchor)
         
         //inside container 2 style
         backStoreName.top(toAnchor: container2.topAnchor)

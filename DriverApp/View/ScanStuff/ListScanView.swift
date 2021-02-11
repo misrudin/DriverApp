@@ -25,15 +25,17 @@ class ListScanView: UIViewController {
     weak var delegate: PickupOrderVc!
     var databaseM = DatabaseManager()
     
-    var classification: String! {
+    var bopisStatus: Bool! {
         didSet {
-            if classification == "BOPIS" {
-                finishButton.setTitle("Done", for: .normal)
+            if bopisStatus == true {
+                finishButton.setTitle("BOPIS", for: .normal)
             }else {
                 finishButton.setTitle("Finish", for: .normal)
             }
         }
     }
+    var store: [String: Any]!
+    var classification: String!
     
     var done: Bool = false
     
@@ -167,15 +169,123 @@ class ListScanView: UIViewController {
                 }
             }
             
+//            if let bopis = UserDefaults.standard.value(forKey: "bopis") as? [[String: Any]] {
+//                print(bopis)
+//            }
             
             myGroup.notify(queue: .main) {
                 print("Finished all requests.")
-                if self.classification == "BOPIS" {
+                if self.classification == "BOPIS" && self.bopisStatus == true {
+                    self.doneDeliveryBopis()
                     self.doneDeliveryOrder()
+                }else if self.bopisStatus == true {
+                    self.doneDeliveryBopis(pickup: true)
+                    self.saveDataStoreBopis()
                 }else {
                     self.donePickupOrder()
+                    if self.classification == "BOPIS" {
+                        self.storeData()
+                    }
                 }
                 self.spiner.dismiss()
+            }
+        }
+    }
+    
+    private func saveDataStoreBopis(){
+        UserDefaults.standard.setValue(store, forKey: "store_bopis")
+    }
+    
+    private func storeData(){
+        //get data bopis dari session
+        guard let bopis = UserDefaults.standard.value(forKey: "bopis") as? [[String: Any]] else {
+            return UserDefaults.standard.setValue([self.store], forKey: "bopis")
+        }
+        //append data baru
+        var stores: [[String: Any]] = bopis
+        stores.append(self.store)
+        //store data baru
+        UserDefaults.standard.setValue(stores, forKey: "bopis")
+    }
+    
+    private func doneDeliveryBopis(pickup: Bool? = false){
+        //get data bopis dari session
+        if let bopis = UserDefaults.standard.value(forKey: "bopis") as? [[String: Any]] {
+            var stores = [Pickup]()
+            _ = bopis.map { storeSession in
+                guard let pickup_store_name = storeSession["pickup_store_name"] as? String,
+                      let storeAddress =  storeSession["store_address"] as? String,
+                      let lat = storeSession["lat"] as? String,
+                      let long = storeSession["long"] as? String,
+                      let orderNo = storeSession["order_number"] as? String,
+                      let status = storeSession["status_tracking"] as? String,
+                      let activeDate = storeSession["active_date"] as? String,
+                      let queue = storeSession["queue"] as? Int,
+                      let distance =  storeSession["distance"] as? Double,
+                      let pendingStatus = storeSession["pending_by_system"] as? Bool,
+                      let idShiftTime = storeSession["id_shift_time"] as? Int,
+                      let bopisStatus = storeSession["store_bopis_status"] as? Bool
+                      else {
+                    print("No data")
+                    return
+                }
+                let newStore: Pickup = Pickup(pickup_store_name: pickup_store_name,
+                                              store_address: storeAddress,
+                                              lat: lat,
+                                              long: long,
+                                              pickup_item: nil,
+                                              order_number: orderNo,
+                                              classification: nil,
+                                              status_tracking: status,
+                                              active_date: activeDate,
+                                              queue: queue,
+                                              distance: distance,
+                                              pending_by_system: pendingStatus,
+                                              id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+                stores.append(newStore)
+            }
+            
+            if stores.count != 0 {
+                spiner.show(in: view)
+                let myGroup = DispatchGroup()
+                for i in stores {
+                    myGroup.enter()
+                    let data = Delivery(status: "delivery", order_number: i.order_number, type: "done")
+                    orderVm.statusOrder(data: data) { (result) in
+                        switch result {
+                        case .success(_):
+                            myGroup.leave()
+                            print("Finished request \(i.order_number)")
+                        case .failure(let error):
+                            myGroup.leave()
+                            print("Failed request \(i.order_number), \(error)")
+                        }
+                    }
+                }
+                
+                myGroup.notify(queue: .main) {
+                    print("Finished all requests.")
+                    UserDefaults.standard.removeObject(forKey: "bopis")
+                    UserDefaults.standard.removeObject(forKey: "store_bopis")
+                    if self.classification != "BOPIS" {
+                        self.donePickupOrder()
+                    }else {
+                        self.navigationController?.popViewController(animated: true)
+                        if self.isLast {
+                            self.delegate.closePickupVc()
+                        }else{
+                            self.delegate.cekOrderWaiting()
+                        }
+                    }
+                    self.spiner.dismiss()
+                }
+            }
+            
+            
+        }else {
+            if pickup == true {
+//                donePickupOrder()
+                storeData()
             }
         }
     }

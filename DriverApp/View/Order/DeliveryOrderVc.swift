@@ -200,8 +200,6 @@ class DeliveryOrderVc: UIViewController {
         cardViewController.view.frame.origin.y = view.frame.height - cardHandleAreaHeight
         cardVisible = false
         
-        cardViewController.display = .done
-        
         guard let storeSession = UserDefaults.standard.value(forKey: "queue1") as? [String: Any],
               let pickup_store_name = storeSession["pickup_store_name"] as? String,
               let storeAddress =  storeSession["store_address"] as? String,
@@ -213,12 +211,13 @@ class DeliveryOrderVc: UIViewController {
               let queue = storeSession["queue"] as? Int,
               let distance =  storeSession["distance"] as? Double,
               let pendingStatus = storeSession["pending_by_system"] as? Bool,
-              let idShiftTime = storeSession["id_shift_time"] as? Int
+              let idShiftTime = storeSession["id_shift_time"] as? Int,
+              let bopisStatus = storeSession["store_bopis_status"] as? Bool
               else {
             print("No data")
             return
         }
-        let store: Pickup = Pickup(pickup_store_name: pickup_store_name,
+        let store1: Pickup = Pickup(pickup_store_name: pickup_store_name,
                                    store_address: storeAddress,
                                    lat: lat,
                                    long: long,
@@ -230,12 +229,57 @@ class DeliveryOrderVc: UIViewController {
                                    queue: queue,
                                    distance: distance,
                                    pending_by_system: pendingStatus,
-                                   id_shift_time: idShiftTime)
-        let destinationStore = Destination(latitude: CLLocationDegrees(store.lat)!, longitude: CLLocationDegrees(store.long)!)
-        cardViewController.store = store
-        destination = destinationStore
+                                   id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+        let destinationStore1 = Destination(latitude: CLLocationDegrees(store1.lat)!, longitude: CLLocationDegrees(store1.long)!)
+        
+        if UserDefaults.standard.value(forKey: "bopis") != nil {
+            cardViewController.display = .done
+            storeBopisGet()
+        }else {
+            cardViewController.display = .done
+            cardViewController.store = store1
+            destination = destinationStore1
+        }
         
         upateLocation()
+    }
+    
+    private func storeBopisGet(){
+        guard let storeSession = UserDefaults.standard.value(forKey: "store_bopis") as? [String: Any],
+              let pickup_store_name = storeSession["pickup_store_name"] as? String,
+              let storeAddress =  storeSession["store_address"] as? String,
+              let lat = storeSession["lat"] as? String,
+              let long = storeSession["long"] as? String,
+              let orderNo = storeSession["order_number"] as? String,
+              let status = storeSession["status_tracking"] as? String,
+              let activeDate = storeSession["active_date"] as? String,
+              let queue = storeSession["queue"] as? Int,
+              let distance =  storeSession["distance"] as? Double,
+              let pendingStatus = storeSession["pending_by_system"] as? Bool,
+              let idShiftTime = storeSession["id_shift_time"] as? Int,
+              let bopisStatus = storeSession["store_bopis_status"] as? Bool
+              else {
+            print("No data")
+            return
+        }
+        let store1: Pickup = Pickup(pickup_store_name: pickup_store_name,
+                                   store_address: storeAddress,
+                                   lat: lat,
+                                   long: long,
+                                   pickup_item: nil,
+                                   order_number: orderNo,
+                                   classification: nil,
+                                   status_tracking: status,
+                                   active_date: activeDate,
+                                   queue: queue,
+                                   distance: distance,
+                                   pending_by_system: pendingStatus,
+                                   id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+        
+        let destinationStore1 = Destination(latitude: CLLocationDegrees(store1.lat)!, longitude: CLLocationDegrees(store1.long)!)
+        
+        cardViewController.store = store1
+        destination = destinationStore1
     }
     
     private func CekWaiting(){
@@ -665,9 +709,82 @@ extension DeliveryOrderVc {
 @available(iOS 13.0, *)
 extension DeliveryOrderVc: DeliveryDetailDelegate {
     func doneBackToStore(_ viewC: DeliveryDetail) {
-        navigationController?.popViewController(animated: true)
-        dismiss(animated: true, completion: nil)
         UserDefaults.standard.removeObject(forKey: "queue1")
+        if UserDefaults.standard.value(forKey: "bopis") != nil {
+            doneDeliveryBopis()
+        }else {
+            navigationController?.popViewController(animated: true)
+            dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    private func doneDeliveryBopis(){
+        //get data bopis dari session
+        if let bopis = UserDefaults.standard.value(forKey: "bopis") as? [[String: Any]] {
+            var stores = [Pickup]()
+            _ = bopis.map { storeSession in
+                guard let pickup_store_name = storeSession["pickup_store_name"] as? String,
+                      let storeAddress =  storeSession["store_address"] as? String,
+                      let lat = storeSession["lat"] as? String,
+                      let long = storeSession["long"] as? String,
+                      let orderNo = storeSession["order_number"] as? String,
+                      let status = storeSession["status_tracking"] as? String,
+                      let activeDate = storeSession["active_date"] as? String,
+                      let queue = storeSession["queue"] as? Int,
+                      let distance =  storeSession["distance"] as? Double,
+                      let pendingStatus = storeSession["pending_by_system"] as? Bool,
+                      let idShiftTime = storeSession["id_shift_time"] as? Int,
+                      let bopisStatus = storeSession["store_bopis_status"] as? Bool
+                      else {
+                    print("No data")
+                    return
+                }
+                let newStore: Pickup = Pickup(pickup_store_name: pickup_store_name,
+                                              store_address: storeAddress,
+                                              lat: lat,
+                                              long: long,
+                                              pickup_item: nil,
+                                              order_number: orderNo,
+                                              classification: nil,
+                                              status_tracking: status,
+                                              active_date: activeDate,
+                                              queue: queue,
+                                              distance: distance,
+                                              pending_by_system: pendingStatus,
+                                              id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+                stores.append(newStore)
+            }
+            
+            if stores.count != 0 {
+                spiner.show(in: view)
+                let myGroup = DispatchGroup()
+                for i in stores {
+                    myGroup.enter()
+                    let data = Delivery(status: "delivery", order_number: i.order_number, type: "done")
+                    orderViewModel.statusOrder(data: data) { (result) in
+                        switch result {
+                        case .success(_):
+                            myGroup.leave()
+                            print("Finished request \(i.order_number)")
+                        case .failure(let error):
+                            myGroup.leave()
+                            print("Failed request \(i.order_number), \(error)")
+                        }
+                    }
+                }
+                
+                myGroup.notify(queue: .main) {
+                    print("Finished all requests.")
+                    UserDefaults.standard.removeObject(forKey: "bopis")
+                    UserDefaults.standard.removeObject(forKey: "store_bopis")
+                    self.navigationController?.popViewController(animated: true)
+                    self.dismiss(animated: true, completion: nil)
+                    self.spiner.dismiss()
+                }
+            }
+            
+            
+        }
     }
     
     func pending(_ viewC: DeliveryDetail, order: NewDelivery?) {

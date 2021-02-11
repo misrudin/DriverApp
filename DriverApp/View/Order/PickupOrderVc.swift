@@ -671,6 +671,8 @@ extension PickupOrderVc: OrderDetailVcDelegate {
         vc.origin = origin
         vc.items = order!.pickup_item
         vc.isLast = filterStatus.count <= 1
+        vc.bopisStatus = order?.store_bopis_status ?? false
+        vc.store = order?.dictionary
         vc.classification = order?.classification
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)

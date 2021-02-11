@@ -87,11 +87,10 @@ class DoneViewController: UIViewController {
         if !isLast {
             delegate.cekOrderWaiting()
         }
-        self.dismiss(animated: true) {
-            if self.isLast {
-                self.delegate.backToStore()
-            }
+        if self.isLast {
+            self.delegate.backToStore()
         }
+        self.dismiss(animated: true)
     }
     
     func configureNavigationBar(){
