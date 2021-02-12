@@ -30,12 +30,14 @@ struct User: Codable {
     let codeDriver: String
     let status: String
     let id_group: Int?
+    let bio: String
     
     enum CodingKeys: String, CodingKey {
         case id = "id_driver"
         case codeDriver = "code_driver"
         case status = "working_status"
         case id_group = "id_group"
+        case bio
     }
 }
 

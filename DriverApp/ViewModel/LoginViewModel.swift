@@ -31,11 +31,15 @@ struct LoginViewModel {
                            method: .post,
                            parameters: dataToPost,
                            encoder: JSONParameterEncoder.default, headers: Base.headers).response(completionHandler: {(response) in
+                            debugPrint(response)
                             switch response.result {
                             case .success:
                                 if let data = response.data {
                                     if let userData =  self.parseJson(data: data){
-                                        delegate?.didLoginSuccess(self, user: userData)
+                                        guard let bio = decodeBio(data: userData.bio, codeDriver: userData.codeDriver) else {
+                                            return
+                                        }
+                                        delegate?.didLoginSuccess(self, user: userData, bio: bio)
                                     }
                                 }
                             case.failure(let error):
@@ -44,6 +48,22 @@ struct LoginViewModel {
                             
                     })
             }
+        }
+    }
+    
+    private func decodeBio(data: String, codeDriver: String)-> Bio? {
+            let decrypted = try! AES256.decrypt(input: data, passphrase: codeDriver)
+            let data = Data(decrypted.utf8)
+            let bioData = parseBio(data: data)
+            return bioData
+    }
+    
+    func parseBio(data: Data) -> Bio?{
+        do{
+            let decodedData = try JSONDecoder().decode(Bio.self, from: data)
+            return decodedData
+        }catch{
+            return nil
         }
     }
 
@@ -55,7 +75,8 @@ struct LoginViewModel {
             let codeDriver = decodedData.data.codeDriver
             let status = decodedData.data.status
             let idGroup = decodedData.data.id_group
-            let user = User(id: idDriver, codeDriver: codeDriver, status: status, id_group: idGroup)
+            let bio = decodedData.data.bio
+            let user = User(id: idDriver, codeDriver: codeDriver, status: status, id_group: idGroup, bio: bio)
             return user
         }catch{
             delegate?.didFailedLogin(error)

@@ -279,7 +279,7 @@ extension LoginView: UITextFieldDelegate {
 
 @available(iOS 13.0, *)
 extension LoginView: LoginViewModelDelegate {
-    func didLoginSuccess(_ viewModel: LoginViewModel, user: User) {
+    func didLoginSuccess(_ viewModel: LoginViewModel, user: User, bio: Bio) {
         DispatchQueue.main.async {
             
             print(user)
@@ -287,7 +287,8 @@ extension LoginView: LoginViewModelDelegate {
                 "codeDriver": user.codeDriver,
                 "idDriver":user.id,
                 "status": "\(user.status)",
-                "idGroup": user.id_group ?? 1
+                "idGroup": user.id_group ?? 1,
+                "name": "\(bio.first_name)"
             ]
           
                 UserDefaults.standard.setValue(userData, forKey: "userData")

@@ -157,7 +157,6 @@ struct Helpers {
         image.draw(in: rect)
         let img = UIGraphicsGetImageFromCurrentImageContext()
         let imageData = img!.jpegData(compressionQuality: CGFloat(compressionQuality))
-        print(imageData)
         UIGraphicsEndImageContext()
         return UIImage(data: imageData!)!
     }
@@ -177,6 +176,27 @@ struct Helpers {
       return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
+    
+    func pushNotif(title: String, body: String, id: String, interval: Int) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.sound = .default
+        content.body = body
+
+        let targetDate = Date().addingTimeInterval(TimeInterval(interval))
+        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],
+                                                                                                  from: targetDate),
+                                                    repeats: false)
+
+        let request = UNNotificationRequest(identifier: id, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+            if error != nil {
+                print("something went wrong")
+            }
+        })
+    }
+    
+    ///end
 }
 
 extension Date {

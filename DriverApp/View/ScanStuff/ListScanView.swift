@@ -169,18 +169,16 @@ class ListScanView: UIViewController {
                 }
             }
             
-//            if let bopis = UserDefaults.standard.value(forKey: "bopis") as? [[String: Any]] {
-//                print(bopis)
-//            }
             
             myGroup.notify(queue: .main) {
                 print("Finished all requests.")
                 if self.classification == "BOPIS" && self.bopisStatus == true {
-                    self.doneDeliveryBopis()
-                    self.doneDeliveryOrder()
-                }else if self.bopisStatus == true {
-                    self.doneDeliveryBopis(pickup: true)
-                    self.saveDataStoreBopis()
+                    self.doneDeliveryBopis() //done semua bopis
+                    self.doneDeliveryOrder() //done order bopis yang belum disimpan ke storage
+                    self.saveDataStoreBopis() // simpan data toko
+                }else if self.classification != "BOPIS" && self.bopisStatus == true {
+                    self.doneDeliveryBopis(pickup: true) // done all bopis dan cek
+                    self.saveDataStoreBopis() // simpan data toko
                 }else {
                     self.donePickupOrder()
                     if self.classification == "BOPIS" {
@@ -266,16 +264,16 @@ class ListScanView: UIViewController {
                 myGroup.notify(queue: .main) {
                     print("Finished all requests.")
                     UserDefaults.standard.removeObject(forKey: "bopis")
-                    UserDefaults.standard.removeObject(forKey: "store_bopis")
+//                    UserDefaults.standard.removeObject(forKey: "store_bopis")
                     if self.classification != "BOPIS" {
                         self.donePickupOrder()
                     }else {
-                        self.navigationController?.popViewController(animated: true)
                         if self.isLast {
                             self.delegate.closePickupVc()
                         }else{
                             self.delegate.cekOrderWaiting()
                         }
+                        self.navigationController?.popViewController(animated: true)
                     }
                     self.spiner.dismiss()
                 }
@@ -284,8 +282,7 @@ class ListScanView: UIViewController {
             
         }else {
             if pickup == true {
-//                donePickupOrder()
-                storeData()
+                donePickupOrder()
             }
         }
     }

@@ -77,6 +77,7 @@ class DeliveryOrderVc: UIViewController {
     var origin: Origin?
     var destination: Destination?
     var positions = [CLLocationCoordinate2D]()
+    var titles = [String]()
     
     private var manager: CLLocationManager?
     private var locationManager: CLLocationManager?
@@ -285,6 +286,8 @@ class DeliveryOrderVc: UIViewController {
     private func CekWaiting(){
         let filterStatus = deliveryList.filter({$0.status_tracking == "waiting delivery"})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
+        manager?.stopUpdatingLocation()
+        manager?.stopUpdatingHeading()
         
         if sortedList.count != 0 {
             guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
@@ -308,6 +311,8 @@ class DeliveryOrderVc: UIViewController {
                     print(re)
                 }
             }
+        }else {
+           backToStore()
         }
     }
     
@@ -392,7 +397,9 @@ class DeliveryOrderVc: UIViewController {
                     let list = order.delivery_list!.sorted(by: {$0.queue < $1.queue})
                     self?.deliveryList = list
                     let newPositions = sortPickup?.map({ CLLocationCoordinate2D(latitude: CLLocationDegrees($0.lat)!, longitude: CLLocationDegrees($0.long)!) })
+                    let newTitles = sortPickup?.map({$0.order_number})
                     self?.positions = newPositions!
+                    self?.titles = newTitles!
                     
                     if waypoints == true {
                         self?.drawWaypoints()
@@ -415,7 +422,7 @@ class DeliveryOrderVc: UIViewController {
     }
     
     private func drawWaypoints(){
-        mapsViewModel.getDotsToDrawRoute(positions: positions) {markers, poli  in
+        mapsViewModel.getDotsToDrawRoute(positions: positions, titles: titles) {markers, poli  in
             DispatchQueue.main.async {
                 if let poli = poli {
                     _ = poli.map { p in
@@ -788,7 +795,7 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
     }
     
     func pending(_ viewC: DeliveryDetail, order: NewDelivery?) {
-        let filterStatus = pickupList.filter({$0.status_tracking == "waiting delivery"})
+        let filterStatus = pickupList.filter({$0.status_tracking == "waiting delivery" || $0.status_tracking == "on delivery"})
         let vc = PendingNoteVc()
         vc.orderNo = order?.order_number
         vc.idShiftTime = order?.id_shift_time
@@ -812,7 +819,7 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
                         print("No user data")
                         return
                     }
-                    let filterStatus = self.deliveryList.filter({$0.status_tracking == "waiting delivery"})
+                    let filterStatus = self.deliveryList.filter({$0.status_tracking == "waiting delivery" || $0.status_tracking == "on delivery"})
                     self.databaseM.removeCurrentOrder(orderNo: order!.order_number, codeDriver: codeDriver) { (res) in
                         print(res)
                     }

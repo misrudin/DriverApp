@@ -142,7 +142,7 @@ struct MapsViewModel {
     }
     
     
-    func getDotsToDrawRoute(positions : [CLLocationCoordinate2D], completion: @escaping(_ markers: [GMSMarker]?, _ polylines: [GMSPolyline]?) -> Void) {
+    func getDotsToDrawRoute(positions : [CLLocationCoordinate2D], titles: [String], completion: @escaping(_ markers: [GMSMarker]?, _ polylines: [GMSPolyline]?) -> Void) {
         if positions.count > 1 {
             var markers = [GMSMarker]()
             var polylines = [GMSPolyline]()
@@ -151,7 +151,7 @@ struct MapsViewModel {
             
             
             _ = positions.enumerated().map { i, position in
-                markers.append(createMarker(position: position)!)
+                markers.append(createMarker(position: position, title: titles[i])!)
                 if(i < positions.count - 1) {
                     titikB = positions[i+1]
                     titikA = position
@@ -250,3 +250,22 @@ struct MapsViewModel {
             }
         }
     }
+
+
+class CustomMarker: GMSMarker {
+
+    var label: UILabel!
+
+    init(labelText: String) {
+        super.init()
+
+        let iconView = UIView(frame: CGRect(origin: .zero, size: CGSize(width: 50, height:     80)))
+        iconView.backgroundColor = .white
+
+        label = UILabel(frame: CGRect(origin: .zero, size: CGSize(width:     iconView.bounds.width, height: 40)))
+        label.text = labelText
+        iconView.addSubview(label)
+
+        self.iconView = iconView
+    }
+}

@@ -8,6 +8,7 @@
 import UIKit
 import JGProgressHUD
 import LanguageManager_iOS
+import UserNotifications
 
 class RestView: UIViewController {
     
@@ -75,7 +76,7 @@ class RestView: UIViewController {
             self?.spiner.show(in: (self?.view)!)
             self?.workNow(data: data)
         }
-        
+
         let action2 = UIAlertAction(title: "Cancel".localiz(), style: .cancel, handler: nil)
         Helpers().showAlert(view: self, message: "", customTitle: "Do you want to resume work?".localiz(), customAction1: action1, customAction2: action2)
     }

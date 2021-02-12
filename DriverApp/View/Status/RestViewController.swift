@@ -67,22 +67,23 @@ class RestViewController: UIViewController {
     }
     
     private func restNow(data: CheckDriver){
-        spiner.show(in: view)
-        inoutVm.restTimeDriver(data: data) {[weak self] (res) in
-            switch res {
-            case .failure(let err):
-                print(err)
-                Helpers().showAlert(view: self!, message: "Something when wrong !".localiz())
-                self?.spiner.dismiss()
-            case .success(let oke):
-                DispatchQueue.main.async {
-                    if oke == true {
-                        self?.dismiss(animated: true, completion: nil)
-                    }
-                    self?.spiner.dismiss()
-                }
-            }
-        }
+        setSelfReminder()
+//        spiner.show(in: view)
+//        inoutVm.restTimeDriver(data: data) {[weak self] (res) in
+//            switch res {
+//            case .failure(let err):
+//                print(err)
+//                Helpers().showAlert(view: self!, message: "Something when wrong !".localiz())
+//                self?.spiner.dismiss()
+//            case .success(let oke):
+//                DispatchQueue.main.async {
+//                    if oke == true {
+//                        self?.dismiss(animated: true, completion: nil)
+//                    }
+//                    self?.spiner.dismiss()
+//                }
+//            }
+//        }
     }
     
     private func off(){
@@ -152,6 +153,21 @@ class RestViewController: UIViewController {
         navigationController?.navigationBar.barStyle = .black
         navigationController?.navigationBar.tintColor = .white
    
+    }
+    
+    private func setSelfReminder(){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let name = userData["name"] as? String else {
+            return
+        }
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
+            if success {
+                Helpers().pushNotif(title: "Hello, \(name)", body: "Your break time will run out in 10 minutes, let's get back to work", id: "rest_reminder", interval: 60*60*60)
+            }
+            else if error != nil {
+                print("error occurred")
+            }
+        })
     }
     
 

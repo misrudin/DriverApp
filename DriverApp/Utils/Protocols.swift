@@ -10,7 +10,7 @@ import Foundation
 
 //login protocols
 protocol LoginViewModelDelegate {
-    func didLoginSuccess(_ viewModel: LoginViewModel, user: User)
+    func didLoginSuccess(_ viewModel: LoginViewModel, user: User, bio: Bio)
     func didFailedLogin(_ error: Error)
 }
 

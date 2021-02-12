@@ -78,6 +78,7 @@ class PickupOrderVc: UIViewController {
     var origin: Origin?
     var destination: Destination?
     var positions = [CLLocationCoordinate2D]()
+    var titles = [String]()
     
     private var manager: CLLocationManager?
     private var locationManager: CLLocationManager?
@@ -162,12 +163,13 @@ class PickupOrderVc: UIViewController {
         
         mapsViewModel.delegate = self
         UIApplication.shared.isIdleTimerDisabled = true
+        cekStatusDriver()
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        cekStatusDriver()
         mapsButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
         directionButton.dropShadow(color: .black, opacity: 0.5, offSet: CGSize(width: 2, height: 2), radius: 50/2, scale: true)
         
@@ -234,11 +236,14 @@ class PickupOrderVc: UIViewController {
     private func cekWaiting(){
         let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
-        print(sortedList)
+        manager?.stopUpdatingLocation()
+        manager?.stopUpdatingHeading()
         
         if sortedList.count != 0 {
             myPosition()
             cardViewController.display = .next
+        }else {
+            closePickupVc()
         }
     }
     
@@ -321,7 +326,9 @@ class PickupOrderVc: UIViewController {
                     let list = order.pickup_list!.sorted(by: {$0.queue < $1.queue})
                     self?.pickupList = list
                     let newPositions = sortPickup?.map({ CLLocationCoordinate2D(latitude: CLLocationDegrees($0.lat)!, longitude: CLLocationDegrees($0.long)!) })
+                    let newTitles = sortPickup?.map({$0.pickup_store_name})
                     self?.positions = newPositions!
+                    self?.titles = newTitles!
                     
                     let queue1 = list.filter({$0.queue == 1})
                     
@@ -351,7 +358,7 @@ class PickupOrderVc: UIViewController {
     }
     
     private func drawWaypoints(){
-        mapsViewModel.getDotsToDrawRoute(positions: positions) {markers, poli  in
+        mapsViewModel.getDotsToDrawRoute(positions: positions, titles: titles) {markers, poli  in
             DispatchQueue.main.async {
                 if let poli = poli {
                     _ = poli.map { p in
@@ -649,7 +656,7 @@ extension PickupOrderVc: OrderDetailVcDelegate {
     }
     
     func pending(_ viewC: OrderDetailVc, order: Pickup?) {
-        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
+        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending") || $0.status_tracking == "on pickup process"})
         let vc = PendingNoteVc()
         vc.orderNo = order?.order_number
         vc.idShiftTime = order?.id_shift_time
@@ -665,7 +672,7 @@ extension PickupOrderVc: OrderDetailVcDelegate {
     }
     
     func scan(_ viewC: OrderDetailVc, order: Pickup?) {
-        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
+        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending") || $0.status_tracking == "on pickup process"})
         let vc = ListScanView()
         vc.orderNo = order!.order_number
         vc.origin = origin
@@ -691,22 +698,25 @@ extension PickupOrderVc: OrderDetailVcDelegate {
         let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         
-        let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
-        destination = destinationPickup
-        myPosition()
-        getCurrentPosition()
-        cardViewController.order = sortedList[0]
-        cardViewController.display = .start_pickup
-        spiner.show(in: view)
-        let data = Delivery(status: "pickup", order_number: sortedList[0].order_number, type: "start")
-        self.orderViewModel.statusOrder(data: data) { (result) in
-            self.handleResult(result: result)
-            self.navigationItem.hidesBackButton = true
-            self.databaseM.setCurrentOrder(orderNo: sortedList[0].order_number, status: "pickup", codeDriver: codeDriver) { (re) in
-                print(re)
+        if sortedList.count != 0 {
+            let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
+            destination = destinationPickup
+            myPosition()
+            getCurrentPosition()
+            cardViewController.order = sortedList[0]
+            cardViewController.display = .start_pickup
+            
+            spiner.show(in: view)
+            let data = Delivery(status: "pickup", order_number: sortedList[0].order_number, type: "start")
+            self.orderViewModel.statusOrder(data: data) { (result) in
+                self.handleResult(result: result)
+                self.navigationItem.hidesBackButton = true
+                self.databaseM.setCurrentOrder(orderNo: sortedList[0].order_number, status: "pickup", codeDriver: codeDriver) { (re) in
+                    print(re)
+                }
             }
+            cekSatatusCheckin()
         }
-        cekSatatusCheckin()
     }
     
     private func handleResult(result: Result<Bool, Error>){

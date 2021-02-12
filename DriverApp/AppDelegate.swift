@@ -11,6 +11,7 @@ import GooglePlaces
 import FirebaseCore
 import LanguageManager_iOS
 import FirebaseMessaging
+import UserNotifications
 
 @available(iOS 13.0, *)
 @main
@@ -20,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window : UIWindow?
     var dataBaseManager: DatabaseManager!
     
-    let gcmMessageIDKey = "gcm.Message_ID_USMH"
+    let gcmMessageIDKey = "gcm.Message_ID"
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -69,6 +70,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     // MARK: UISceneSession Lifecycle
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        Messaging.messaging().apnsToken = deviceToken
+    }
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         print("on Created")
