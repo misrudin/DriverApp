@@ -101,24 +101,22 @@ class OrderDetailVc: UIViewController {
     
     var order: Pickup!{
         didSet {
-            lableText.text = "Order No".localiz() + " : " + order.order_number
             storeLabel.text = order.pickup_store_name
-            classificationLabel.text = order.classification
             storeAddress.text = order.store_address
+        }
+    }
+    
+    var orderList: [Pickup]! {
+        didSet {
             
-            let dataN = order.pickup_item?.map({$0.item_name})
-            var data = [String]()
-                
-            _ = dataN.map { e in
-                for i in e {
-                    data.append(i)
-                }
+            let orderData = orderList.filter({$0.pickup_store_name == order.pickup_store_name})
+            
+            let arrayOrderNo: [String] = orderData.enumerated().map { (i, e) in
+                return "\(i+1). \(e.order_number)"
             }
             
-            let textArray = data.enumerated().map({(index, element) in
-                return "\(index+1). \(element)"
-            })
-            itemLabel.text = textArray.joined(separator: "\n")
+            let orderNoString = arrayOrderNo.joined(separator: "\n")
+            orders.text = orderNoString
         }
     }
     
@@ -220,6 +218,7 @@ class OrderDetailVc: UIViewController {
         let l = UILabel()
         l.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         l.textColor = UIColor(named: "labelColor")
+        l.text = "Order List"
         return l
     }()
     
@@ -258,19 +257,9 @@ class OrderDetailVc: UIViewController {
         return label
     }()
     
-    let classificationLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        label.textColor = UIColor(named: "labelColor")
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 0
-        
-        return label
-    }()
-    
     let storeLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .regular)
         label.textColor = UIColor(named: "labelColor")
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
@@ -288,22 +277,12 @@ class OrderDetailVc: UIViewController {
         return label
     }()
     
-    let titleLabelItemName: UILabel = {
+    let orders: UILabel = {
         let label = UILabel()
-        label.text = "Item Name".localiz()
-        label.textColor = UIColor(named: "labelSecondary")
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
-    
-    let itemLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         label.textColor = UIColor(named: "labelColor")
-        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
         
         return label
     }()
@@ -339,8 +318,8 @@ class OrderDetailVc: UIViewController {
                          estLabel, distanceLabel,
                          handleArea, lineView, scrollView, donePickupButton)
         scrollView.addSubviews(views: container)
-        container.addSubviews(views: orderNoLable, titleLabel, storeLabel, classificationLabel,
-                              storeAddress, pendingButton, titleLabelItemName, itemLabel)
+        container.addSubviews(views: titleLabel, storeLabel,
+                              storeAddress, pendingButton, orderNoLable, orders)
         configureLayout()
     }
     
@@ -407,19 +386,8 @@ class OrderDetailVc: UIViewController {
         
         //inside container style
         orderNoLable.translatesAutoresizingMaskIntoConstraints = false
-        orderNoLable.left(toAnchor: container.leftAnchor)
-        orderNoLable.top(toAnchor: container.topAnchor)
-        orderNoLable.right(toAnchor: container.rightAnchor)
         
-        titleLabelItemName.top(toAnchor: orderNoLable.bottomAnchor, space: 10)
-        titleLabelItemName.left(toAnchor: container.leftAnchor)
-        titleLabelItemName.right(toAnchor: container.rightAnchor)
-        
-        itemLabel.top(toAnchor: titleLabelItemName.bottomAnchor, space: 5)
-        itemLabel.left(toAnchor: container.leftAnchor)
-        itemLabel.right(toAnchor: container.rightAnchor)
-        
-        titleLabel.top(toAnchor: itemLabel.bottomAnchor, space: 10)
+        titleLabel.top(toAnchor: container.topAnchor)
         titleLabel.left(toAnchor: container.leftAnchor)
         titleLabel.right(toAnchor: container.rightAnchor)
         
@@ -431,11 +399,15 @@ class OrderDetailVc: UIViewController {
         storeAddress.left(toAnchor: container.leftAnchor)
         storeAddress.right(toAnchor: container.rightAnchor)
         
-        classificationLabel.top(toAnchor: storeAddress.bottomAnchor, space: 10)
-        classificationLabel.left(toAnchor: container.leftAnchor)
-        classificationLabel.right(toAnchor: container.rightAnchor)
+        orderNoLable.top(toAnchor: storeAddress.bottomAnchor, space: 10)
+        orderNoLable.left(toAnchor: container.leftAnchor)
+        orderNoLable.right(toAnchor: container.rightAnchor)
         
-        pendingButton.top(toAnchor: classificationLabel.bottomAnchor, space: 20)
+        orders.top(toAnchor: orderNoLable.bottomAnchor, space: 5)
+        orders.left(toAnchor: container.leftAnchor)
+        orders.right(toAnchor: container.rightAnchor)
+
+        pendingButton.top(toAnchor: orders.bottomAnchor, space: 20)
         pendingButton.right(toAnchor: container.rightAnchor)
         pendingButton.height(30)
         pendingButton.width(100)

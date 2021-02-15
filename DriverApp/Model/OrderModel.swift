@@ -304,6 +304,7 @@ struct Pickup: Decodable {
     let pending_by_system: Bool
     let id_shift_time: Int
     let store_bopis_status: Bool?
+    let pickup_store_status: Bool
     var dictionary: [String: Any] {
         return [
             "pickup_store_name" : pickup_store_name,

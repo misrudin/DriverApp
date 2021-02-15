@@ -65,6 +65,7 @@ class MainVc: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.addSubview(visualEffectView)
         view.insertSubview(bg, at: 0)
         view.addSubview(imageView)

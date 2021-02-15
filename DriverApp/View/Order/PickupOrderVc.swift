@@ -226,6 +226,7 @@ class PickupOrderVc: UIViewController {
             myPosition()
             getCurrentPosition()
             cardViewController.order = sortedList[0]
+            cardViewController.orderList = pickupList
             cardViewController.display = .start_pickup
         }else {
             myPosition()
@@ -234,7 +235,7 @@ class PickupOrderVc: UIViewController {
     }
     
     private func cekWaiting(){
-        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
+        let filterStatus = pickupList.filter({$0.pickup_store_status == false})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         manager?.stopUpdatingLocation()
         manager?.stopUpdatingHeading()
@@ -656,7 +657,7 @@ extension PickupOrderVc: OrderDetailVcDelegate {
     }
     
     func pending(_ viewC: OrderDetailVc, order: Pickup?) {
-        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending") || $0.status_tracking == "on pickup process"})
+        let filterStatus = pickupList.filter({$0.pickup_store_status == false})
         let vc = PendingNoteVc()
         vc.orderNo = order?.order_number
         vc.idShiftTime = order?.id_shift_time
@@ -672,7 +673,7 @@ extension PickupOrderVc: OrderDetailVcDelegate {
     }
     
     func scan(_ viewC: OrderDetailVc, order: Pickup?) {
-        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending") || $0.status_tracking == "on pickup process"})
+        let filterStatus = pickupList.filter({$0.pickup_store_status == false})
         let vc = ListScanView()
         vc.orderNo = order!.order_number
         vc.origin = origin
@@ -681,6 +682,8 @@ extension PickupOrderVc: OrderDetailVcDelegate {
         vc.bopisStatus = order?.store_bopis_status ?? false
         vc.store = order?.dictionary
         vc.classification = order?.classification
+        vc.pickupList = pickupList.filter({$0.pickup_store_name == order?.pickup_store_name})
+        vc.storeName = order?.pickup_store_name
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -695,7 +698,7 @@ extension PickupOrderVc: OrderDetailVcDelegate {
             print("No user data")
             return
         }
-        let filterStatus = pickupList.filter({$0.status_tracking == "wait for pickup" || ($0.pending_by_system == true && $0.status_tracking == "pending")})
+        let filterStatus = pickupList.filter({$0.pickup_store_status == false})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         
         if sortedList.count != 0 {
@@ -704,13 +707,13 @@ extension PickupOrderVc: OrderDetailVcDelegate {
             myPosition()
             getCurrentPosition()
             cardViewController.order = sortedList[0]
+            cardViewController.orderList = pickupList
             cardViewController.display = .start_pickup
             
             spiner.show(in: view)
             let data = Delivery(status: "pickup", order_number: sortedList[0].order_number, type: "start")
             self.orderViewModel.statusOrder(data: data) { (result) in
                 self.handleResult(result: result)
-                self.navigationItem.hidesBackButton = true
                 self.databaseM.setCurrentOrder(orderNo: sortedList[0].order_number, status: "pickup", codeDriver: codeDriver) { (re) in
                     print(re)
                 }

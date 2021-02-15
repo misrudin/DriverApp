@@ -126,6 +126,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
     }
     
+    private func updateToken(token: String){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            return
+        }
+        
+        dataBaseManager.updateToken(codeDriver: codeDriver, token: token) { (res) in
+            switch res {
+            case .failure(let err): print(err)
+            case .success(_): print("succes update token fcm driver")
+            }
+        }
+        
+    }
+    
     //MARK: - FCM
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
@@ -151,14 +166,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 }
 
 
-
 @available(iOS 13.0, *)
 extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-      print("TOKEN FCM: \(String(describing: fcmToken))")
-
-      let dataDict:[String: String] = ["token": fcmToken ?? ""]
-      NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
+        print("TOKEN FCM: \(String(describing: fcmToken))")
+        updateToken(token: fcmToken!)
+        
+        let dataDict:[String: String] = ["token": fcmToken ?? ""]
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"), object: nil, userInfo: dataDict)
     }
 }
 

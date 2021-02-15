@@ -54,6 +54,23 @@ struct DatabaseManager {
         
     }
     
+    func updateToken(codeDriver: String, token: String, completion: @escaping (Result<Bool, Error>)->Void){
+        let urlFirebase: String = "driver/\(codeDriver)"
+        let dataToPost: [String: Any] = [
+            "token": token
+        ]
+        
+        database.child(urlFirebase).updateChildValues(dataToPost) { (err, response) in
+            if err != nil {
+                completion(.failure(DatabaseError.failedToUpdateData))
+                return
+            }
+            debugPrint(response)
+            completion(.success(true))
+        }
+        
+    }
+    
     func updateHeading(codeDriver: String, bearing: CLLocationDirection, completion: @escaping (Result<Bool, Error>)->Void){
         let urlFirebase: String = "driver/\(codeDriver)"
         let dataToPost: [String: Any] = [

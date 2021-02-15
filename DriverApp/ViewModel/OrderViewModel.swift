@@ -21,7 +21,11 @@ struct OrderViewModel {
     
     //    MARK: - GET DATA ORDER BY CODE DRIVER
     func getDataOrder(codeDriver: String, shift: Int, completion: @escaping (Result<NewDataOrder, Error>)-> Void){
-        AF.request("\(Base.urlOrder)list/\(shift)/\(codeDriver)",headers: Base.headers).response { response in
+        let date = Date()
+        let formater = DateFormatter()
+        formater.dateFormat = "yyyy-MM-dd"
+        let dateString = formater.string(from: date)
+        AF.request("\(Base.urlOrder)list/\(shift)/\(codeDriver)/\(dateString)",headers: Base.headers).response { response in
             switch response.result {
             case .success:
                 if response.response?.statusCode == 200 {

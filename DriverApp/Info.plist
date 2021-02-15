@@ -35,6 +35,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>googlechromes</string>
@@ -48,8 +50,6 @@
 	<string>We ned to acess your location please enable !</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please enamble this app to acess uory photo library</string>
-	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

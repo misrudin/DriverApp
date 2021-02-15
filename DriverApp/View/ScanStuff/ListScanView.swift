@@ -17,6 +17,13 @@ class ListScanView: UIViewController {
     var orderVm = OrderViewModel()
     var inOutVm = InOutViewModel()
     
+    var pickupList = [Pickup]()
+    var storeName: String! {
+        didSet {
+            storeNameLabel.text = storeName
+        }
+    }
+    
     var isCheckin: Bool = false
     var origin: Origin?
     var pickupItems: [Scanned]!
@@ -41,6 +48,13 @@ class ListScanView: UIViewController {
     
     //MARK: - COMPONENTS
     
+    private let storeNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 22, weight: .semibold)
+        label.textColor = UIColor(named: "labelColor")
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
     //MARK: - LOADING
     private let spiner: JGProgressHUD = {
@@ -239,7 +253,9 @@ class ListScanView: UIViewController {
                                               queue: queue,
                                               distance: distance,
                                               pending_by_system: pendingStatus,
-                                              id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+                                              id_shift_time: idShiftTime,
+                                              store_bopis_status: bopisStatus,
+                                              pickup_store_status: true)
                 stores.append(newStore)
             }
             
@@ -354,13 +370,12 @@ class ListScanView: UIViewController {
     }
     
     lazy var tableView: UITableView = {
-        let tv = UITableView()
+        let tv = UITableView(frame: CGRect.zero, style: .grouped)
         tv.backgroundColor = UIColor(named: "whiteKasumi")
+        tv.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 16, right: 0)
         tv.register(UINib(nibName: "ScanCell", bundle: nil), forCellReuseIdentifier: ScanCell.id)
-        tv.contentInset = UIEdgeInsets(top: 10, left: 0, bottom: 20, right: 0)
+        tv.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         tv.showsVerticalScrollIndicator = false
-        tv.sectionHeaderHeight = 0
-        
         return tv
     }()
     
@@ -413,9 +428,15 @@ class ListScanView: UIViewController {
     
     private func configureUi(){
         view.addSubview(tableView)
+        view.addSubview(storeNameLabel)
+        
+        storeNameLabel.top(toAnchor: view.safeAreaLayoutGuide.topAnchor, space: 10)
+        storeNameLabel.left(toAnchor: view.leftAnchor, space: 10)
+        storeNameLabel.right(toAnchor: view.rightAnchor, space: 10)
+        
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor)
+        tableView.anchor(top: storeNameLabel.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 10)
         
         tableView.separatorStyle = .none
     }
@@ -461,6 +482,9 @@ class ListScanView: UIViewController {
 
 @available(iOS 13.0, *)
 extension ListScanView: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return pickupList.count
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -486,11 +510,14 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 80
+        if section == pickupList.count - 1 {
+            return 80
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        return 40
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -504,6 +531,22 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
         finishButton.height(40)
         
         return container
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if pickupList.count != 0 {
+            let label = DateHeaderHome()
+            
+            let containerLabel = UIView()
+            containerLabel.addSubview(label)
+            
+            label.anchor(top: containerLabel.topAnchor, left: containerLabel.leftAnchor, bottom: containerLabel.bottomAnchor, right: containerLabel.rightAnchor, paddingTop: 2, paddingBottom: 2, paddingLeft: 10, paddingRight: 10)
+            
+            label.text = "Order No : \(pickupList[section].order_number)"
+            
+            return containerLabel
+        }
+        return nil
     }
     
 }

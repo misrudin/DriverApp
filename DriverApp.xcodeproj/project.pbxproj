@@ -31,6 +31,7 @@
 		B33B1B0D2543748A007BDD3A /* ChatModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33B1B0C2543748A007BDD3A /* ChatModel.swift */; };
 		B33DFEB72563A00A006AF898 /* RegisterModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33DFEB62563A00A006AF898 /* RegisterModel.swift */; };
 		B33DFEBA2563A01D006AF898 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B33DFEB92563A01D006AF898 /* RegisterViewModel.swift */; };
+		B340415D25D9EF8900699C9B /* NextShiftVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = B340415C25D9EF8900699C9B /* NextShiftVc.swift */; };
 		B345DE2E258B349C00AE87B0 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = B345DE30258B349C00AE87B0 /* Localizable.strings */; };
 		B348E8EA2588B0FE00133CB8 /* CustomCellChat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B348E8E82588B0FE00133CB8 /* CustomCellChat.swift */; };
 		B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */ = {isa = PBXBuildFile; fileRef = B348E8E92588B0FE00133CB8 /* CustomCellChat.xib */; };
@@ -136,6 +137,7 @@
 		B33B1B0C2543748A007BDD3A /* ChatModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatModel.swift; sourceTree = "<group>"; };
 		B33DFEB62563A00A006AF898 /* RegisterModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterModel.swift; sourceTree = "<group>"; };
 		B33DFEB92563A01D006AF898 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		B340415C25D9EF8900699C9B /* NextShiftVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextShiftVc.swift; sourceTree = "<group>"; };
 		B345DE2F258B349C00AE87B0 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B345DE31258B34FE00AE87B0 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B348E8E82588B0FE00133CB8 /* CustomCellChat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellChat.swift; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 			children = (
 				B3B0E97B25D03E0C00BD3F75 /* PickupOrderVc.swift */,
 				B34BB6EE25D1CCC10024869F /* DeliveryOrderVc.swift */,
+				B340415C25D9EF8900699C9B /* NextShiftVc.swift */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -693,7 +696,7 @@
 		};
 		B35599C22547DF100095CE76 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -803,6 +806,7 @@
 				B384A3DE256F624900D237CC /* OrderCell.swift in Sources */,
 				B326FF712560F0D00067C0DE /* CheckoutNoteView.swift in Sources */,
 				B3530923255A536F00B68347 /* Base.swift in Sources */,
+				B340415D25D9EF8900699C9B /* NextShiftVc.swift in Sources */,
 				B308DB5F255794B30088D741 /* PlanVc.swift in Sources */,
 				B3A0521B2577794A00BC6FE0 /* Preview.swift in Sources */,
 				B3B9D59B256E41910056D867 /* ForgotView.swift in Sources */,
@@ -1003,7 +1007,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1029,7 +1033,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.4.0;
+				MARKETING_VERSION = 1.4.1;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.bmg.driver-management";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

@@ -230,7 +230,7 @@ class DeliveryOrderVc: UIViewController {
                                    queue: queue,
                                    distance: distance,
                                    pending_by_system: pendingStatus,
-                                   id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+                                   id_shift_time: idShiftTime, store_bopis_status: bopisStatus, pickup_store_status: true)
         let destinationStore1 = Destination(latitude: CLLocationDegrees(store1.lat)!, longitude: CLLocationDegrees(store1.long)!)
         
         if UserDefaults.standard.value(forKey: "bopis") != nil {
@@ -275,7 +275,8 @@ class DeliveryOrderVc: UIViewController {
                                    queue: queue,
                                    distance: distance,
                                    pending_by_system: pendingStatus,
-                                   id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+                                   id_shift_time: idShiftTime, store_bopis_status: bopisStatus,
+                                   pickup_store_status: true)
         
         let destinationStore1 = Destination(latitude: CLLocationDegrees(store1.lat)!, longitude: CLLocationDegrees(store1.long)!)
         
@@ -758,7 +759,8 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
                                               queue: queue,
                                               distance: distance,
                                               pending_by_system: pendingStatus,
-                                              id_shift_time: idShiftTime, store_bopis_status: bopisStatus)
+                                              id_shift_time: idShiftTime,
+                                              store_bopis_status: bopisStatus, pickup_store_status: true)
                 stores.append(newStore)
             }
             

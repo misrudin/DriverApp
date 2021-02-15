@@ -359,7 +359,7 @@ extension PendingNoteVc {
     func didTapSubmit(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String,
-              let note = note.text, note.count > 5 else {
+              let note = note.text else {
             print("No user data")
             return
         }

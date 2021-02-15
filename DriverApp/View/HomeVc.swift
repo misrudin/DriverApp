@@ -17,6 +17,12 @@ enum DisplayHomeType {
     case delivery
 }
 
+struct DataTable: Decodable {
+    var isOpen: Bool
+    var data: NewDataOrder
+    var shift: ShiftTime
+}
+
 @available(iOS 13.0, *)
 class HomeVc: UIViewController {
     
@@ -29,8 +35,6 @@ class HomeVc: UIViewController {
     var allowReject: Bool = true
     var totalReject: Int = 0
     
-    var expanded: Bool = false
-    
     var databaseManager = DatabaseManager()
     
     var profileVm = ProfileViewModel()
@@ -40,6 +44,8 @@ class HomeVc: UIViewController {
     
     var pickupList: [Pickup]!
     var deliveryList: [NewDelivery]!
+
+    var homeTable = [DataTable]()
     
     var constraint1: NSLayoutConstraint!
     var constraint2: NSLayoutConstraint!
@@ -87,23 +93,14 @@ class HomeVc: UIViewController {
     lazy var refreshControl = UIRefreshControl()
     
     private let tableView: UITableView = {
-        let table = UITableView()
+        let table = UITableView(frame: CGRect.zero, style: .grouped)
         table.register(OrderCell.self, forCellReuseIdentifier: OrderCell.id)
         table.register(PendingCell.self, forCellReuseIdentifier: PendingCell.id)
         table.backgroundColor = UIColor(named: "whiteKasumi")
         table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
+        table.sectionHeaderHeight = 0
         return table
-    }()
-    
-    let arrowRight: UIImageView = {
-       let img = UIImageView()
-        let imageAset = UIImage(named: "arrowRight")
-        let baru = imageAset?.resizeImage(CGSize(width: 20, height: 20))
-        img.image = baru
-        img.layer.masksToBounds = true
-        img.contentMode = .right
-        return img
     }()
     
     let labelTitle = Reusable.makeLabel(text: "DELIVERY LIST ORDER".localiz(), font: .systemFont(ofSize: 15, weight: .medium), color: UIColor(named: "orangeKasumi")!, numberOfLines: 0, alignment: .left)
@@ -132,6 +129,18 @@ class HomeVc: UIViewController {
         loginButton.addTarget(self, action: #selector(deliveryAllOrder), for: .touchUpInside)
         loginButton.isHidden = true
         return loginButton
+    }()
+    
+    lazy var finishButton:UIButton = {
+        let b = UIButton()
+        b.setTitle("Next Shift".localiz(), for: .normal)
+        b.setTitleColor(.white, for: .normal)
+        b.backgroundColor = UIColor(named: "orangeKasumi")
+        b.layer.cornerRadius = 30/2
+        b.layer.masksToBounds = true
+        b.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular )
+        b.addTarget(self, action: #selector(nextShift), for: .touchUpInside)
+        return b
     }()
 
 
@@ -201,23 +210,25 @@ class HomeVc: UIViewController {
     
     }
     
+    @objc private func nextShift(){
+        let vc = NextShiftVc()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
     @objc private func getListShiftTime(){
         spiner.show(in: view)
         shiftTimeVm.getCurrentShiftTime {[weak self] (res) in
             switch res {
             case .success(let data):
                 DispatchQueue.main.async {
-                    self?.spiner.dismiss()
                     self?.activeShift = data
                     self?.getDataOrder()
                 }
             case .failure(let error):
-                print(error.localizedDescription)
                 self?.spiner.dismiss()
                 self?.pickupList = []
                 self?.deliveryList = []
                 self?.tableView.reloadData()
-                self?.spiner.dismiss()
                 self?.refreshControl.endRefreshing()
                 self?.emptyImage.isHidden = false
                 self?.labelEmpty.isHidden = false
@@ -343,7 +354,6 @@ class HomeVc: UIViewController {
         }
     }
     
-    @objc
     private func getDataOrder(){
         print("order")
         // get data detail user from local
@@ -608,6 +618,16 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+    
+    internal func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+       return 50
+    }
+    
+
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
  
@@ -666,6 +686,20 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         configuration.performsFirstActionWithFullSwipe = false
         return configuration
     }
+
+    
+    internal func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let container = UIView()
+        
+        container.addSubview(finishButton)
+        finishButton.translatesAutoresizingMaskIntoConstraints = false
+        finishButton.bottom(toAnchor: container.bottomAnchor, space: -5)
+        finishButton.right(toAnchor: container.rightAnchor, space: -10)
+        finishButton.height(30)
+        finishButton.width(120)
+        
+        return container
+    }
     
 }
 
@@ -699,4 +733,26 @@ extension HomeVc: CLLocationManagerDelegate {
         }
     }
     
+}
+
+
+class DateHeaderHome: UILabel {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        textColor = UIColor(named: "labelColor")
+        translatesAutoresizingMaskIntoConstraints = false
+        font = UIFont.boldSystemFont(ofSize: 14)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var intrinsicContentSize: CGSize{
+        let originalContentSize = super.intrinsicContentSize
+        let height = originalContentSize.height
+        layer.masksToBounds = true
+        return CGSize(width: originalContentSize.width, height: height)
+    }
 }
