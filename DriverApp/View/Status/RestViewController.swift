@@ -67,23 +67,23 @@ class RestViewController: UIViewController {
     }
     
     private func restNow(data: CheckDriver){
-        setSelfReminder()
-//        spiner.show(in: view)
-//        inoutVm.restTimeDriver(data: data) {[weak self] (res) in
-//            switch res {
-//            case .failure(let err):
-//                print(err)
-//                Helpers().showAlert(view: self!, message: "Something when wrong !".localiz())
-//                self?.spiner.dismiss()
-//            case .success(let oke):
-//                DispatchQueue.main.async {
-//                    if oke == true {
-//                        self?.dismiss(animated: true, completion: nil)
-//                    }
-//                    self?.spiner.dismiss()
-//                }
-//            }
-//        }
+        spiner.show(in: view)
+        inoutVm.restTimeDriver(data: data) {[weak self] (res) in
+            switch res {
+            case .failure(let err):
+                print(err)
+                Helpers().showAlert(view: self!, message: "Something when wrong !".localiz())
+                self?.spiner.dismiss()
+            case .success(let oke):
+                DispatchQueue.main.async {
+                    if oke == true {
+                        self?.dismiss(animated: true, completion: nil)
+                        self?.setSelfReminder()
+                    }
+                    self?.spiner.dismiss()
+                }
+            }
+        }
     }
     
     private func off(){

@@ -7,7 +7,6 @@
 
 import UIKit
 import LanguageManager_iOS
-import FirebaseMessaging
 import JGProgressHUD
 
 @available(iOS 13.0, *)
@@ -114,15 +113,6 @@ class MainVc: UIViewController {
         
         cekLanguageActive()
         
-        
-        Messaging.messaging().token { token, error in
-          if let error = error {
-            print("Error fetching FCM registration token: \(error)")
-          } else if let token = token {
-            print("FCM registration token: \(token)")
-          }
-        }
-        
     }
     
     @objc private func didTapJav(){
@@ -228,40 +218,6 @@ class MainVc: UIViewController {
         present(tabBarVc, animated: true, completion: nil)
     }
     
-    private func getShiftTime(order: String, status: String){
-        spiner.show(in: view)
-        shiftTimeVm.getCurrentShiftTime { (res) in
-            switch res {
-            case .success(let data):
-                DispatchQueue.main.async {
-                    self.spiner.dismiss()
-                    self.activeShift = data
-                    if status == "pickup" {
-                        let vc = PickupOrderVc()
-                        vc.currentOrder = order
-                        vc.shift = data
-                        let navVc = UINavigationController(rootViewController: vc)
-                        navVc.modalPresentationStyle = .fullScreen
-                        self.present(navVc, animated: true, completion: nil)
-                    }else if status == "delivery" {
-                        let vc = DeliveryOrderVc()
-                        vc.currentOrder = order
-                        vc.shift = data
-                        let navVc = UINavigationController(rootViewController: vc)
-                        navVc.modalPresentationStyle = .fullScreen
-                        self.present(navVc, animated: true, completion: nil)
-                    }else {
-                        self.configureNavigation()
-                    }
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-                self.configureNavigation()
-                self.spiner.dismiss()
-            }
-        }
-    }
-    
     
     func cekUser() {
         
@@ -282,9 +238,6 @@ class MainVc: UIViewController {
                             vc.modalPresentationStyle = .fullScreen
                             vc.modalTransitionStyle = .crossDissolve
                             self?.present(vc, animated: true, completion: nil)
-                        }
-                        else if data.currentOrder != nil && data.currentOrder != "" && data.statusOrder != nil {
-                            self?.getShiftTime(order: data.currentOrder!, status: data.statusOrder!)
                         }
                         else {
                             self?.configureNavigation()

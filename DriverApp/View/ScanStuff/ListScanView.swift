@@ -10,13 +10,22 @@ import JGProgressHUD
 import AVFoundation
 import LanguageManager_iOS
 
+struct DoScan: Decodable {
+    let order_number: String
+    let data_scan: Scan
+}
+
+struct DoneScan: Decodable {
+    let order_number: String
+    let data_scan: ScanedData
+}
+
 @available(iOS 13.0, *)
 class ListScanView: UIViewController {
     
-    var orderNo: String = ""
     var orderVm = OrderViewModel()
     var inOutVm = InOutViewModel()
-    
+    var allPickupList = [Pickup]()
     var pickupList = [Pickup]()
     var storeName: String! {
         didSet {
@@ -27,24 +36,13 @@ class ListScanView: UIViewController {
     var isCheckin: Bool = false
     var origin: Origin?
     var pickupItems: [Scanned]!
-    var items: [PickupItem]!
     var isLast: Bool = false
     weak var delegate: PickupOrderVc!
     var databaseM = DatabaseManager()
     
-    var bopisStatus: Bool! {
-        didSet {
-            if bopisStatus == true {
-                finishButton.setTitle("BOPIS", for: .normal)
-            }else {
-                finishButton.setTitle("Finish", for: .normal)
-            }
-        }
-    }
-    var store: [String: Any]!
-    var classification: String!
-    
     var done: Bool = false
+     
+    var itemHasScan = [DoneScan]()
     
     //MARK: - COMPONENTS
     
@@ -78,24 +76,6 @@ class ListScanView: UIViewController {
     }()
     
     
-    @objc
-    private func addMaunal(){
-        let vc = InputCode()
-        vc.orderNo = orderNo
-        vc.list = items
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    @objc
-    private func add(){
-        let vc = CameraScanView()
-        vc.orderNo = orderNo
-        vc.list = items
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
     private func cekStatusDriver(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
@@ -121,12 +101,16 @@ class ListScanView: UIViewController {
     
     
     @objc private func cekSatatusCheckin(){
-        let scanedData = items.filter({$0.scan == true})
-        if scanedData.count != items.count {
+        let filtered = pickupList.compactMap { pickup in
+            return pickup.pickup_item?.filter({$0.scan == nil})
+        }
+        let flatFiltered = filtered.flatMap({$0})
+        
+        if flatFiltered.count != 0 {
             print("belum semua")
             return
         }
-
+        
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String, let lat = origin?.latitude, let long = origin?.longitude else {
             print("No user data")
@@ -156,68 +140,138 @@ class ListScanView: UIViewController {
     }
     
     private func finish(){
-        let scanedData = items.filter({$0.scan == true})
-        if scanedData.count == items.count {
-            let codes: [String] = scanedData.map({$0.qr_code_raw})
-            let data: Scan = Scan(order_number: orderNo, qr_code_raw: codes)
-            spiner.show(in: view)
-            let myGroup = DispatchGroup()
-            
-            var datas = [Scan]()
-            
-            datas.append(data)
-            
-            for i in datas {
-                myGroup.enter()
-                orderVm.changeStatusItems(data: i) {[weak self] (res) in
-                    switch res {
-                    case .success(_):
+        spiner.show(in: view)
+        let myGroup = DispatchGroup()
+        
+        var datas = [Scan]()
+        
+        _ = pickupList.map {  pickup in
+            let codes = pickup.pickup_item?.map({$0.qr_code_raw})
+            let scan = Scan(order_number: pickup.order_number, qr_code_raw: codes!)
+            datas.append(scan)
+        }
+        
+        for i in datas {
+            myGroup.enter()
+            orderVm.changeStatusItems(data: i) {[weak self] (res) in
+                switch res {
+                case .success(_):
+                    DispatchQueue.main.async {
                         myGroup.leave()
                         print("Finished request \(i)")
-                    case .failure(let err):
-                        let action1 = UIAlertAction(title: "Try again".localiz(), style: .default, handler: nil)
-                        Helpers().showAlert(view: self!, message: "Something when wrong !".localiz(), customAction1: action1)
-                        print(err)
-                        self?.spiner.dismiss()
                     }
+                case .failure(let err):
+                    let action1 = UIAlertAction(title: "Try again".localiz(), style: .default, handler: nil)
+                    Helpers().showAlert(view: self!, message: "Something when wrong !".localiz(), customAction1: action1)
+                    print(err)
+                    self?.spiner.dismiss()
                 }
             }
+        }
+
+        //  loop pickupList and fillter all pickup list
+        
+        //  bopis & drop
+        //  if filter result.cout > 1  ? store data bopis & data store drop - continue else done delivery
+        
+        //  bopis & !drop
+        //  simpan data bopis dan lanjutkan
+        
+        //  !bopis & drop
+        //  done pickup dan simpan data store drop
+        
+        //  !bopis & !drop
+        //  done pickup dan lanjutkan
+        
+        
+        myGroup.notify(queue: .main) {
+            print("Finished all requests.")
             
-            
-            myGroup.notify(queue: .main) {
-                print("Finished all requests.")
-                if self.classification == "BOPIS" && self.bopisStatus == true {
-                    self.doneDeliveryBopis() //done semua bopis
-                    self.doneDeliveryOrder() //done order bopis yang belum disimpan ke storage
-                    self.saveDataStoreBopis() // simpan data toko
-                }else if self.classification != "BOPIS" && self.bopisStatus == true {
-                    self.doneDeliveryBopis(pickup: true) // done all bopis dan cek
-                    self.saveDataStoreBopis() // simpan data toko
+            _ = self.pickupList.map { pickup in
+                let filter = self.allPickupList.filter({$0.order_number == pickup.order_number})
+                if filter.count <= 1 {
+                    if pickup.classification != "BOPIS" && !pickup.store_bopis_status! {
+                        self.donePickupOrder(orderNo: pickup.order_number)
+                    }
+                    
+                    if pickup.classification == "BOPIS" && !pickup.store_bopis_status! {
+                        self.storeData(store: pickup.dictionary)
+                    }
+                    
+                    if pickup.classification != "BOPIS" && pickup.store_bopis_status! {
+                        self.saveDataStoreBopis(store: pickup.dictionary)
+                        self.donePickupOrder(orderNo: pickup.order_number)
+                    }
+                    
+                    if pickup.classification == "BOPIS" && pickup.store_bopis_status! {
+                        self.saveDataStoreBopis(store: pickup.dictionary)
+                        self.doneDeliveryBopis()
+                        self.doneDeliveryOrder(orderNo: pickup.order_number)
+                    }
                 }else {
-                    self.donePickupOrder()
-                    if self.classification == "BOPIS" {
-                        self.storeData()
+                    if pickup.classification != "BOPIS" && !pickup.store_bopis_status! {
+                        self.skipingData(store: pickup.dictionary)
+                    }
+                    
+                    if pickup.classification == "BOPIS" && !pickup.store_bopis_status! {
+                        self.skipBopisData(store: pickup.dictionary)
+                    }
+                    
+                    if pickup.classification != "BOPIS" && pickup.store_bopis_status! {
+                        self.saveDataStoreBopis(store: pickup.dictionary)
+                        self.skipingData(store: pickup.dictionary)
+                    }
+                    
+                    if pickup.classification == "BOPIS" && pickup.store_bopis_status! {
+                        self.saveDataStoreBopis(store: pickup.dictionary)
+                        self.skipBopisData(store: pickup.dictionary)
                     }
                 }
-                self.spiner.dismiss()
             }
+            self.spiner.dismiss()
+            self.delegate.cekOrderWaiting()
+            self.navigationController?.popViewController(animated: true)
         }
     }
     
-    private func saveDataStoreBopis(){
+    private func saveDataStoreBopis(store: [String: Any]){
         UserDefaults.standard.setValue(store, forKey: "store_bopis")
     }
     
-    private func storeData(){
+    private func storeData(store: [String: Any]){
         //get data bopis dari session
         guard let bopis = UserDefaults.standard.value(forKey: "bopis") as? [[String: Any]] else {
-            return UserDefaults.standard.setValue([self.store], forKey: "bopis")
+            return UserDefaults.standard.setValue([store], forKey: "bopis")
         }
         //append data baru
         var stores: [[String: Any]] = bopis
-        stores.append(self.store)
+        stores.append(store)
         //store data baru
         UserDefaults.standard.setValue(stores, forKey: "bopis")
+    }
+    
+    private func skipBopisData(store: [String: Any]){
+        //get data bopis dari session
+        guard let bopis = UserDefaults.standard.value(forKey: "bopis_skip") as? [[String: Any]] else {
+            return UserDefaults.standard.setValue([store], forKey: "bopis_skip")
+        }
+        //append data baru
+        var stores: [[String: Any]] = bopis
+        stores.append(store)
+        //store data baru
+        UserDefaults.standard.setValue(stores, forKey: "bopis_skip")
+    }
+    
+    private func skipingData(store: [String: Any]){
+        //get data bopis dari session
+        guard let skip = UserDefaults.standard.value(forKey: "skip") as? [[String: Any]] else {
+            return UserDefaults.standard.setValue([store], forKey: "skip")
+        }
+        //append data baru
+        var skips: [[String: Any]] = skip
+        skips.append(store)
+        //store data baru
+        UserDefaults.standard.setValue(skips, forKey: "skip")
     }
     
     private func doneDeliveryBopis(pickup: Bool? = false){
@@ -237,7 +291,7 @@ class ListScanView: UIViewController {
                       let pendingStatus = storeSession["pending_by_system"] as? Bool,
                       let idShiftTime = storeSession["id_shift_time"] as? Int,
                       let bopisStatus = storeSession["store_bopis_status"] as? Bool
-                      else {
+                else {
                     print("No data")
                     return
                 }
@@ -280,30 +334,13 @@ class ListScanView: UIViewController {
                 myGroup.notify(queue: .main) {
                     print("Finished all requests.")
                     UserDefaults.standard.removeObject(forKey: "bopis")
-//                    UserDefaults.standard.removeObject(forKey: "store_bopis")
-                    if self.classification != "BOPIS" {
-                        self.donePickupOrder()
-                    }else {
-                        if self.isLast {
-                            self.delegate.closePickupVc()
-                        }else{
-                            self.delegate.cekOrderWaiting()
-                        }
-                        self.navigationController?.popViewController(animated: true)
-                    }
                     self.spiner.dismiss()
                 }
-            }
-            
-            
-        }else {
-            if pickup == true {
-                donePickupOrder()
             }
         }
     }
     
-    private func donePickupOrder(){
+    private func donePickupOrder(orderNo: String){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
@@ -315,16 +352,10 @@ class ListScanView: UIViewController {
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
+                    self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
                         print(res)
                     }
                     self.spiner.dismiss()
-                    self.navigationController?.popViewController(animated: true)
-                    if self.isLast {
-                        self.delegate.closePickupVc()
-                    }else{
-                        self.delegate.cekOrderWaiting()
-                    }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -336,7 +367,7 @@ class ListScanView: UIViewController {
         }
     }
     
-    private func doneDeliveryOrder(){
+    private func doneDeliveryOrder(orderNo: String){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
               let codeDriver = userData["codeDriver"] as? String else {
             print("No user data")
@@ -348,16 +379,10 @@ class ListScanView: UIViewController {
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
+                    self.databaseM.removeCurrentOrder(orderNo: orderNo, codeDriver: codeDriver) { (res) in
                         print(res)
                     }
                     self.spiner.dismiss()
-                    self.navigationController?.popViewController(animated: true)
-                    if self.isLast {
-                        self.delegate.closePickupVc()
-                    }else{
-                        self.delegate.cekOrderWaiting()
-                    }
                 }
             case .failure(let error):
                 DispatchQueue.main.async {
@@ -395,33 +420,43 @@ class ListScanView: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         cekStatusDriver()
-        //        cekStatusItems()
     }
     
     
     //MARK: - FUNCTIONS
     private func cekStatusItems(){
-        let data = items.map({$0.qr_code_raw})
+        var dataToScan = [Scan]()
         
-        let dataTopost: Scan = Scan(order_number: orderNo, qr_code_raw: data)
+        _ = pickupList.map({ pickup in
+            let qrs = pickup.pickup_item!.map({$0.qr_code_raw})
+            dataToScan.append(Scan(order_number: pickup.order_number, qr_code_raw: qrs))
+        })
         
-        spiner.show(in: view)
-        orderVm.cekStatusItems(data: dataTopost) {[weak self] (res) in
-            switch res {
-            case .success(let result):
-                DispatchQueue.main.async {
-                    self?.spiner.dismiss()
-                    self?.tableView.reloadData()
-                    let filtered = result.filter({$0.scanned_status == 0})
-                    if filtered.count > 0 {
-                        self?.done = false
-                    }else {
-                        self?.done = true
+        if dataToScan.count != 0 {
+            spiner.show(in: view)
+            let myGroup = DispatchGroup()
+            
+            for i in dataToScan {
+                myGroup.enter()
+                orderVm.cekStatusItems(data: i) {[weak self] (res) in
+                    switch res {
+                    case .success(let result):
+                        DispatchQueue.main.async {
+                            _ = result.map({ r in
+                                if r.scanned_status > 0 {
+                                    self?.updateList(code: r.qr_code_raw, orderNo: r.order_number)
+                                }
+                            })
+                            myGroup.leave()
+                        }
+                    case .failure(_):
+                        myGroup.leave()
                     }
                 }
-            case .failure(_):
-                self?.spiner.dismiss()
-                self?.tableView.reloadData()
+            }
+            
+            myGroup.notify(queue: .main) {
+                self.spiner.dismiss()
             }
         }
     }
@@ -450,12 +485,18 @@ class ListScanView: UIViewController {
         navigationController?.title = "Delivery Order List".localiz()
     }
     
-    func updateList(code: String){
-        if let row = self.items.firstIndex(where: {$0.qr_code_raw == code}) {
-            items[row].scan = true
+    func updateList(code: String, orderNo: String){
+        if let rowOrder = pickupList.firstIndex(where: {$0.order_number == orderNo}) {
+            if let row = pickupList[rowOrder].pickup_item!.firstIndex(where: {$0.qr_code_raw == code && $0.scan == nil}) {
+                pickupList[rowOrder].pickup_item![row].scan = true
+            }
         }
-        let filtered = items.filter({$0.scan == nil})
-        if filtered.count > 0 {
+        
+        let filtered = pickupList.compactMap { pickup in
+            return pickup.pickup_item?.filter({$0.scan == nil})
+        }
+        let flatFiltered = filtered.flatMap({$0})
+        if flatFiltered.count > 0 {
             done = false
             finishButton.isUserInteractionEnabled = false
             finishButton.backgroundColor = UIColor(named: "grayKasumi2")
@@ -483,11 +524,12 @@ class ListScanView: UIViewController {
 @available(iOS 13.0, *)
 extension ListScanView: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
+        print(pickupList)
         return pickupList.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return pickupList[section].pickup_item!.count
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -496,17 +538,21 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ScanCell.id, for: indexPath) as! ScanCell
-        cell.item = items[indexPath.row]
+        cell.item = pickupList[indexPath.section].pickup_item![indexPath.row]
+        cell.clas = pickupList[indexPath.section].classification
+        cell.isBopis = pickupList[indexPath.section].store_bopis_status
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = CameraScanView()
-        vc.orderNo = orderNo
-        vc.codeQr = items[indexPath.row].qr_code_raw
+        vc.orderNo = pickupList[indexPath.section].order_number
+        vc.codeQr = pickupList[indexPath.section].pickup_item![indexPath.row].qr_code_raw
         vc.extra = false
         vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
+        if pickupList[indexPath.section].pickup_item![indexPath.row].scan == nil {
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

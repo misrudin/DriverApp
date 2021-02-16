@@ -30,7 +30,7 @@ class OrderCell: UITableViewCell {
             
             pickupAddress.text = "\(pickupData.pickup_store_name)\n\(pickupData.store_address)"
 
-            if pickupData.status_tracking == "wait for pickup" {
+            if !pickupData.pickup_store_status {
                 self.visualEffectView.isHidden = false
             }else {
                 self.visualEffectView.isHidden = true
@@ -48,12 +48,7 @@ class OrderCell: UITableViewCell {
             }
             
             pickupAddress.text = "\(userInfo.first_name) \(userInfo.last_name)\n\(userInfo.address)"
-            
-            if deliveryData.status_tracking == "wait for pickup" {
-                self.visualEffectView.isHidden = false
-            }else {
-                self.visualEffectView.isHidden = true
-            }
+            self.visualEffectView.isHidden = true
         }
     }
     

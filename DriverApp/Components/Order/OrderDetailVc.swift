@@ -289,6 +289,13 @@ class OrderDetailVc: UIViewController {
     
     lazy var contentViewSize = CGSize(width: self.view.frame.width, height: self.view.frame.height)
     
+    let line1: UIView = {
+       let v = UIView()
+        v.backgroundColor = UIColor(named: "borderColor3")
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
     //MARK: - scroll
     lazy var scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -319,7 +326,7 @@ class OrderDetailVc: UIViewController {
                          handleArea, lineView, scrollView, donePickupButton)
         scrollView.addSubviews(views: container)
         container.addSubviews(views: titleLabel, storeLabel,
-                              storeAddress, pendingButton, orderNoLable, orders)
+                              storeAddress, pendingButton, orderNoLable, orders, line1)
         configureLayout()
     }
     
@@ -399,7 +406,12 @@ class OrderDetailVc: UIViewController {
         storeAddress.left(toAnchor: container.leftAnchor)
         storeAddress.right(toAnchor: container.rightAnchor)
         
-        orderNoLable.top(toAnchor: storeAddress.bottomAnchor, space: 10)
+        line1.top(toAnchor: storeAddress.bottomAnchor, space: 10)
+        line1.left(toAnchor: container.leftAnchor)
+        line1.right(toAnchor: container.rightAnchor)
+        line1.height(1)
+        
+        orderNoLable.top(toAnchor: line1.bottomAnchor, space: 10)
         orderNoLable.left(toAnchor: container.leftAnchor)
         orderNoLable.right(toAnchor: container.rightAnchor)
         

@@ -97,7 +97,7 @@ class HomeVc: UIViewController {
         table.register(OrderCell.self, forCellReuseIdentifier: OrderCell.id)
         table.register(PendingCell.self, forCellReuseIdentifier: PendingCell.id)
         table.backgroundColor = UIColor(named: "whiteKasumi")
-        table.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 20, right: 0)
+        table.contentInset = UIEdgeInsets(top: -1, left: 0, bottom: 20, right: 0)
         table.showsVerticalScrollIndicator = false
         table.sectionHeaderHeight = 0
         return table
@@ -384,9 +384,9 @@ class HomeVc: UIViewController {
                 }
             case .success(let order):
                 DispatchQueue.main.async {
-                    let filterOrder = order.pickup_list?.filter({ $0.status_tracking == "wait for pickup" || ($0.status_tracking == "pending" && $0.pending_by_system == true) })
+                    let filterOrder = order.pickup_list?.filter({ $0.status_tracking == "wait for pickup" || ($0.status_tracking == "pending" && $0.pending_by_system == true) || $0.status_tracking == "on pickup process"})
                     
-                    let filterOrderDelivery = order.delivery_list?.filter({ $0.status_tracking == "waiting delivery" })
+                    let filterOrderDelivery = order.delivery_list?.filter({ $0.status_tracking == "waiting delivery" || $0.status_tracking == "on delivery" })
                     
                     self?.constraint1.isActive = false
                     self?.constraint2.isActive = true
@@ -619,7 +619,7 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        return 1.0
     }
     
     internal func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -698,7 +698,16 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         finishButton.height(30)
         finishButton.width(120)
         
-        return container
+        if pickupList != nil || deliveryList != nil {
+            if pickupList.count != 0 || deliveryList.count != 0 {
+                if activeShift != nil && activeShift.id_shift_time != 4 {
+                    return container
+                }
+                return nil
+            }
+            return nil
+        }
+        return nil
     }
     
 }

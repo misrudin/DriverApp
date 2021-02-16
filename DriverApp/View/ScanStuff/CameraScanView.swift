@@ -15,7 +15,6 @@ class CameraScanView: UIViewController {
     var orderNo: String = ""
     var orderVm = OrderViewModel()
     
-    var list: [PickupItem]!
     var codeQr: String = ""
     var extra: Bool = false
     weak var delegate: ListScanView!
@@ -30,6 +29,7 @@ class CameraScanView: UIViewController {
         
         avCaptureSession = AVCaptureSession()
         qrCodeFrameView = UIView()
+        view.backgroundColor = UIColor(named: "whiteKasumi")
         
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
             failed()
@@ -39,13 +39,6 @@ class CameraScanView: UIViewController {
         
         do {
             avVideoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-            if let qrCodeFrameView = qrCodeFrameView {
-                qrCodeFrameView.layer.borderColor = UIColor.green.cgColor
-                qrCodeFrameView.layer.borderWidth = 2
-                view.addSubview(qrCodeFrameView)
-                view.bringSubviewToFront(qrCodeFrameView)
-                qrCodeFrameView.center = view.center
-            }
         } catch {
             failed()
             return
@@ -74,9 +67,18 @@ class CameraScanView: UIViewController {
         avPreviewLayer.frame = view.layer.bounds
         avPreviewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(avPreviewLayer)
-        //                    self.avCaptureSession.startRunning()
         
-        
+        if let qrCodeFrameView = qrCodeFrameView {
+            qrCodeFrameView.layer.borderColor = UIColor.green.cgColor
+            qrCodeFrameView.layer.borderWidth = 2
+            view.addSubview(qrCodeFrameView)
+            view.bringSubviewToFront(qrCodeFrameView)
+            qrCodeFrameView.translatesAutoresizingMaskIntoConstraints = false
+            qrCodeFrameView.centerX(toAnchor: view.centerXAnchor)
+            qrCodeFrameView.centerY(toAnchor: view.centerYAnchor)
+            qrCodeFrameView.height(200)
+            qrCodeFrameView.width(200)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -107,16 +109,8 @@ class CameraScanView: UIViewController {
         }))
         present(ac, animated: true)
         avCaptureSession = nil
-        
     }
     
-//    override var prefersStatusBarHidden: Bool {
-//        return true
-//    }
-//
-//    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-//        return .portrait
-//    }
 }
 
 
@@ -135,14 +129,14 @@ extension CameraScanView: AVCaptureMetadataOutputObjectsDelegate {
     
     func found(code: String) {
         
-//        let find = list.filter({ $0.qr_code_raw == code })
+        //        let find = list.filter({ $0.qr_code_raw == code })
         if code != codeQr {
             let action1 = UIAlertAction(title: "Try again".localiz(), style: .default) {[weak self]  (_) in
                 self?.avCaptureSession.startRunning()
             }
             Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
-            delegate.updateList(code: code)
+            delegate.updateList(code: code, orderNo: orderNo)
             navigationController?.popViewController(animated: true)
         }
         

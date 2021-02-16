@@ -56,6 +56,7 @@
 		B35598E62541ED2300866C10 /* OrderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35598E52541ED2300866C10 /* OrderViewModel.swift */; };
 		B35642702566198800D3B644 /* EditVehicleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B356426F2566198800D3B644 /* EditVehicleView.swift */; };
 		B35918302576079B005135A0 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B359182E2576079B005135A0 /* DetailView.swift */; };
+		B359E74525DB91F100234E12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B359E74425DB91F100234E12 /* GoogleService-Info.plist */; };
 		B36B82B725CA72F700BD9152 /* SelectAdmin.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36B82B625CA72F700BD9152 /* SelectAdmin.swift */; };
 		B36C4FB92578B7BB002C4D06 /* PendingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36C4FB72578B7BB002C4D06 /* PendingCell.swift */; };
 		B36E09742536E11800F1B421 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B36E09732536E11800F1B421 /* AppDelegate.swift */; };
@@ -92,7 +93,6 @@
 		B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B3B9D59A256E41910056D867 /* ForgotView.xib */; };
 		B3CEF63C25904829004F0343 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF63B25904829004F0343 /* Response.swift */; };
 		B3CEF6572590954E004F0343 /* PendingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3CEF6562590954E004F0343 /* PendingListView.swift */; };
-		B3CFC46625CB239C00101925 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B3CFC46525CB239C00101925 /* GoogleService-Info.plist */; };
 		B3DE979D255536EC00A30892 /* DayOffViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979C255536EC00A30892 /* DayOffViewModel.swift */; };
 		B3DE97A02555379300A30892 /* DayOffModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE979F2555379300A30892 /* DayOffModel.swift */; };
 		B3DE97A32555611B00A30892 /* ShiftCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3DE97A22555611B00A30892 /* ShiftCell.swift */; };
@@ -163,6 +163,7 @@
 		B35598E52541ED2300866C10 /* OrderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewModel.swift; sourceTree = "<group>"; };
 		B356426F2566198800D3B644 /* EditVehicleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVehicleView.swift; sourceTree = "<group>"; };
 		B359182E2576079B005135A0 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
+		B359E74425DB91F100234E12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B36B82B625CA72F700BD9152 /* SelectAdmin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAdmin.swift; sourceTree = "<group>"; };
 		B36C4FB72578B7BB002C4D06 /* PendingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingCell.swift; sourceTree = "<group>"; };
 		B36E09702536E11800F1B421 /* DriverApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DriverApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,7 +202,6 @@
 		B3B9D59A256E41910056D867 /* ForgotView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForgotView.xib; sourceTree = "<group>"; };
 		B3CEF63B25904829004F0343 /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
 		B3CEF6562590954E004F0343 /* PendingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingListView.swift; sourceTree = "<group>"; };
-		B3CFC46525CB239C00101925 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Users/indooffice4/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B3DE979C255536EC00A30892 /* DayOffViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffViewModel.swift; sourceTree = "<group>"; };
 		B3DE979F2555379300A30892 /* DayOffModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOffModel.swift; sourceTree = "<group>"; };
 		B3DE97A22555611B00A30892 /* ShiftCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShiftCell.swift; sourceTree = "<group>"; };
@@ -388,7 +388,6 @@
 			isa = PBXGroup;
 			children = (
 				B337CF0025BA71E000A404E0 /* DriverAppRelease.entitlements */,
-				B3CFC46525CB239C00101925 /* GoogleService-Info.plist */,
 				B32A388F25383674000EFBB6 /* Components */,
 				B36E09A0253723CF00F1B421 /* Utils */,
 				B36E098C2536E48300F1B421 /* ViewModel */,
@@ -398,6 +397,7 @@
 				B36E09752536E11800F1B421 /* SceneDelegate.swift */,
 				B36E097C2536E11B00F1B421 /* Assets.xcassets */,
 				B36E097E2536E11B00F1B421 /* LaunchScreen.storyboard */,
+				B359E74425DB91F100234E12 /* GoogleService-Info.plist */,
 				B36E09812536E11B00F1B421 /* Info.plist */,
 				B345DE30258B349C00AE87B0 /* Localizable.strings */,
 			);
@@ -658,7 +658,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B3CFC46625CB239C00101925 /* GoogleService-Info.plist in Resources */,
+				B359E74525DB91F100234E12 /* GoogleService-Info.plist in Resources */,
 				B3B9D59C256E41910056D867 /* ForgotView.xib in Resources */,
 				B36E09802536E11B00F1B421 /* LaunchScreen.storyboard in Resources */,
 				B348E8EB2588B0FE00133CB8 /* CustomCellChat.xib in Resources */,

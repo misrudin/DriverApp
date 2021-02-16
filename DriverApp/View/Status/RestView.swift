@@ -81,6 +81,12 @@ class RestView: UIViewController {
         Helpers().showAlert(view: self, message: "", customTitle: "Do you want to resume work?".localiz(), customAction1: action1, customAction2: action2)
     }
     
+    private func cancelLocalNotification(){
+        let center = UNUserNotificationCenter.current()
+        center.removePendingNotificationRequests(withIdentifiers: ["rest_reminder"])
+        center.removeDeliveredNotifications(withIdentifiers: ["rest_reminder"])
+    }
+    
     private func workNow(data: CheckDriver){
         inoutVm.workTimeDriver(data: data) {[weak self] (res) in
             switch res {
@@ -94,6 +100,7 @@ class RestView: UIViewController {
                         self?.dismiss(animated: true, completion: nil)
                     }
                     self?.spiner.dismiss()
+                    self?.cancelLocalNotification()
                 }
             }
         }

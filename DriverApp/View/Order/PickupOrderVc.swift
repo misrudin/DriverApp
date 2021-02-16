@@ -235,7 +235,7 @@ class PickupOrderVc: UIViewController {
     }
     
     private func cekWaiting(){
-        let filterStatus = pickupList.filter({$0.pickup_store_status == false})
+        let filterStatus = pickupList.filter({$0.pickup_store_status == false && $0.status_tracking != "waiting delivery"})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         manager?.stopUpdatingLocation()
         manager?.stopUpdatingHeading()
@@ -562,7 +562,7 @@ extension PickupOrderVc: CLLocationManagerDelegate {
                     print(err)
                 case .success(let data):
                     DispatchQueue.main.async {
-                        if self.cardViewController !== nil {
+                        if self.cardViewController != nil {
                             self.cardViewController.estLabel.text = "\(data.time)"
                             self.cardViewController.distanceLabel.text = "\(data.distance)"
                         }
@@ -652,17 +652,62 @@ extension PickupOrderVc {
 @available(iOS 13.0, *)
 extension PickupOrderVc: OrderDetailVcDelegate {
     func doneAll(_ viewC: OrderDetailVc) {
-        navigationController?.popViewController(animated: true)
-        dismiss(animated: true, completion: nil)
+        //done pickup all skining
+        var orders = [String]()
+        if let bopis = UserDefaults.standard.value(forKey: "skip") as? [[String: Any]] {
+            _ = bopis.map { storeSession in
+                guard let orderNo = storeSession["order_number"] as? String else {
+                    print("No data")
+                    return
+                }
+                orders.append(orderNo)
+            }
+            
+        }
+        
+        if let bopis_skip = UserDefaults.standard.value(forKey: "bopis_skip") as? [[String: Any]] {
+            _ = bopis_skip.map { storeSession in
+                guard let orderNo = storeSession["order_number"] as? String else {
+                    print("No data")
+                    return
+                }
+                orders.append(orderNo)
+            }
+        }
+        
+        if orders.count != 0 {
+            spiner.show(in: view)
+            let myGroup = DispatchGroup()
+            for i in orders {
+                myGroup.enter()
+                let data = Delivery(status: "pickup", order_number: i, type: "done")
+                orderViewModel.statusOrder(data: data) { (result) in
+                    switch result {
+                    case .success(_):
+                        myGroup.leave()
+                    case .failure(_):
+                        myGroup.leave()
+                    }
+                }
+            }
+            
+            myGroup.notify(queue: .main) {
+                self.spiner.dismiss()
+                self.navigationController?.popViewController(animated: true)
+                self.dismiss(animated: true, completion: nil)
+            }
+        }else {
+            self.navigationController?.popViewController(animated: true)
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     func pending(_ viewC: OrderDetailVc, order: Pickup?) {
         let filterStatus = pickupList.filter({$0.pickup_store_status == false})
         let vc = PendingNoteVc()
-        vc.orderNo = order?.order_number
-        vc.idShiftTime = order?.id_shift_time
         vc.delegate1 = self
         vc.isLast = filterStatus.count <= 1
+        vc.pickupList = pickupList.filter({$0.pickup_store_name == order?.pickup_store_name})
         let navVc = UINavigationController(rootViewController: vc)
         navVc.modalPresentationStyle = .fullScreen
         present(navVc, animated: true, completion: nil)
@@ -675,13 +720,9 @@ extension PickupOrderVc: OrderDetailVcDelegate {
     func scan(_ viewC: OrderDetailVc, order: Pickup?) {
         let filterStatus = pickupList.filter({$0.pickup_store_status == false})
         let vc = ListScanView()
-        vc.orderNo = order!.order_number
         vc.origin = origin
-        vc.items = order!.pickup_item
+        vc.allPickupList = pickupList
         vc.isLast = filterStatus.count <= 1
-        vc.bopisStatus = order?.store_bopis_status ?? false
-        vc.store = order?.dictionary
-        vc.classification = order?.classification
         vc.pickupList = pickupList.filter({$0.pickup_store_name == order?.pickup_store_name})
         vc.storeName = order?.pickup_store_name
         vc.delegate = self
@@ -693,14 +734,10 @@ extension PickupOrderVc: OrderDetailVcDelegate {
     }
     
     func startPickup(_ viewC: OrderDetailVc) {
-        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
-              let codeDriver = userData["codeDriver"] as? String else {
-            print("No user data")
-            return
-        }
-        let filterStatus = pickupList.filter({$0.pickup_store_status == false})
+        let filterStatus = pickupList.filter({$0.pickup_store_status == false && $0.status_tracking != "waiting delivery"})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         
+        //looping sorted and start pickup
         if sortedList.count != 0 {
             let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
             destination = destinationPickup
@@ -708,31 +745,43 @@ extension PickupOrderVc: OrderDetailVcDelegate {
             getCurrentPosition()
             cardViewController.order = sortedList[0]
             cardViewController.orderList = pickupList
-            cardViewController.display = .start_pickup
             
+            let firstItem = sortedList[0]
+            let filterSameOrder = sortedList.filter({$0.pickup_store_name == firstItem.pickup_store_name})
+            let scaned = filterSameOrder.filter({$0.pickup_store_status == true})
+            let scanedAll = pickupList.filter({$0.pickup_store_status == true})
+            if scaned.count == filterSameOrder.count {
+                if scanedAll.count == pickupList.count {
+                    cardViewController.display = .done
+                }else {
+                    cardViewController.display = .next
+                }
+            }else {
+                cardViewController.display = .start_pickup
+            }
             spiner.show(in: view)
-            let data = Delivery(status: "pickup", order_number: sortedList[0].order_number, type: "start")
-            self.orderViewModel.statusOrder(data: data) { (result) in
-                self.handleResult(result: result)
-                self.databaseM.setCurrentOrder(orderNo: sortedList[0].order_number, status: "pickup", codeDriver: codeDriver) { (re) in
-                    print(re)
+            let myGroup = DispatchGroup()
+            
+            for i in filterSameOrder {
+                myGroup.enter()
+                let data = Delivery(status: "pickup", order_number: i.order_number, type: "start")
+                self.orderViewModel.statusOrder(data: data) { (result) in
+                    switch result {
+                    case .success(_):
+                        myGroup.leave()
+                    case .failure(_):
+                        myGroup.leave()
+                    }
                 }
             }
+            
+            myGroup.notify(queue: .main) {
+                self.spiner.dismiss()
+                self.cekSatatusCheckin()
+            }
+        }else {
             cekSatatusCheckin()
-        }
-    }
-    
-    private func handleResult(result: Result<Bool, Error>){
-        switch result {
-        case .success(_):
-            DispatchQueue.main.async {
-                self.spiner.dismiss()
-            }
-        case .failure(let error):
-            DispatchQueue.main.async {
-                self.spiner.dismiss()
-                print(error)
-            }
+            closePickupVc()
         }
     }
     
@@ -756,7 +805,6 @@ extension PickupOrderVc: OrderDetailVcDelegate {
                     }
                 case .failure(let err):
                     print(err)
-                    Helpers().showAlert(view: self, message: "Something when wrong !".localiz())
                 }
             }
         }else {

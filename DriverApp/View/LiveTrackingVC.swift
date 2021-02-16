@@ -598,7 +598,6 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             return
         }
         let vc = ListScanView()
-        vc.orderNo = orderNo
         vc.origin = origin
         navigationController?.pushViewController(vc, animated: true)
     }
@@ -635,8 +634,6 @@ extension LiveTrackingVC: CardViewControllerDelegate {
             }
         case .pending:
             let vc = PendingNoteVc()
-            vc.orderNo = order?.order_number
-            vc.idShiftTime = order?.id_shift_time
             let navVc = UINavigationController(rootViewController: vc)
             navVc.modalPresentationStyle = .fullScreen
             present(navVc, animated: true, completion: nil)

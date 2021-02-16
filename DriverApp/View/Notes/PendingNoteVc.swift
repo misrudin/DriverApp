@@ -14,8 +14,8 @@ import LanguageManager_iOS
 class PendingNoteVc: UIViewController {
     
     //MARK: - Data
-    var orderNo: String!
-    var idShiftTime: Int!
+//    var orderNo: String!
+//    var idShiftTime: Int!
     var isLast: Bool = false
     
     let noteViewModel = NoteViewModel()
@@ -33,6 +33,8 @@ class PendingNoteVc: UIViewController {
     var c3: NSLayoutConstraint!
     var c4: NSLayoutConstraint!
     var c5: NSLayoutConstraint!
+    var pickupList: [Pickup]!
+    var deliveryList: [NewDelivery]!
     
     let messages:[String] = [
         "Address cannot be found".localiz(), "Person not at home".localiz(), "Package not correct".localiz(), "I have an accidents".localiz()
@@ -364,27 +366,54 @@ extension PendingNoteVc {
             return
         }
         
-        let metaData = MetaData(order_number: orderNo, id_shift_time: Int(idShiftTime), status_chat: false, status_done: false)
-        let data = DataPending(code_driver: codeDriver, note: note, meta_data: metaData)
-        spiner.show(in: view)
-        noteViewModel.pendingNote(data: data) { (result) in
-            switch result {
-            case .success(_):
-                DispatchQueue.main.async {
+
+        
+        if pickupList != nil {
+            spiner.show(in: view)
+            let pickupGroup = DispatchGroup()
+            for i in pickupList {
+                pickupGroup.enter()
+                let metaData = MetaData(order_number: i.order_number, id_shift_time: Int(i.id_shift_time), status_chat: false, status_done: false)
+                let data = DataPending(code_driver: codeDriver, note: note, meta_data: metaData)
+                
+                noteViewModel.pendingNote(data: data) { (result) in
+                    switch result {
+                    case .success(_):
+                        pickupGroup.leave()
+                    case .failure(_):
+                        pickupGroup.leave()
+                    }
+                }
+                
+                pickupGroup.notify(queue: .main) {
                     self.spiner.dismiss()
                     self.dismiss(animated: true)
                     self.cekDelegate()
-                    self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
-                        print(res)
+                }
+            }
+        }
+        
+        if deliveryList != nil {
+            spiner.show(in: view)
+            let deliveryGroup = DispatchGroup()
+            for i in deliveryList {
+                deliveryGroup.enter()
+                let metaData = MetaData(order_number: i.order_number, id_shift_time: Int(i.id_shift_time), status_chat: false, status_done: false)
+                let data = DataPending(code_driver: codeDriver, note: note, meta_data: metaData)
+                
+                noteViewModel.pendingNote(data: data) { (result) in
+                    switch result {
+                    case .success(_):
+                        deliveryGroup.leave()
+                    case .failure(_):
+                        deliveryGroup.leave()
                     }
                 }
-            case .failure(let error):
-                print(error)
-                self.spiner.dismiss()
-                self.dismiss(animated: true)
-                self.cekDelegate()
-                self.databaseM.removeCurrentOrder(orderNo: self.orderNo, codeDriver: codeDriver) { (res) in
-                    print(res)
+                
+                deliveryGroup.notify(queue: .main) {
+                    self.spiner.dismiss()
+                    self.dismiss(animated: true)
+                    self.cekDelegate()
                 }
             }
         }

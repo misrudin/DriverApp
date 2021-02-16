@@ -294,7 +294,7 @@ struct Pickup: Decodable {
     let store_address: String
     let lat: String
     let long: String
-    let pickup_item: [PickupItem]?
+    var pickup_item: [PickupItem]?
     let order_number: String
     let classification: String?
     let status_tracking: String

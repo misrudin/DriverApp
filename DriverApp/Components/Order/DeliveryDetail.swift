@@ -56,8 +56,8 @@ class DeliveryDetail: UIViewController {
                 container.isHidden = true
                 lineView.isHidden = true
                 handleArea.isUserInteractionEnabled = false
-                estLabel.isHidden = true
-                distanceLabel.isHidden = true
+//                estLabel.isHidden = true
+//                distanceLabel.isHidden = true
                 backToStoreButton.isHidden = true
                 container2.isHidden = true
                 container3.isHidden = true
@@ -107,10 +107,21 @@ class DeliveryDetail: UIViewController {
                 handleArea.isUserInteractionEnabled = true
                 container2.isHidden = true
                 container3.isHidden = false
+                estLabel.isHidden = false
+                distanceLabel.isHidden = false
                 break
             case .scan:
                 break
             default :
+                startPickupButton.isHidden = true
+                doneButton.isHidden = true
+                nextButton.isHidden = true
+                container.isHidden = true
+                lineView.isHidden = true
+                handleArea.isUserInteractionEnabled = false
+                backToStoreButton.isHidden = false
+                container2.isHidden = true
+                container3.isHidden = true
                 break
             }
         }
@@ -464,9 +475,16 @@ class DeliveryDetail: UIViewController {
     }()
     
     //MARK: - Estimasi Waktu
-    let estLabel = Reusable.makeLabel(text: "",
-                                      font: .systemFont(ofSize: 14, weight: .medium),
-                                       color: UIColor(named: "orangeKasumi")!)
+    let estLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.textColor = UIColor(named: "orangeKasumi")!
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
     let distanceLabel = Reusable.makeLabel(text: "",
                                            font: .systemFont(ofSize: 14, weight: .medium),
                                            color: UIColor(named: "labelColor")!)

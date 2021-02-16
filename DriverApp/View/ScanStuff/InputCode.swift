@@ -12,7 +12,6 @@ class InputCode: UIViewController {
     
     var orderNo: String = ""
     var orderVm = OrderViewModel()
-    var list: [PickupItem]!
     var codeQr: String = ""
     var extra: Bool = false
     weak var delegate: ListScanView!
@@ -92,7 +91,7 @@ class InputCode: UIViewController {
             let action1 = UIAlertAction(title: "Try Again".localiz(), style: .default, handler: nil)
             Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
-            delegate.updateList(code: code)
+            delegate.updateList(code: code, orderNo: orderNo)
             navigationController?.popViewController(animated: true)
         }
         
