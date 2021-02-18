@@ -25,4 +25,6 @@ extension Notification.Name {
     static let didOtherClick = Notification.Name("didOtherClick")
     static let didCloseAdmin = Notification.Name("didCloseAdmin")
     static let didSelectAdmin = Notification.Name("didSelectAdmin")
+    static let didOpenChat = Notification.Name("didOpenChat")
+    static let didOpenOrder = Notification.Name("didOpenOrder")
 }

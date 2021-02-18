@@ -75,6 +75,22 @@ class ListScanView: UIViewController {
         return b
     }()
     
+    lazy var freeScanButton:UIButton = {
+        let b = UIButton()
+        let image = UIImage(named: "iconScan")
+        let baru = image?.resizeImage(CGSize(width: 20, height: 20))
+        b.setImage(baru, for: .normal)
+        b.setTitleColor(.white, for: .normal)
+        b.backgroundColor = UIColor(named: "orangeKasumi")
+        b.layer.cornerRadius = 50/2
+        b.layer.masksToBounds = true
+        b.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold )
+        b.addTarget(self, action: #selector(freeScan), for: .touchUpInside)
+        b.centerTextAndImage(spacing: 0)
+        b.translatesAutoresizingMaskIntoConstraints = false
+        return b
+    }()
+    
     
     private func cekStatusDriver(){
         guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
@@ -544,6 +560,7 @@ class ListScanView: UIViewController {
     private func configureUi(){
         view.addSubview(tableView)
         view.addSubview(storeNameLabel)
+        view.addSubview(freeScanButton)
         
         storeNameLabel.top(toAnchor: view.safeAreaLayoutGuide.topAnchor, space: 10)
         storeNameLabel.left(toAnchor: view.leftAnchor, space: 10)
@@ -554,6 +571,11 @@ class ListScanView: UIViewController {
         tableView.anchor(top: storeNameLabel.bottomAnchor, left: view.leftAnchor, bottom: view.bottomAnchor, right: view.rightAnchor, paddingTop: 10)
         
         tableView.separatorStyle = .none
+        
+        freeScanButton.bottom(toAnchor: view.safeAreaLayoutGuide.bottomAnchor, space: -20)
+        freeScanButton.right(toAnchor: view.rightAnchor, space: -20)
+        freeScanButton.width(50)
+        freeScanButton.height(50)
     }
     
     private func configureNavigationBar(){
@@ -589,11 +611,30 @@ class ListScanView: UIViewController {
     }
     
     
-    func useManualInput(orderNo: String, codeQr: String, extra: Bool){
+    func useManualInput(orderNo: String, codeQr: String, extra: Bool, scans: [ScanFree]){
         let vc = InputCode()
         vc.orderNo = orderNo
         vc.codeQr = codeQr
         vc.extra = extra
+        vc.allScans = scans
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    @objc private func freeScan(){
+        let vc = CameraScanView()
+        var scans = [ScanFree]()
+        _ = pickupList.map { pickup in
+             _ = pickup.pickup_item?.map({ item in
+                if item.scan == nil {
+                    let scan = ScanFree(order_number: pickup.order_number, qr_code_url: item.qr_code_url)
+                    scans.append(scan)
+                }
+            })
+        }
+        vc.allScans = scans
+        print(scans)
+        vc.extra = true
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }

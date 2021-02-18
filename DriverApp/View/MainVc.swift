@@ -24,6 +24,7 @@ class MainVc: UIViewController {
     
     var shiftTimeVm = ShiftTimeViewModel()
     var activeShift: ShiftTime!
+    private var orderObserver: NSObjectProtocol?
     
     let visualEffectView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .dark)
@@ -118,6 +119,13 @@ class MainVc: UIViewController {
         
         cekLanguageActive()
         
+        //MARK: - observer
+        orderObserver = NotificationCenter.default.addObserver(forName: .didOpenOrder,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                self?.cekUser()
+            })
     }
     
     @objc private func didTapJav(){

@@ -17,6 +17,7 @@ class CameraScanView: UIViewController {
     
     var codeQr: String = ""
     var extra: Bool = false
+    var allScans = [ScanFree]()
     weak var delegate: ListScanView!
     
     //scan camera
@@ -105,7 +106,7 @@ class CameraScanView: UIViewController {
         }))
         ac.addAction(UIAlertAction(title: "Input Manual", style: .default, handler: {_ in
             self.navigationController?.popViewController(animated: true)
-            self.delegate.useManualInput(orderNo: self.orderNo, codeQr: self.codeQr, extra: self.extra)
+            self.delegate.useManualInput(orderNo: self.orderNo, codeQr: self.codeQr, extra: self.extra, scans: self.allScans)
         }))
         present(ac, animated: true)
         avCaptureSession = nil
@@ -128,17 +129,27 @@ extension CameraScanView: AVCaptureMetadataOutputObjectsDelegate {
     }
     
     func found(code: String) {
-        
-        //        let find = list.filter({ $0.qr_code_raw == code })
-        if code != codeQr {
-            let action1 = UIAlertAction(title: "Try again".localiz(), style: .default) {[weak self]  (_) in
-                self?.avCaptureSession.startRunning()
+        let find = allScans.filter({$0.qr_code_url == code})
+        if extra {
+            if find.count == 0 {
+                let action1 = UIAlertAction(title: "Try again".localiz(), style: .default) {[weak self]  (_) in
+                    self?.avCaptureSession.startRunning()
+                }
+                Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
+            }else {
+                delegate.updateList(code: code, orderNo: find[0].order_number)
+                navigationController?.popViewController(animated: true)
             }
-            Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
         }else {
-            delegate.updateList(code: code, orderNo: orderNo)
-            navigationController?.popViewController(animated: true)
+            if code != codeQr {
+                let action1 = UIAlertAction(title: "Try again".localiz(), style: .default) {[weak self]  (_) in
+                    self?.avCaptureSession.startRunning()
+                }
+                Helpers().showAlert(view: self, message: "Item code not found.".localiz(), customAction1: action1)
+            }else {
+                delegate.updateList(code: code, orderNo: orderNo)
+                navigationController?.popViewController(animated: true)
+            }
         }
-        
     }
 }

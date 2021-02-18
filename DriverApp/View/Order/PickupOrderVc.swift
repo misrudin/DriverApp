@@ -426,7 +426,6 @@ class PickupOrderVc: UIViewController {
         }
     }
     
-    
     func configureNavigationBar(){
         let image = UIImage(named: "chatIcon")
         let baru = image?.resizeImage(CGSize(width: 25, height: 25))

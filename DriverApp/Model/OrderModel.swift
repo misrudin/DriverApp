@@ -270,6 +270,11 @@ struct Scan: Codable {
     let qr_code_url: [String]
 }
 
+struct ScanFree: Codable {
+    let order_number: String
+    let qr_code_url: String
+}
+
 
 //MARK: - Response Reject
 struct ResponseReject: Decodable {

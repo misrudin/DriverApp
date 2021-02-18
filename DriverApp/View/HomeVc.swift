@@ -11,6 +11,7 @@ import RxCocoa
 import JGProgressHUD
 import CoreLocation
 import LanguageManager_iOS
+import Firebase
 
 enum DisplayHomeType {
     case pickup
@@ -28,6 +29,8 @@ class HomeVc: UIViewController {
     
     private var manager: CLLocationManager?
     private var driverManager: CLLocationManager?
+    
+    private var chatObserver: NSObjectProtocol?
     
     var inOutVm = InOutViewModel()
     var origin: Origin? = nil
@@ -107,7 +110,7 @@ class HomeVc: UIViewController {
     
     private let pickupButton: UIButton={
         let loginButton = UIButton()
-        loginButton.setTitle("Pick Up Order".localiz(), for: .normal)
+        loginButton.setTitle("Pickup Order".localiz(), for: .normal)
         loginButton.backgroundColor = UIColor(named: "orangeKasumi")
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.layer.cornerRadius = 40/2
@@ -207,7 +210,41 @@ class HomeVc: UIViewController {
         deliveryButton.isHidden = true
         constraint1.isActive = true
         constraint2.isActive = false
+        
+        //MARK: - observer
+        chatObserver = NotificationCenter.default.addObserver(forName: .didOpenChat,
+            object: nil,
+            queue: .main,
+            using: { [weak self] _ in
+                let vc = ChatView()
+                vc.hidesBottomBarWhenPushed = true
+                self?.navigationController?.pushViewController(vc, animated: true)
+            })
+        
+        Messaging.messaging().token { token, error in
+          if let error = error {
+            print("Error fetching FCM registration token: \(error)")
+          } else if let token = token {
+            print("FCM registration token: \(token)")
+            self.updateToken(token: token)
+          }
+        }
     
+    }
+    
+    private func updateToken(token: String){
+        guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
+              let codeDriver = userData["codeDriver"] as? String else {
+            return
+        }
+        
+        databaseManager.updateToken(codeDriver: codeDriver, token: token) { (res) in
+            switch res {
+            case .failure(let err): print(err)
+            case .success(_): print("succes update token fcm driver")
+            }
+        }
+        
     }
     
     @objc private func nextShift(){
