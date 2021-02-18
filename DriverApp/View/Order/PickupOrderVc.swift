@@ -734,9 +734,8 @@ extension PickupOrderVc: OrderDetailVcDelegate {
     }
     
     func startPickup(_ viewC: OrderDetailVc) {
-        let filterStatus = pickupList.filter({$0.pickup_store_status == false && $0.status_tracking != "waiting delivery"})
+        let filterStatus = pickupList.filter({$0.status_tracking != "waiting delivery" && $0.pickup_store_status == false})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
-        
         //looping sorted and start pickup
         if sortedList.count != 0 {
             let destinationPickup = Destination(latitude: CLLocationDegrees(sortedList[0].lat)!, longitude: CLLocationDegrees(sortedList[0].long)!)
@@ -747,8 +746,8 @@ extension PickupOrderVc: OrderDetailVcDelegate {
             cardViewController.orderList = pickupList
             
             let firstItem = sortedList[0]
-            let filterSameOrder = sortedList.filter({$0.pickup_store_name == firstItem.pickup_store_name})
-            let scaned = filterSameOrder.filter({$0.pickup_store_status == true})
+            let filterSameOrder = sortedList.filter({$0.pickup_store_name == firstItem.pickup_store_name && $0.status_tracking != "waiting delivery"})
+            let scaned = filterSameOrder.filter({$0.pickup_store_status == true && $0.status_tracking == "waiting delivery"})
             let scanedAll = pickupList.filter({$0.pickup_store_status == true})
             if scaned.count == filterSameOrder.count {
                 if scanedAll.count == pickupList.count {

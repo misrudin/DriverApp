@@ -16,8 +16,8 @@ class ScanCell: UITableViewCell {
     
     var item: PickupItem! {
         didSet {
-            name.text = item.item_name
-            print(item.qr_code_raw)
+            name.text = item.box_name
+            print(item.qr_code_url)
             status.text = item.scan != nil ? "Verified".localiz() : "Unverified".localiz()
             scanButton.isHidden = item.scan != nil
             let colorU = UIColor(named: "orangeKasumi")

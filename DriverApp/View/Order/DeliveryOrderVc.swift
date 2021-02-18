@@ -397,7 +397,6 @@ class DeliveryOrderVc: UIViewController {
             getCurrentPosition()
             cardViewController.order = sortedList[0]
             cardViewController.display = .start_pickup
-            self.navigationItem.hidesBackButton = true
             spiner.show(in: view)
             let data = Delivery(status: "delivery", order_number: sortedList[0].order_number, type: "start")
             self.orderViewModel.statusOrder(data: data) { (result) in
@@ -978,7 +977,6 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
             switch result {
             case .success(_):
                 DispatchQueue.main.async {
-                    self.navigationItem.hidesBackButton = false
                     guard let userData = UserDefaults.standard.value(forKey: "userData") as? [String: Any],
                           let codeDriver = userData["codeDriver"] as? String else {
                         print("No user data")
@@ -1016,7 +1014,7 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
             print("No user data")
             return
         }
-        let filterStatus = deliveryList.filter({($0.status_tracking == "waiting delivery" || $0.status_tracking == "on delivery") && $0.classification != "BOPIS"})
+        let filterStatus = deliveryList.filter({($0.status_tracking == "waiting delivery" || $0.status_tracking == "on delivery" || $0.status_tracking == "pending") && $0.classification != "BOPIS"})
         let sortedList = filterStatus.sorted(by: {$0.queue < $1.queue})
         
         if sortedList.count != 0 {
@@ -1026,7 +1024,6 @@ extension DeliveryOrderVc: DeliveryDetailDelegate {
             getCurrentPosition()
             cardViewController.order = sortedList[0]
             cardViewController.display = .start_pickup
-            self.navigationItem.hidesBackButton = true
             spiner.show(in: view)
             let data = Delivery(status: "delivery", order_number: sortedList[0].order_number, type: "start")
             self.orderViewModel.statusOrder(data: data) { (result) in

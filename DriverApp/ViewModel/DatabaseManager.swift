@@ -71,6 +71,23 @@ struct DatabaseManager {
         
     }
     
+    func logerIos(codeDriver: String, token: String, completion: @escaping (Result<Bool, Error>)->Void){
+        let urlFirebase: String = "driver/\(codeDriver)"
+        let dataToPost: [String: Any] = [
+            "loger": token
+        ]
+        
+        database.child(urlFirebase).updateChildValues(dataToPost) { (err, response) in
+            if err != nil {
+                completion(.failure(DatabaseError.failedToUpdateData))
+                return
+            }
+            debugPrint(response)
+            completion(.success(true))
+        }
+        
+    }
+    
     func updateHeading(codeDriver: String, bearing: CLLocationDirection, completion: @escaping (Result<Bool, Error>)->Void){
         let urlFirebase: String = "driver/\(codeDriver)"
         let dataToPost: [String: Any] = [

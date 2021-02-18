@@ -384,12 +384,10 @@ class HomeVc: UIViewController {
                 }
             case .success(let order):
                 DispatchQueue.main.async {
-                    let filterOrder = order.pickup_list?.filter({ $0.status_tracking == "wait for pickup" || ($0.status_tracking == "pending" && $0.pending_by_system == true) || $0.status_tracking == "on pickup process"})
+                    let filterOrder = order.pickup_list?.filter({ ($0.status_tracking == "wait for pickup" || $0.status_tracking == "pending" || $0.status_tracking == "on pickup process") && $0.pickup_store_status == false })
                     
-                    let filterOrderDelivery = order.delivery_list?.filter({ $0.status_tracking == "waiting delivery" || $0.status_tracking == "on delivery" })
+                    let filterOrderDelivery = order.delivery_list?.filter({ $0.status_tracking == "waiting delivery" || $0.status_tracking == "on delivery" || $0.status_tracking == "pending"})
                     
-                    self?.constraint1.isActive = false
-                    self?.constraint2.isActive = true
                     self?.pickupButton.isHidden = filterOrder?.count == 0
                     
                     if filterOrder?.count != 0 {
@@ -698,14 +696,8 @@ extension HomeVc: UITableViewDelegate,UITableViewDataSource {
         finishButton.height(30)
         finishButton.width(120)
         
-        if pickupList != nil || deliveryList != nil {
-            if pickupList.count != 0 || deliveryList.count != 0 {
-                if activeShift != nil && activeShift.id_shift_time != 4 {
-                    return container
-                }
-                return nil
-            }
-            return nil
+        if activeShift != nil && activeShift.id_shift_time != 4 {
+            return container
         }
         return nil
     }

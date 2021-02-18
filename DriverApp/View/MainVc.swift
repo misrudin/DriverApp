@@ -62,16 +62,21 @@ class MainVc: UIViewController {
         present(vc, animated: true, completion: nil)
     }
     
+    @objc func displayFCMToken(notification: NSNotification){
+      guard let userInfo = notification.userInfo else {return}
+      if let fcmToken = userInfo["token"] as? String {
+        print("Received FCM token: \(fcmToken)")
+      }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.addSubview(visualEffectView)
         view.insertSubview(bg, at: 0)
         view.addSubview(imageView)
         view.addSubview(labelAppName)
         view.addSubview(loginButton)
         view.addSubview(signupButton)
-    
         
         loginButton.transform = CGAffineTransform(scaleX: 0, y: 0)
         signupButton.transform = CGAffineTransform(scaleX: 0, y: 0)

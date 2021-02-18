@@ -142,7 +142,7 @@ class DeliveryDetail: UIViewController {
         didSet {
             lableText.text = "Order No".localiz() + " : " + order.order_number
             
-            let dataN = order.pickup_item?.compactMap({$0.pickup_item?.map({$0.item_name})})
+            let dataN = order.pickup_item?.compactMap({$0.pickup_item?.map({$0.box_name})})
             let dataItems = dataN?.flatMap({$0})
             
             var data = [String]()

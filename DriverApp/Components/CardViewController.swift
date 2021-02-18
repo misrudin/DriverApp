@@ -302,7 +302,7 @@ class CardViewController: UIViewController {
         destinationLabel.text = "\(userInfo.first_name) \(userInfo.last_name) \(userInfo.address)"
         destinationLabel.numberOfLines = 0
         
-        let dataN = orderDetail.pickup_destination.compactMap({$0.pickup_item.map({$0.item_name})})
+        let dataN = orderDetail.pickup_destination.compactMap({$0.pickup_item.map({$0.box_name})})
         var data = [String]()
             
         _ = dataN.map { e in
@@ -486,8 +486,8 @@ class CardViewController: UIViewController {
         let items = orderDetail.pickup_destination
         let data = items[currentIndex]
         
-        let dataToCheck = data.pickup_item.map({ $0.qr_code_raw })
-        let dataToPost: Scan = Scan(order_number: orderNo, qr_code_raw: dataToCheck)
+        let dataToCheck = data.pickup_item.map({ $0.qr_code_url })
+        let dataToPost: Scan = Scan(order_number: orderNo, qr_code_url: dataToCheck)
         //cek apakah current index == items.count
 //        print(currentIndex, items.count)/
         if currentIndex < items.count {

@@ -146,8 +146,8 @@ class ListScanView: UIViewController {
         var datas = [Scan]()
         
         _ = pickupList.map {  pickup in
-            let codes = pickup.pickup_item?.map({$0.qr_code_raw})
-            let scan = Scan(order_number: pickup.order_number, qr_code_raw: codes!)
+            let codes = pickup.pickup_item?.map({$0.qr_code_url})
+            let scan = Scan(order_number: pickup.order_number, qr_code_url: codes!)
             datas.append(scan)
         }
         
@@ -189,6 +189,7 @@ class ListScanView: UIViewController {
             
             _ = self.pickupList.map { pickup in
                 let filter = self.allPickupList.filter({$0.order_number == pickup.order_number})
+                
                 if filter.count <= 1 {
                     if pickup.classification != "BOPIS" && !pickup.store_bopis_status! {
                         self.donePickupOrder(orderNo: pickup.order_number)
@@ -214,7 +215,12 @@ class ListScanView: UIViewController {
                     }
                     
                     if pickup.classification == "BOPIS" && !pickup.store_bopis_status! {
-                        self.skipBopisData(store: pickup.dictionary)
+                        let filterClass = filter.filter({$0.classification == "BOPIS"})
+                        if filterClass.count > 1 {
+                            self.storeData(store: pickup.dictionary)
+                        }else {
+                            self.skipBopisData(store: pickup.dictionary)
+                        }
                     }
                     
                     if pickup.classification != "BOPIS" && pickup.store_bopis_status! {
@@ -223,14 +229,62 @@ class ListScanView: UIViewController {
                     }
                     
                     if pickup.classification == "BOPIS" && pickup.store_bopis_status! {
+                        let filterClass = filter.filter({$0.classification == "BOPIS" && $0.pickup_store_status == true})
+                        if filterClass.count > 1 {
+                            self.doneDeliveryBopis()
+                            self.doneDeliveryOrder(orderNo: pickup.order_number)
+                        }else {
+                            self.skipBopisData(store: pickup.dictionary)
+                        }
                         self.saveDataStoreBopis(store: pickup.dictionary)
-                        self.skipBopisData(store: pickup.dictionary)
                     }
                 }
             }
             self.spiner.dismiss()
             self.delegate.cekOrderWaiting()
             self.navigationController?.popViewController(animated: true)
+        }
+    }
+    
+    private func saveScanWehnBack(){
+        var datas = [Scan]()
+        
+        _ = pickupList.map {  pickup in
+            let scaned = pickup.pickup_item!.filter({$0.scan != nil})
+            if scaned.count != 0 {
+                let codes = scaned.map({$0.qr_code_url})
+                let scan = Scan(order_number: pickup.order_number, qr_code_url: codes)
+                datas.append(scan)
+            }
+        }
+        
+        if datas.count != 0 {
+            spiner.show(in: view)
+            let myGroup = DispatchGroup()
+            for i in datas {
+                myGroup.enter()
+                orderVm.changeStatusItems(data: i) {[weak self] (res) in
+                    switch res {
+                    case .success(_):
+                        DispatchQueue.main.async {
+                            myGroup.leave()
+                            print("Finished request \(i)")
+                        }
+                    case .failure(let err):
+                        let action1 = UIAlertAction(title: "Try again".localiz(), style: .default, handler: nil)
+                        Helpers().showAlert(view: self!, message: "Something when wrong !".localiz(), customAction1: action1)
+                        print(err)
+                        self?.spiner.dismiss()
+                    }
+                }
+            }
+            
+            myGroup.notify(queue: .main) {
+                self.spiner.dismiss()
+                self.navigationController?.popViewController(animated: true)
+            }
+        }else  {
+            navigationController?.popViewController(animated: true)
         }
     }
     
@@ -414,8 +468,34 @@ class ListScanView: UIViewController {
         configureUi()
         configureNavigationBar()
         cekStatusItems()
+        
+        self.navigationItem.hidesBackButton = true
+        let newBackButton = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(back(sender:)))
+        self.navigationItem.leftBarButtonItem = newBackButton
     }
     
+    @objc
+    private func back(sender: UIBarButtonItem){
+        let action1 = UIAlertAction(title: "Back".localiz(), style: .cancel) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
+        let action2 = UIAlertAction(title: "Cancel".localiz(), style: .default, handler: nil)
+
+        let filtered = pickupList.compactMap { pickup in
+            return pickup.pickup_item?.filter({$0.scan != nil})
+        }
+
+        let flatFiltered = filtered.flatMap({$0})
+
+        if flatFiltered.count == 0 {
+            navigationController?.popViewController(animated: true)
+        }else {
+            let title = "Please confirm"
+            let message = "if you go back, then you have to scan again!"
+            Helpers().showAlert(view: self, message: message, customTitle: title, customAction1: action2, customAction2: action1)
+        }
+//        saveScanWehnBack()
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -428,8 +508,8 @@ class ListScanView: UIViewController {
         var dataToScan = [Scan]()
         
         _ = pickupList.map({ pickup in
-            let qrs = pickup.pickup_item!.map({$0.qr_code_raw})
-            dataToScan.append(Scan(order_number: pickup.order_number, qr_code_raw: qrs))
+            let qrs = pickup.pickup_item!.map({$0.qr_code_url})
+            dataToScan.append(Scan(order_number: pickup.order_number, qr_code_url: qrs))
         })
         
         if dataToScan.count != 0 {
@@ -444,7 +524,7 @@ class ListScanView: UIViewController {
                         DispatchQueue.main.async {
                             _ = result.map({ r in
                                 if r.scanned_status > 0 {
-                                    self?.updateList(code: r.qr_code_raw, orderNo: r.order_number)
+                                    self?.updateList(code: r.qr_code_url, orderNo: r.order_number)
                                 }
                             })
                             myGroup.leave()
@@ -487,7 +567,7 @@ class ListScanView: UIViewController {
     
     func updateList(code: String, orderNo: String){
         if let rowOrder = pickupList.firstIndex(where: {$0.order_number == orderNo}) {
-            if let row = pickupList[rowOrder].pickup_item!.firstIndex(where: {$0.qr_code_raw == code && $0.scan == nil}) {
+            if let row = pickupList[rowOrder].pickup_item!.firstIndex(where: {$0.qr_code_url == code && $0.scan == nil}) {
                 pickupList[rowOrder].pickup_item![row].scan = true
             }
         }
@@ -547,7 +627,7 @@ extension ListScanView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = CameraScanView()
         vc.orderNo = pickupList[indexPath.section].order_number
-        vc.codeQr = pickupList[indexPath.section].pickup_item![indexPath.row].qr_code_raw
+        vc.codeQr = pickupList[indexPath.section].pickup_item![indexPath.row].qr_code_url
         vc.extra = false
         vc.delegate = self
         if pickupList[indexPath.section].pickup_item![indexPath.row].scan == nil {

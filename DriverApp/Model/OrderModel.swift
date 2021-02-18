@@ -224,15 +224,13 @@ struct PickupDestination: Decodable {
 
 // item pickup
 struct PickupItem: Decodable {
-    let item_name: String
-    let qty: String
-    let qr_code_raw: String
+    let box_name: String
+    let qr_code_url: String
     var scan: Bool?
     
     enum CodingKeys: String, CodingKey {
-        case item_name
-        case qty
-        case qr_code_raw
+        case box_name
+        case qr_code_url
         case scan
     }
 }
@@ -250,17 +248,17 @@ struct ScanedData: Decodable {
 
 struct Scanned: Codable {
     var scanned_status: Int
-    let qr_code_raw: String
+    let qr_code_url: String
     let order_number: String
     let pickup_store_name: String
-    let item_name: String
+    let box_name: String
     
     enum CodingKeys: String, CodingKey {
         case scanned_status
-        case qr_code_raw
+        case qr_code_url
         case order_number
         case pickup_store_name
-        case item_name
+        case box_name
     }
 }
 
@@ -269,7 +267,7 @@ struct Scanned: Codable {
 
 struct Scan: Codable {
     let order_number: String
-    let qr_code_raw: [String]
+    let qr_code_url: [String]
 }
 
 
